@@ -3,7 +3,8 @@ export const INCREASE = "INCREASE"
 export const DECREASE = "DECREASE"
 
 // action
-export const counterIncAction = () => {
+export const counterIncAction = (...args: any) => {
+	console.log(...args)
 	return {
 		type: INCREASE,
 	}
