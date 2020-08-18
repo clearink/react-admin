@@ -1,21 +1,34 @@
-import React, { ReactNode, FunctionComponent } from "react"
-import { Route, Redirect, RouteProps } from "react-router-dom"
+import React, { FunctionComponent } from "react"
+import { Route } from "react-router-dom"
 import Home from "@/pages/Home"
 
-interface IRoute {
-	path: string
-	component: FunctionComponent
-	wrap?: ReactNode
-}
 const routes: IRoute[] = [
 	{
 		path: "/",
 		component: Home,
 	},
 ]
-export const renderRoutes: ReactNode = (routes: IRoute[]) => {
+export const renderRoutes = (routes: IRoute[]) => {
 	return routes.map((item) => {
-		return <item.component />
+		const { component, wrap, routes, ...RouteProps } = item
+		if (wrap) {
+			const Wrap = item.wrap as FunctionComponent
+			return (
+				<Wrap key={item.path}>
+					<Route
+						{...RouteProps}
+						render={(props) => <item.component routes={routes} {...props} />}
+					/>
+				</Wrap>
+			)
+		}
+		return (
+			<Route
+				key={item.path}
+				{...RouteProps}
+				render={(props) => <item.component routes={routes} {...props} />}
+			/>
+		)
 	})
 }
 

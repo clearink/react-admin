@@ -1,11 +1,7 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, memo } from "react"
 
-interface IProps {
-  
-	routes?: any
-}
 const Home: FunctionComponent<IProps> = (props) => {
 	return <div>Home</div>
 }
 
-export default Home
+export default memo(Home)
