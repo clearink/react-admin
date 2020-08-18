@@ -1,7 +1,7 @@
 // action
 interface ActionProp<T = any> {
 	type: string
-	payload: T
+	payload?: T
 }
 // redux 中的数据
 interface IState<T = any> {

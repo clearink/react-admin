@@ -31,4 +31,4 @@ class LocalStore {
 	}
 }
 
-export default new LocalStore()
+export default LocalStore

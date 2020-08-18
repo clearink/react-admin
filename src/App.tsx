@@ -1,18 +1,15 @@
 import React from "react"
-import { Button } from "antd"
-import { useSelector, useDispatch } from "react-redux"
-import { counterIncAction } from "@/stores/actions"
-import BoundAction from "@/utils/BoundAction"
+import { BrowserRouter as Router, Route } from "react-router-dom"
+import routes, { renderRoutes } from "@/routes"
+import Home from "@/pages/Home"
 function App() {
-	const state = useSelector((state: IState<CounterState>) => state.counter)
-	const dispatch = useDispatch()
-	const inc = BoundAction(counterIncAction)
 	return (
-		<div className='App'>
-			<Button type='primary' onClick={inc}>
-				{state.count}
-			</Button>
-		</div>
+		<Router>
+			{renderRoutes(routes)}
+			<Route path="/">
+				<Home />
+			</Route>
+		</Router>
 	)
 }
 
