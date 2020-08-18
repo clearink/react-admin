@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FunctionComponent } from "react"
 
-const Home = () => {
-  return (
-    <div>
-      Home
-    </div>
-  );
-};
+interface IProps {
+  
+	routes?: any
+}
+const Home: FunctionComponent<IProps> = (props) => {
+	return <div>Home</div>
+}
 
-export default Home;
+export default Home
