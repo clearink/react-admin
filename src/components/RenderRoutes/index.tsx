@@ -18,13 +18,12 @@ function RenderRoutes(props: IProps) {
 						key={item.path}
 						{...RouteProps}
 						render={(props) => {
-							console.log("render routes", props.match, RouteProps)
 							return (
-								<Wrap>
-									<Layout>
+								<Layout>
+									<Wrap>
 										<item.component routes={routes} {...props} />
-									</Layout>
-								</Wrap>
+									</Wrap>
+								</Layout>
 							)
 						}}
 					/>

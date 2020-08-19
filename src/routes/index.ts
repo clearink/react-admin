@@ -6,7 +6,6 @@ import { IRoute } from "@/@types/route"
 const routes: IRoute[] = [
 	{
 		path: "/",
-		exact: true,
 		component: BaseLayout,
 		routes: [
 			{
