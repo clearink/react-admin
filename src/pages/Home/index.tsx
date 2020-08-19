@@ -1,7 +1,14 @@
-import React, { FunctionComponent, memo } from "react"
+import React, { memo } from "react"
+import { IBaseProps } from "@/@types/fc"
+import { Link } from "react-router-dom"
 
-const Home: FunctionComponent<IProps> = (props) => {
-	return <div>Home</div>
+function Home(props: IBaseProps) {
+	return (
+		<div className='app-wrapper'>
+			Home page
+			<Link to='/login'>to login</Link>
+		</div>
+	)
 }
 
 export default memo(Home)

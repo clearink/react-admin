@@ -1,8 +1,17 @@
 import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
-import routes, { renderRoutes } from "@/routes"
+import routes from "@/routes"
+
+import "@/styles/main.less"
+import RenderRoutes from "@/components/RenderRoutes"
+
 function App() {
-	return <Router>{renderRoutes(routes)}</Router>
+	console.log("App 组件是全局入口")
+	return (
+		<Router>
+			<RenderRoutes routes={routes} />
+		</Router>
+	)
 }
 
 export default App
