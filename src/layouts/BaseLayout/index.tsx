@@ -1,17 +1,27 @@
-import React, { useEffect, memo } from "react"
-import RenderRoutes from "@/components/RenderRoutes"
-import { IBaseProps } from "@/@types/fc"
-import { IRoute } from "@/@types/route"
-function BaseLayout(props: IBaseProps) {
-	const { children, routes } = props
+import React, { useEffect, memo, ReactNode } from "react"
+import { Layout, Button } from "antd"
+const { Header, Sider, Content, Footer } = Layout
+
+interface IProps {
+	children?: ReactNode
+}
+function BaseLayout(props: IProps) {
+	const { children } = props
 	useEffect(() => {
 		console.log("baseLayout 挂载")
 	}, [])
 	return (
-		<div className='app-base-layout'>
-			<header>baseLayout</header>
-			<RenderRoutes routes={routes as IRoute[]} />
-		</div>
+		<Layout hasSider className='app-base-layout'>
+			<Sider collapsible>menu</Sider>
+			<Layout>
+				<Header className='layout-header'>header</Header>
+				<Content className='layout-content-wrap'>
+					<Button type='primary'>sdhjsd</Button>
+					{children}
+				</Content>
+				<Footer>footer</Footer>
+			</Layout>
+		</Layout>
 	)
 }
 

@@ -1,10 +1,14 @@
-import React from "react"
-import { IBaseProps } from "@/@types/fc"
+import React, { ReactNode, useEffect } from "react"
 
-function LoginLayout(props: IBaseProps) {
+interface IProps {
+	children: ReactNode
+}
+function LoginLayout(props: IProps) {
 	const { children } = props
-	console.log(children);
-	return <div className='app-login-layout'>Login Layout</div>
+	useEffect(()=>{
+		console.log('login layout 挂载');
+	},[])
+	return <div className='app-login-layout'>{children}</div>
 }
 
 export default LoginLayout

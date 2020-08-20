@@ -1,12 +1,12 @@
 import Home from "@/pages/Home"
 import Login from "@/pages/Login"
-import BaseLayout from "@/layouts/BaseLayout"
 import { IRoute } from "@/@types/route"
+import Layout from "@/layouts"
 
 const routes: IRoute[] = [
 	{
 		path: "/",
-		component: BaseLayout,
+		component: Layout,
 		routes: [
 			{
 				path: "/",
