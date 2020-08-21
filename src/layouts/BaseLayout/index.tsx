@@ -1,5 +1,7 @@
 import React, { useEffect, memo, ReactNode } from "react"
 import { Layout, Button } from "antd"
+import "./style.less"
+
 const { Header, Sider, Content, Footer } = Layout
 
 interface IProps {
@@ -15,10 +17,7 @@ function BaseLayout(props: IProps) {
 			<Sider collapsible>menu</Sider>
 			<Layout>
 				<Header className='layout-header'>header</Header>
-				<Content className='layout-content-wrap'>
-					<Button type='primary'>sdhjsd</Button>
-					{children}
-				</Content>
+				<Content className='layout-content-wrap'>{children}</Content>
 				<Footer>footer</Footer>
 			</Layout>
 		</Layout>
