@@ -11,4 +11,5 @@ interface IRoute {
 	wrap?: FunctionComponent
 	routes?: IRoute[]
 	exact?: boolean
+	[key: string]: any
 }

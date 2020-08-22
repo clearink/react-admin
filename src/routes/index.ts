@@ -20,7 +20,7 @@ const routes: IRoute[] = [
 				component: Login,
 			},
 			{
-				path: undefined,
+				key: "error",
 				component: Error,
 			},
 		],
