@@ -6,7 +6,7 @@ interface IWithRoutes {
 	[key: string]: any
 }
 interface IRoute {
-	path?: string | string[]
+	path?: string
 	component: FunctionComponent<IBaseProps>
 	wrap?: FunctionComponent
 	routes?: IRoute[]

@@ -16,7 +16,7 @@ function RenderRoutes(props: IProps) {
 				const RouteComponent = component
 				return (
 					<Route
-						key={item.path as any}
+						key={item.path}
 						exact={exact}
 						path={path}
 						render={(props) => {
