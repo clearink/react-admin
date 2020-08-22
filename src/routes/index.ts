@@ -2,6 +2,7 @@ import Home from "@/pages/Home"
 import Login from "@/pages/Login"
 import { IRoute } from "@/@types/route"
 import Layout from "@/layouts"
+import Error from "@/pages/404"
 
 const routes: IRoute[] = [
 	{
@@ -12,13 +13,15 @@ const routes: IRoute[] = [
 				path: "/",
 				exact: true,
 				component: Home,
-				// layout: BaseLayout,
 			},
 			{
 				path: "/login",
 				exact: true,
 				component: Login,
-				// layout: BaseLayout,
+			},
+			{
+				path: undefined,
+				component: Error,
 			},
 		],
 	},

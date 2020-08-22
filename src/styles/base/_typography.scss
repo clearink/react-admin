@@ -1,11 +1,11 @@
-.bg-cover {
+@mixin bg-cover {
 	background-position: center;
 	background-size: 100%;
 	background-repeat: no-repeat;
 }
-.flex-center(@direction:row) {
+@mixin flex-center($direction: row) {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-direction: @direction;
+	flex-direction: $direction;
 }

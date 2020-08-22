@@ -1,6 +1,5 @@
 import React, { useEffect, memo, ReactNode } from "react"
 import { Layout, Button } from "antd"
-import "./style.less"
 
 const { Header, Sider, Content, Footer } = Layout
 

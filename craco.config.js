@@ -8,7 +8,16 @@ module.exports = {
 		plugins: [new WebpackBar({ profile: true })],
 	},
 	plugins: [
-		{ plugin: CracoAntDesignPlugin },
+		{
+			plugin: CracoAntDesignPlugin,
+			options: {
+				lessLoaderOptions: {
+					lessOptions: {
+						javascriptEnabled: true,
+					},
+				},
+			},
+		},
 		{
 			plugin: CracoAlias,
 			options: {

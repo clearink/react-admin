@@ -1,9 +1,8 @@
 import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
-import routes from "@/routes"
-
-import "@/styles/main.less"
 import RenderRoutes from "@/components/RenderRoutes"
+import routes from "@/routes"
+import "@/styles/main.scss"
 
 function App() {
 	console.log("App 组件是全局入口")

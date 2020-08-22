@@ -1,0 +1,14 @@
+.login-page {
+	min-height: 100vh;
+	@include flex-center();
+	.login-box-wrap {
+		@include flex-center(column);
+		box-shadow: 0.3rem 0.5rem 2rem rgba(0, 0, 0, 0.2);
+		border-radius: 1rem;
+		position: relative;
+		bottom: 10rem;
+		height: 40rem;
+		width: 40rem;
+		background-color: white;
+	}
+}

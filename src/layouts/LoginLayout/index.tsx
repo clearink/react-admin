@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect } from "react"
-import "./style.less"
+import ParticlesBg from "particles-bg"
 interface IProps {
 	children: ReactNode
 }
@@ -8,7 +8,12 @@ function LoginLayout(props: IProps) {
 	useEffect(() => {
 		console.log("login layout 挂载")
 	}, [])
-	return <div className='app-login-layout'>{children}</div>
+	return (
+		<div className='app-login-layout'>
+			<ParticlesBg type='cobweb' bg/>
+			{children}
+		</div>
+	)
 }
 
 export default LoginLayout

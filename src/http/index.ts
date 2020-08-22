@@ -1,5 +1,11 @@
 // Axios 二次封装
-import Axios, { AxiosStatic, AxiosPromise, AxiosRequestConfig } from "axios"
+import Axios, {
+	AxiosStatic,
+	AxiosPromise,
+	AxiosRequestConfig,
+	AxiosError,
+	AxiosResponse,
+} from "axios"
 import { message, notification } from "antd"
 import store from "@/stores"
 import LocalStore from "@/utils/LocalStore"
@@ -30,22 +36,17 @@ class Http {
 	}
 	// 请求拦截器
 	private requestIntercept(axios: AxiosStatic) {
-		axios.interceptors.request.use(
-			async (config: AxiosRequestConfig) => {
-				const token = LocalStore.get(process.env.REACT_APP_ACCESS_TOKEN || "")
-				if (token) config.headers.authToken = token
-				return config
-			},
-			async (err) => {
-				return err
-			}
-		)
+		axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
+			const token = LocalStore.get(process.env.REACT_APP_ACCESS_TOKEN || "")
+			if (token) config.headers.authToken = token
+			return config
+		})
 	}
 
 	// 响应拦截器
 	private responseIntercept(axios: AxiosStatic) {
-		axios.interceptors.request.use(
-			async (response) => {
+		axios.interceptors.response.use(
+			async (response: AxiosResponse) => {
 				console.log(response)
 				/**
 				 * 处理各种错误码逻辑
@@ -53,11 +54,8 @@ class Http {
 
 				return response
 			},
-			async (err) => {
-				// 多半是服务器问题
-
-				return err
-			}
+			// 多半是服务器问题
+			(err: AxiosError) => Promise.reject(err)
 		)
 	}
 
