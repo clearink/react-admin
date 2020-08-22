@@ -1,5 +1,5 @@
 import React from "react"
-import { BrowserRouter as Router } from "react-router-dom"
+import { HashRouter as Router } from "react-router-dom"
 import RenderRoutes from "@/components/RenderRoutes"
 import routes from "@/routes"
 import "@/styles/main.scss"
