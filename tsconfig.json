@@ -20,8 +20,8 @@
     "jsx": "react",
     "baseUrl": "."
   },
-  "extends": "./tsconfig.extend.json",
   "include": [
     "src"
-  ]
+  ],
+  "extends": "./tsconfig.extend.json"
 }

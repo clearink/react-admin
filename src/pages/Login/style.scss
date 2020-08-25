@@ -1,14 +1,39 @@
 .login-page {
-	min-height: 100vh;
-	@include flex-center();
-	.login-box-wrap {
-		@include flex-center(column);
-		box-shadow: 0.3rem 0.5rem 2rem rgba(0, 0, 0, 0.2);
-		border-radius: 1rem;
-		position: relative;
-		bottom: 10rem;
-		height: 40rem;
-		width: 40rem;
-		background-color: white;
+	&__wrap {
+		@include flex-center();
+		min-height: 100vh;
+		.login-box {
+			&__wrap {
+				@include flex-center(column);
+				border-radius: 1rem;
+				opacity: 0.9;
+				background-color: white;
+				position: relative;
+				bottom: 10rem;
+				box-shadow: 1rem 1rem 4rem rgb(168, 164, 164);
+				height: 38rem;
+				width: 40rem;
+				transition: all .2s;
+
+				@include media(sm, max) {
+					@apply w-full h-screen;
+					position: static;
+					box-shadow: none;
+				}
+			}
+			&__title {
+				@include flex-center;
+				@apply text-4xl;
+				flex-shrink: 0;
+				height: 12rem;
+
+				@include media(sm, max) {
+					flex-basis: 30%;
+				}
+			}
+			&__form {
+				flex-grow: 1;
+			}
+		}
 	}
 }
