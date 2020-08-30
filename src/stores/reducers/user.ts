@@ -1,18 +1,24 @@
-import { DispatchProp } from "react-redux"
+import LocalStore from "@/utils/LocalStore"
+import { TOKEN } from "@/configs/appConfig"
 
+// action types
 export const LOGIN = "LOGIN"
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
-export const LOGIN_FAILED = "LOGIN_FAILED"
 export const LOGOUT = "LOGOUT"
-export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
-export const LOGOUT_FAILED = "LOGOUT_FAILED"
+export const SAVE_USER = "SAVE_USER"
 
-export const LoginAction = (data: ActionProp<CounterState>) => {
-	return (dispatch: DispatchProp) => {
-    // dispatch()
-  }
+// reducer
+
+// 有token 视为已经登录
+const initState = { user: null, login: !!LocalStore.get(TOKEN) }
+const reducer = (state = initState, action: ActionProp<any>) => {
+	const { type, payload } = action
+	switch (type) {
+		case SAVE_USER:
+			console.log("SAVE_USER", { ...state, user: payload })
+			return { ...state, user: payload }
+		default:
+			return state
+	}
 }
 
-export const LogoutAction = () => {
-	return (dispatch: DispatchProp) => {}
-}
+export default reducer

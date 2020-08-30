@@ -1,4 +1,5 @@
 // base
+@import "./base/color";
 @import "./base/base";
 @import "./base/typography";
 @import "./base/layout";
@@ -10,3 +11,7 @@
 // pages
 @import "../pages/Home/style";
 @import "../pages/Login/style";
+
+// components
+
+@import "../components/LayoutHeader/style";

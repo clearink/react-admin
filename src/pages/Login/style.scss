@@ -2,6 +2,10 @@
 	&__wrap {
 		@include flex-center();
 		min-height: 100vh;
+		transition: all 0.2s;
+		@include media(sm, max) {
+			background-color: rgba($color: white, $alpha: 0.9);
+		}
 		.login-box {
 			&__wrap {
 				@include flex-center(column);
@@ -13,10 +17,9 @@
 				box-shadow: 1rem 1rem 4rem rgb(168, 164, 164);
 				height: 38rem;
 				width: 40rem;
-				transition: all .2s;
 
 				@include media(sm, max) {
-					@apply w-full h-screen;
+					background-color: transparent;
 					position: static;
 					box-shadow: none;
 				}
@@ -25,7 +28,7 @@
 				@include flex-center;
 				@apply text-4xl;
 				flex-shrink: 0;
-				height: 12rem;
+				height: 11rem;
 
 				@include media(sm, max) {
 					flex-basis: 30%;

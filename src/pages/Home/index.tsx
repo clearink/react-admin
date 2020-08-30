@@ -1,12 +1,12 @@
-import React, { memo } from "react"
+import React, { memo, useEffect } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Link } from "react-router-dom"
 import { Button } from "antd"
-import BoundAction from "@/utils/BoundAction"
-import { counterIncAction } from "@/stores/actions"
+import { useSelector } from "react-redux"
+import { StoreState } from "@/stores"
+import api from "@/http/api"
 
 function Home(props: IBaseProps) {
-	const count = BoundAction(counterIncAction)
 	return (
 		<div className='app-wrapper'>
 			Home page
@@ -14,10 +14,17 @@ function Home(props: IBaseProps) {
 			<Button
 				type='primary'
 				onClick={() => {
-					count()
+					api
+						.Login({username:'admin',password:"123456"})
+						.then((result) => {
+							console.log(result)
+						})
+						.catch((err) => {
+							console.log(err)
+						})
 				}}
 			>
-				test redux
+				test redux{" "}
 			</Button>
 		</div>
 	)

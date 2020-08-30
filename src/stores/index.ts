@@ -12,4 +12,6 @@ const store = createStore(
 	composeEnhancers(applyMiddleware(logger, thunk))
 )
 
+export type StoreState = ReturnType<typeof rootReducer>
+
 export default store

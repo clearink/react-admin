@@ -11,7 +11,6 @@ function Layout(props: IBaseProps) {
 	const location = useLocation()
 	const LayoutComponent =
 		location.pathname === "/login" ? LoginLayout : BaseLayout
-
 	return (
 		<LayoutComponent>
 			<RenderRoutes routes={routes as IRoute[]} />

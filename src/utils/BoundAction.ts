@@ -1,6 +1,6 @@
 import store from "@/stores"
 import { bindActionCreators, Dispatch } from "redux"
-const dispatch = store.dispatch
+const dispatch = store?.dispatch
 
 function BoundAction<A>(actionCreators: A): A
 function BoundAction(actionCreators: any) {

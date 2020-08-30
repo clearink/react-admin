@@ -1,22 +1,23 @@
 // Axios 二次封装
 import Axios, {
 	AxiosStatic,
-	AxiosPromise,
 	AxiosRequestConfig,
 	AxiosError,
 	AxiosResponse,
 } from "axios"
-import { message, notification } from "antd"
-import store from "@/stores"
 import LocalStore from "@/utils/LocalStore"
+import actions from "@/stores/actions"
+import { message } from "antd"
+import { BASE_URL, RETRY_DELAY, RETRY_COUNT, TOKEN } from "@/configs/appConfig"
 
-type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
+// type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
 
 class Http {
 	private axios: AxiosStatic = Axios
+	private timer: number = NaN
 
-	private retryDelay: number = Number(process.env.REACT_APP_RETRY_DELAY) || 3000
-	private retryCount: number = Number(process.env.REACT_APP_RETRY_COUNT) || 4
+	private retryDelay: number = RETRY_DELAY
+	private retryCount: number = RETRY_COUNT
 
 	constructor() {
 		const { axios } = this
@@ -29,53 +30,84 @@ class Http {
 
 	private defaultConfig(axios: AxiosStatic) {
 		axios.defaults.timeout = 10000
-		axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
+		axios.defaults.baseURL = BASE_URL
 		axios.defaults.headers = {
-			"Content-Type": " application/json:charset=utf-8",
+			"Content-Type": "application/json;charset=utf-8",
 		}
 	}
+
 	// 请求拦截器
 	private requestIntercept(axios: AxiosStatic) {
-		axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
-			const token = LocalStore.get(process.env.REACT_APP_ACCESS_TOKEN || "")
-			if (token) config.headers.authToken = token
-			return config
-		})
+		axios.interceptors.request.use(
+			async (config: AxiosRequestConfig) => {
+				const token = LocalStore.get(TOKEN)
+				if (token) config.headers.authToken = token
+				actions.LoadStart()
+				return config
+			},
+			(error) => {
+				actions.LoadEnd()
+				return Promise.reject(error)
+			}
+		)
 	}
 
 	// 响应拦截器
 	private responseIntercept(axios: AxiosStatic) {
 		axios.interceptors.response.use(
 			async (response: AxiosResponse) => {
-				console.log(response)
 				/**
 				 * 处理各种错误码逻辑
 				 */
-
-				return response
+				const {
+					status,
+					data: { code },
+				} = response
+				actions.LoadEnd()
+				console.log("响应拦截器", response)
+				if (status === 200 && code === 200) {
+					return response
+				}
+				this.showError(response.data)
+				return Promise.reject(response)
 			},
 			// 多半是服务器问题
-			(err: AxiosError) => Promise.reject(err)
+			(error: AxiosError) => {
+				// 为了更好的提示动画
+				this.showError(error)
+				actions.LoadEnd()
+				return Promise.reject(error)
+			}
 		)
 	}
 
+	// antd message 更流畅
+	private showError(data: any) {
+		window.clearTimeout(this.timer)
+		this.timer = window.setTimeout(() => {
+			message.error({
+				key: data?.message,
+				content: data?.message,
+			})
+		}, 300)
+	}
 	// get请求会被缓存,添加一个随机字符串确保得到最新的结果
-	private get(url: string, params: Object) {
+	public get(url: string, params?: Object) {
 		return this.axios.get(url, { params: { ...params, _t: Date.now() } })
 	}
 
 	// post
-	private post(url: string, data: Object, options: AxiosRequestConfig) {
+	public post(url: string, data: Object, options?: AxiosRequestConfig) {
 		return this.axios.post(url, data, options)
 	}
 
 	// put
-	private put(url: string, data: Object, options: AxiosRequestConfig) {
+	public put(url: string, data: Object, options?: AxiosRequestConfig) {
 		return this.axios.put(url, data, options)
 	}
 
 	// delete
-	private delete(url: string, options: AxiosRequestConfig) {
+	public delete(url: string, options?: AxiosRequestConfig) {
 		return this.axios.delete(url, options)
 	}
 }

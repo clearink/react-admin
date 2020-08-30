@@ -3,7 +3,7 @@
 
 	.layout-header {
 		background-color: white;
-		box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+		@apply shadow-md
 	}
 
 	.layout-content-wrap {

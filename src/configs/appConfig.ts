@@ -1,0 +1,12 @@
+/**
+ * 
+REACT_APP_BASE_URL =
+REACT_APP_RETRY_DELAY = 3000
+REACT_APP_RETRY_COUNT = 4
+REACT_APP_ACCESS_TOKEN = ACCESS_TOKEN
+ */
+export const BASE_URL = "http://localhost:5000"
+export const RETRY_DELAY = 3000
+export const RETRY_COUNT = 4
+export const TOKEN = "ACCESS_TOKEN"
+export const TOKEN_EXPIRES = "ACCESS_TOKEN_EXPIRES"

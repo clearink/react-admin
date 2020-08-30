@@ -1,9 +1,12 @@
 import React from "react"
-import { HashRouter as Router } from "react-router-dom"
+import { BrowserRouter as Router } from "react-router-dom"
 import RenderRoutes from "@/components/RenderRoutes"
 import routes from "@/routes"
-import "./styles/tailwind.output.css"
+import "@/mocks"
+import "@/mocks/login"
+import "@/mocks/user"
 import "./styles/index.scss"
+import "./styles/tailwind.css"
 
 function App() {
 	console.log("App 组件是全局入口")
