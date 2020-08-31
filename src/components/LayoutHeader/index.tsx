@@ -17,6 +17,7 @@ function LayoutHeader(props: IProps) {
 	return (
 		<div className='layout-header__content'>
 			LayoutHeader
+			<span>color</span>
 			<Dropdown overlay={menu}>
 				<span className='header_action'>
 					<Avatar className="rounded-full" size={30} src={user?.avatar} />

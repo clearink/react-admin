@@ -4,6 +4,7 @@ const {
 	addWebpackPlugin,
 	addWebpackAlias,
 	addPostcssPlugins,
+	addLessLoader,
 } = require("customize-cra")
 const WebpackBar = require("webpackbar")
 const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin")
@@ -14,7 +15,13 @@ module.exports = override(
 	fixBabelImports("import", {
 		libraryName: "antd",
 		libraryDirectory: "es",
-		style: "css",
+		style: true,
+	}),
+	addLessLoader({
+		lessOptions: {
+			modifyVars: { "@primary-color": "#1DA57A" },
+			javascriptEnabled: true,
+		},
 	}),
 	addWebpackPlugin(new WebpackBar(), new AntdDayjsWebpackPlugin()),
 	addWebpackAlias({

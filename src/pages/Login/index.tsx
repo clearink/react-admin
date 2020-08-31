@@ -33,7 +33,7 @@ function Login(props: IBaseProps) {
 				<Form
 					form={form}
 					validateMessages={formValidateMessages}
-					className='login-box__form w-3/4'
+					className='login-box__form w-5/6 sm:w-3/4'
 					onFinish={handleSubmit}
 				>
 					<Form.Item name='username' rules={[{ required: true }]}>
