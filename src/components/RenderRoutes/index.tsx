@@ -7,7 +7,6 @@ interface IProps {
 }
 function RenderRoutes(props: IProps) {
 	const { routes } = props
-
 	return (
 		<Switch>
 			{(routes as IRoute[]).map((item) => {

@@ -16,6 +16,17 @@ class LoginUtil {
 		LocalStore.set(TOKEN_EXPIRES, Date.now() + 86400)
 	}
 
+	// 清除 token
+	static clearToken() {
+		LocalStore.remove(TOKEN)
+		LocalStore.remove(TOKEN_EXPIRES)
+	}
+
+	// 判断是否登录
+	static isLogin() {
+		return !!LocalStore.get(TOKEN)
+	}
+
 	// 保存用户信息至redux
 	static saveUser() {}
 }

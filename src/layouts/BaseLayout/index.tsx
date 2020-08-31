@@ -4,6 +4,7 @@ import LayoutHeader from "@/components/LayoutHeader"
 import { useSelector } from "react-redux"
 import { StoreState } from "@/stores"
 import actions from "@/stores/actions"
+import LoginUtil from "@/utils/LoginUtil"
 
 const { Header, Sider, Content, Footer } = Layout
 
@@ -12,14 +13,22 @@ interface IProps {
 }
 function BaseLayout(props: IProps) {
 	const { children } = props
-	const { login, user } = useSelector((state: StoreState) => state.user)
+	const { user } = useSelector((state: StoreState) => state.user)
+	const isLogin = LoginUtil.isLogin()
 	useEffect(() => {
 		console.log("baseLayout 挂载")
-		if (login && !user) {
+		if (isLogin && !user) {
 			// 登录了,但是没有用户信息
 			actions.GetUserInfo()
 		}
-	}, [login, user])
+	}, [isLogin, user])
+
+	useEffect(() => {
+		if (!isLogin) {
+			console.log("未登录")
+			//跳转至 login push('/login')
+		}
+	}, [isLogin])
 
 	return (
 		<Layout hasSider className='app-base-layout'>

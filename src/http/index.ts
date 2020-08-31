@@ -9,6 +9,7 @@ import LocalStore from "@/utils/LocalStore"
 import actions from "@/stores/actions"
 import { message } from "antd"
 import { BASE_URL, RETRY_DELAY, RETRY_COUNT, TOKEN } from "@/configs/appConfig"
+import LoginUtil from "@/utils/LoginUtil"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
 
@@ -67,6 +68,10 @@ class Http {
 				console.log("响应拦截器", response)
 				if (status === 200 && code === 200) {
 					return response
+				}
+				if (code === 10001) {
+					// token 过期
+					LoginUtil.clearToken()
 				}
 				this.showError(response.data)
 				return Promise.reject(response)

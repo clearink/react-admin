@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react"
+import React, { memo } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Form, Input, Button, message } from "antd"
 import { Store } from "antd/lib/form/interface"
@@ -8,12 +8,15 @@ import { StoreState } from "@/stores"
 import { useHistory } from "react-router-dom"
 const { useForm } = Form
 
+const formValidateMessages = {
+	required: "请输入 ${name}",
+}
+
 function Login(props: IBaseProps) {
 	const { loading } = useSelector((state: StoreState) => state.loading)
-	const { login } = useSelector((state: StoreState) => state.user)
 	const [form] = useForm()
 
-	const { push, replace } = useHistory()
+	const { push } = useHistory()
 
 	const handleSubmit = async (values: Store) => {
 		try {
@@ -22,17 +25,6 @@ function Login(props: IBaseProps) {
 			push("/")
 		} catch (error) {}
 	}
-
-	// 判断是否登录
-	useEffect(() => {
-		if (!login) return
-		const timer = setTimeout(() => {
-			message.info("您已经登录了,将为您导航至主页", 1.5, () => replace("/"))
-		}, 600)
-		return () => {
-			clearTimeout(timer)
-		}
-	}, [login, replace])
 
 	return (
 		<div className='login-page__wrap'>
@@ -70,7 +62,3 @@ function Login(props: IBaseProps) {
 	)
 }
 export default memo(Login)
-
-const formValidateMessages = {
-	required: "请输入 ${name} ",
-}
