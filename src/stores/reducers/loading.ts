@@ -7,7 +7,7 @@ export const COMPLETE = "COMPLETE"
 
 const initState = { loading: false }
 
-const reducer = (state = initState, action: ActionProp) => {
+const reducer = (state = initState, action: ActionProp<typeof initState>) => {
 	const { type } = action
 	switch (type) {
 		case LOADING:

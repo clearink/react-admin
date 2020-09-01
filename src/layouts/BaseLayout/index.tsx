@@ -1,22 +1,22 @@
-import React, { useEffect, memo, ReactNode } from "react"
-import { Layout, Button } from "antd"
+import React, { useEffect, memo, PropsWithChildren } from "react"
+import { Layout, Button, message } from "antd"
 import LayoutHeader from "@/components/LayoutHeader"
 import { useSelector } from "react-redux"
 import { StoreState } from "@/stores"
 import actions from "@/stores/actions"
 import LoginUtil from "@/utils/LoginUtil"
+import SiderMenu from "@/components/SiderMenu"
+import { GithubFilled, CopyrightOutlined } from "@ant-design/icons"
 
 const { Header, Sider, Content, Footer } = Layout
 
-interface IProps {
-	children?: ReactNode
-}
-function BaseLayout(props: IProps) {
+interface IProps {}
+function BaseLayout(props: PropsWithChildren<IProps>) {
 	const { children } = props
 	const { user } = useSelector((state: StoreState) => state.user)
 	const isLogin = LoginUtil.isLogin()
+
 	useEffect(() => {
-		console.log("baseLayout 挂载")
 		if (isLogin && !user) {
 			// 登录了,但是没有用户信息
 			actions.GetUserInfo()
@@ -32,13 +32,26 @@ function BaseLayout(props: IProps) {
 
 	return (
 		<Layout hasSider className='app-base-layout'>
-			<Sider collapsible>menu</Sider>
+			<Sider>
+				<SiderMenu />
+			</Sider>
 			<Layout>
 				<Header className='layout-header'>
 					<LayoutHeader />
 				</Header>
 				<Content className='layout-content-wrap'>{children}</Content>
-				<Footer>footer</Footer>
+				<Footer className='footer_content__wrap'>
+					<div className='footer_content'>
+						<span>react blog</span>
+						<GithubFilled />
+						<a href='https://github.com/clearink/react-blog'>github</a>
+					</div>
+					<div className='footer_content--copyright'>
+						<span>copyright</span>
+						<CopyrightOutlined />
+						<span>clearink</span>
+					</div>
+				</Footer>
 			</Layout>
 		</Layout>
 	)

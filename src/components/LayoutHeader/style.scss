@@ -1,3 +1,21 @@
-.layout-header__content{
-  text-align: right;
+.layout-header__content {
+	text-align: right;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	.header_action {
+		transition: all 0.3s;
+
+		&:hover {
+			background-color: rgba($color-grey, $alpha: 0.3);
+		}
+	}
+	.color-picker {
+		border-radius: 0.2rem;
+		@apply w-16 h-8 cursor-pointer;
+		background-color: var(--antd-wave-shadow-color);
+		&__wrap {
+			@apply h-full flex items-center;
+		}
+	}
 }

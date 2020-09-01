@@ -3,10 +3,41 @@
 
 	.layout-header {
 		background-color: white;
-		@apply shadow-md
+		line-height: 4.8rem;
+		height: 4.8rem;
+		@apply shadow-md;
 	}
 
 	.layout-content-wrap {
 		margin: 2rem;
+	}
+
+	.footer_content {
+		text-transform: capitalize;
+		@include flex-center();
+
+		&__wrap {
+			text-align: center;
+			color: rgba(0, 0, 0, 0.45);
+		}
+		a {
+			color: rgba(0, 0, 0, 0.45);
+			&:hover {
+				color: black;
+			}
+		}
+		& > *:not(:last-child) {
+			margin-right: 2rem;
+		}
+		&:not(:last-child) {
+			margin-bottom: 1rem;
+		}
+
+		&--copyright {
+			@extend .footer_content;
+			& > *:not(:last-child) {
+				margin-right: 1rem;
+			}
+		}
 	}
 }

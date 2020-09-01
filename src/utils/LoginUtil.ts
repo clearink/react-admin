@@ -1,19 +1,20 @@
 import LocalStore from "./LocalStore"
-import { TOKEN, TOKEN_EXPIRES } from "@/configs/appConfig"
+import { TOKEN, TOKEN_EXPIRES } from "@/configs/app"
 
 // 登录工具封装
 class LoginUtil {
+
 	// 获取 token
 	static getToken() {
 		return LocalStore.get(TOKEN)
 	}
 
 	// 设置token以及过期时间
-	static setToken(val: string) {
+	static setToken(val: string, time = 86400) {
 		LocalStore.set(TOKEN, val)
 
 		// expires time
-		LocalStore.set(TOKEN_EXPIRES, Date.now() + 86400)
+		LocalStore.set(TOKEN_EXPIRES, Date.now() + time)
 	}
 
 	// 清除 token
@@ -22,13 +23,15 @@ class LoginUtil {
 		LocalStore.remove(TOKEN_EXPIRES)
 	}
 
-	// 判断是否登录
+	// 判断是否登录 同时还要判断token是否已经过期
 	static isLogin() {
+		const tokenExpires = LocalStore.get(TOKEN_EXPIRES)
+		if (tokenExpires && tokenExpires < Date.now()) {
+			// token已经过期,清除
+			this.clearToken()
+		}
 		return !!LocalStore.get(TOKEN)
 	}
-
-	// 保存用户信息至redux
-	static saveUser() {}
 }
 
 export default LoginUtil

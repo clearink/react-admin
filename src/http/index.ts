@@ -8,7 +8,7 @@ import Axios, {
 import LocalStore from "@/utils/LocalStore"
 import actions from "@/stores/actions"
 import { message } from "antd"
-import { BASE_URL, RETRY_DELAY, RETRY_COUNT, TOKEN } from "@/configs/appConfig"
+import { BASE_URL, RETRY_DELAY, RETRY_COUNT, TOKEN } from "@/configs/app"
 import LoginUtil from "@/utils/LoginUtil"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"

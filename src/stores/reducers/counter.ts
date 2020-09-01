@@ -5,7 +5,7 @@ export const DECREASE = "DECREASE"
 // reducer
 const initState = { count: 0 }
 
-const reducer = (state = initState, action: ActionProp<number>) => {
+const reducer = (state = initState, action: ActionProp<typeof initState>) => {
 	const { type } = action
 	switch (type) {
 		case INCREASE:
