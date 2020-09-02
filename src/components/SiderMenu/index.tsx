@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Menu, Button, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
 import {
@@ -15,7 +15,7 @@ interface IProps {}
 const { Item, SubMenu } = Menu
 function SiderMenu(props: IProps) {
 	const [collapsed, toggle] = useBoolean()
-	// const [collapsed, toggle] = useState(false)
+
 	console.log(collapsed)
 	return (
 		<Layout.Sider collapsed={collapsed} className='sider-menu__wrap'>
@@ -23,11 +23,7 @@ function SiderMenu(props: IProps) {
 				<img src={logo} alt='logo' />
 				<span>clear ink</span>
 			</div>
-			<Menu
-				className='menu'
-				mode='inline'
-				theme='dark'
-			>
+			<Menu className='menu' mode='inline' theme='dark'>
 				<SubMenu key='dashboard'>工作台</SubMenu>
 				<Menu.Item key='1' icon={<PieChartOutlined />}>
 					工作台
@@ -94,7 +90,7 @@ function SiderMenu(props: IProps) {
 				</SubMenu>
 			</Menu>
 			<div className='menu_collapsed__wrap'>
-				<Button type='link' onClick={() => toggle((p) => !p)}>
+				<Button type='link' onClick={toggle as any}>
 					{collapsed ? <MenuUnfoldOutlined /> : <MenuUnfoldOutlined />}
 				</Button>
 			</div>
