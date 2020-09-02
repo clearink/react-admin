@@ -9,12 +9,13 @@ import {
 	AppstoreOutlined,
 	MenuUnfoldOutlined,
 } from "@ant-design/icons"
+import useBoolean from "@/hooks/useBoolean"
 interface IProps {}
 
 const { Item, SubMenu } = Menu
 function SiderMenu(props: IProps) {
-	// const [collapsed, toggle] = useBoolean()
-	const [collapsed, toggle] = useState(false)
+	const [collapsed, toggle] = useBoolean()
+	// const [collapsed, toggle] = useState(false)
 	console.log(collapsed)
 	return (
 		<Layout.Sider collapsed={collapsed} className='sider-menu__wrap'>

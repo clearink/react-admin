@@ -1,6 +1,7 @@
 .sider-menu {
 	&__wrap {
 		height: 100vh;
+		
 		.ant-layout-sider-children {
 			width: 100%;
 			@include flex-center(column);
