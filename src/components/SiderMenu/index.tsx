@@ -1,22 +1,35 @@
-import React from "react"
-import { Menu } from "antd"
+import React, { useState } from "react"
+import { Menu, Button, Layout } from "antd"
+import logo from "@/assets/images/logo.png"
 import {
 	PieChartOutlined,
 	DesktopOutlined,
 	ContainerOutlined,
 	MailOutlined,
 	AppstoreOutlined,
+	MenuUnfoldOutlined,
 } from "@ant-design/icons"
 interface IProps {}
 
 const { Item, SubMenu } = Menu
 function SiderMenu(props: IProps) {
+	// const [collapsed, toggle] = useBoolean()
+	const [collapsed, toggle] = useState(false)
+	console.log(collapsed)
 	return (
-		<div className='sider-menu__wrap'>
-			<div className='logo'>logo</div>
-			<Menu mode='inline' inlineCollapsed theme='dark'>
+		<Layout.Sider collapsed={collapsed} className='sider-menu__wrap'>
+			<div className='logo'>
+				<img src={logo} alt='logo' />
+				<span>clear ink</span>
+			</div>
+			<Menu
+				className='menu'
+				mode='inline'
+				theme='dark'
+			>
+				<SubMenu key='dashboard'>工作台</SubMenu>
 				<Menu.Item key='1' icon={<PieChartOutlined />}>
-					Option 1
+					工作台
 				</Menu.Item>
 				<Menu.Item key='2' icon={<DesktopOutlined />}>
 					Option 2
@@ -38,35 +51,39 @@ function SiderMenu(props: IProps) {
 						<Menu.Item key='12'>Option 12</Menu.Item>
 					</SubMenu>
 				</SubMenu>
-				<SubMenu key='sub2' icon={<AppstoreOutlined />} title='Navigation Two'>
+				<SubMenu key='sub3' icon={<AppstoreOutlined />} title='Navigation Two'>
 					<Menu.Item key='9'>Option 9</Menu.Item>
 					<Menu.Item key='10'>Option 10</Menu.Item>
 					<SubMenu key='sub3' title='Submenu'>
 						<Menu.Item key='11'>Option 11</Menu.Item>
 						<Menu.Item key='12'>Option 12</Menu.Item>
 					</SubMenu>
-				</SubMenu>		<SubMenu key='sub2' icon={<AppstoreOutlined />} title='Navigation Two'>
+				</SubMenu>{" "}
+				<SubMenu key='sub4' icon={<AppstoreOutlined />} title='Navigation Two'>
 					<Menu.Item key='9'>Option 9</Menu.Item>
 					<Menu.Item key='10'>Option 10</Menu.Item>
 					<SubMenu key='sub3' title='Submenu'>
 						<Menu.Item key='11'>Option 11</Menu.Item>
 						<Menu.Item key='12'>Option 12</Menu.Item>
 					</SubMenu>
-				</SubMenu>		<SubMenu key='sub2' icon={<AppstoreOutlined />} title='Navigation Two'>
+				</SubMenu>{" "}
+				<SubMenu key='sub5' icon={<AppstoreOutlined />} title='Navigation Two'>
 					<Menu.Item key='9'>Option 9</Menu.Item>
 					<Menu.Item key='10'>Option 10</Menu.Item>
 					<SubMenu key='sub3' title='Submenu'>
 						<Menu.Item key='11'>Option 11</Menu.Item>
 						<Menu.Item key='12'>Option 12</Menu.Item>
 					</SubMenu>
-				</SubMenu>		<SubMenu key='sub2' icon={<AppstoreOutlined />} title='Navigation Two'>
+				</SubMenu>{" "}
+				<SubMenu key='sub6' icon={<AppstoreOutlined />} title='Navigation Two'>
 					<Menu.Item key='9'>Option 9</Menu.Item>
 					<Menu.Item key='10'>Option 10</Menu.Item>
 					<SubMenu key='sub3' title='Submenu'>
 						<Menu.Item key='11'>Option 11</Menu.Item>
 						<Menu.Item key='12'>Option 12</Menu.Item>
 					</SubMenu>
-				</SubMenu>		<SubMenu key='sub2' icon={<AppstoreOutlined />} title='Navigation Two'>
+				</SubMenu>{" "}
+				<SubMenu key='sub7' icon={<AppstoreOutlined />} title='Navigation Two'>
 					<Menu.Item key='9'>Option 9</Menu.Item>
 					<Menu.Item key='10'>Option 10</Menu.Item>
 					<SubMenu key='sub3' title='Submenu'>
@@ -75,7 +92,12 @@ function SiderMenu(props: IProps) {
 					</SubMenu>
 				</SubMenu>
 			</Menu>
-		</div>
+			<div className='menu_collapsed__wrap'>
+				<Button type='link' onClick={() => toggle((p) => !p)}>
+					{collapsed ? <MenuUnfoldOutlined /> : <MenuUnfoldOutlined />}
+				</Button>
+			</div>
+		</Layout.Sider>
 	)
 }
 

@@ -32,9 +32,7 @@ function BaseLayout(props: PropsWithChildren<IProps>) {
 
 	return (
 		<Layout hasSider className='app-base-layout'>
-			<Sider>
-				<SiderMenu />
-			</Sider>
+			<SiderMenu />
 			<Layout>
 				<Header className='layout-header'>
 					<LayoutHeader />

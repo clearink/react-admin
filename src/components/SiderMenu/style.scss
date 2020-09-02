@@ -1,5 +1,38 @@
-.sider-menu{
-  &__wrap{
-    
-  }
+.sider-menu {
+	&__wrap {
+		height: 100vh;
+		.ant-layout-sider-children {
+			width: 100%;
+			@include flex-center(column);
+		}
+
+		.logo {
+			width: 100%;
+			padding: 1.6rem;
+			min-height: 6rem;
+			color: white;
+			display: flex;
+			align-items: center;
+			white-space: nowrap;
+			img {
+				width: 3.4rem;
+
+				object-fit: cover;
+			}
+			span {
+				text-transform: capitalize;
+				font-weight: 600;
+				font-size: 2.2rem;
+				margin-left: 1.2rem;
+			}
+		}
+
+		.menu {
+			flex: 1;
+		}
+		.menu_collapsed__wrap {
+			width: 100%;
+			padding: 1rem;
+		}
+	}
 }
