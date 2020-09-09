@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom"
 import { IRoute } from "@/@types/route"
 
 interface IProps {
-	routes?: IRoute[]
+	routes: IRoute[]
 }
 function RenderRoutes(props: IProps) {
 	const { routes } = props
@@ -21,10 +21,9 @@ function RenderRoutes(props: IProps) {
 						render={(props) => {
 							return (
 								<Wrap>
-									<RouteComponent {...props} routes={routes} />
-									{/* <RouteComponent {...props}>
+									<RouteComponent {...props}>
 										{routes && <RenderRoutes routes={routes} />}
-									</RouteComponent> */}
+									</RouteComponent>
 								</Wrap>
 							)
 						}}
