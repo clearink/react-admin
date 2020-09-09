@@ -3,6 +3,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	height: 100%;
 	.header_action {
 		transition: all 0.3s;
 
@@ -12,10 +13,10 @@
 	}
 	.color-picker {
 		border-radius: 0.2rem;
-		@apply w-16 h-8 cursor-pointer;
+		@apply w-16 h-8;
 		background-color: var(--antd-wave-shadow-color);
 		&__wrap {
-			@apply h-full flex items-center;
+			@apply h-full flex items-center cursor-pointer;
 		}
 	}
 }

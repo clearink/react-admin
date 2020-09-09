@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Menu, Button, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
 import {
@@ -16,7 +16,6 @@ const { Item, SubMenu } = Menu
 function SiderMenu(props: IProps) {
 	const [collapsed, toggle] = useBoolean()
 
-	console.log(collapsed)
 	return (
 		<Layout.Sider collapsed={collapsed} className='sider-menu__wrap'>
 			<div className='logo'>
@@ -98,4 +97,4 @@ function SiderMenu(props: IProps) {
 	)
 }
 
-export default SiderMenu
+export default memo(SiderMenu)

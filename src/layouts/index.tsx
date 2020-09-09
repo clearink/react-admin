@@ -1,20 +1,23 @@
 import React from "react"
 import { IBaseProps } from "@/@types/fc"
-import RenderRoutes from "@/components/RenderRoutes"
-import { IRoute } from "@/@types/route"
 import BaseLayout from "./BaseLayout"
 import { useLocation } from "react-router-dom"
 import LoginLayout from "./LoginLayout"
+import RenderRoutes from "@/components/RenderRoutes"
 
 function Layout(props: IBaseProps) {
 	const { routes } = props
-	const location = useLocation()
-	const LayoutComponent =
-		location.pathname === "/login" ? LoginLayout : BaseLayout
+	const { pathname } = useLocation()
+	if (pathname === "/login")
+		return (
+			<LoginLayout>
+				<RenderRoutes routes={routes} />
+			</LoginLayout>
+		)
 	return (
-		<LayoutComponent>
-			<RenderRoutes routes={routes as IRoute[]} />
-		</LayoutComponent>
+		<BaseLayout>
+			<RenderRoutes routes={routes} />
+		</BaseLayout>
 	)
 }
 

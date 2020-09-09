@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { useSelector } from "react-redux"
 import { StoreState } from "@/stores"
 import { Menu, Dropdown, Spin } from "antd"
@@ -50,4 +50,4 @@ function LayoutHeader(props: IProps) {
 		</div>
 	)
 }
-export default LayoutHeader
+export default memo(LayoutHeader)

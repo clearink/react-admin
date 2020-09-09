@@ -5,7 +5,7 @@ import routes from "@/routes"
 import "./styles/index.scss"
 import "./styles/tailwind.css"
 
-function App() {
+function App(props:any) {
 	console.log("App 组件是全局入口")
 	return (
 		<Router>
