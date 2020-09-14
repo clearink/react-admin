@@ -2,8 +2,7 @@ import React, { useEffect, memo, PropsWithChildren } from "react"
 import { Layout, Button, message } from "antd"
 import LayoutHeader from "@/components/LayoutHeader"
 import { useSelector } from "react-redux"
-import { StoreState } from "@/stores"
-import actions from "@/stores/actions"
+import { AppState } from "@/store"
 import LoginUtil from "@/utils/LoginUtil"
 import SiderMenu from "@/components/SiderMenu"
 import { GithubFilled, CopyrightOutlined } from "@ant-design/icons"
@@ -13,13 +12,13 @@ const { Header, Sider, Content, Footer } = Layout
 interface IProps {}
 function BaseLayout(props: PropsWithChildren<IProps>) {
 	const { children } = props
-	const { user } = useSelector((state: StoreState) => state.user)
+	const { user } = useSelector((state: AppState) => state.user)
 	const isLogin = LoginUtil.isLogin()
 
 	useEffect(() => {
 		if (isLogin && !user) {
 			// 登录了,但是没有用户信息
-			actions.GetUserInfo()
+			// actions.GetUserInfo()
 		}
 	}, [isLogin, user])
 

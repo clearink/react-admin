@@ -6,7 +6,6 @@ import Axios, {
 	AxiosResponse,
 } from "axios"
 import LocalStore from "@/utils/LocalStore"
-import actions from "@/stores/actions"
 import { message } from "antd"
 import { BASE_URL, RETRY_DELAY, RETRY_COUNT, TOKEN } from "@/configs/app"
 import LoginUtil from "@/utils/LoginUtil"
@@ -43,11 +42,9 @@ class Http {
 			async (config: AxiosRequestConfig) => {
 				const token = LocalStore.get(TOKEN)
 				if (token) config.headers.authToken = token
-				actions.LoadStart()
 				return config
 			},
 			(error) => {
-				actions.LoadEnd()
 				return Promise.reject(error)
 			}
 		)
@@ -64,7 +61,6 @@ class Http {
 					status,
 					data: { code },
 				} = response
-				actions.LoadEnd()
 				console.log("响应拦截器", response)
 				if (status === 200 && code === 200) {
 					return response
@@ -80,7 +76,6 @@ class Http {
 			(error: AxiosError) => {
 				// 为了更好的提示动画
 				this.showError(error)
-				actions.LoadEnd()
 				return Promise.reject(error)
 			}
 		)

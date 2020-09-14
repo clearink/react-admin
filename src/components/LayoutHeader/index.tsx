@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { useSelector } from "react-redux"
-import { StoreState } from "@/stores"
+import { AppState } from "@/store"
 import { Menu, Dropdown, Spin } from "antd"
 import {
 	UserOutlined,
@@ -10,7 +10,7 @@ import {
 import { SketchPicker } from "react-color"
 interface IProps {}
 function LayoutHeader(props: IProps) {
-	const { user } = useSelector((state: StoreState) => state.user)
+	const { user } = useSelector((state: AppState) => state.user)
 	console.log(user)
 	const menu = (
 		<Menu>

@@ -19,11 +19,11 @@ const routes: IRoute[] = [
 				exact: true,
 				component: Login,
 			},
+			{
+				key: "error",
+				component: Error,
+			},
 		],
-	},
-	{
-		key: "error",
-		component: Error,
 	},
 ]
 

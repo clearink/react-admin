@@ -3,27 +3,29 @@ import { IBaseProps } from "@/@types/fc"
 import { Form, Input, Button, message } from "antd"
 import { Store } from "antd/lib/form/interface"
 import { useSelector } from "react-redux"
-import actions from "@/stores/actions"
-import { StoreState } from "@/stores"
+import { AppState } from "@/store"
 import { useHistory } from "react-router-dom"
+import { LOGIN } from "@/store/reducers/user"
 const { useForm } = Form
 
 const formValidateMessages = {
+	// eslint-disable-next-line no-template-curly-in-string
 	required: "请输入 ${name}",
 }
 
 function Login(props: IBaseProps) {
-	const { loading } = useSelector((state: StoreState) => state.loading)
 	const [form] = useForm()
-
+	const { isFetching } = useSelector((state: AppState) => ({ ...state.user }))
 	const { push } = useHistory()
 
 	const handleSubmit = async (values: Store) => {
 		try {
-			await actions.LoginAction(values)
+			await LOGIN(values)
 			message.success("登录成功", 2)
 			push("/")
-		} catch (error) {}
+		} catch (error) {
+			console.log(error, "login page")
+		}
 	}
 
 	return (
@@ -47,7 +49,7 @@ function Login(props: IBaseProps) {
 					</Form.Item>
 					<Form.Item>
 						<Button
-							loading={loading}
+							loading={isFetching}
 							type='primary'
 							htmlType='submit'
 							className='h-16'

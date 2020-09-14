@@ -1,4 +1,4 @@
-import store from "@/stores"
+import store from "@/store"
 import { bindActionCreators, Dispatch } from "redux"
 const dispatch = store?.dispatch
 
