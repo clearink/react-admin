@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit"
-const slice = createSlice({
+const { actions, reducer } = createSlice({
 	name: "menu",
 	initialState: { menu: [] },
 	reducers: {
 		CHANGE(state, action) {},
 	},
 })
-export const actions = slice.actions
-export default slice.reducer
+export const { CHANGE } = actions
+export default reducer

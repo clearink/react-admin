@@ -3,10 +3,11 @@ import { IBaseProps } from "@/@types/fc"
 import { Link } from "react-router-dom"
 import { INCREASE, DECREASE } from "@/store/reducers/counter"
 import { Button } from "antd"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { AppState } from "@/store"
 
 function Home(props: IBaseProps) {
-	console.log("home", props)
+	const count = useSelector((state: AppState) => state.counter.count)
 	const dispatch = useDispatch()
 	return (
 		<div className='app-wrapper'>
@@ -14,10 +15,10 @@ function Home(props: IBaseProps) {
 			<Button
 				type='primary'
 				onClick={() => {
-					dispatch(INCREASE())
+					dispatch(INCREASE(2))
 				}}
 			>
-				test redux
+				test redux-----{count}
 			</Button>
 		</div>
 	)

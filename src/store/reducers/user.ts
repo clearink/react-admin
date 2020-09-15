@@ -1,8 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import api from "@/http/api"
 import { AppThunk } from ".."
+import { stat } from "fs"
 
-const slice = createSlice({
+export const LOGIN = createAsyncThunk(
+	"user/LOGIN",
+	async (user: Object, thunkApi) => {
+		const res = await api.Login(user)
+		return res
+	}
+)
+
+const { actions, reducer } = createSlice({
 	name: "user",
 	initialState: { user: null, isFetching: false },
 	reducers: {
@@ -20,31 +29,20 @@ const slice = createSlice({
 			state.user = action.payload
 		},
 	},
+	extraReducers: (builder) => {
+		builder
+			.addCase(LOGIN.fulfilled, (state, action) => {
+				// success
+				state.isFetching = false
+				state.user = action.payload as any
+			})
+			.addCase(LOGIN.rejected, (state) => {
+				// fail
+				state.isFetching = false
+			})
+	},
 })
 
-export const {
-	SAVE_USER,
-	LOGIN_FAIL,
-	LOGIN_REQUEST,
-	LOGIN_SUCCESS,
-} = slice.actions
+export const { SAVE_USER, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS } = actions
 
-export default slice.reducer
-
-// thunk actions
-
-export const LOGIN = (user: any): AppThunk => {
-	return async (dispatch) => {
-		dispatch(LOGIN_REQUEST())
-		try {
-			// const result = api.Login(user)
-			setTimeout(() => {
-				dispatch(LOGIN_SUCCESS({ name: "24432", password: "1212" }))
-			}, 2000)
-			// dispatch success
-		} catch (error) {
-			// dispatch fail
-			dispatch(LOGIN_FAIL())
-		}
-	}
-}
+export default reducer
