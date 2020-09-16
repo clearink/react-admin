@@ -2,10 +2,11 @@ import React, { memo } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Form, Input, Button, message } from "antd"
 import { Store } from "antd/lib/form/interface"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { AppState } from "@/store"
 import { useHistory } from "react-router-dom"
-import { LOGIN } from "@/store/reducers/user"
+import { login } from "@/store/reducers/user"
+import { unwrapResult } from "@reduxjs/toolkit"
 const { useForm } = Form
 
 const formValidateMessages = {
@@ -15,17 +16,15 @@ const formValidateMessages = {
 
 function Login(props: IBaseProps) {
 	const [form] = useForm()
-	const { isFetching } = useSelector((state: AppState) => ({ ...state.user }))
+	const { loading } = useSelector(
+		(state: AppState) => ({ ...state.user }),
+		shallowEqual
+	)
 	const { push } = useHistory()
-
+	const dispatch = useDispatch()
 	const handleSubmit = async (values: Store) => {
-		try {
-			await LOGIN(values)
-			message.success("登录成功", 2)
-			push("/")
-		} catch (error) {
-			console.log(error, "login page")
-		}
+		const resAction = await dispatch(login(values))
+		unwrapResult<any>(resAction)
 	}
 
 	return (
@@ -49,7 +48,7 @@ function Login(props: IBaseProps) {
 					</Form.Item>
 					<Form.Item>
 						<Button
-							loading={isFetching}
+							loading={loading}
 							type='primary'
 							htmlType='submit'
 							className='h-16'

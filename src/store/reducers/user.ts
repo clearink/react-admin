@@ -1,48 +1,36 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import api from "@/http/api"
-import { AppThunk } from ".."
-import { stat } from "fs"
 
-export const LOGIN = createAsyncThunk(
-	"user/LOGIN",
+export const login = createAsyncThunk(
+	"user/login",
 	async (user: Object, thunkApi) => {
 		const res = await api.Login(user)
-		return res
+		return res.data
 	}
 )
 
+const init: {
+	user: Object
+	loading: boolean
+} = { user: {}, loading: false }
+
 const { actions, reducer } = createSlice({
 	name: "user",
-	initialState: { user: null, isFetching: false },
-	reducers: {
-		LOGIN_REQUEST(state) {
-			state.isFetching = true
-		},
-		LOGIN_SUCCESS(state, action) {
-			state.isFetching = false
-			state.user = action.payload
-		},
-		LOGIN_FAIL(state) {
-			state.isFetching = false
-		},
-		SAVE_USER(state, action) {
-			state.user = action.payload
-		},
-	},
+	initialState: init,
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(LOGIN.fulfilled, (state, action) => {
-				// success
-				state.isFetching = false
-				state.user = action.payload as any
+			.addCase(login.pending, (state) => {
+				state.loading = true
 			})
-			.addCase(LOGIN.rejected, (state) => {
-				// fail
-				state.isFetching = false
+			.addCase(login.fulfilled, (state, action) => {
+				state.loading = false
+				// state.user = action.payload
+			})
+			.addCase(login.rejected, (state, action) => {
+				state.loading = false
 			})
 	},
 })
-
-export const { SAVE_USER, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS } = actions
-
+export const {} = actions
 export default reducer

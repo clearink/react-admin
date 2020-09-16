@@ -29,7 +29,7 @@ class Http {
 	}
 
 	private defaultConfig(axios: AxiosStatic) {
-		axios.defaults.timeout = 10000
+		axios.defaults.timeout = 5000
 		axios.defaults.baseURL = BASE_URL
 		axios.defaults.headers = {
 			"Content-Type": "application/json;charset=utf-8",
@@ -61,33 +61,39 @@ class Http {
 					status,
 					data: { code },
 				} = response
-				console.log("响应拦截器", response)
-				if (status === 200 && code === 200) {
+				console.group("响应拦截器")
+				console.log(response)
+				console.groupEnd()
+				// 与后台协商接口状态
+				if (status === 200 || code === 200) {
 					return response
 				}
 				if (code === 10001) {
 					// token 过期
 					LoginUtil.clearToken()
 				}
-				this.showError(response.data)
+				this.showError(response)
 				return Promise.reject(response)
 			},
 			// 多半是服务器问题
 			(error: AxiosError) => {
 				// 为了更好的提示动画
 				this.showError(error)
+				console.group("响应拦截器error callback")
+				console.error(error)
+				console.groupEnd()
 				return Promise.reject(error)
 			}
 		)
 	}
 
 	// antd message 更流畅
-	private showError(data: any) {
+	private showError(error: any) {
 		window.clearTimeout(this.timer)
 		this.timer = window.setTimeout(() => {
 			message.error({
-				key: data?.message,
-				content: data?.message,
+				key: error?.statusText ?? error?.message,
+				content: error?.statusText ?? error?.message,
 			})
 		}, 300)
 	}
