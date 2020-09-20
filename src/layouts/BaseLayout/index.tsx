@@ -1,33 +1,40 @@
 import React, { useEffect, memo, PropsWithChildren } from "react"
-import { Layout, Button, message } from "antd"
+import { Layout } from "antd"
 import LayoutHeader from "@/components/LayoutHeader"
-import { useSelector } from "react-redux"
-import { AppState } from "@/store"
 import LoginUtil from "@/utils/LoginUtil"
 import SiderMenu from "@/components/SiderMenu"
 import { GithubFilled, CopyrightOutlined } from "@ant-design/icons"
+import { useHistory } from "react-router-dom"
+import useTypedSelector from "@/hooks/useTypedSelector"
+import { actions } from "@/store/reducers/user"
+import GetBoundAction from "@/utils/GetBoundAction"
 
-const { Header, Sider, Content, Footer } = Layout
+const { Header, Content, Footer } = Layout
+const GetCurrentUser = GetBoundAction(actions.getCurrentUser)
 
 interface IProps {}
 function BaseLayout(props: PropsWithChildren<IProps>) {
 	const { children } = props
-	const { user } = useSelector((state: AppState) => state.user)
 	const isLogin = LoginUtil.isLogin()
+	const { user } = useTypedSelector((state) => state.user)
+	const { push } = useHistory()
 
 	useEffect(() => {
 		if (isLogin && !user) {
 			// 登录了,但是没有用户信息
-			// actions.GetUserInfo()
+			console.log("登录了, 但是没有用户信息")
+			const user = LoginUtil.getToken()
+			GetCurrentUser({ id: user?.id })
 		}
 	}, [isLogin, user])
 
 	useEffect(() => {
 		if (!isLogin) {
 			console.log("未登录")
-			//跳转至 login push('/login')
+			//跳转至 login
+			push("/login")
 		}
-	}, [isLogin])
+	}, [isLogin, push])
 
 	return (
 		<Layout hasSider className='app-base-layout'>

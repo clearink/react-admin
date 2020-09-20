@@ -15,7 +15,7 @@ function LoginLayout(props: IProps) {
 		if (!isLogin) return
 		const timer = setTimeout(() => {
 			message.info("您已经登录了,将为您导航至主页", 1.5, () => replace("/"))
-		}, 600)
+		}, 300)
 		return () => {
 			clearTimeout(timer)
 		}

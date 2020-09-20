@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import { useSelector } from "react-redux"
 import { AppState } from "@/store"
-import { Menu, Dropdown, Spin } from "antd"
+import { Menu, Dropdown, Spin, Avatar } from "antd"
 import {
 	UserOutlined,
 	SettingOutlined,
@@ -11,7 +11,6 @@ import { SketchPicker } from "react-color"
 interface IProps {}
 function LayoutHeader(props: IProps) {
 	const { user } = useSelector((state: AppState) => state.user)
-	console.log(user)
 	const menu = (
 		<Menu>
 			<Menu.Item key='1'>
@@ -38,12 +37,12 @@ function LayoutHeader(props: IProps) {
 			</Dropdown>
 			<Dropdown overlay={menu}>
 				<span className='header_action px-3 flex items-center cursor-pointer'>
-					<img
+					<Avatar
 						className='rounded-full w-10 h-auto object-contain mr-4'
-						src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+						src={user?.avatar}
 						alt='avatar'
 					/>
-					<span>hello 你好</span>
+					<span>{user?.name ?? <Spin />}</span>
 				</span>
 			</Dropdown>
 			<span className='cursor-pointer px-3'>语言</span>

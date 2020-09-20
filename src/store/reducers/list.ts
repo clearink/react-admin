@@ -1,28 +1,25 @@
 import api from "@/http/api"
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import {
+	createAsyncThunk,
+	createSlice,
+	createEntityAdapter,
+} from "@reduxjs/toolkit"
 
-export interface listState {
-	id: number
-	title: string
-	text: string
-}
+type list = { id: number; title: string; content: string }
+
+const listAdapter = createEntityAdapter<list>()
+
 // thunk action
-export const fetchList = createAsyncThunk(
-	"list/GetList",
-	async (_: void, { signal }) => {
-		const response = await api.GetList({ signal })
-		return response.data.data.list
-	}
-)
-type TypeInit = {
-	list: listState[]
-	loading: boolean
-}
-const init: TypeInit = { list: [], loading: false }
+const fetchList = createAsyncThunk("list/GetList", async () => {
+	const response = await api.GetPostList()
+	return response.data
+})
 
-const { actions, reducer } = createSlice({
+const slice = createSlice({
 	name: "list",
-	initialState: init,
+	initialState: listAdapter.getInitialState({
+		loading: false,
+	}),
 	reducers: {},
 	// 异步请求处理逻辑
 	extraReducers: (builder) => {
@@ -30,16 +27,14 @@ const { actions, reducer } = createSlice({
 			.addCase(fetchList.pending, (state, action) => {
 				state.loading = true
 			})
-			.addCase(
-				fetchList.fulfilled,
-				(state, action: PayloadAction<listState[]>) => {
-					state.loading = false
-					state.list = action.payload
-				}
-			)
+			.addCase(fetchList.fulfilled, (state, action) => {
+				state.loading = false
+				listAdapter.upsertMany(state, action.payload)
+			})
 			.addCase(fetchList.rejected, (state, action) => {
 				state.loading = false
 			})
 	},
 })
-export default reducer
+export const actions = { ...slice.actions, fetchList }
+export default slice.reducer

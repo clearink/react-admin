@@ -1,0 +1,5 @@
+{
+	"port": 5000,
+	"timeout": "11200",
+	"routes": "./routes.json"
+}

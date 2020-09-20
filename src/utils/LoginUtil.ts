@@ -3,14 +3,13 @@ import { TOKEN, TOKEN_EXPIRES } from "@/configs/app"
 
 // 登录工具封装
 class LoginUtil {
-
 	// 获取 token
 	static getToken() {
 		return LocalStore.get(TOKEN)
 	}
 
-	// 设置token以及过期时间
-	static setToken(val: string, time = 86400) {
+	// 设置token以及过期时间 默认一天
+	static setToken(val: any, time = 86400000) {
 		LocalStore.set(TOKEN, val)
 
 		// expires time
@@ -26,7 +25,7 @@ class LoginUtil {
 	// 判断是否登录 同时还要判断token是否已经过期
 	static isLogin() {
 		const tokenExpires = LocalStore.get(TOKEN_EXPIRES)
-		if (tokenExpires && tokenExpires < Date.now()) {
+		if (!tokenExpires || tokenExpires < Date.now()) {
 			// token已经过期,清除
 			this.clearToken()
 		}
