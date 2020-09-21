@@ -2,13 +2,14 @@ import React, { memo } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Link } from "react-router-dom"
 import { actions } from "@/store/reducers/list"
+import { actions as counterAction } from "@/store/reducers/counter"
 import { Button } from "antd"
 import { unwrapResult } from "@reduxjs/toolkit"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
 
 const FetchList = GetBoundAction(actions.fetchList)
-
+const Increase = GetBoundAction(counterAction.increase)
 function Home(props: IBaseProps) {
 	const { loading, entities, ids } = useTypedSelector((state) => state.list)
 	return (
@@ -24,6 +25,7 @@ function Home(props: IBaseProps) {
 			>
 				get list
 			</Button>
+			<Button onClick={() => Increase()}>123</Button>
 			{ids.map((index) => (
 				<div key={index}>
 					<h2>{entities[index]?.title}</h2>
