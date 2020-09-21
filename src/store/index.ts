@@ -1,5 +1,4 @@
 import { configureStore, getDefaultMiddleware, Action } from "@reduxjs/toolkit"
-import { useDispatch } from "react-redux"
 import logger from "redux-logger"
 import { ThunkAction } from "redux-thunk"
 import rootReducer from "./reducers"

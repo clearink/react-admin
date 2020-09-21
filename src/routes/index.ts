@@ -1,27 +1,25 @@
-import Home from "@/pages/Home"
-import Login from "@/pages/Login"
+import { lazy } from "react"
 import { IRoute } from "@/@types/route"
-import Layout from "@/layouts"
-import Error from "@/pages/404"
+import WithLazyLoad from "@/hocs/WithLazyLoad"
 
 const routes: IRoute[] = [
 	{
 		path: "/",
-		component: Layout,
+		component: WithLazyLoad(lazy(() => import("@/layouts"))),
 		routes: [
 			{
 				path: "/",
 				exact: true,
-				component: Home,
+				component: WithLazyLoad(lazy(() => import("@/pages/Home"))),
 			},
 			{
 				path: "/login",
 				exact: true,
-				component: Login,
+				component: WithLazyLoad(lazy(() => import("@/pages/Login"))),
 			},
 			{
 				key: "error",
-				component: Error,
+				component: WithLazyLoad(lazy(() => import("@/pages/404"))),
 			},
 		],
 	},

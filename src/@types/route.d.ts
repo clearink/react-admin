@@ -1,4 +1,3 @@
-import { IBaseProps } from "./fc"
 import { FunctionComponent } from "react"
 
 interface IWithRoutes {
@@ -7,7 +6,7 @@ interface IWithRoutes {
 }
 interface IRoute {
 	path?: string
-	component: FunctionComponent<IBaseProps>
+	component: any
 	wrap?: FunctionComponent
 	routes?: IRoute[]
 	exact?: boolean

@@ -2,6 +2,7 @@ import React from "react"
 import { IBaseProps } from "@/@types/fc"
 import BaseLayout from "./BaseLayout"
 import { useLocation } from "react-router-dom"
+
 import LoginLayout from "./LoginLayout"
 
 function Layout(props: IBaseProps) {
