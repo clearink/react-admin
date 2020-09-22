@@ -3,10 +3,9 @@ import ParticlesBg from "particles-bg"
 import LoginUtil from "@/utils/LoginUtil"
 import { message } from "antd"
 import { useHistory } from "react-router-dom"
-interface IProps {
-	children: ReactNode
-}
-function LoginLayout(props: IProps) {
+import { IBaseProps } from "@/@types/fc"
+
+function LoginLayout(props: IBaseProps) {
 	const { children } = props
 	const { replace } = useHistory()
 	const isLogin = LoginUtil.isLogin()

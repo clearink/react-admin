@@ -8,12 +8,12 @@ import { useHistory } from "react-router-dom"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { actions } from "@/store/reducers/user"
 import GetBoundAction from "@/utils/GetBoundAction"
+import { IBaseProps } from "@/@types/fc"
 
 const { Header, Content, Footer } = Layout
 const GetCurrentUser = GetBoundAction(actions.getCurrentUser)
 
-interface IProps {}
-function BaseLayout(props: PropsWithChildren<IProps>) {
+function BaseLayout(props: IBaseProps) {
 	const { children } = props
 	const isLogin = LoginUtil.isLogin()
 	const { user } = useTypedSelector((state) => state.user)

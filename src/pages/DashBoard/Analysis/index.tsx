@@ -1,12 +1,12 @@
 import React from "react"
 import { IBaseProps } from "@/@types/fc"
 
-function Article(props: IBaseProps) {
+function Analysis(props: IBaseProps) {
 	return (
 		<div className='flex justify-center items-center w-full min-h-full'>
-			Article
+			Analysis
 		</div>
 	)
 }
 
-export default Article
+export default Analysis

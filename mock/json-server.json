@@ -1,6 +1,5 @@
 {
-	"watch": true,
-	"timeout": "400",
 	"port": 5000,
-	"routes": "./routes.json"
+	"watch": true,
+	"delay": 600
 }

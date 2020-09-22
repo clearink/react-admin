@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom"
 import { actions } from "@/store/reducers/user"
 import { unwrapResult } from "@reduxjs/toolkit"
 import useTypedSelector from "@/hooks/useTypedSelector"
-import GetBoundAction from "@/utils/GetBoundAction" 
+import GetBoundAction from "@/utils/GetBoundAction"
 const { useForm } = Form
 
 const formValidateMessages = {
