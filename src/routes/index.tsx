@@ -25,17 +25,16 @@ const routes: IRoute[] = [
 				component: () => <Redirect to='/dashboard/analysis' />, //重定向到
 			},
 			{
-				path:"/dashboard",
-				component:WithLazyLoad(
-					lazy(()=>)
-				)
-			}
+				path: "/dashboard",
+				exact: true,
+				component: () => <Redirect to='/dashboard/analysis' />,
+			},
 			{
 				path: "/dashboard/analysis",
 				exact: true,
 				component: WithLazyLoad(
 					lazy(() => import("@/pages/DashBoard/Analysis"))
-				), //重定向到
+				),
 			},
 			{
 				path: "/dashboard/monitor",
@@ -50,6 +49,13 @@ const routes: IRoute[] = [
 				component: WithLazyLoad(
 					lazy(() => import("@/pages/DashBoard/WorkPlace"))
 				),
+			},
+
+			// form
+			{
+				path: "/form",
+				exact: true,
+				component: () => <Redirect to='/form/basic-form' />,
 			},
 			{
 				path: "/form/basic-form",
@@ -67,6 +73,66 @@ const routes: IRoute[] = [
 				component: WithLazyLoad(
 					lazy(() => import("@/pages/Form/AdvancedForm"))
 				),
+			},
+
+			// list
+			{
+				path: "/list",
+				component: WithLazyLoad(lazy(() => import("@/pages/List"))),
+				routes: [
+					{
+						path: "/list",
+						exact: true,
+						component: () => <Redirect to='/list/search' />,
+					},
+					{
+						path: "/list/search",
+						component: WithLazyLoad(lazy(() => import("@/pages/List/Search"))),
+						routes: [
+							{
+								path: "/list/search",
+								exact: true,
+								component: () => <Redirect to='/list/search/articles' />,
+							},
+							{
+								path: "/list/search/articles",
+								exact: true,
+								component: WithLazyLoad(
+									lazy(() => import("@/pages/List/Search/Article"))
+								),
+							},
+							{
+								path: "/list/search/projects",
+								exact: true,
+								component: WithLazyLoad(
+									lazy(() => import("@/pages/List/Search/Project"))
+								),
+							},
+							{
+								path: "/list/search/applications",
+								exact: true,
+								component: WithLazyLoad(
+									lazy(() => import("@/pages/List/Search/Application"))
+								),
+							},
+						],
+					},
+					{
+						path: "/list/table-list",
+						exact: true,
+						component: WithLazyLoad(lazy(() => import("@/pages/List/Table"))),
+					},
+					{
+						path: "/list/basic-list",
+						exact: true,
+						component: WithLazyLoad(lazy(() => import("@/pages/List/Basic"))),
+					},
+					{
+						path: "/list/card-list",
+						exact: true,
+						component: WithLazyLoad(lazy(() => import("@/pages/List/Card"))),
+					},
+				],
 			},
 
 			{

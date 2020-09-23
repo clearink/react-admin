@@ -2,83 +2,67 @@ import React, {
 	ComponentType,
 	createElement,
 	memo,
-	ReactComponentElement,
+	useLayoutEffect,
+	useState,
 } from "react"
-import { Menu, Button, Layout, message } from "antd"
+import { Menu, Button, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
 import {
-	DashboardOutlined,
+	AppstoreOutlined,
+	ContainerOutlined,
+	DesktopOutlined,
+	MailOutlined,
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
-	FormOutlined,
+	PieChartOutlined,
 } from "@ant-design/icons"
 import useBoolean from "@/hooks/useBoolean"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
+import menuConfig from "@/configs/menu"
+import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 interface IProps {}
 
-type TMenu = {
-	title: string
-	key: string
-	menu?: TMenu[]
-	icon?: ComponentType<any>
-}
-const menuConfig: TMenu[] = [
-	{
-		title: "Dashboard",
-		key: "/dashboard",
-		icon: DashboardOutlined,
-		menu: [
-			{
-				title: "分析页",
-				key: "/dashboard/analysis",
-			},
-			{
-				title: "监控页",
-				key: "/dashboard/monitor",
-			},
-			{
-				title: "工作台",
-				key: "/dashboard/workplace",
-			},
-		],
-	},
-	{
-		title: "表单页",
-		key: "form",
-		icon: FormOutlined,
-		menu: [
-			{
-				title: "基础表单",
-				key: "/form/basic-form",
-			},
-			{
-				title: "分步表单",
-				key: "/form/step-form",
-			},
-			{
-				title: "高级表单",
-				key: "/form/advanced-form",
-			},
-		],
-	},
-]
 const { Item, SubMenu } = Menu
 function SiderMenu(props: IProps) {
 	const [collapsed, toggle] = useBoolean()
+	const { pathname } = useLocation()
+	const [openKeys, setOpenKeys] = useState(() =>
+		FindMenuOpenKeys(menuConfig, pathname)
+	)
 
+	// 切换 路由时重新设置 open keys
+	useLayoutEffect(() => {
+		if (!collapsed) setOpenKeys(FindMenuOpenKeys(menuConfig, pathname))
+	}, [pathname, collapsed])
+
+	// 点击事件
+	const handleMenuChange = (keys: string[]) => {
+		setOpenKeys(keys)
+	}
 	return (
-		<Layout.Sider collapsed={collapsed} className='sider-menu__wrap'>
+		<Layout.Sider
+			collapsedWidth={48}
+			collapsed={collapsed}
+			className='sider-menu__wrap'
+		>
 			<div className='logo'>
 				<img src={logo} alt='logo' />
 				<span>clear ink</span>
 			</div>
-			<Menu className='menu' mode='inline' theme='dark'>
+			<Menu
+				onOpenChange={handleMenuChange as any}
+				className='menu'
+				mode='inline'
+				theme='dark'
+				openKeys={openKeys}
+				selectedKeys={[pathname]}
+			>
 				{renderMenu(menuConfig)}
 			</Menu>
-			<div className='menu_collapsed__wrap'>
-				<Button type='link' onClick={toggle as any}>
+			<div className={`menu_collapsed__wrap`}>
+				<span onClick={toggle as any}>
 					{createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
-				</Button>
+				</span>
 			</div>
 		</Layout.Sider>
 	)
@@ -88,22 +72,22 @@ export default memo(SiderMenu)
 
 // 是否是根据路由数组来渲染side menu ?
 
-function renderMenu(config: typeof menuConfig) {
+function renderMenu(config: TMenu[]) {
 	return config.map((item) => {
 		if (item.menu) {
 			return (
 				<SubMenu
 					title={item.title}
-					icon={createElement(item.icon as ComponentType<any>)}
-					key={item.key}
+					icon={item?.icon && createElement(item.icon as ComponentType<any>)}
+					key={item.path}
 				>
 					{renderMenu(item.menu)}
 				</SubMenu>
 			)
 		}
 		return (
-			<Item key={item.key}>
-				<NavLink to={item.key}>{item.title}</NavLink>
+			<Item key={item.path}>
+				<NavLink to={item.path}>{item.title}</NavLink>
 			</Item>
 		)
 	})

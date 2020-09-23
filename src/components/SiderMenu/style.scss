@@ -1,15 +1,15 @@
 .sider-menu {
 	&__wrap {
 		height: 100vh;
-		
+		position: fixed;
+		left: 0;
 		.ant-layout-sider-children {
-			width: 100%;
 			@include flex-center(column);
 		}
 
 		.logo {
 			width: 100%;
-			padding: 1.6rem;
+			padding: 1.6rem 1rem;
 			min-height: 6rem;
 			color: white;
 			display: flex;
@@ -33,7 +33,16 @@
 		}
 		.menu_collapsed__wrap {
 			width: 100%;
-			padding: 1rem;
+			padding: 0 1.6rem 1rem;
+			color: wheat;
+			cursor: pointer;
+		}
+
+		.ant-menu-inline-collapsed {
+			width: 4.8rem !important;
+			.ant-menu-submenu-title {
+				padding: 0 1.6rem !important;
+			}
 		}
 	}
 }
