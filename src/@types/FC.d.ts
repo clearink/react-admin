@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 import { RouteChildrenProps } from "react-router-dom"
 import { IWithRoutes } from "./route"
 
@@ -7,5 +7,4 @@ interface IBaseProps
 		RouteChildrenProps,
 		PropsWithChildren {
 	routes?: IRoute[]
-	layout?: FunctionComponent
 }

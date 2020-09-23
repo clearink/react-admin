@@ -1,4 +1,4 @@
-import { ComponentType, FunctionComponent } from "react"
+import { ComponentType } from "react"
 
 interface IWithRoutes {
 	routes?: IRoute[]
@@ -6,8 +6,9 @@ interface IWithRoutes {
 }
 interface IRoute {
 	path?: string
-	component: any
-	wrap?: FunctionComponent
+	component?: string
+	redirect?: string
+	wrap?: string
 	routes?: IRoute[]
 	exact?: boolean
 	icon?: ComponentType<any>
