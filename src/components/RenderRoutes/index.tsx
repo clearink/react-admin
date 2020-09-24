@@ -1,8 +1,7 @@
 import React, { ComponentType, Fragment, lazy, memo } from "react"
-import { Route, Switch } from "react-router-dom"
+import { Redirect, Route, Switch } from "react-router-dom"
 import { IRoute } from "@/@types/route"
 import { IBaseProps } from "@/@types/fc"
-import WithLazyLoad from "@/hocs/WithLazyLoad"
 
 interface IProps {
 	routes: IRoute[]
@@ -12,13 +11,9 @@ function RenderRoutes(props: IProps) {
 	return (
 		<Switch>
 			{routes?.map((item) => {
-				const { component, wrap, routes, exact, path } = item
-				const Wrap: ComponentType<any> = wrap
-					? WithLazyLoad(lazy(() => import(wrap)))
-					: Fragment
-				const RouteComponent: ComponentType<IBaseProps> = WithLazyLoad(
-					lazy(() => import(component))
-				)
+				const { component, wrap, routes, exact, redirect, path } = item
+				const Wrap = wrap ?? Fragment
+				const RouteComponent = component as ComponentType<IBaseProps>
 				return (
 					<Route
 						key={item.path ?? item.key}
@@ -27,9 +22,13 @@ function RenderRoutes(props: IProps) {
 						render={(props) => {
 							return (
 								<Wrap>
-									<RouteComponent {...props}>
-										{routes && <RenderRoutes routes={routes} />}
-									</RouteComponent>
+									{redirect ? (
+										<Redirect to={redirect as string} />
+									) : (
+										<RouteComponent {...props}>
+											{routes && <RenderRoutes routes={routes} />}
+										</RouteComponent>
+									)}
 								</Wrap>
 							)
 						}}

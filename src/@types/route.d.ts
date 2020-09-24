@@ -1,4 +1,5 @@
 import { ComponentType } from "react"
+import { IBaseProps } from "./fc"
 
 interface IWithRoutes {
 	routes?: IRoute[]
@@ -6,7 +7,7 @@ interface IWithRoutes {
 }
 interface IRoute {
 	path?: string
-	component?: string
+	component?: ComponentType<IBaseProps>
 	redirect?: string
 	wrap?: string
 	routes?: IRoute[]

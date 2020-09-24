@@ -1,12 +1,10 @@
 .layout-header__content {
-	text-align: right;
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
-	height: 100%;
+	background-color: white !important;
+	height: 4.8rem !important;
+	padding: 0 1.6rem !important;
+	@apply shadow-md flex items-center justify-end text-right;
 	.header_action {
 		transition: all 0.3s;
-
 		&:hover {
 			background-color: rgba($color-grey, $alpha: 0.3);
 		}

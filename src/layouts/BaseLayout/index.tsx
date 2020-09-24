@@ -39,10 +39,8 @@ function BaseLayout(props: IBaseProps) {
 	return (
 		<Layout hasSider className='app-base-layout'>
 			<SiderMenu />
-			<Layout>
-				<Header className='layout-header'>
-					<LayoutHeader />
-				</Header>
+			<Layout className='content__layout'>
+				<LayoutHeader />
 				<Content className='layout-content-wrap'>{children}</Content>
 				<Footer className='footer_content__wrap'>
 					<div className='footer_content'>

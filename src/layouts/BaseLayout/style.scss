@@ -1,14 +1,11 @@
 .app-base-layout {
 	min-height: 100vh;
-	.layout-header {
-		background-color: white;
-		line-height: 4.8rem;
-		height: 4.8rem;
-		@apply shadow-md;
-	}
-
 	.layout-content-wrap {
 		margin: 2rem;
+	}
+	.content__layout{
+		display: flex;
+		flex-direction: column !important;
 	}
 
 	.footer_content {

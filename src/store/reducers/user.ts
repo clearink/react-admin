@@ -29,7 +29,11 @@ const slice = createSlice({
 		fetchLoading: false,
 		user: null as user | null,
 	},
-	reducers: {},
+	reducers: {
+		logout(state) {
+			state.user = null
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(login.pending, (state) => {
