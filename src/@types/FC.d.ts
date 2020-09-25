@@ -1,3 +1,4 @@
+import { IRoute } from "@/@types/route"
 import { PropsWithChildren } from "react"
 import { RouteChildrenProps } from "react-router-dom"
 import { IWithRoutes } from "./route"

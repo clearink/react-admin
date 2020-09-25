@@ -1,13 +1,24 @@
-import menuConfig from "@/configs/menu"
+import React, { useCallback, useMemo } from "react"
+import useTypedSelector from "@/hooks/useTypedSelector"
 import FindBreadcrumb from "@/utils/FindBreadcrumb"
 import { PageHeader } from "antd"
 import { PageHeaderProps } from "antd/lib/page-header"
-import React, { useCallback, useMemo } from "react"
 import { Link, useLocation } from "react-router-dom"
 
+// 自动获取面包屑的 PageHeader
 function PageHeaderWrap(props: PageHeaderProps) {
+	const menu = useTypedSelector((state) => state.menu)
 	const { pathname } = useLocation()
-	const routes = useMemo(() => FindBreadcrumb(menuConfig, pathname), [pathname])
+	const routes = useMemo(
+		() =>
+			[
+				{
+					path: "/",
+					breadcrumbName: "首页",
+				},
+			].concat(FindBreadcrumb(menu, pathname)),
+		[pathname, menu]
+	)
 
 	// 自定义面包屑路由
 	const itemRender = useCallback((route, params, routes, paths) => {

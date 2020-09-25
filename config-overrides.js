@@ -17,10 +17,9 @@ module.exports = override(
 		libraryDirectory: "es",
 		style: "css",
 	}),
-	addWebpackPlugin(new WebpackBar()),
+	addWebpackPlugin(new WebpackBar(), new AntdDayjsWebpackPlugin()),
 	(config) => {
 		if (isAnalyze) config.plugins.push(new BundleAnalyzerPlugin())
-		if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin())
 		return config
 	},
 	addWebpackAlias({

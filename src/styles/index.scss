@@ -5,8 +5,7 @@
 @import "./base/layout";
 
 // layouts
-@import "../layouts/BaseLayout/style";
-@import "../layouts/LoginLayout/style";
+@import "../layouts/style";
 
 // pages
 @import "../pages/Home/style";
@@ -14,5 +13,4 @@
 @import "../pages/DashBoard/style";
 
 // components
-@import "../components/LayoutHeader/style";
-@import "../components/SiderMenu/style";
+@import "../components/style";

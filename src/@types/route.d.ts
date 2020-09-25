@@ -12,7 +12,7 @@ interface IRoute {
 	wrap?: ComponentType<any>
 	routes?: IRoute[]
 	exact?: boolean
-	icon?: ComponentType<any>
+	icon?: string
 	title?: string
 	[key: string]: any
 }

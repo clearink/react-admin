@@ -1,6 +1,7 @@
 type TMenu = {
-	title: string
-	path: string
-	menu?: TMenu[]
-	icon?: ComponentType<any> | string
+	title?: string
+	icon?: string
+	path?: string
+	key?: string
+	routes?: TMenu[]
 }

@@ -6,9 +6,12 @@ import useBoolean from "@/hooks/useBoolean"
 function Analysis(props: IBaseProps) {
 	const [loading, toggle] = useBoolean(true)
 	useEffect(() => {
-		setTimeout(() => {
+		const timer = setTimeout(() => {
 			toggle()
 		}, 2000)
+		return () => {
+			clearTimeout(timer)
+		}
 	}, [toggle])
 	return (
 		<div className='min-h-full mt-1 mx-4'>

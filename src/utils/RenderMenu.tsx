@@ -1,20 +1,20 @@
-// 是否是根据路由数组来渲染side menu ?
+// 根据路由数组来渲染side menu ?
 
-import { IRoute } from "@/@types/route"
-import React, { ComponentType, createElement, Fragment } from "react"
+import React, { ReactNode } from "react"
 import { Menu } from "antd"
 import { NavLink } from "react-router-dom"
+import IconFont from "@/components/IconFont"
 
 const { SubMenu, Item } = Menu
 
-export default function RenderMenu(config?: IRoute[]): any {
+export default function RenderMenu(config?: TMenu[]): ReactNode {
 	return config?.map((item) => {
 		if (item.title) {
 			if (item.routes) {
 				return (
 					<SubMenu
 						title={item.title}
-						icon={item?.icon && createElement(item?.icon as ComponentType<any>)}
+						icon={item?.icon && <IconFont type={item.icon} />}
 						key={item?.path ?? item.key}
 					>
 						{RenderMenu(item.routes)}
@@ -27,8 +27,6 @@ export default function RenderMenu(config?: IRoute[]): any {
 				</Item>
 			)
 		}
-		return (
-			<Fragment key={item.path ?? item.key}>{RenderMenu(item.routes)}</Fragment>
-		)
+		return RenderMenu(item.routes)
 	})
 }

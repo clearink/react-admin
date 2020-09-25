@@ -1,5 +1,4 @@
-// 递归查找路径
-type TBreadcrumb = { path: string; breadcrumbName: string }
+// 递归查找路径 面包屑
 export default function FindBreadcrumb(
 	config: TMenu[],
 	pathname: string
@@ -8,21 +7,19 @@ export default function FindBreadcrumb(
 	const path: TBreadcrumb[] = []
 	function find(config: TMenu[], pathname: string, path: TBreadcrumb[]) {
 		for (let item of config) {
-			if (item.menu) {
+			if (item.routes) {
 				find(
-					item.menu,
+					item.routes,
 					pathname,
-					path.concat({ path: item.path, breadcrumbName: item.title })
+					path.concat({
+						path: item.path as string,
+						breadcrumbName: item.title as string,
+					})
 				)
 			} else if (item.path === pathname) {
 				result.push(
-					{
-						path: "/",
-						breadcrumbName: "首页",
-					},
-					...path,
-
-					{ path: item.path, breadcrumbName: item.title }
+					...path, 
+					{ path: item.path, breadcrumbName: item.title as string }
 				)
 				return
 			}

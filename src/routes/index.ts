@@ -22,7 +22,7 @@ const routes: IRoute[] = [
 			{
 				path: "/",
 				exact: true,
-				redirect: "/dashboard/analysis", //重定向到
+				component: WithLazyLoad(lazy(() => import("@/pages/Home"))),
 			},
 
 			// dashboard
@@ -30,7 +30,7 @@ const routes: IRoute[] = [
 				path: "/dashboard",
 				component: WithLazyLoad(lazy(() => import("@/pages/DashBoard"))),
 				title: "Dashboard",
-				icon: DashboardOutlined,
+				icon: "icon-dashboard",
 				routes: [
 					{
 						path: "/dashboard",
@@ -69,7 +69,7 @@ const routes: IRoute[] = [
 				path: "/form",
 				component: WithLazyLoad(lazy(() => import("@/pages/Form"))),
 				title: "表单页",
-				icon: DashboardOutlined,
+				icon: "icon-form",
 				routes: [
 					{
 						path: "/form",
@@ -108,7 +108,7 @@ const routes: IRoute[] = [
 				path: "/list",
 				component: WithLazyLoad(lazy(() => import("@/pages/List"))),
 				title: "列表页",
-				icon: DashboardOutlined,
+				icon: "icon-dashboard",
 				routes: [
 					{
 						path: "/list",

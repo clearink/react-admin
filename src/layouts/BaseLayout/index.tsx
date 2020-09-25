@@ -1,4 +1,5 @@
-import React, { useEffect, memo, PropsWithChildren } from "react"
+import React, { useEffect, memo } from "react"
+import { IBaseProps } from "@/@types/fc"
 import { Layout } from "antd"
 import LayoutHeader from "@/components/LayoutHeader"
 import LoginUtil from "@/utils/LoginUtil"
@@ -7,16 +8,19 @@ import { GithubFilled, CopyrightOutlined } from "@ant-design/icons"
 import { useHistory } from "react-router-dom"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { actions } from "@/store/reducers/user"
+import { actions as menuActions } from "@/store/reducers/menu"
 import GetBoundAction from "@/utils/GetBoundAction"
-import { IBaseProps } from "@/@types/fc"
+import { IRoute } from "@/@types/route"
 
 const { Content, Footer } = Layout
 const GetCurrentUser = GetBoundAction(actions.getCurrentUser)
+const SaveMenu = GetBoundAction(menuActions.saveMenu)
 
 function BaseLayout(props: IBaseProps) {
 	const { children, routes } = props
 	const isLogin = LoginUtil.isLogin()
 	const { user } = useTypedSelector((state) => state.user)
+	const menu = useTypedSelector((state) => state.menu)
 	const { push } = useHistory()
 
 	useEffect(() => {
@@ -31,15 +35,27 @@ function BaseLayout(props: IBaseProps) {
 	useEffect(() => {
 		if (!isLogin) {
 			console.log("未登录")
-			//跳转至 login
 			push("/login")
 		}
 	}, [isLogin, push])
 
-	console.log(routes);
+	useEffect(() => {
+		function filterMenu(routes: IRoute[]): TMenu[] {
+			return routes.map((route) => {
+				return {
+					path: route.path,
+					title: route.title,
+					icon: route.icon,
+					key: route.key,
+					routes: route.routes && filterMenu(route.routes),
+				}
+			})
+		}
+		if (routes && menu.length === 0) SaveMenu(filterMenu(routes))
+	}, [routes, menu])
 	return (
-		<Layout hasSider className='app-base-layout'>
-			<SiderMenu menuConfig={routes} />
+		<Layout className='app-base-layout'>
+			<SiderMenu />
 			<Layout className='content__layout'>
 				<LayoutHeader />
 				<Content className='layout-content-wrap'>{children}</Content>

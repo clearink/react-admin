@@ -1,10 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit"
-const { actions, reducer } = createSlice({
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit"
+
+const slice = createSlice({
 	name: "menu",
-	initialState: { menu: [] },
+	initialState: [] as TMenu[],
 	reducers: {
-		CHANGE(state, action) {},
+		saveMenu(state, action: PayloadAction<TMenu[]>) {
+			return action.payload
+		},
 	},
 })
-export const { CHANGE } = actions
-export default reducer
+export const actions = { ...slice.actions }
+export default slice.reducer

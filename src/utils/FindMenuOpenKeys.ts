@@ -2,13 +2,13 @@ import { IRoute } from '@/@types/route'
 
 // 递归查找路径
 export default function FindMenuOpenKeys(
-	menuConfig: IRoute[],
+	config: TMenu[],
 	pathname: string
 ): string[] {
 	let openKeys: string[] = []
 	let path: string[] = []
-	function find(menuConfig: IRoute[], pathname: string, path: string[]) {
-		for (let item of menuConfig) {
+	function find(config: IRoute[], pathname: string, path: string[]) {
+		for (let item of config) {
 			if (item.routes) {
 				find(item.routes, pathname, path.concat(item.path as string))
 			} else if (item.path === pathname) {
@@ -17,6 +17,6 @@ export default function FindMenuOpenKeys(
 			}
 		}
 	}
-	find(menuConfig, pathname, path)
+	find(config, pathname, path)
 	return openKeys
 }
