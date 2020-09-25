@@ -25,7 +25,7 @@ function RenderRoutes(props: IProps) {
 									{redirect ? (
 										<Redirect to={redirect as string} />
 									) : (
-										<RouteComponent {...props}>
+										<RouteComponent {...props} routes={routes}>
 											{routes && <RenderRoutes routes={routes} />}
 										</RouteComponent>
 									)}

@@ -10,11 +10,11 @@ import { actions } from "@/store/reducers/user"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { IBaseProps } from "@/@types/fc"
 
-const { Header, Content, Footer } = Layout
+const { Content, Footer } = Layout
 const GetCurrentUser = GetBoundAction(actions.getCurrentUser)
 
 function BaseLayout(props: IBaseProps) {
-	const { children } = props
+	const { children, routes } = props
 	const isLogin = LoginUtil.isLogin()
 	const { user } = useTypedSelector((state) => state.user)
 	const { push } = useHistory()
@@ -36,9 +36,10 @@ function BaseLayout(props: IBaseProps) {
 		}
 	}, [isLogin, push])
 
+	console.log(routes);
 	return (
 		<Layout hasSider className='app-base-layout'>
-			<SiderMenu />
+			<SiderMenu menuConfig={routes} />
 			<Layout className='content__layout'>
 				<LayoutHeader />
 				<Content className='layout-content-wrap'>{children}</Content>

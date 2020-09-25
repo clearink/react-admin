@@ -1,37 +1,36 @@
-import React, {
-	ComponentType,
-	createElement,
-	memo,
-	useLayoutEffect,
-	useState,
-} from "react"
-import { Menu, Button, Layout } from "antd"
+import React, { memo, useLayoutEffect, useState } from "react"
+import { Menu, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import useBoolean from "@/hooks/useBoolean"
-import { NavLink, useLocation } from "react-router-dom"
-import menuConfig from "@/configs/menu"
+import { useLocation } from "react-router-dom"
+import RenderMenu from "@/utils/RenderMenu"
 import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
+import { IRoute } from "@/@types/route"
 
-const { Item, SubMenu } = Menu
-function SiderMenu() {
+interface IProps {
+	menuConfig?: IRoute[]
+}
+
+function SiderMenu(props: IProps) {
+	const { menuConfig } = props
 	const [collapsed, toggle] = useBoolean(false)
 	const { pathname } = useLocation()
 	const [openKeys, setOpenKeys] = useState(() =>
-		FindMenuOpenKeys(menuConfig, pathname)
+		FindMenuOpenKeys(menuConfig as IRoute[], pathname)
 	)
 
 	// 切换 路由时重新设置 open keys
 	useLayoutEffect(() => {
 		if (!collapsed) {
-			setOpenKeys(FindMenuOpenKeys(menuConfig, pathname))
+			setOpenKeys(FindMenuOpenKeys(menuConfig as IRoute[], pathname))
 		}
-	}, [pathname, collapsed])
+	}, [pathname, collapsed, menuConfig])
 
 	// 点击事件
 	const handleMenuChange = (keys: string[]) => {
 		setOpenKeys(keys)
 	}
+
 	const handleToggleMenu = () => {
 		setOpenKeys([])
 		toggle()
@@ -57,33 +56,10 @@ function SiderMenu() {
 				openKeys={openKeys}
 				selectedKeys={[pathname]}
 			>
-				{renderMenu(menuConfig)}
+				{RenderMenu(menuConfig)}
 			</Menu>
 		</Layout.Sider>
 	)
 }
 
 export default memo(SiderMenu)
-
-// 是否是根据路由数组来渲染side menu ?
-
-function renderMenu(config: TMenu[]) {
-	return config?.map((item) => {
-		if (item.menu) {
-			return (
-				<SubMenu
-					title={item.title}
-					icon={item?.icon && createElement(item.icon as ComponentType<any>)}
-					key={item.path}
-				>
-					{renderMenu(item.menu)}
-				</SubMenu>
-			)
-		}
-		return (
-			<Item key={item.path}>
-				<NavLink to={item.path}>{item.title}</NavLink>
-			</Item>
-		)
-	})
-}

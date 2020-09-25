@@ -1,9 +1,6 @@
 .app-base-layout {
 	min-height: 100vh;
-	.layout-content-wrap {
-		margin: 2rem;
-	}
-	.content__layout{
+	.content__layout {
 		display: flex;
 		flex-direction: column !important;
 	}

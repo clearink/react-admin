@@ -9,7 +9,7 @@ interface IRoute {
 	path?: string
 	component?: ComponentType<IBaseProps>
 	redirect?: string
-	wrap?: string
+	wrap?: ComponentType<any>
 	routes?: IRoute[]
 	exact?: boolean
 	icon?: ComponentType<any>

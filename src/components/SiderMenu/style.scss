@@ -30,6 +30,15 @@
 
 		.menu {
 			flex: 1;
+			overflow: hidden auto;
+			&::-webkit-scrollbar {
+				width: 0.5rem;
+				background-color: #172533;
+			}
+			&::-webkit-scrollbar-thumb {
+				border-radius: 1rem;
+				background-color: #5a6877;
+			}
 		}
 		.menu_collapsed__wrap {
 			width: 100%;
