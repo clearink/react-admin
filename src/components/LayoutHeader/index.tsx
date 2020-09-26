@@ -50,7 +50,7 @@ function LayoutHeader(props: IProps) {
 			<Dropdown overlay={menu}>
 				<span className='header_action px-3 flex items-center cursor-pointer'>
 					<Avatar
-						className='rounded-full w-10 h-auto object-contain mr-4'
+						className='mr-4'
 						src={user?.avatar}
 						alt='avatar'
 					/>

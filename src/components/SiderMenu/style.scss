@@ -1,11 +1,11 @@
 .sider-menu {
 	&__wrap {
-		height: 100vh;
 		position: fixed !important;
+		transition: max-width 0.2s, min-width 0.2s, width 0.2s !important;
+		height: 100vh;
 		left: 0;
 		top: 0;
 		z-index: 11;
-		transition: backgroundColor !important;
 		.ant-layout-sider-children {
 			@include flex-center(column);
 		}
@@ -58,7 +58,7 @@
 		}
 	}
 	&__placeholder {
-		width: 20rem;
 		min-height: 100vh;
+		transition: all 0.2s;
 	}
 }

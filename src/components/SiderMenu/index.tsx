@@ -31,9 +31,14 @@ function SiderMenu() {
 		setOpenKeys([])
 		toggle()
 	}
+
+	console.log("openKeys", openKeys)
 	return (
 		<>
-			<div className='sider-menu__placeholder' />
+			<div
+				className='sider-menu__placeholder'
+				style={{ flexBasis: collapsed ? "4.8rem" : "20rem" }}
+			/>
 			<Layout.Sider
 				collapsedWidth={48}
 				collapsed={collapsed}
@@ -52,7 +57,7 @@ function SiderMenu() {
 					theme='dark'
 					defaultOpenKeys={openKeys}
 					openKeys={openKeys}
-					selectedKeys={[pathname]}
+					selectedKeys={[...openKeys, pathname]}
 				>
 					{RenderMenu(menu)}
 				</Menu>

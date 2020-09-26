@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { IBaseProps } from "@/@types/fc"
 
 function DashBoard(props: IBaseProps) {
@@ -6,7 +6,7 @@ function DashBoard(props: IBaseProps) {
 	useEffect(() => {
 		console.log("in DashBoard container")
 	}, [])
-	return children
+	return <div>{children}</div>
 }
 
 export default DashBoard

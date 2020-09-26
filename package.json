@@ -8,6 +8,7 @@
 		"antd": "^4.6.2",
 		"axios": "^0.19.2",
 		"classnames": "^2.2.6",
+		"framer-motion": "^2.7.5",
 		"normalizr": "^3.6.0",
 		"particles-bg": "^2.5.0",
 		"react": "^16.13.1",

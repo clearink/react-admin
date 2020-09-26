@@ -29,7 +29,7 @@ function PageHeaderWrap(props: PageHeaderProps) {
 			<span>{route.breadcrumbName}</span>
 		)
 	}, [])
-
+	console.log("routes", routes)
 	return <PageHeader {...props} breadcrumb={{ itemRender, routes }} />
 }
 

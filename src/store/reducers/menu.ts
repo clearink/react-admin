@@ -1,4 +1,5 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit"
+import { TMenu } from "@/@types/menu"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 const slice = createSlice({
 	name: "menu",

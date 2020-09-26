@@ -1,4 +1,24 @@
-.app-home-page {
-	min-height: 100vh;
-	width: 100%;
+.home-page {
+	&__wrap {
+		height: 100%;
+		margin: 1rem;
+		@include flex-center(column);
+
+		.image-list__wrap {
+			width: 40rem;
+			height: 45rem;
+			object-fit: contain;
+			@include flex-center();
+			position: relative;
+			margin-bottom: 2rem;
+
+			.image-item {
+				position: absolute;
+				object-fit: contain;
+				width: 100%;
+				height: 100%;
+
+			}
+		}
+	}
 }

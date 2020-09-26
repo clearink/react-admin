@@ -1,6 +1,5 @@
 import { IRoute } from "@/@types/route"
 import WithLazyLoad from "@/hocs/WithLazyLoad"
-import { DashboardOutlined } from "@ant-design/icons"
 import { lazy } from "react"
 
 const routes: IRoute[] = [
@@ -19,6 +18,7 @@ const routes: IRoute[] = [
 		path: "/",
 		component: WithLazyLoad(lazy(() => import("@/layouts/BaseLayout"))),
 		routes: [
+			// home
 			{
 				path: "/",
 				exact: true,
@@ -69,7 +69,7 @@ const routes: IRoute[] = [
 				path: "/form",
 				component: WithLazyLoad(lazy(() => import("@/pages/Form"))),
 				title: "表单页",
-				icon: "icon-form",
+				icon: "icon-edit-square",
 				routes: [
 					{
 						path: "/form",
@@ -108,7 +108,7 @@ const routes: IRoute[] = [
 				path: "/list",
 				component: WithLazyLoad(lazy(() => import("@/pages/List"))),
 				title: "列表页",
-				icon: "icon-dashboard",
+				icon: "icon-table",
 				routes: [
 					{
 						path: "/list",
@@ -153,9 +153,30 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/list/table-list",
-						exact: true,
-						title: "查询表格",
-						component: WithLazyLoad(lazy(() => import("@/pages/List/Table"))),
+						// title: "查询表格",
+						hide: true,
+						component: WithLazyLoad(
+							lazy(() => import("@/components/OnlyChildren"))
+						),
+						routes: [
+							{
+								path: "/list/table-list",
+								exact: true,
+								title: "查询表格",
+								component: WithLazyLoad(
+									lazy(() => import("@/pages/List/Table"))
+								),
+							},
+							{
+								path: "/list/table-list/:id",
+								exact: true,
+								hide: true,
+								title: "查询表格详情页",
+								component: WithLazyLoad(
+									lazy(() => import("@/pages/List/Table/Detail"))
+								),
+							},
+						],
 					},
 					{
 						path: "/list/basic-list",
@@ -171,10 +192,27 @@ const routes: IRoute[] = [
 					},
 				],
 			},
-
+			// chart
 			{
-				key: "error",
-				component: WithLazyLoad(lazy(() => import("@/pages/404"))),
+				path: "/chart",
+				title: "表格页",
+				icon: "icon-areachart",
+				component: WithLazyLoad(
+					lazy(() => import("@/components/OnlyChildren"))
+				),
+				routes: [
+					{
+						path: "/chart",
+						exact: true,
+						redirect: "/chart/intro",
+					},
+					{
+						path: "/chart/intro",
+						exact: true,
+						title: "表格简介",
+						component: WithLazyLoad(lazy(() => import("@/pages/Chart"))),
+					},
+				],
 			},
 		],
 	},
