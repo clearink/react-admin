@@ -57,7 +57,7 @@ function SiderMenu() {
 					theme='dark'
 					defaultOpenKeys={openKeys}
 					openKeys={openKeys}
-					selectedKeys={[...openKeys, pathname]}
+					selectedKeys={openKeys}
 				>
 					{RenderMenu(menu)}
 				</Menu>

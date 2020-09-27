@@ -201,13 +201,13 @@ const routes: IRoute[] = [
 					lazy(() => import("@/components/OnlyChildren"))
 				),
 				routes: [
+					// {
+					// 	path: "/chart",
+					// 	exact: true,
+					// 	redirect: "/chart/intro",
+					// },
 					{
 						path: "/chart",
-						exact: true,
-						redirect: "/chart/intro",
-					},
-					{
-						path: "/chart/intro",
 						exact: true,
 						title: "表格简介",
 						component: WithLazyLoad(lazy(() => import("@/pages/Chart"))),
