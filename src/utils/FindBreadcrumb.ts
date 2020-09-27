@@ -16,6 +16,7 @@ export default function FindBreadcrumb(
 				const newPath = path.concat({
 					path: item.path,
 					breadcrumbName: item.title,
+					key: item.key,
 				} as TBreadcrumb)
 				find(item.routes, pathname, newPath)
 			} else if (
@@ -24,16 +25,19 @@ export default function FindBreadcrumb(
 			) {
 				return result.push(...path, {
 					path: item.path,
-					key: item.key,
 					breadcrumbName: item.title as string,
 				})
 			}
 		}
 	}
 	find(config, pathname, path)
-	// console.log(result) // 根据path去重
 	// 去除 breadcrumbName 为空的
-	return unique<TBreadcrumb>(result, "path").filter(
-		(item) => item.breadcrumbName
-	)
+	// 去重
+	console.log("面包屑匹配", result)
+	return result
+		.filter((item) => item.breadcrumbName)
+		.map((item) => ({
+			...item,
+			path: `${item.path}?_t=${Math.random()}`, // 防止两个相同的path发生冲突
+		}))
 }

@@ -10,16 +10,17 @@ function PageHeaderWrap(props: PageHeaderProps) {
 	const menu = useTypedSelector((state) => state.menu)
 	const { pathname } = useLocation()
 	const routes = useMemo(
-		() =>
-			[
-				{
-					path: "/",
-					breadcrumbName: "首页",
-				},
-			].concat(FindBreadcrumb(menu, pathname)),
+		() => [
+			{
+				path: "/",
+				breadcrumbName: "首页",
+			},
+			...FindBreadcrumb(menu, pathname),
+		],
 		[pathname, menu]
 	)
 
+	console.log("自定义面包屑路由", routes)
 	// 自定义面包屑路由
 	const itemRender = useCallback((route, params, routes, paths) => {
 		const first = routes.length && routes[0] === route
@@ -29,7 +30,15 @@ function PageHeaderWrap(props: PageHeaderProps) {
 			<span>{route.breadcrumbName}</span>
 		)
 	}, [])
-	return <PageHeader {...props} breadcrumb={{ itemRender, routes }} />
+	return (
+		<PageHeader
+			{...props}
+			breadcrumb={{
+				itemRender,
+				routes,
+			}}
+		/>
+	)
 }
 
 export default PageHeaderWrap

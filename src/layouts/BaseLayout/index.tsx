@@ -5,7 +5,6 @@ import LayoutHeader from "@/components/LayoutHeader"
 import LoginUtil from "@/utils/LoginUtil"
 import SiderMenu from "@/components/SiderMenu"
 import { GithubFilled, CopyrightOutlined } from "@ant-design/icons"
-import { useHistory } from "react-router-dom"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { actions } from "@/store/reducers/user"
 import { actions as menuActions } from "@/store/reducers/menu"
@@ -45,14 +44,21 @@ function BaseLayout(props: IBaseProps) {
 		}
 	}, [isLogin, push])
 
+	
 	// 获取菜单数据
 	useEffect(() => {
-		function filterMenu(routes: IRoute[]): TMenu[] {
+		function filterMenu(
+			routes: IRoute[],
+			parentKeys: string = "root"
+		): TMenu[] {
 			if (!Array.isArray(routes)) throw new Error("routes must array")
 			return routes.map((route) => {
+				// 确保 menu key 全局唯一
+				const key = `${parentKeys}😜${route.path ?? route.key}`
 				return {
 					...FilterValue(route, "redirect", "component", "wrap"),
-					routes: route.routes && filterMenu(route.routes),
+					key,
+					routes: route.routes && filterMenu(route.routes, key),
 				}
 			})
 		}

@@ -153,8 +153,6 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/list/table-list",
-						// title: "查询表格",
-						hide: true,
 						component: WithLazyLoad(
 							lazy(() => import("@/components/OnlyChildren"))
 						),
@@ -211,6 +209,21 @@ const routes: IRoute[] = [
 						exact: true,
 						title: "表格简介",
 						component: WithLazyLoad(lazy(() => import("@/pages/Chart"))),
+					},
+				],
+			},
+			{
+				path: "/canvas",
+				title: "画布",
+				icon: "icon-huabu",
+				component: WithLazyLoad(
+					lazy(() => import("@/components/OnlyChildren"))
+				),
+				routes: [
+					{
+						path: "/canvas",
+						title: "图片剪裁",
+						component: WithLazyLoad(lazy(() => import("@/pages/Canvas"))),
 					},
 				],
 			},

@@ -31,8 +31,7 @@ function SiderMenu() {
 		setOpenKeys([])
 		toggle()
 	}
-
-	console.log("openKeys", openKeys)
+	console.log(openKeys);
 	return (
 		<>
 			<div
