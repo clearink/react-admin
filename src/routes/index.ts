@@ -153,28 +153,18 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/list/table-list",
+						exact: true,
+						title: "查询表格",
+						component: WithLazyLoad(lazy(() => import("@/pages/List/Table"))),
+					},
+					{
+						path: "/list/table-list/:id",
+						exact: true,
+						hide: true,
+						title: "查询表格详情页",
 						component: WithLazyLoad(
-							lazy(() => import("@/components/OnlyChildren"))
+							lazy(() => import("@/pages/List/Table/Detail"))
 						),
-						routes: [
-							{
-								path: "/list/table-list",
-								exact: true,
-								title: "查询表格",
-								component: WithLazyLoad(
-									lazy(() => import("@/pages/List/Table"))
-								),
-							},
-							{
-								path: "/list/table-list/:id",
-								exact: true,
-								hide: true,
-								title: "查询表格详情页",
-								component: WithLazyLoad(
-									lazy(() => import("@/pages/List/Table/Detail"))
-								),
-							},
-						],
 					},
 					{
 						path: "/list/basic-list",
