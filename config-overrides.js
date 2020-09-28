@@ -4,6 +4,7 @@ const {
 	addWebpackPlugin,
 	addWebpackAlias,
 	addPostcssPlugins,
+	addWebpackExternals,
 } = require("customize-cra")
 const WebpackBar = require("webpackbar")
 const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin")
@@ -16,6 +17,9 @@ module.exports = override(
 		libraryName: "antd",
 		libraryDirectory: "es",
 		style: "css",
+	}),
+	addWebpackExternals({
+		numeral: "window.numeral",
 	}),
 	addWebpackPlugin(new WebpackBar(), new AntdDayjsWebpackPlugin()),
 	(config) => {

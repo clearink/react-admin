@@ -36,11 +36,11 @@
 			overflow: hidden auto;
 			&::-webkit-scrollbar {
 				width: 0.5rem;
-				background-color: #172533;
+				background-color: $color_scrollbar;
 			}
 			&::-webkit-scrollbar-thumb {
 				border-radius: 1rem;
-				background-color: #5a6877;
+				background-color: $color_thumb;
 			}
 		}
 		.menu_collapsed__wrap {
