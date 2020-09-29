@@ -74,12 +74,12 @@ const routes: IRoute[] = [
 					{
 						path: "/form",
 						exact: true,
-						redirect: "/form/basic-form",
+						redirect: "/form/config-form",
 					},
 					{
-						path: "/form/basic-form",
+						path: "/form/config-form",
 						exact: true,
-						title: "基础表单",
+						title: "配置表单",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/Form/BasicForm"))
 						),

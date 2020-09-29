@@ -1,15 +1,16 @@
 import React, { memo, useLayoutEffect, useState } from "react"
 import { Menu, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
-import useBoolean from "@/hooks/useBoolean"
 import { useLocation } from "react-router-dom"
 import RenderMenu from "@/utils/RenderMenu"
 import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 import useTypedSelector from "@/hooks/useTypedSelector"
+import GetBoundAction from "@/utils/GetBoundAction"
+import { actions } from "@/store/reducers/menu"
+const ToggleMenu = GetBoundAction(actions.toggleMenu)
 
 function SiderMenu() {
-	const menu = useTypedSelector((state) => state.menu)
-	const [collapsed, toggle] = useBoolean(false)
+	const { menu, collapsed } = useTypedSelector((state) => state.menu)
 	const { pathname } = useLocation()
 	const [openKeys, setOpenKeys] = useState(() =>
 		FindMenuOpenKeys(menu, pathname)
@@ -29,9 +30,8 @@ function SiderMenu() {
 
 	const handleToggleMenu = () => {
 		setOpenKeys([])
-		toggle()
+		ToggleMenu()
 	}
-	console.log(openKeys);
 	return (
 		<>
 			<div

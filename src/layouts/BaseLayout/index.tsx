@@ -25,7 +25,7 @@ function BaseLayout(props: IBaseProps) {
 	} = props
 	const isLogin = LoginUtil.isLogin()
 	const { user } = useTypedSelector((state) => state.user)
-	const menu = useTypedSelector((state) => state.menu)
+	const { menu } = useTypedSelector((state) => state.menu)
 
 	// 登录了,但是没有用户信息
 	useEffect(() => {
@@ -44,7 +44,6 @@ function BaseLayout(props: IBaseProps) {
 		}
 	}, [isLogin, push])
 
-	
 	// 获取菜单数据
 	useEffect(() => {
 		function filterMenu(
@@ -70,7 +69,7 @@ function BaseLayout(props: IBaseProps) {
 			<SiderMenu />
 			<Layout className='content__layout'>
 				<LayoutHeader />
-				<Content className='layout-content-wrap'>{children}</Content>
+				<Content className='content-wrap'>{children}</Content>
 				<Footer className='footer_content__wrap'>
 					<div className='footer_content'>
 						<span>react blog</span>
