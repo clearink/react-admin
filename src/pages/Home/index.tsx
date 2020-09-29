@@ -10,6 +10,7 @@ import success from "@/assets/svg/success.svg"
 import { motion as m, AnimatePresence } from "framer-motion"
 import { animateProps, homeImageVariants } from "@/configs/animate"
 import useInterval from "@/hooks/useInterval"
+import { Link } from "react-router-dom"
 
 const init = {
 	current: 0,

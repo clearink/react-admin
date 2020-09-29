@@ -184,16 +184,11 @@ const routes: IRoute[] = [
 			{
 				path: "/chart",
 				title: "表格页",
-				icon: "icon-areachart",
+				icon: "icon-linechart",
 				component: WithLazyLoad(
 					lazy(() => import("@/components/OnlyChildren"))
 				),
 				routes: [
-					// {
-					// 	path: "/chart",
-					// 	exact: true,
-					// 	redirect: "/chart/intro",
-					// },
 					{
 						path: "/chart",
 						exact: true,

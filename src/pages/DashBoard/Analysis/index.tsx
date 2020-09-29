@@ -9,7 +9,7 @@ function Analysis(props: IBaseProps) {
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			toggle()
-		}, 2000)
+		}, 1000)
 		return () => {
 			clearTimeout(timer)
 		}
