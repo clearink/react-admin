@@ -3,10 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 const slice = createSlice({
 	name: "menu",
-	initialState: [] as TMenu[],
+	initialState: { menu: [] as TMenu[], collapsed: false },
 	reducers: {
 		saveMenu(state, action: PayloadAction<TMenu[]>) {
-			return action.payload
+			state.menu = action.payload
+		},
+		toggleMenu(state) {
+			state.collapsed = !state.collapsed
 		},
 	},
 })
