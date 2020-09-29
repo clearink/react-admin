@@ -153,19 +153,32 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/list/table-list",
-						exact: true,
 						title: "查询表格",
-						component: WithLazyLoad(lazy(() => import("@/pages/List/Table"))),
-					},
-					{
-						path: "/list/table-list/:id",
-						exact: true,
 						hide: true,
-						title: "查询表格详情页",
 						component: WithLazyLoad(
-							lazy(() => import("@/pages/List/Table/Detail"))
+							lazy(() => import("@/layouts/BlankLayout"))
 						),
+						routes: [
+							{
+								path: "/list/table-list",
+								title: "查询表格",
+								exact: true,
+								component: WithLazyLoad(
+									lazy(() => import("@/pages/List/Table"))
+								),
+							},
+							{
+								path: "/list/table-list/:id",
+								exact: true,
+								hide: true,
+								title: "查询表格详情页",
+								component: WithLazyLoad(
+									lazy(() => import("@/pages/List/Table/Detail"))
+								),
+							},
+						],
 					},
+
 					{
 						path: "/list/basic-list",
 						exact: true,
@@ -185,9 +198,7 @@ const routes: IRoute[] = [
 				path: "/chart",
 				title: "表格页",
 				icon: "icon-linechart",
-				component: WithLazyLoad(
-					lazy(() => import("@/components/OnlyChildren"))
-				),
+				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				routes: [
 					{
 						path: "/chart",
@@ -201,9 +212,7 @@ const routes: IRoute[] = [
 				path: "/canvas",
 				title: "画布",
 				icon: "icon-huabu",
-				component: WithLazyLoad(
-					lazy(() => import("@/components/OnlyChildren"))
-				),
+				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				routes: [
 					{
 						path: "/canvas",

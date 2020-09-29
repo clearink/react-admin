@@ -55,7 +55,7 @@ function BaseLayout(props: IBaseProps) {
 				// 确保 menu key 全局唯一
 				const key = `${parentKeys}😜${route.path ?? route.key}`
 				return {
-					...FilterValue(route, "redirect", "component", "wrap"),
+					...FilterValue(route, "component", "wrap"),
 					key,
 					routes: route.routes && filterMenu(route.routes, key),
 				}

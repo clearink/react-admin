@@ -5,9 +5,10 @@ import { PageHeader } from "antd"
 import { PageHeaderProps } from "antd/lib/page-header"
 import { Link, useLocation } from "react-router-dom"
 
+interface IProps extends PageHeaderProps {}
 // 自动获取面包屑的 PageHeader
-function PageHeaderWrap(props: PageHeaderProps) {
-	const menu = useTypedSelector((state) => state.menu)
+function PageHeaderWrap(props: IProps) {
+	const { menu } = useTypedSelector((state) => state.menu)
 	const { pathname } = useLocation()
 	const routes = useMemo(
 		() => [
