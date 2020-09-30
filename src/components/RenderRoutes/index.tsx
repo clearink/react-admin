@@ -23,7 +23,7 @@ function RenderRoutes(props: IProps) {
 					return (
 						<Route
 							key={item.path ?? item.key}
-							exact={exact}
+							exact={!item.routes} // 根据routes 属性 决定是否采用严格模式
 							path={path}
 							render={(props) => {
 								return (

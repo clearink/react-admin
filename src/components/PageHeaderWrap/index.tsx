@@ -21,7 +21,6 @@ function PageHeaderWrap(props: IProps) {
 		[pathname, menu]
 	)
 
-	console.log("自定义面包屑路由", routes)
 	// 自定义面包屑路由
 	const itemRender = useCallback((route, params, routes, paths) => {
 		const first = routes.length && routes[0] === route

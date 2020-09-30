@@ -9,7 +9,6 @@ const routes: IRoute[] = [
 		routes: [
 			{
 				path: "/login",
-				exact: true,
 				component: WithLazyLoad(lazy(() => import("@/pages/Login"))),
 			},
 		],
@@ -21,25 +20,22 @@ const routes: IRoute[] = [
 			// home
 			{
 				path: "/",
-				exact: true,
 				component: WithLazyLoad(lazy(() => import("@/pages/Home"))),
 			},
 
 			// dashboard
 			{
 				path: "/dashboard",
-				component: WithLazyLoad(lazy(() => import("@/pages/DashBoard"))),
+				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				title: "Dashboard",
 				icon: "icon-dashboard",
 				routes: [
 					{
 						path: "/dashboard",
-						exact: true,
 						redirect: "/dashboard/analysis", //重定向到
 					},
 					{
 						path: "/dashboard/analysis",
-						exact: true,
 						title: "分析页",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/DashBoard/Analysis"))
@@ -47,7 +43,6 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/dashboard/monitor",
-						exact: true,
 						title: "监控页",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/DashBoard/Monitor"))
@@ -55,7 +50,6 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/dashboard/workplace",
-						exact: true,
 						title: "工作台",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/DashBoard/WorkPlace"))
@@ -67,18 +61,16 @@ const routes: IRoute[] = [
 			// form
 			{
 				path: "/form",
-				component: WithLazyLoad(lazy(() => import("@/pages/Form"))),
+				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				title: "表单页",
 				icon: "icon-edit-square",
 				routes: [
 					{
 						path: "/form",
-						exact: true,
 						redirect: "/form/config-form",
 					},
 					{
 						path: "/form/config-form",
-						exact: true,
 						title: "配置表单",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/Form/BasicForm"))
@@ -86,7 +78,6 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/form/step-form",
-						exact: true,
 						title: "分步表单",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/Form/StepForm"))
@@ -94,7 +85,6 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/form/advanced-form",
-						exact: true,
 						title: "高级表单",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/Form/AdvancedForm"))
@@ -106,28 +96,27 @@ const routes: IRoute[] = [
 			// list
 			{
 				path: "/list",
-				component: WithLazyLoad(lazy(() => import("@/pages/List"))),
+				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				title: "列表页",
 				icon: "icon-table",
 				routes: [
 					{
 						path: "/list",
-						exact: true,
 						redirect: "/list/search",
 					},
 					{
 						path: "/list/search",
-						component: WithLazyLoad(lazy(() => import("@/pages/List/Search"))),
+						component: WithLazyLoad(
+							lazy(() => import("@/layouts/BlankLayout"))
+						),
 						title: "搜索列表",
 						routes: [
 							{
 								path: "/list/search",
-								exact: true,
 								redirect: "/list/search/articles",
 							},
 							{
 								path: "/list/search/articles",
-								exact: true,
 								title: "搜索列表(文章)",
 								component: WithLazyLoad(
 									lazy(() => import("@/pages/List/Search/Article"))
@@ -135,7 +124,6 @@ const routes: IRoute[] = [
 							},
 							{
 								path: "/list/search/projects",
-								exact: true,
 								title: "搜索列表(项目)",
 								component: WithLazyLoad(
 									lazy(() => import("@/pages/List/Search/Project"))
@@ -143,7 +131,6 @@ const routes: IRoute[] = [
 							},
 							{
 								path: "/list/search/applications",
-								exact: true,
 								title: "搜索列表(应用)",
 								component: WithLazyLoad(
 									lazy(() => import("@/pages/List/Search/Application"))
@@ -162,14 +149,12 @@ const routes: IRoute[] = [
 							{
 								path: "/list/table-list",
 								title: "查询表格",
-								exact: true,
 								component: WithLazyLoad(
 									lazy(() => import("@/pages/List/Table"))
 								),
 							},
 							{
 								path: "/list/table-list/:id",
-								exact: true,
 								hide: true,
 								title: "查询表格详情页",
 								component: WithLazyLoad(
@@ -181,13 +166,11 @@ const routes: IRoute[] = [
 
 					{
 						path: "/list/basic-list",
-						exact: true,
 						title: "标准列表",
 						component: WithLazyLoad(lazy(() => import("@/pages/List/Basic"))),
 					},
 					{
 						path: "/list/card-list",
-						exact: true,
 						title: "卡片列表",
 						component: WithLazyLoad(lazy(() => import("@/pages/List/Card"))),
 					},
@@ -202,7 +185,6 @@ const routes: IRoute[] = [
 				routes: [
 					{
 						path: "/chart",
-						exact: true,
 						title: "表格简介",
 						component: WithLazyLoad(lazy(() => import("@/pages/Chart"))),
 					},

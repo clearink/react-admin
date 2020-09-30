@@ -8,7 +8,6 @@ interface IRoute {
 	wrap?: ComponentType<any>
 	icon?: string
 	routes?: IRoute[]
-	exact?: boolean
 	title?: string
 	key?: string
 	hide?: boolean
