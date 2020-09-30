@@ -1,4 +1,3 @@
-import { time } from "console"
 import { useEffect, useRef, useState } from "react"
 
 export default function useInterval(fn: Function, interval: number) {

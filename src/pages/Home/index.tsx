@@ -1,4 +1,4 @@
-import React, { memo, useReducer, useState } from "react"
+import React, { memo, useReducer } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Button, Space } from "antd"
 import chat from "@/assets/svg/chat.svg"
@@ -10,59 +10,52 @@ import success from "@/assets/svg/success.svg"
 import { motion as m, AnimatePresence } from "framer-motion"
 import { animateProps, homeImageVariants } from "@/configs/animate"
 import useInterval from "@/hooks/useInterval"
-import { Link } from "react-router-dom"
+import { bindActionCreators, createSlice, Dispatch } from "@reduxjs/toolkit"
 
 const init = {
 	current: 0,
+	direction: 1,
 	images: [chat, file, image, interact, propaganda, success],
 	loading: false,
 }
+const slice = createSlice({
+	name: "banner",
+	initialState: init,
+	reducers: {
+		next(state) {
+			state.current = (state.current + 1) % state.images.length
+			state.direction = 1
+			state.loading = true
+		},
+		prev(state) {
+			state.loading = true
+			state.direction = -1
+			state.current =
+				(state.current - 1 + state.images.length) % state.images.length
+		},
+		complete(state) {
+			state.loading = false
+		},
+	},
+})
 
-const imageReducer = (state: typeof init, action: any) => {
-	const { type } = action
-	switch (type) {
-		case "NEXT":
-			return {
-				...state,
-				current: (state.current + 1) % state.images.length,
-				loading: true,
-			}
-		case "PREV":
-			return {
-				...state,
-				current:
-					(state.current - 1 + state.images.length) % state.images.length,
-				loading: true,
-			}
-		case "COMPLETE":
-			return {
-				...state,
-				loading: false,
-			}
-		default:
-			return state
-	}
-}
 function Home(props: IBaseProps) {
-	const [{ current, images, loading }, dispatch] = useReducer(
-		imageReducer,
+	const [{ current, images, direction, loading }, dispatch] = useReducer(
+		slice.reducer,
 		init
 	)
-	const [direction, setDirection] = useState(1)
+	const actions = bindActionCreators(slice.actions, dispatch as Dispatch)
 	const [clear, reload] = useInterval(() => {
-		setDirection(1)
-		dispatch({ type: "NEXT" })
+		actions.next()
 	}, 2000)
 
 	const handlePrev = () => {
-		setDirection(-1)
-		dispatch({ type: "PREV" })
+		actions.prev()
 		reload()
 	}
 
 	const handleNext = () => {
-		setDirection(1)
-		dispatch({ type: "NEXT" })
+		actions.next()
 		reload()
 	}
 
@@ -72,7 +65,7 @@ function Home(props: IBaseProps) {
 				<AnimatePresence
 					initial={false}
 					custom={direction}
-					onExitComplete={() => dispatch({ type: "COMPLETE" })}
+					onExitComplete={() => dispatch(actions.complete)}
 				>
 					<m.img
 						className='image-item bg-gray-300 rounded-md'

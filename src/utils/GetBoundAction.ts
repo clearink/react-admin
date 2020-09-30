@@ -1,8 +1,8 @@
 import store, { AppDispatch } from "@/store"
 import { bindActionCreators } from "redux"
-const dispatch = store.dispatch
+import {} from "@reduxjs/toolkit"
 
-function GetBoundAction(actionCreators: any) {
-	return bindActionCreators(actionCreators, dispatch as AppDispatch)
+function GetBoundAction<T>(actionCreators: any): any {
+	return bindActionCreators(actionCreators, store.dispatch as AppDispatch)
 }
 export default GetBoundAction

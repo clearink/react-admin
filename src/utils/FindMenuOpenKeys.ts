@@ -1,6 +1,5 @@
 import { TMenu } from "@/@types/menu"
 import { matchPath } from "react-router-dom"
-import SplitPath from "./SplitPath"
 import unique from "./unique"
 
 // 递归查找路径
@@ -31,7 +30,8 @@ export default function FindMenuOpenKeys(
 		}
 	}
 	find(config, keys)
-	return unique(openKeys)
+	// 去重 过滤
+	return unique<string>(openKeys).filter((item) => item)
 }
 
 // export default function FindMenuOpenKeys(
@@ -57,4 +57,3 @@ export default function FindMenuOpenKeys(
 // 	find(config, 0)
 // 	return unique(openKeys)
 // }
-

@@ -1,6 +1,6 @@
 // 根据路由数组来渲染side menu ?
 
-import React, { memo, ReactNode } from "react"
+import React, { ReactNode } from "react"
 import { Menu } from "antd"
 import { NavLink } from "react-router-dom"
 import IconFont from "@/components/IconFont"

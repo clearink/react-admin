@@ -17,7 +17,7 @@ function RenderRoutes(props: IProps) {
 					component: WithLazyLoad(lazy(() => import("@/pages/404"))), // 给每个routes字段添加匹配失败的路由
 				})
 				.map((item) => {
-					const { component, wrap, routes, exact, redirect, path } = item
+					const { component, wrap, routes, redirect, path } = item
 					const Wrap = wrap ?? Fragment
 					const RouteComponent = component as ComponentType<IBaseProps>
 					return (

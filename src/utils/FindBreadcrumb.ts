@@ -1,6 +1,5 @@
 import { TMenu } from "@/@types/menu"
 import { matchPath } from "react-router-dom"
-import SplitPath from "./SplitPath"
 import unique from "./unique"
 
 // 递归查找路径 面包屑
