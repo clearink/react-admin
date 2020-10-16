@@ -1,8 +1,11 @@
-import store, { AppDispatch } from "@/store"
-import { bindActionCreators } from "redux"
-import {} from "@reduxjs/toolkit"
+import store from "@/store"
+import { ActionCreatorsMapObject, bindActionCreators, Dispatch } from "redux"
 
-function GetBoundAction<T>(actionCreators: any): any {
-	return bindActionCreators(actionCreators, store.dispatch as AppDispatch)
+function GetBoundAction<C>(actionCreator: C): C
+
+function GetBoundAction<M extends ActionCreatorsMapObject<any>>(
+	actionCreators: M
+): M {
+	return bindActionCreators(actionCreators, store.dispatch as Dispatch)
 }
 export default GetBoundAction

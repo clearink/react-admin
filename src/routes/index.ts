@@ -3,6 +3,7 @@ import WithLazyLoad from "@/hocs/WithLazyLoad"
 import { lazy } from "react"
 
 const routes: IRoute[] = [
+	// 通用登录组件
 	{
 		path: "/login",
 		component: WithLazyLoad(lazy(() => import("@/layouts/LoginLayout"))),
@@ -13,46 +14,70 @@ const routes: IRoute[] = [
 			},
 		],
 	},
+
+	// 后台管理
 	{
-		path: "/",
-		component: WithLazyLoad(lazy(() => import("@/layouts/BaseLayout"))),
+		path: "/admin",
+		component: WithLazyLoad(lazy(() => import("@/layouts/AdminLayout"))),
 		routes: [
 			// home
 			{
-				path: "/",
-				component: WithLazyLoad(lazy(() => import("@/pages/Home"))),
+				path: "/admin",
+				component: WithLazyLoad(lazy(() => import("@/pages/Admin/Home"))),
+			},
+
+			// 	博客管理
+			{
+				path: "/admin/article",
+				title: "博客管理",
+				icon: "icon-article",
+				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
+				routes: [
+					{
+						path: "/admin/article",
+						title: "博客列表",
+						component: WithLazyLoad(lazy(() => import("@/pages/Blog/Article"))),
+					},
+					{
+						path: "/admin/article/new",
+						title: "新建博客",
+						component: WithLazyLoad(
+							lazy(() => import("@/pages/Blog/Article/Add"))
+						),
+					},
+				],
 			},
 
 			// dashboard
 			{
-				path: "/dashboard",
+				path: "/admin/dashboard",
 				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				title: "Dashboard",
 				icon: "icon-dashboard",
 				routes: [
 					{
-						path: "/dashboard",
+						path: "/admin/dashboard",
 						redirect: "/dashboard/analysis", //重定向到
 					},
 					{
-						path: "/dashboard/analysis",
+						path: "/admin/dashboard/analysis",
 						title: "分析页",
 						component: WithLazyLoad(
-							lazy(() => import("@/pages/DashBoard/Analysis"))
+							lazy(() => import("@/pages/Admin/DashBoard/Analysis"))
 						),
 					},
 					{
-						path: "/dashboard/monitor",
+						path: "/admin/dashboard/monitor",
 						title: "监控页",
 						component: WithLazyLoad(
-							lazy(() => import("@/pages/DashBoard/Monitor"))
+							lazy(() => import("@/pages/Admin/DashBoard/Monitor"))
 						),
 					},
 					{
-						path: "/dashboard/workplace",
+						path: "/admin/dashboard/workplace",
 						title: "工作台",
 						component: WithLazyLoad(
-							lazy(() => import("@/pages/DashBoard/WorkPlace"))
+							lazy(() => import("@/pages/Admin/DashBoard/WorkPlace"))
 						),
 					},
 				],
@@ -60,34 +85,34 @@ const routes: IRoute[] = [
 
 			// form
 			{
-				path: "/form",
+				path: "/admin/form",
 				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				title: "表单页",
 				icon: "icon-edit-square",
 				routes: [
 					{
-						path: "/form",
+						path: "/admin/form",
 						redirect: "/form/config-form",
 					},
 					{
-						path: "/form/config-form",
+						path: "/admin/form/config-form",
 						title: "配置表单",
 						component: WithLazyLoad(
-							lazy(() => import("@/pages/Form/BasicForm"))
+							lazy(() => import("@/pages/Admin/Form/BasicForm"))
 						),
 					},
 					{
-						path: "/form/step-form",
+						path: "/admin/form/step-form",
 						title: "分步表单",
 						component: WithLazyLoad(
-							lazy(() => import("@/pages/Form/StepForm"))
+							lazy(() => import("@/pages/Admin/Form/StepForm"))
 						),
 					},
 					{
-						path: "/form/advanced-form",
+						path: "/admin/form/advanced-form",
 						title: "高级表单",
 						component: WithLazyLoad(
-							lazy(() => import("@/pages/Form/AdvancedForm"))
+							lazy(() => import("@/pages/Admin/Form/AdvancedForm"))
 						),
 					},
 				],
@@ -95,51 +120,51 @@ const routes: IRoute[] = [
 
 			// list
 			{
-				path: "/list",
+				path: "/admin/list",
 				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				title: "列表页",
 				icon: "icon-table",
 				routes: [
 					{
-						path: "/list",
+						path: "/admin/list",
 						redirect: "/list/search",
 					},
 					{
-						path: "/list/search",
+						path: "/admin/list/search",
 						component: WithLazyLoad(
 							lazy(() => import("@/layouts/BlankLayout"))
 						),
 						title: "搜索列表",
 						routes: [
 							{
-								path: "/list/search",
+								path: "/admin/list/search",
 								redirect: "/list/search/articles",
 							},
 							{
-								path: "/list/search/articles",
+								path: "/admin/list/search/articles",
 								title: "搜索列表(文章)",
 								component: WithLazyLoad(
-									lazy(() => import("@/pages/List/Search/Article"))
+									lazy(() => import("@/pages/Admin/List/Search/Article"))
 								),
 							},
 							{
-								path: "/list/search/projects",
+								path: "/admin/list/search/projects",
 								title: "搜索列表(项目)",
 								component: WithLazyLoad(
-									lazy(() => import("@/pages/List/Search/Project"))
+									lazy(() => import("@/pages/Admin/List/Search/Project"))
 								),
 							},
 							{
-								path: "/list/search/applications",
+								path: "/admin/list/search/applications",
 								title: "搜索列表(应用)",
 								component: WithLazyLoad(
-									lazy(() => import("@/pages/List/Search/Application"))
+									lazy(() => import("@/pages/Admin/List/Search/Application"))
 								),
 							},
 						],
 					},
 					{
-						path: "/list/table-list",
+						path: "/admin/list/table-list",
 						title: "查询表格",
 						hide: true,
 						component: WithLazyLoad(
@@ -147,61 +172,77 @@ const routes: IRoute[] = [
 						),
 						routes: [
 							{
-								path: "/list/table-list",
+								path: "/admin/list/table-list",
 								title: "查询表格",
 								component: WithLazyLoad(
-									lazy(() => import("@/pages/List/Table"))
+									lazy(() => import("@/pages/Admin/List/Table"))
 								),
 							},
 							{
-								path: "/list/table-list/:id",
+								path: "/admin/list/table-list/:id",
 								hide: true,
 								title: "查询表格详情页",
 								component: WithLazyLoad(
-									lazy(() => import("@/pages/List/Table/Detail"))
+									lazy(() => import("@/pages/Admin/List/Table/Detail"))
 								),
 							},
 						],
 					},
 
 					{
-						path: "/list/basic-list",
+						path: "/admin/list/basic-list",
 						title: "标准列表",
-						component: WithLazyLoad(lazy(() => import("@/pages/List/Basic"))),
+						component: WithLazyLoad(
+							lazy(() => import("@/pages/Admin/List/Basic"))
+						),
 					},
 					{
-						path: "/list/card-list",
+						path: "/admin/list/card-list",
 						title: "卡片列表",
-						component: WithLazyLoad(lazy(() => import("@/pages/List/Card"))),
+						component: WithLazyLoad(
+							lazy(() => import("@/pages/Admin/List/Card"))
+						),
 					},
 				],
 			},
 			// chart
 			{
-				path: "/chart",
+				path: "/admin/chart",
 				title: "表格页",
 				icon: "icon-linechart",
 				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				routes: [
 					{
-						path: "/chart",
+						path: "/admin/chart",
 						title: "表格简介",
-						component: WithLazyLoad(lazy(() => import("@/pages/Chart"))),
+						component: WithLazyLoad(lazy(() => import("@/pages/Admin/Chart"))),
 					},
 				],
 			},
 			{
-				path: "/canvas",
+				path: "/admin/canvas",
 				title: "画布",
 				icon: "icon-huabu",
 				component: WithLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
 				routes: [
 					{
-						path: "/canvas",
+						path: "/admin/canvas",
 						title: "图片剪裁",
-						component: WithLazyLoad(lazy(() => import("@/pages/Canvas"))),
+						component: WithLazyLoad(lazy(() => import("@/pages/Admin/Canvas"))),
 					},
 				],
+			},
+		],
+	},
+
+	// 前端页面
+	{
+		path: "/",
+		component: WithLazyLoad(lazy(() => import("@/layouts/BlogLayout"))),
+		routes: [
+			{
+				path: "/",
+				component: WithLazyLoad(lazy(() => import("@/pages/Blog/index"))),
 			},
 		],
 	},

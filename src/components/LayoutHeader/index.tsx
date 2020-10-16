@@ -49,11 +49,7 @@ function LayoutHeader(props: IProps) {
 			</Dropdown>
 			<Dropdown overlay={menu}>
 				<span className='header_action px-3 flex items-center cursor-pointer'>
-					<Avatar
-						className='mr-4'
-						src={user?.avatar}
-						alt='avatar'
-					/>
+					<Avatar className='mr-4' src={user?.avatar} alt='avatar' />
 					<span>{user?.name ?? <Spin />}</span>
 				</span>
 			</Dropdown>

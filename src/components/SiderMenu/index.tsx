@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 import { Menu, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
 import { useLocation } from "react-router-dom"
@@ -7,31 +7,32 @@ import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/menu"
+
 const ToggleMenu = GetBoundAction(actions.toggleMenu)
 
 function SiderMenu() {
+	const [collapsedMenu, setCollapsedMenu] = useState(false)
 	const { menu, collapsed } = useTypedSelector((state) => state.menu)
 	const { pathname } = useLocation()
-	const [openKeys, setOpenKeys] = useState(() =>
-		FindMenuOpenKeys(menu, pathname)
-	)
+	const [openKeys, setOpenKeys] = useState<string[]>([])
+	const [selectKeys, setSelectKeys] = useState<string[]>([])
 
-	// 切换 路由时重新设置 open keys
-	useLayoutEffect(() => {
+	// 切换路由时 重新设置 open keys
+	useEffect(() => {
+		const newKeys = FindMenuOpenKeys(menu, pathname)
 		if (!collapsed) {
-			setOpenKeys(FindMenuOpenKeys(menu, pathname))
+			setOpenKeys(newKeys)
+		} else {
+			setOpenKeys([])
 		}
+		setSelectKeys(newKeys)
 	}, [pathname, collapsed, menu])
 
-	// 点击事件
-	const handleMenuChange = (keys: string[]) => {
-		setOpenKeys(keys)
-	}
-
-	const handleToggleMenu = () => {
-		setOpenKeys([])
-		ToggleMenu()
-	}
+	// 防止子菜单意外出现在别的位置
+	// 和 collapsed 的更新不在同一个事件循环
+	useEffect(() => {
+		setCollapsedMenu(collapsed)
+	}, [collapsed])
 	return (
 		<>
 			<div
@@ -39,10 +40,11 @@ function SiderMenu() {
 				style={{ flexBasis: collapsed ? "4.8rem" : "20rem" }}
 			/>
 			<Layout.Sider
-				collapsedWidth={48}
-				collapsed={collapsed}
-				onCollapse={handleToggleMenu}
 				collapsible
+				collapsedWidth={48}
+				collapsed={collapsedMenu}
+				onCollapse={ToggleMenu}
+				breakpoint='md'
 				className='sider-menu__wrap'
 			>
 				<div className='logo'>
@@ -50,13 +52,12 @@ function SiderMenu() {
 					{!collapsed && <span>clear ink</span>}
 				</div>
 				<Menu
-					onOpenChange={handleMenuChange as any}
+					onOpenChange={setOpenKeys as any} // 点击事件
 					className='menu'
 					mode='inline'
 					theme='dark'
-					defaultOpenKeys={openKeys}
 					openKeys={openKeys}
-					selectedKeys={openKeys}
+					selectedKeys={selectKeys}
 				>
 					{RenderMenu(menu)}
 				</Menu>

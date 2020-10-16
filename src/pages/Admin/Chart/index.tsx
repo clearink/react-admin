@@ -1,7 +1,11 @@
 import PageHeaderWrap from "@/components/PageHeaderWrap"
-import React, { createElement } from "react"
+import React, { createElement, useEffect } from "react"
 import { Chart, Interval } from "bizcharts"
 import { Input } from "antd"
+import GetBoundAction from "@/utils/GetBoundAction"
+import { actions } from "@/store/reducers/test"
+
+const boundAction = GetBoundAction(actions)
 // 数据源
 const data = [
 	{ genre: "Sports", sold: 275 },
@@ -10,7 +14,10 @@ const data = [
 	{ genre: "Shooter", sold: 350 },
 	{ genre: "Other", sold: 150 },
 ]
-function index() {
+function Index() {
+	useEffect(() => {
+		boundAction.fetchData()
+	}, [])
 	return (
 		<div>
 			<PageHeaderWrap title='表格简介' className='bg-white' />
@@ -23,4 +30,4 @@ function index() {
 	)
 }
 
-export default index
+export default Index

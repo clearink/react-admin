@@ -7,7 +7,7 @@ function TableList(props: IBaseProps) {
 	return (
 		<div className='w-full min-h-full'>
 			<PageHeaderWrap title='查询表格' />
-			<Link to={`/list/table-list/${12312}`}>列表某一项详情</Link>
+			<Link to={`/admin/list/table-list/${12312}`}>列表某一项详情</Link>
 		</div>
 	)
 }

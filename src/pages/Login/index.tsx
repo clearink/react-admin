@@ -22,7 +22,7 @@ function Login(props: IBaseProps) {
 	const { push } = useHistory()
 	const handleSubmit = async (values: Store) => {
 		const resAction = await boundLogin()
-		unwrapResult(resAction)
+		unwrapResult(resAction as any)
 		message.success("登录成功")
 		push("/")
 	}
