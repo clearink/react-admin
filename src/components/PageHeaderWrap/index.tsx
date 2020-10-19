@@ -13,7 +13,7 @@ function PageHeaderWrap(props: IProps) {
 	const routes = useMemo(
 		() => [
 			{
-				path: "/",
+				path: "/admin",
 				breadcrumbName: "首页",
 			},
 			...FindBreadcrumb(menu, pathname),

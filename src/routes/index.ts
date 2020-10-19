@@ -115,6 +115,13 @@ const routes: IRoute[] = [
 							lazy(() => import("@/pages/Admin/Form/AdvancedForm"))
 						),
 					},
+					{
+						path: "/admin/form/hook-form",
+						title: "React-Hook-Form表单",
+						component: WithLazyLoad(
+							lazy(() => import("@/pages/Admin/Form/HookForm"))
+						),
+					},
 				],
 			},
 
