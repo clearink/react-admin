@@ -1,10 +1,10 @@
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import React from "react"
-import { Controller, get, useForm, useFormContext } from "react-hook-form"
-import { Button, Form, Input } from "antd"
+import { Form, useForm } from "@/components/Form"
+import { Button, Input } from "antd"
 import { yupResolver } from "@hookform/resolvers/yup"
-import ErrorMessage from "@/components/ErrorMessage"
 import * as yup from "yup"
+import { Controller } from "react-hook-form"
 
 const resolver = yupResolver(
 	yup.object({
@@ -17,32 +17,44 @@ const resolver = yupResolver(
 )
 
 function HookForm() {
-	const { handleSubmit, register, control, errors } = useForm({
-		mode: "onChange", //表单值校验时机
-		resolver,
-	})
-	console.log(get(errors, "firstName"))
+	const methods = useForm({ resolver })
+
 	return (
 		<div>
 			<PageHeaderWrap title='React-Hook-Form test' className='bg-white' />
 			<div>1231</div>
-			<Form className='w-64 mx-auto'>
-				<ErrorMessage errors={errors} name='firstName'>
+			<Form
+				form={methods}
+				className='w-64 mx-auto'
+				onSubmit={(v) => console.log(v)}
+			>
+				<Form.Item name='firstName'>
+					<Input.Password />
+				</Form.Item>
+				<Form.Item name='name'>
+					<Input />
+				</Form.Item>
+				<Form.Item name='lastName'>
+					<Input />
+				</Form.Item>
+				<Form.Item name='password'>
+					<Input />
+				</Form.Item>
+				<Form.Item>
+					<Input />
+				</Form.Item>
+				{/* <Form.Item> */}
+				{/* </Form.Item> */}
+				<Controller as={Input} control={methods.control} name='adas' />
+				<Button htmlType='submit'>submit</Button>
+				{/* <ErrorMessage errors={errors} name='firstName'>
 					<Controller
 						as={Input.Password}
 						control={control}
-						defaultValue=""
+						defaultValue=''
 						name='firstName'
-					/>
-				</ErrorMessage>
-				<Button
-					type='primary'
-					onClick={handleSubmit((values) => {
-						console.log(values)
-					})}
-				>
-					submit
-				</Button>
+					/> 
+				</ErrorMessage>*/}
 			</Form>
 		</div>
 	)

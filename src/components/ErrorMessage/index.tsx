@@ -27,21 +27,21 @@ function ErrorMessage(props: IErrorMessage) {
 	const errorText = error?.message ?? message ?? ""
 
 	const ErrorComponent = as ? createElement(as, rest, errorText) : errorText
-
+	console.log(error, errorText, ErrorComponent)
 	return (
 		<div className='form-item-wrap relative mb-10'>
 			<div className='form-item-label'>{children}</div>
-			<AnimatePresence>
-				{error && (
-					<m.div
-						className={classNames("absolute field-error text-red-600", {
-							[styles.showError]: !!error,
-						})}
-					>
-						{ErrorComponent}
-					</m.div>
-				)}
-			</AnimatePresence>
+			{/* <AnimatePresence> */}
+				{
+					error && // <m.div
+						// 	className={classNames("absolute field-error text-red-600", {
+						// 		[styles.showError]: !!error,
+						// 	})}
+						// >
+						ErrorComponent
+					// </m.div>
+				}
+			{/* </AnimatePresence> */}
 		</div>
 	)
 }
