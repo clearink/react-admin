@@ -4,9 +4,9 @@ import PageHeaderWrap from "@/components/PageHeaderWrap"
 
 function WorkPlace(props: IBaseProps) {
 	return (
-		<div className="dashboard_page__wrap">
-			<div className="dashboard_page__header">
-			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
+		<div className='dashboard_page__wrap'>
+			<div className='dashboard_page__header'>
+				<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			</div>
 		</div>
 	)

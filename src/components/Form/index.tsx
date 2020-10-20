@@ -1,35 +1,31 @@
-import React, {
-	Children,
-	cloneElement,
-	isValidElement,
-	memo,
-	ReactNode,
-	useCallback,
-} from "react"
+import React, { ReactNode } from "react"
 import { FormProvider, UseFormMethods, SubmitHandler } from "react-hook-form"
 import FormItem from "../FormItem"
 
 /**
  * 封装react hook form
  */
-interface IForm<F> {
+interface IForm<F, T> {
 	children: ReactNode
-	form: UseFormMethods
+	form: UseFormMethods<T>
 	onSubmit: SubmitHandler<F>
 	[key: string]: any
 }
 
-function FormWrap<F>(props: IForm<F>) {
-	const { children, onSubmit, form, ...rest } = props
-
+function Form<F, T>(props: IForm<F, T>) {
+	const { children, onSubmit, form, className, style } = props
 	return (
 		<FormProvider {...form}>
-			<form {...rest} onSubmit={form.handleSubmit(onSubmit)}>
+			<form
+				className={className}
+				style={style}
+				onSubmit={form.handleSubmit(onSubmit)}
+			>
 				{children}
 			</form>
 		</FormProvider>
 	)
 }
-FormWrap.Item = FormItem
-export const Form = FormWrap
+Form.Item = FormItem
+export { Form }
 export { useForm } from "react-hook-form"

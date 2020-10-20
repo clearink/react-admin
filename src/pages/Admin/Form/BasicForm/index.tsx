@@ -8,17 +8,18 @@ function BasicForm(props: IBaseProps) {
 	console.log(form.getFieldValue("name"), "render")
 	return (
 		<div className='min-h-full'>
-			BasicForm
-			<Form onFinish={(v) => console.log(v)}>
+			<Form
+				form={form}
+				onFinish={(v) => console.log(v)}
+				initialValues={{ name: "12312" }}
+			>
 				<Form.Item
 					name='name'
+					label='name'
 					rules={[{ required: true, message: "required" }]}
 				>
 					<Input />
 				</Form.Item>
-				<Button name='123' type='primary'>
-					submit
-				</Button>
 				<Button type='primary' htmlType='submit'>
 					submit
 				</Button>

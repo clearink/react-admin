@@ -4,57 +4,57 @@ import { Form, useForm } from "@/components/Form"
 import { Button, Input } from "antd"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { Controller } from "react-hook-form"
+import PriceInput from "./test"
 
-const resolver = yupResolver(
-	yup.object({
-		firstName: yup
+interface IFormInputs {
+	firstName: string
+	name: string
+	money: { number: number; currency: "rmb" | "dollar" }
+}
+
+const resolver = yupResolver<IFormInputs>(
+	yup.object().shape({
+		firstName: yup.string().required("required"),
+		name: yup
 			.string()
-			.min(2, "to short")
-			.max(10, "too long")
+			.min(4, "too short")
+			.max(7, "too long")
 			.required("required"),
 	})
 )
-
+console.log(yup.object().shape({
+	firstName: yup.string().required("required"),
+	name: yup
+		.string()
+		.min(4, "too short")
+		.max(7, "too long")
+		.required("required"),
+}));
 function HookForm() {
-	const methods = useForm({ resolver })
+	const methods = useForm({
+		resolver,
+		defaultValues: {
+			firstName: "123",
+			name: "12333",
+			money: { number: 2, currency: "dollar" },
+		},
+	})
 
 	return (
 		<div>
 			<PageHeaderWrap title='React-Hook-Form test' className='bg-white' />
 			<div>1231</div>
-			<Form
-				form={methods}
-				className='w-64 mx-auto'
-				onSubmit={(v) => console.log(v)}
-			>
-				<Form.Item name='firstName'>
+			<Form form={methods} onSubmit={(v) => console.log(v)}>
+				<Form.Item name='firstName' label='firstName'>
 					<Input.Password />
 				</Form.Item>
-				<Form.Item name='name'>
+				<Form.Item name='name' label='name'>
 					<Input />
 				</Form.Item>
-				<Form.Item name='lastName'>
-					<Input />
+				<Form.Item name='money' label='money'>
+					<PriceInput />
 				</Form.Item>
-				<Form.Item name='password'>
-					<Input />
-				</Form.Item>
-				<Form.Item>
-					<Input />
-				</Form.Item>
-				{/* <Form.Item> */}
-				{/* </Form.Item> */}
-				<Controller as={Input} control={methods.control} name='adas' />
 				<Button htmlType='submit'>submit</Button>
-				{/* <ErrorMessage errors={errors} name='firstName'>
-					<Controller
-						as={Input.Password}
-						control={control}
-						defaultValue=''
-						name='firstName'
-					/> 
-				</ErrorMessage>*/}
 			</Form>
 		</div>
 	)
