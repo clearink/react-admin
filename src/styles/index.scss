@@ -4,14 +4,4 @@
 @import "./base/typography";
 @import "./base/layout";
 @import "./base/utils";
-
-// layouts
-@import "../layouts/style";
-
-// pages
-@import "../pages/Admin/Home/style";
-@import "../pages/Login/style";
-@import "../pages/Admin/DashBoard/style";
-
-// components
-@import "../components/style";
+@import './base/mixin'

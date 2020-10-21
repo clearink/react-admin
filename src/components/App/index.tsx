@@ -2,8 +2,6 @@ import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import RenderRoutes from "@/components/RenderRoutes"
 import routes from "@/routes"
-import "@/styles/index.scss"
-import "@/styles/tailwind.css"
 
 function App(props: any) {
 	return (

@@ -1,12 +1,11 @@
-$map-break-point: (
-	sm: 640px,
-	md: 768px,
-	lg: 1024px,
-	xl: 1200px,
-);
-
-@mixin media($break-point: md) {
-	@media screen and (min-width: map-get($map: $map-break-point, $key: $break-point)) {
-		@content;
-	}
+@mixin bg-cover {
+	background-position: center;
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+@mixin flex-center($direction: row) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: $direction;
 }

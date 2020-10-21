@@ -11,6 +11,7 @@ import { motion as m, AnimatePresence } from "framer-motion"
 import { animateProps, homeImageVariants } from "@/configs/animate"
 import useInterval from "@/hooks/useInterval"
 import { bindActionCreators, createSlice, Dispatch } from "@reduxjs/toolkit"
+import "./style.scss"
 
 const init = {
 	current: 0,

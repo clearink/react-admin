@@ -7,6 +7,7 @@ import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/menu"
+import "./style.scss"
 
 const ToggleMenu = GetBoundAction(actions.toggleMenu)
 
@@ -14,8 +15,8 @@ function SiderMenu() {
 	const [collapsedMenu, setCollapsedMenu] = useState(false)
 	const { menu, collapsed } = useTypedSelector((state) => state.menu)
 	const { pathname } = useLocation()
-	const [openKeys, setOpenKeys] = useState<string[]>([])
-	const [selectKeys, setSelectKeys] = useState<string[]>([])
+	const [openKeys, setOpenKeys] = useState<string[]>([]) // 当前打开的菜单
+	const [selectKeys, setSelectKeys] = useState<string[]>([]) // 当前选中的菜单
 
 	// 切换路由时 重新设置 open keys
 	useEffect(() => {

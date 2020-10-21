@@ -1,6 +1,7 @@
 import React from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Button, Form, Input } from "antd"
+import PriceInput from '../HookForm/test'
 const { useForm } = Form
 function BasicForm(props: IBaseProps) {
 	const [form] = useForm()
@@ -19,6 +20,13 @@ function BasicForm(props: IBaseProps) {
 					rules={[{ required: true, message: "required" }]}
 				>
 					<Input />
+				</Form.Item>
+				<Form.Item
+					name='price'
+					label='price'
+					rules={[{ required: true, message: "required" }]}
+				>
+					<PriceInput />
 				</Form.Item>
 				<Button type='primary' htmlType='submit'>
 					submit

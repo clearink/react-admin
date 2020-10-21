@@ -3,7 +3,7 @@ import { IBaseProps } from "@/@types/fc"
 import { Card, Col, Row, Statistic, Tooltip } from "antd"
 import useBoolean from "@/hooks/useBoolean"
 import IconFont from "@/components/IconFont"
-
+import "./style.scss"
 function Analysis(props: IBaseProps) {
 	const [loading, toggle] = useBoolean(true)
 	useEffect(() => {

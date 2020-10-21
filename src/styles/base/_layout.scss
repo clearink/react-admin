@@ -11,14 +11,3 @@ $map-break-point: (
 	}
 }
 
-@mixin bg-cover {
-	background-position: center;
-	background-size: 100%;
-	background-repeat: no-repeat;
-}
-@mixin flex-center($direction: row) {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: $direction;
-}

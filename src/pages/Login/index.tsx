@@ -7,6 +7,8 @@ import { actions } from "@/store/reducers/user"
 import { unwrapResult } from "@reduxjs/toolkit"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
+import "./style.scss"
+
 const { useForm } = Form
 
 const formValidateMessages = {

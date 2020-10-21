@@ -11,6 +11,9 @@ import { SketchPicker } from "react-color"
 import LoginUtil from "@/utils/LoginUtil"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/user"
+
+import "./style.scss"
+
 interface IProps {}
 
 const BoundLogout = GetBoundAction(actions.logout)

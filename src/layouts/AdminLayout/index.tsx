@@ -12,6 +12,7 @@ import GetBoundAction from "@/utils/GetBoundAction"
 import { IRoute } from "@/@types/route"
 import { TMenu } from "@/@types/menu"
 import FilterValue from "@/utils/FilterValue"
+import "./style.scss"
 
 const { Content, Footer } = Layout
 const GetCurrentUser = GetBoundAction(actions.getCurrentUser)

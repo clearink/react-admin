@@ -4,7 +4,7 @@ import LoginUtil from "@/utils/LoginUtil"
 import { message } from "antd"
 import { useHistory } from "react-router-dom"
 import { IBaseProps } from "@/@types/fc"
-
+import "./style.scss"
 function LoginLayout(props: IBaseProps) {
 	const { children } = props
 	const { replace } = useHistory()

@@ -1,18 +1,21 @@
+import React, { memo, PropsWithChildren } from "react"
+import BlogHeader from "@/components/Blog/BlogHeader"
 import { Layout } from "antd"
-import React, { memo, ReactNode } from "react"
-
+import "./style.scss"
 const { Header, Content, Footer } = Layout
 
-interface IProps {
-	children: ReactNode
-}
+interface IProps {}
 
-function BlogLayout(props: IProps) {
+function BlogLayout(props: PropsWithChildren<IProps>) {
 	return (
 		<Layout className='blog_layout__wrap flex flex-col min-h-screen'>
-			<Header className='blog__header bg-white'>123123</Header>
-			<Content className='blog__content flex-auto  px-12 py-8'>{props.children}</Content>
-			<Footer className="text-center">12312</Footer>
+			<Header className='blog__header bg-white px-6'>
+				<BlogHeader />
+			</Header>
+			<Content className='blog__content flex-auto  px-12 py-8'>
+				{props.children}
+			</Content>
+			<Footer className='text-center'>CopyRight @ ClearInk</Footer>
 		</Layout>
 	)
 }
