@@ -1,1 +1,11 @@
-@import '/src/styles/index'
+@import "styles/index";
+.action {
+	margin-bottom: 0;
+	li:not(:last-child) {
+		@apply mr-6;
+  }
+  .item{
+    list-style: none;
+    display: inline-block;
+  }
+}
