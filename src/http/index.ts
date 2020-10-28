@@ -29,7 +29,7 @@ class Http {
 	}
 
 	private defaultConfig(axios: AxiosStatic) {
-		axios.defaults.timeout = 5000
+		axios.defaults.timeout = 10000
 		axios.defaults.baseURL = BASE_URL
 		axios.defaults.headers = {
 			"Content-Type": "application/json;charset=utf-8",
@@ -98,23 +98,27 @@ class Http {
 		}, 300)
 	}
 	// get请求会被缓存,添加一个随机字符串确保得到最新的结果
-	public get(url: string, params?: Object) {
-		return this.axios.get(url, { params: { ...params, _t: Date.now() } })
+	public get<R = any>(url: string, params?: Object) {
+		return this.axios.get<R>(url, { params: { ...params, _t: Date.now() } })
 	}
 
 	// post
-	public post(url: string, data: Object, options?: AxiosRequestConfig) {
-		return this.axios.post(url, data, options)
+	public post<R = any>(
+		url: string,
+		data: Object,
+		options?: AxiosRequestConfig
+	) {
+		return this.axios.post<R>(url, data, options)
 	}
 
 	// put
-	public put(url: string, data: Object, options?: AxiosRequestConfig) {
-		return this.axios.put(url, data, options)
+	public put<R = any>(url: string, data: Object, options?: AxiosRequestConfig) {
+		return this.axios.put<R>(url, data, options)
 	}
 
 	// delete
-	public delete(url: string, options?: AxiosRequestConfig) {
-		return this.axios.delete(url, options)
+	public delete<R = any>(url: string, options?: AxiosRequestConfig) {
+		return this.axios.delete<R>(url, options)
 	}
 }
 
