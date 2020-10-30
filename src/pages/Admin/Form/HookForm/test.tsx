@@ -13,7 +13,6 @@ interface PriceInputProps {
 	onChange?: (value: PriceValue) => void
 }
 const PriceInput: React.FC<PriceInputProps> = (props) => {
-	console.log('render');
   const { value = {}, onChange } = props 
 	const [number, setNumber] = useState(0)
 	const [currency, setCurrency] = useState("rmb")

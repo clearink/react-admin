@@ -1,10 +1,11 @@
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import React from "react"
 import { Form, useForm } from "@/components/Form"
-import { Button, Input } from "antd"
+import { Button, DatePicker, Input } from "antd"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import PriceInput from "./test"
+import { SubmitHandler } from "react-hook-form"
 
 interface IFormInputs {
 	firstName: string
@@ -22,14 +23,16 @@ const resolver = yupResolver<IFormInputs>(
 			.required("required"),
 	})
 )
-console.log(yup.object().shape({
-	firstName: yup.string().required("required"),
-	name: yup
-		.string()
-		.min(4, "too short")
-		.max(7, "too long")
-		.required("required"),
-}));
+console.log(
+	yup.object().shape({
+		firstName: yup.string().required("required"),
+		name: yup
+			.string()
+			.min(4, "too short")
+			.max(7, "too long")
+			.required("required"),
+	})
+)
 function HookForm() {
 	const methods = useForm({
 		resolver,
@@ -39,12 +42,12 @@ function HookForm() {
 			money: { number: 2, currency: "dollar" },
 		},
 	})
-
+	console.log("render")
 	return (
 		<div>
 			<PageHeaderWrap title='React-Hook-Form test' className='bg-white' />
 			<div>1231</div>
-			<Form form={methods} onSubmit={(v) => console.log(v)}>
+			<Form form={methods} onSubmit={(v) => console.log(v.firstName)}>
 				<Form.Item name='firstName' label='firstName'>
 					<Input.Password />
 				</Form.Item>
@@ -53,6 +56,9 @@ function HookForm() {
 				</Form.Item>
 				<Form.Item name='money' label='money'>
 					<PriceInput />
+				</Form.Item>
+				<Form.Item name='date' label='date'>
+					<DatePicker />
 				</Form.Item>
 				<Button htmlType='submit'>submit</Button>
 			</Form>

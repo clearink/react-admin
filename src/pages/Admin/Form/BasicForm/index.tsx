@@ -1,12 +1,12 @@
 import React from "react"
 import { IBaseProps } from "@/@types/fc"
-import { Button, Form, Input } from "antd"
-import PriceInput from '../HookForm/test'
+import { Button, DatePicker, Form, Input } from "antd"
+import PriceInput from "../HookForm/test"
 const { useForm } = Form
 function BasicForm(props: IBaseProps) {
 	const [form] = useForm()
 
-	console.log(form.getFieldValue("name"), "render")
+	console.log("render")
 	return (
 		<div className='min-h-full'>
 			<Form
@@ -24,9 +24,26 @@ function BasicForm(props: IBaseProps) {
 				<Form.Item
 					name='price'
 					label='price'
-					rules={[{ required: true, message: "required" }]}
+					rules={[
+						{
+							required: true,
+							validator(_, value, cb) {
+								console.log(value)
+								if (!value) {
+									cb("required")
+								} else cb()
+							},
+						},
+					]}
 				>
 					<PriceInput />
+				</Form.Item>
+				<Form.Item
+					name='date'
+					label='date'
+					rules={[{ required: true, message: "required" }]}
+				>
+					<DatePicker />
 				</Form.Item>
 				<Button type='primary' htmlType='submit'>
 					submit

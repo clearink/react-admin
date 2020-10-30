@@ -5,14 +5,15 @@ import FormItem from "../FormItem"
 /**
  * 封装react hook form
  */
-interface IForm<F, T> {
+
+interface IForm<V> {
 	children: ReactNode
-	form: UseFormMethods<T>
-	onSubmit: SubmitHandler<F>
+	form: UseFormMethods<V>
+	onSubmit: SubmitHandler<V>
 	[key: string]: any
 }
 
-function Form<F, T>(props: IForm<F, T>) {
+function Form<V extends Record<string, any>>(props: IForm<V>) {
 	const { children, onSubmit, form, className, style } = props
 	return (
 		<FormProvider {...form}>
