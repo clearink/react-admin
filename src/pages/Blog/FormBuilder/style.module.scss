@@ -1,0 +1,8 @@
+@import "styles/index";
+.container {
+	@apply flex flex-col h-screen;
+	.layout {
+		overflow: hidden;
+		@apply flex flex-wrap flex-row flex-auto h-full relative;
+	}
+}

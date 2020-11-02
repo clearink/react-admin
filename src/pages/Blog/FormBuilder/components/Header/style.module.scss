@@ -1,0 +1,6 @@
+@import "styles/index";
+.header {
+	background-color: white;
+	@apply shadow-sm;
+	z-index: 2;
+}

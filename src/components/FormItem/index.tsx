@@ -1,14 +1,18 @@
 import React, {
 	Children,
 	cloneElement,
-	createElement,
 	isValidElement,
 	memo,
 	ReactNode,
-	useCallback,
 	useEffect,
+	useMemo,
 } from "react"
-import { Controller, get, useFormContext } from "react-hook-form"
+import {
+	Controller,
+	ControllerProps,
+	get,
+	useFormContext,
+} from "react-hook-form"
 import { motion as m, AnimatePresence } from "framer-motion"
 import { animateProps, errorVariants } from "@/configs/animate"
 import { Col } from "antd"
@@ -18,10 +22,13 @@ import "./style.scss"
  * 封装react hook form
  */
 interface IFormItem {
-	children: ReactNode
+	children?: ReactNode
+	required?: boolean
+	refName?: string
 	label?: ReactNode
 	name?: string
-	ref?: string
+	rules?: any
+	render?: ControllerProps<any>["render"]
 	[key: string]: any
 }
 
@@ -29,53 +36,84 @@ interface IFormItem {
  * FormItem组件.最好只有一个输入组件
  */
 function FormItem(props: IFormItem) {
-	const { children, ref, label, name, ...rest } = props
+	const {
+		children,
+		refName,
+		label,
+		name,
+		required = false,
+		rules,
+		render,
+		...rest
+	} = props
 	const { errors, register, control } = useFormContext()
 
+	// 是否渲染required标志
+	const isRequired = useMemo(
+		() => required || Object.keys(rules ?? {}).includes("required"),
+		[rules, required]
+	)
+
+	// 警告
 	const childCount = Children.count(children)
 	useEffect(() => {
 		if (process.env.NODE_ENV !== "production" && childCount > 1) {
 			console.error("Form.Item should only one child, please use Form.List")
 		}
 	}, [childCount])
-	const renderChildren = useCallback(() => {
-		return Children.map(children, (child, index) => {
-			// formItem如果不是有效的element 或者没有name属性
-			if (!isValidElement(child) || !name) return child
 
-			// 克隆child 根据是否有ref字段 判断 是用 Controller 包裹还是直接传入 register
-			if (ref)
-				return cloneElement(child, {
-					[ref]: register,
-					id: name,
-					name,
-				})
-
+	// 渲染输入组件
+	const renderComponent = () => {
+		if (typeof render === "function" && name)
 			return (
 				<Controller
 					control={control}
 					name={name}
-					as={
-						cloneElement(child, { id: name }) ??
-						createElement(child.type, { ...child.props, id: name }, [
-							...child.props.children,
-						])
-					}
+					rules={rules}
+					render={render}
+				/>
+			)
+
+		return Children.map(children, (child) => {
+			// formItem如果不是有效的element 或者没有name属性
+			if (!isValidElement(child) || !name) return child
+
+			//	id 字段是为了配合label
+
+			// 有 refName 字段
+			if (refName)
+				return cloneElement(child, {
+					[refName]: register(rules),
+					name,
+					id: name,
+				})
+			return (
+				<Controller
+					control={control}
+					name={name}
+					as={cloneElement(child, { id: name })}
+					rules={rules}
 				/>
 			)
 		})
-	}, [children, control, register, ref, name])
+	}
 
+	// 获取errors
 	const error = get(errors, name ?? "")
+
 	return (
 		<div className='form-item mb-8 flex items-center'>
 			{label && (
-				<Col className='form_item_label mark required'>
+				<Col
+					className={classNames("form_item_label mark", {
+						required: isRequired,
+					})}
+				>
 					<label htmlFor={name}>{label}</label>
 				</Col>
 			)}
 			<Col className='form-item-control relative'>
-				<div className='form-item-control-input'>{renderChildren()}</div>
+				<div className='form-item-control-input'>{renderComponent()}</div>
 				<AnimatePresence exitBeforeEnter>
 					{error && (
 						<m.div

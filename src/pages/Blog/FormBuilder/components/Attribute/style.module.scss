@@ -1,0 +1,33 @@
+@import "styles/index";
+$sider_width: 30rem;
+.container {
+	@apply bg-white;
+	width: $sider_width;
+	transition: all 0.2s;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	transform: translate(0, 0);
+	&.collapsed {
+		transform: translate(100%, 0);
+	}
+	.trigger {
+		@apply bg-white cursor-pointer;
+		box-shadow: -1px 0px 0.4rem rgba($color: #000000, $alpha: 0.12);
+		@include flex-center();
+		transform: translateY(-50%);
+		position: absolute;
+		height: 8rem;
+		width: 2.4rem;
+		top: calc(50% - 64px);
+		left: -2.4rem;
+	}
+}
+.placeholder {
+	transition: all 0.2s;
+	width: $sider_width;
+	&.collapsed {
+		width: 0;
+	}
+}

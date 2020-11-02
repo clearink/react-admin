@@ -1,7 +1,6 @@
 const {
 	override,
 	fixBabelImports,
-	addWebpackPlugin,
 	addWebpackAlias,
 	addPostcssPlugins,
 	addWebpackExternals,
@@ -18,20 +17,16 @@ module.exports = override(
 		libraryDirectory: "es",
 		style: "css",
 	}),
-	addWebpackExternals({
-		numeral: "window.numeral",
-	}),
-	addWebpackPlugin(new WebpackBar(), new AntdDayjsWebpackPlugin()),
+	addWebpackExternals({}),
+	// addWebpackPlugin 一次只能push一个plugin
 	(config) => {
-		if (isAnalyze) config.plugins.push(new BundleAnalyzerPlugin())
+		config.plugins.push(new WebpackBar())
+		if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin()) // 生产环境启用
+		if (isAnalyze) config.plugins.push(new BundleAnalyzerPlugin()) // 打包分析
 		return config
 	},
 	addWebpackAlias({
 		"@": path.resolve(__dirname, "src"),
 	}),
-	addPostcssPlugins([
-		require("postcss-import"),
-		require("tailwindcss"),
-		require("autoprefixer"),
-	])
+	addPostcssPlugins([require("tailwindcss"), require("autoprefixer")])
 )

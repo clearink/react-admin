@@ -1,0 +1,59 @@
+@import "styles/index";
+$slider_width: 30rem;
+$collapsed_slider_width: 5rem;
+.container {
+	@apply bg-white;
+	transition: all 0.2s;
+	position: absolute;
+	height: 100%;
+	white-space: nowrap;
+	overflow: auto;
+	width: $slider_width;
+	&.collapsed {
+		width: $collapsed_slider_width;
+	}
+	.tab__list {
+		height: 100%;
+		:global {
+			.ant-tabs-nav {
+				padding-bottom: 4rem;
+			}
+			.ant-tabs-tab {
+				@include flex-center();
+				padding: 1rem 0 !important;
+
+				& .anticon {
+					margin-right: 0 !important;
+				}
+			}
+			.ant-tabs-content {
+				@apply h-full;
+			}
+			.ant-tabs-tabpane {
+				overflow: hidden auto;
+				padding: 1rem !important;
+				&::-webkit-scrollbar {
+					width: 0.6rem;
+					background-color: white;
+				}
+				&::-webkit-scrollbar-thumb {
+					border-radius: 4rem;
+					background-color: $color_black-2;
+				}
+			}
+		}
+	}
+	.collapsed {
+		width: 5rem;
+		position: absolute;
+		left: 0;
+		bottom: 1rem;
+	}
+}
+.placeholder {
+	transition: all 0.2s;
+	width: $slider_width;
+	&.collapsed {
+		width: $collapsed_slider_width;
+	}
+}

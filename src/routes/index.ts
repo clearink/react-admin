@@ -117,7 +117,7 @@ const routes: IRoute[] = [
 					},
 					{
 						path: "/admin/form/hook-form",
-						title: "React-Hook-Form表单",
+						title: "RHF表单",
 						component: WithLazyLoad(
 							lazy(() => import("@/pages/Admin/Form/HookForm"))
 						),
@@ -250,6 +250,11 @@ const routes: IRoute[] = [
 			{
 				path: "/",
 				component: WithLazyLoad(lazy(() => import("@/pages/Blog/index"))),
+			},
+			{
+				path: "/form-builder",
+				title: "表单生成器",
+				component: WithLazyLoad(lazy(() => import("@/pages/Blog/FormBuilder"))),
 			},
 		],
 	},

@@ -37,11 +37,11 @@
 			overflow: hidden auto;
 			&::-webkit-scrollbar {
 				width: 0.5rem;
-				background-color: $color_scrollbar;
+				background-color: $color_black-2;
 			}
 			&::-webkit-scrollbar-thumb {
 				border-radius: 1rem;
-				background-color: $color_thumb;
+				background-color: $color_grey-2;
 			}
 		}
 		.ant-menu-inline-collapsed {

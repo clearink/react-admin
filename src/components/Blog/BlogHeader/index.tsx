@@ -17,8 +17,6 @@ function BlogHeader(props: PropsWithChildren<IProps>) {
 		if (!types.length) boundFetchList()
 	}, [types.length])
 
-	console.log(loading)
-
 	return (
 		<div className='flex items-center justify-between flex-wrap'>
 			<div className='text-2xl'>

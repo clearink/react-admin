@@ -38,7 +38,7 @@ function SiderMenu() {
 		<>
 			<div
 				className='sider-menu__placeholder'
-				style={{ flexBasis: collapsed ? "4.8rem" : "20rem" }}
+				style={{ flexBasis: collapsed ? "48px" : "20rem" }}
 			/>
 			<Layout.Sider
 				collapsible

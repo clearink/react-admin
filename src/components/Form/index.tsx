@@ -1,16 +1,21 @@
-import React, { ReactNode } from "react"
+import React, { CSSProperties, ReactNode } from "react"
 import { FormProvider, UseFormMethods, SubmitHandler } from "react-hook-form"
 import FormItem from "../FormItem"
 
 /**
  * 封装react hook form
+ * 仅仅只为Form.Item 提供 methods
+ *
+ * 1. form 由外界传入
+ * 2. 如何拿到验证的 schema
  */
 
 interface IForm<V> {
 	children: ReactNode
 	form: UseFormMethods<V>
 	onSubmit: SubmitHandler<V>
-	[key: string]: any
+	style?: CSSProperties
+	className?: string
 }
 
 function Form<V extends Record<string, any>>(props: IForm<V>) {
@@ -20,7 +25,9 @@ function Form<V extends Record<string, any>>(props: IForm<V>) {
 			<form
 				className={className}
 				style={style}
-				onSubmit={form.handleSubmit(onSubmit)}
+				onSubmit={form.handleSubmit(onSubmit, (err) => {
+					console.log(err)
+				})}
 			>
 				{children}
 			</form>
