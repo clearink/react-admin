@@ -1,14 +1,12 @@
 import React from "react"
-import { Tabs, Layout, Typography, Button } from "antd"
+import { Tabs, Typography, Button } from "antd"
 import IconFont from "@/components/IconFont"
 import useBoolean from "@/hooks/useBoolean"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-const { Sider } = Layout
 const { Title } = Typography
 
 // 缩略宽度
-const collapsedWidth = 50
 interface IProps {}
 function Materiel(props: IProps) {
 	const [collapsed, toggle] = useBoolean()
@@ -18,14 +16,6 @@ function Materiel(props: IProps) {
 				className={classNames(styles.container, {
 					[styles.collapsed]: collapsed,
 				})}
-				// theme='light'
-				// width='30rem'
-				// breakpoint='md'
-				// collapsed={collapsed}
-				// collapsedWidth={collapsedWidth}
-				// collapsible
-				// onCollapse={console.log}
-				// trigger={null}
 			>
 				<Tabs tabPosition='left' className={styles.tab__list}>
 					{Array.from({ length: 3 }, (_, i) => (
@@ -36,7 +26,7 @@ function Materiel(props: IProps) {
 									基础组件===={i}
 								</Title>
 								<div className={styles.list__item}>
-									{Array.from({ length: 30 }, (_, i) => (
+									{Array.from({ length: 60 }, (_, i) => (
 										<div key={i}>{i}</div>
 									))}
 								</div>
@@ -56,7 +46,9 @@ function Materiel(props: IProps) {
 				className={classNames(styles.placeholder, {
 					[styles.collapsed]: collapsed,
 				})}
-			>placeholder</div>
+			>
+				placeholder
+			</div>
 		</>
 	)
 }

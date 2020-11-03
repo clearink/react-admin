@@ -1,9 +1,14 @@
 @import "styles/index";
 $sider_width: 30rem;
+.animate {
+	transition: all 0.3s ease-in-out;
+}
 .container {
+	@extend .animate;
 	@apply bg-white;
+	overflow: hidden auto;
+	padding: 1rem 1.4rem;
 	width: $sider_width;
-	transition: all 0.2s;
 	height: 100%;
 	position: absolute;
 	top: 0;
@@ -12,20 +17,34 @@ $sider_width: 30rem;
 	&.collapsed {
 		transform: translate(100%, 0);
 	}
-	.trigger {
-		@apply bg-white cursor-pointer;
-		box-shadow: -1px 0px 0.4rem rgba($color: #000000, $alpha: 0.12);
-		@include flex-center();
-		transform: translateY(-50%);
-		position: absolute;
-		height: 8rem;
-		width: 2.4rem;
-		top: calc(50% - 64px);
-		left: -2.4rem;
+	&::-webkit-scrollbar {
+		width: 0.5rem;
+		background-color: white;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 4rem;
+		background-color: rgba($color_primary, $alpha: 0.6);
+	}
+}
+
+.trigger {
+	@apply bg-white cursor-pointer;
+	@extend .animate;
+	box-shadow: -1px 0px 0.4rem rgba($color: #000000, $alpha: 0.12);
+	@include flex-center();
+	transform: translate(-$sider_width, -50%);
+	position: absolute;
+	height: 8rem;
+	width: 2.4rem;
+	top: calc(50% - 64px);
+	right: 0;
+
+	&.collapsed {
+		transform: translate(0, -50%);
 	}
 }
 .placeholder {
-	transition: all 0.2s;
+	@extend .animate;
 	width: $sider_width;
 	&.collapsed {
 		width: 0;

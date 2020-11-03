@@ -1,9 +1,12 @@
 @import "styles/index";
 $slider_width: 30rem;
 $collapsed_slider_width: 5rem;
+.animate {
+	transition: all 0.3s ease-in-out;
+}
 .container {
 	@apply bg-white;
-	transition: all 0.2s;
+	@extend .animate;
 	position: absolute;
 	height: 100%;
 	white-space: nowrap;
@@ -38,7 +41,7 @@ $collapsed_slider_width: 5rem;
 				}
 				&::-webkit-scrollbar-thumb {
 					border-radius: 4rem;
-					background-color: $color_black-2;
+					background-color: rgba($color_primary, $alpha: 0.6);
 				}
 			}
 		}
@@ -51,7 +54,7 @@ $collapsed_slider_width: 5rem;
 	}
 }
 .placeholder {
-	transition: all 0.2s;
+	@extend .animate;
 	width: $slider_width;
 	&.collapsed {
 		width: $collapsed_slider_width;

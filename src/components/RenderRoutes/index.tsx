@@ -2,7 +2,7 @@ import React, { ComponentType, Fragment, lazy, memo } from "react"
 import { Redirect, Route, Switch } from "react-router-dom"
 import { IRoute } from "@/@types/route"
 import { IBaseProps } from "@/@types/fc"
-import WithLazyLoad from "@/hocs/WithLazyLoad"
+import withLazyLoad from "@/hocs/withLazyLoad"
 
 interface IProps {
 	routes: IRoute[]
@@ -14,7 +14,7 @@ function RenderRoutes(props: IProps) {
 			{routes
 				?.concat({
 					key: "error",
-					component: WithLazyLoad(lazy(() => import("@/pages/404"))), // 给每个routes字段添加匹配失败的路由
+					component: withLazyLoad(lazy(() => import("@/pages/404"))), // 给每个routes字段添加匹配失败的路由
 				})
 				.map((item) => {
 					const { component, wrap, routes, redirect, path } = item

@@ -15,17 +15,24 @@ function Attribute(props: IProps) {
 					[styles.collapsed]: collapsed,
 				})}
 			>
-				<Result
+				{/* <Result
 					status='404'
 					title='请选中组件'
 					subTitle='选择组件 修改属性'
 					className='pt-56'
-				/>
-
-				{/* trigger */}
-				<div className={styles.trigger} onClick={toggle as any}>
-					{collapsed ? <DoubleLeftOutlined /> : <DoubleRightOutlined />}
-				</div>
+				/> */}
+				{Array.from({ length: 100 }, (_, i) => (
+					<div key={i}>{i}</div>
+				))}
+			</div>
+			{/* trigger */}
+			<div
+				className={classNames(styles.trigger, {
+					[styles.collapsed]: collapsed,
+				})}
+				onClick={toggle as any}
+			>
+				{collapsed ? <DoubleLeftOutlined /> : <DoubleRightOutlined />}
 			</div>
 			<div
 				className={classNames(styles.placeholder, {
