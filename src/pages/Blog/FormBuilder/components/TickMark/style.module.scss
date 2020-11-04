@@ -1,1 +1,18 @@
 @import "styles/index";
+.tick-mark-container {
+	display: flex;
+
+	.tick__wrap {
+		flex-basis: 1px;
+    flex-shrink: 0;
+    height: 16px;
+		// flex-basis: 1px;
+		background-color: $color_grey-2;
+		position: relative;
+		span {
+			position: absolute;
+      color: black;
+      top: 20px;
+		}
+	}
+}

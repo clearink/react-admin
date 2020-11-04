@@ -9,7 +9,7 @@ function Action(props: IProps) {
 	return (
 		<Content className={classNames(styles.container)}>
 			<div className={styles.tickMark__horizontal}>
-				<TickMark start={0} end={200} step={50} />
+				<TickMark end={200}  markStep={10} step={50} />
 			</div>
 			<div className={styles.tickMark__horizontal}></div>
 		</Content>

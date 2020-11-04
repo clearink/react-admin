@@ -10,7 +10,6 @@ function BlogLayout(props: IBaseProps) {
 		location: { pathname },
 		children,
 	} = props
-	console.log(props)
 	if (pathname === "/form-builder") return <>{children}</>
 	return (
 		<Layout className='blog_layout__wrap flex flex-col min-h-screen'>

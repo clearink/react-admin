@@ -7,8 +7,8 @@ export default function withDefaultProps<P extends object, D>(
 	defaultProps: D
 ) {
 	WrappedComponent.defaultProps = defaultProps
-	type Props = Omit<P, keyof D>
-	return WrappedComponent as ComponentType<Props & Partial<D>>
+	type Props = Omit<P, keyof D>// P中没有包含D的参数 则为必须的参数
+	return WrappedComponent as ComponentType<Props & Partial<D>> // defaultProps 则为可选项了
 }
 // Omit 未包含
 // Partial 变为可选项
