@@ -7,7 +7,7 @@ import Axios, {
 } from "axios"
 import LocalStore from "@/utils/LocalStore"
 import { message } from "antd"
-import { BASE_URL, RETRY_DELAY, RETRY_COUNT, TOKEN } from "@/configs/app"
+import configs from "@/configs/app"
 import LoginUtil from "@/utils/LoginUtil"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
@@ -16,8 +16,8 @@ class Http {
 	private axios: AxiosStatic = Axios
 	private timer: number = NaN
 
-	private retryDelay: number = RETRY_DELAY
-	private retryCount: number = RETRY_COUNT
+	private retryDelay: number = configs.RETRY_DELAY
+	private retryCount: number = configs.RETRY_COUNT
 
 	constructor() {
 		const { axios } = this
@@ -28,9 +28,10 @@ class Http {
 		this.responseIntercept(axios)
 	}
 
+	// axios 默认值
 	private defaultConfig(axios: AxiosStatic) {
-		axios.defaults.timeout = 10000
-		axios.defaults.baseURL = BASE_URL
+		axios.defaults.timeout = configs.TIMEOUT
+		axios.defaults.baseURL = configs.BASE_URL
 		axios.defaults.headers = {
 			"Content-Type": "application/json;charset=utf-8",
 		}
@@ -40,7 +41,7 @@ class Http {
 	private requestIntercept(axios: AxiosStatic) {
 		axios.interceptors.request.use(
 			async (config: AxiosRequestConfig) => {
-				const token = LocalStore.get(TOKEN)
+				const token = LocalStore.get(configs.TOKEN)
 				if (token) config.headers.authToken = token
 				return config
 			},

@@ -1,10 +1,10 @@
 @import "styles/index";
 $sider_width: 30rem;
-.animate {
-	transition: all 0.3s ease-in-out;
+@mixin animate($property: all) {
+	transition: $property 0.3s ease-in-out;
 }
 .container {
-	@extend .animate;
+	@include animate;
 	@apply bg-white;
 	overflow: hidden auto;
 	padding: 1rem 1.4rem;
@@ -29,22 +29,23 @@ $sider_width: 30rem;
 
 .trigger {
 	@apply bg-white cursor-pointer;
-	@extend .animate;
+	@include animate(right);
 	box-shadow: -1px 0px 0.4rem rgba($color: #000000, $alpha: 0.12);
 	@include flex-center();
-	transform: translate(-$sider_width, -50%);
+	transform: translate(0, -50%);
 	position: absolute;
 	height: 8rem;
 	width: 2.4rem;
 	top: calc(50% - 64px);
-	right: 0;
+	right: $sider_width;
 
 	&.collapsed {
-		transform: translate(0, -50%);
+		right: 0;
+		// transform: translate(0, -50%);
 	}
 }
 .placeholder {
-	@extend .animate;
+	@include animate;
 	width: $sider_width;
 	&.collapsed {
 		width: 0;
