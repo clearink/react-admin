@@ -12,15 +12,13 @@ function Action(props: IProps) {
 				<TickMark
 					className='ml-20 absolute'
 					end={1350}
-					markStep={5}
-					step={50}
+					step={500}
 				/>
 				<TickMark
 					className='mt-20 absolute'
 					vertical
 					end={1050}
-					markStep={5}
-					step={50}
+					step={10}
 				/>
 			</div>
 			<div className={styles.tickMark__horizontal}></div>

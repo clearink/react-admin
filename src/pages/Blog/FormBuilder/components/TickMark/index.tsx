@@ -12,7 +12,6 @@ interface IProps {
 	start: number
 	className?: string
 	style?: CSSProperties
-	markStep: number // 刻度线 步长
 	children?: ReactNode
 }
 const defaultProps = {
@@ -20,17 +19,17 @@ const defaultProps = {
 	step: 5,
 	start: 0,
 	end: 10,
-	markStep: 10,
 }
 function _TickMark(props: IProps) {
-	const { vertical, markStep, step, start, end, style, className } = props
+	const { vertical, step, start, end, style, className } = props
 
 	// +1 是为了显示end标记
-	const length = useMemo(() => Math.ceil((end - start) / markStep + 1), [
+	const length = useMemo(() => Math.ceil((end - start) / step + 1), [
 		end,
 		start,
-		markStep,
+		step,
 	])
+	const markStep = useMemo(() => Math.floor(step / 10), [step])
 	return (
 		<div
 			style={style}
