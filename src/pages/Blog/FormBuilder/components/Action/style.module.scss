@@ -1,7 +1,51 @@
-@import "styles/index";
-.container {
+@import "@/styles/index";
+
+$phone_width: 375px;
+.action {
 	flex: auto;
 	background-color: $color_grey-1;
 	height: 100%;
 	overflow: hidden;
+
+	.action_area {
+		@apply select-none;
+		@include flex-center();
+		height: 100%;
+		&:active {
+			cursor: move;
+		}
+		
+		.page_container {
+			overflow: hidden;
+			width: $phone_width;
+			@apply absolute bg-white;
+			top: 10rem;
+			border-radius: 3px;
+			box-shadow: 2px 0 8px rgba($color: black, $alpha: 0.4);
+		}
+	}
+	.grid_item_container {
+		@apply box-border bg-white;
+		border: 2px solid transparent;
+		transition: all 0.2s ease;
+		&:hover {
+			border-color: $color_primary;
+		}
+		&:active {
+			border-color: transparent;
+		}
+		&:global {
+			&.react-draggable-dragging {
+				transition: none;
+				z-index: 2;
+				will-change: transform;
+			}
+		}
+		.form_item_wrap {
+			@apply h-full box-border;
+			padding: 20px 16px;
+			border-radius: 4px;
+			box-shadow: 0 2px 10px rgba($color: black, $alpha: 0.2);
+		}
+	}
 }

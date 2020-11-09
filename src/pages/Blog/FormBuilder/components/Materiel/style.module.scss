@@ -1,4 +1,4 @@
-@import "styles/index";
+@import "@/styles/index";
 $slider_width: 30rem;
 $collapsed_slider_width: 5rem;
 .animate {
@@ -7,6 +7,7 @@ $collapsed_slider_width: 5rem;
 .container {
 	@apply bg-white;
 	@extend .animate;
+	z-index: 2;
 	position: absolute;
 	height: 100%;
 	white-space: nowrap;

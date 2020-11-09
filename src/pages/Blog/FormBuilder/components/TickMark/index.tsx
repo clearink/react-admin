@@ -4,6 +4,7 @@ import withDefaultProps from "@/hocs/withDefaultProps"
 import styles from "./style.module.scss"
 // 刻度线组件 默认水平
 // px
+// 默认将每个区间分为10份
 
 interface IProps {
 	step: number //  步长
@@ -23,13 +24,15 @@ const defaultProps = {
 function _TickMark(props: IProps) {
 	const { vertical, step, start, end, style, className } = props
 
+	const markStep = useMemo(() => Math.floor(step / 10), [step])
+
 	// +1 是为了显示end标记
-	const length = useMemo(() => Math.ceil((end - start) / step + 1), [
+	const length = useMemo(() => Math.ceil((end - start) / markStep + 1), [
 		end,
 		start,
-		step,
+		markStep,
 	])
-	const markStep = useMemo(() => Math.floor(step / 10), [step])
+
 	return (
 		<div
 			style={style}

@@ -1,6 +1,7 @@
-@import "styles/index";
+@import "@/styles/index";
 .tick-mark-container {
 	display: flex;
+	user-select: none;
 	.tick-mark-wrap {
 		@apply flex justify-between flex-shrink-0;
 	}

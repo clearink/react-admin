@@ -1,4 +1,4 @@
-@import "styles/index";
+@import "@/styles/index";
 $sider_width: 30rem;
 @mixin animate($property: all) {
 	transition: $property 0.3s ease-in-out;
