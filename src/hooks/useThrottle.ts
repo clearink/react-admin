@@ -10,7 +10,7 @@ export default function useThrottle<T extends Function>(
 	fn: T,
 	delay: number,
 	immediate: boolean = true
-): Function {
+) {
 	const memoried = useRef<IRef>({
 		fn,
 		timer: undefined,

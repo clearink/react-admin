@@ -16,7 +16,6 @@ $phone_width: 375px;
 		}
 		
 		.page_container {
-			overflow: hidden;
 			width: $phone_width;
 			@apply absolute bg-white;
 			top: 10rem;

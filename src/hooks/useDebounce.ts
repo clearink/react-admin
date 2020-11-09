@@ -10,7 +10,7 @@ export default function useDebounce<T extends Function>(
 	fn: T,
 	delay: number,
 	immediate: boolean = true
-): Function {
+): T {
 	const memoried = useRef<IRef>({
 		fn,
 		timer: undefined,
