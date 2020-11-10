@@ -11,12 +11,13 @@ $phone_width: 375px;
 		@apply select-none;
 		@include flex-center();
 		height: 100%;
-		&:active {
-			cursor: move;
-		}
+		// &:active {
+		// 	cursor: move;
+		// }
 		
 		.page_container {
 			width: $phone_width;
+			min-height: 500px;
 			@apply absolute bg-white;
 			top: 10rem;
 			border-radius: 3px;

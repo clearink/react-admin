@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 
 interface IRef {
 	fn: Function
@@ -9,14 +9,17 @@ interface IRef {
 export default function useThrottle<T extends Function>(
 	fn: T,
 	delay: number,
-	immediate: boolean = true
+	immediate: boolean = false
 ) {
 	const memoried = useRef<IRef>({
 		fn,
 		timer: undefined,
 		first: true,
 	})
-	const throttleFn = useCallback(
+	useEffect(() => {
+		memoried.current.fn = fn
+	}, [fn])
+	return useCallback(
 		function (this: void, ...args) {
 			const { current } = memoried
 			if (immediate && current.first) {
@@ -32,5 +35,4 @@ export default function useThrottle<T extends Function>(
 		},
 		[delay, immediate]
 	)
-	return throttleFn
 }

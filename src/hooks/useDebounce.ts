@@ -6,16 +6,18 @@ interface IRef {
 	first: boolean
 }
 // 函数防抖
-export default function useDebounce<T extends Function>(
+type F = (...args: any[]) => any
+export default function useDebounce<T extends F>(
 	fn: T,
 	delay: number,
-	immediate: boolean = true
-): T {
+	immediate: boolean = false
+) {
 	const memoried = useRef<IRef>({
 		fn,
 		timer: undefined,
 		first: true,
 	})
+
 	return useCallback(
 		function (this: void, ...args) {
 			const { current } = memoried
