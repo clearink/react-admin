@@ -10,16 +10,17 @@ $phone_width: 375px;
 	.action_area {
 		@apply select-none;
 		@include flex-center();
+		align-items: start;
 		height: 100%;
-		// &:active {
-		// 	cursor: move;
-		// }
-		
+		&:active {
+			cursor: move;
+		}
+
 		.page_container {
 			width: $phone_width;
 			min-height: 500px;
-			@apply absolute bg-white;
-			top: 10rem;
+			@apply bg-white relative;
+			top: 100px;
 			border-radius: 3px;
 			box-shadow: 2px 0 8px rgba($color: black, $alpha: 0.4);
 		}

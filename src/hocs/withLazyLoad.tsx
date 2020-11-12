@@ -7,7 +7,7 @@ export default function withLazyLoad(WrappedComponent: ComponentType<any>) {
 			return (
 				<Suspense
 					fallback={
-						<div className='flex justify-center items-center w-full min-h-screen'>
+						<div className='flex justify-center items-center w-full h-64'>
 							<Spin size='large' />
 						</div>
 					}

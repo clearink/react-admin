@@ -1,8 +1,8 @@
-import React, { useState, useRef, useReducer } from "react"
+import React, { useState, useRef } from "react"
 import { Button, Input, Layout } from "antd"
 import classNames from "classnames"
 import GridLayout from "react-grid-layout"
-import { motion as m, useDragControls, useMotionValue } from "framer-motion"
+import { motion as m, useDragControls, useSpring } from "framer-motion"
 import TickMark from "../TickMark"
 import styles from "./style.module.scss"
 
@@ -11,10 +11,8 @@ interface IProps {}
 function Action(props: IProps) {
 	const containerRef = useRef(null)
 	const [length, setLength] = useState(2)
-	const y = useMotionValue(0)
 
-	const dragControls = useDragControls()
-
+	const y = useSpring(0, { stiffness: 300, damping: 20 })
 	const layout = Array.from({ length }, (_, i) => ({
 		i: i.toString(),
 		x: 0,
@@ -35,13 +33,7 @@ function Action(props: IProps) {
 			<div
 				className={classNames(styles.action_area)}
 				ref={containerRef}
-				onMouseDown={(e) => {
-					if (e.target === containerRef.current) {
-						dragControls.start(e)
-					}
-				}}
 				onWheel={(e) => {
-					console.log(e.deltaY)
 					y.set(y.get() - e.deltaY)
 				}}
 			>
@@ -53,7 +45,7 @@ function Action(props: IProps) {
 								className={classNames(styles.grid_item_container)}
 							>
 								<div className={classNames(styles.form_item_wrap)}>
-									<h1>标题</h1>
+									<h1>标题{item.i}</h1>
 									<Input />
 								</div>
 							</div>

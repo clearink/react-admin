@@ -1,7 +1,7 @@
 import LocalStore from "./LocalStore"
 import configs from "@/configs/app"
 
-// 登录工具封装
+// 登录工具封装 仅仅简化了不用每次引入 configs
 class LoginUtil {
 	// 获取 token
 	static getToken() {
@@ -10,25 +10,17 @@ class LoginUtil {
 
 	// 设置token以及过期时间 默认一天
 	static setToken(val: any, time = 86400000) {
-		LocalStore.set(configs.TOKEN, val)
-
-		// expires time
-		LocalStore.set(configs.TOKEN_EXPIRES, Date.now() + time)
+		LocalStore.set(configs.TOKEN, val, time)
 	}
 
 	// 清除 token
 	static clearToken() {
 		LocalStore.remove(configs.TOKEN)
-		LocalStore.remove(configs.TOKEN_EXPIRES)
 	}
 
-	// 判断是否登录 同时还要判断token是否已经过期
+	// 判断是否登录
+	// token是否已经过期 在LocalStore内自动判断
 	static isLogin() {
-		const tokenExpires = LocalStore.get(configs.TOKEN_EXPIRES)
-		if (!tokenExpires || tokenExpires < Date.now()) {
-			// token已经过期,清除
-			this.clearToken()
-		}
 		return !!LocalStore.get(configs.TOKEN)
 	}
 }
