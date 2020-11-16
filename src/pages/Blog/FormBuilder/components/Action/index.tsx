@@ -2,17 +2,26 @@ import React, { useState, useRef } from "react"
 import { Button, Input, Layout } from "antd"
 import classNames from "classnames"
 import GridLayout from "react-grid-layout"
-import { motion as m, useDragControls, useSpring } from "framer-motion"
+import { motion as m, useSpring } from "framer-motion"
 import TickMark from "../TickMark"
 import styles from "./style.module.scss"
+import { useDrop } from "react-dnd"
+import dnd from "@/configs/dnd"
 
 const { Content } = Layout
 interface IProps {}
 function Action(props: IProps) {
 	const containerRef = useRef(null)
 	const [length, setLength] = useState(2)
+	const [collectedProps, dropRef] = useDrop({
+		accept: dnd.COMPONENT,
+		collect: (monitor) => ({ isOver: monitor.isOver(),item:monitor.getItem()}),
+	})
 
+	console.log("Action", collectedProps)
+	// animate
 	const y = useSpring(0, { stiffness: 300, damping: 20 })
+
 	const layout = Array.from({ length }, (_, i) => ({
 		i: i.toString(),
 		x: 0,
@@ -37,7 +46,7 @@ function Action(props: IProps) {
 					y.set(y.get() - e.deltaY)
 				}}
 			>
-				<m.div className={styles.page_container} style={{ y }}>
+				<m.div ref={dropRef} className={styles.page_container} style={{ y }}>
 					<GridLayout layout={layout} cols={12} rowHeight={30} width={375}>
 						{layout.map((item) => (
 							<div

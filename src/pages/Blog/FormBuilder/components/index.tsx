@@ -1,6 +1,5 @@
-import Materiel from "./Materiel"
-import Attribute from "./Attribute"
-import Action from "./Action"
-import Header from "./Header"
-import TickMark from "./TickMark"
-export { Materiel, Attribute, Action, Header, TickMark }
+export { default as Materiel } from "./Materiel"
+export { default as Attribute } from "./Attribute"
+export { default as Action } from "./Action"
+export { default as Header } from "./Header"
+export { default as TickMark } from "./TickMark"

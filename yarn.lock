@@ -5748,14 +5748,14 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^2.7.5:
-  version "2.7.5"
-  resolved "https://registry.npm.taobao.org/framer-motion/download/framer-motion-2.7.5.tgz#3016715f8988b6a4fa4e2d326106ef054e99f7fc"
-  integrity sha1-MBZxX4mItqT6Ti0yYQbvBU6Z9/w=
+framer-motion@^2.9.4:
+  version "2.9.4"
+  resolved "https://registry.npm.taobao.org/framer-motion/download/framer-motion-2.9.4.tgz#366656ae240776c923cbd4359815e5c1ed56084d"
+  integrity sha1-NmZWriQHdskjy9Q1mBXlwe1WCE0=
   dependencies:
     framesync "^4.1.0"
     hey-listen "^1.0.8"
-    popmotion "9.0.0-rc.19"
+    popmotion "9.0.0-rc.20"
     style-value-types "^3.1.9"
     tslib "^1.10.0"
   optionalDependencies:
@@ -9113,10 +9113,10 @@ pnp-webpack-plugin@1.6.4:
   dependencies:
     ts-pnp "^1.1.6"
 
-popmotion@9.0.0-rc.19:
-  version "9.0.0-rc.19"
-  resolved "https://registry.npm.taobao.org/popmotion/download/popmotion-9.0.0-rc.19.tgz#24b28d9d4481536da699af77841d04bc5351f1d5"
-  integrity sha1-JLKNnUSBU22mma93hB0EvFNR8dU=
+popmotion@9.0.0-rc.20:
+  version "9.0.0-rc.20"
+  resolved "https://registry.npm.taobao.org/popmotion/download/popmotion-9.0.0-rc.20.tgz#f3550042ae31957b5416793ae8723200951ad39d"
+  integrity sha1-81UAQq4xlXtUFnk66HIyAJUa050=
   dependencies:
     framesync "^4.1.0"
     hey-listen "^1.0.8"
@@ -10557,6 +10557,13 @@ react-dev-utils@^10.2.1:
     shell-quote "1.7.2"
     strip-ansi "6.0.0"
     text-table "0.2.0"
+
+react-dnd-html5-backend@^11.1.3:
+  version "11.1.3"
+  resolved "https://registry.npm.taobao.org/react-dnd-html5-backend/download/react-dnd-html5-backend-11.1.3.tgz#2749f04f416ec230ea193f5c1fbea2de7dffb8f7"
+  integrity sha1-J0nwT0FuwjDqGT9cH76i3n3/uPc=
+  dependencies:
+    dnd-core "^11.1.3"
 
 react-dnd@^11.1.3:
   version "11.1.3"

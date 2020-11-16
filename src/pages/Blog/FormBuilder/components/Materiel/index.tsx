@@ -4,8 +4,11 @@ import IconFont from "@/components/IconFont"
 import useBoolean from "@/hooks/useBoolean"
 import classNames from "classnames"
 import styles from "./style.module.scss"
+import BaseComponent from "./BaseComponent"
+import FormComponent from "./FormComponent"
+import MediaComponent from "./MediaComponent"
 const { Title } = Typography
-
+const { TabPane } = Tabs
 // 缩略宽度
 interface IProps {}
 function Materiel(props: IProps) {
@@ -18,21 +21,21 @@ function Materiel(props: IProps) {
 				})}
 			>
 				<Tabs tabPosition='left' className={styles.tab__list}>
-					{Array.from({ length: 3 }, (_, i) => (
-						<Tabs.TabPane tab={i} key={i}>
-							{/*  <Tabs.TabPane tab={<IconFont type='icon-control' />} key={i}> */}
-							<div className={styles.wrap}>
-								<Title level={5} className={styles.title}>
-									基础组件===={i}
-								</Title>
-								<div className={styles.list__item}>
-									{Array.from({ length: 60 }, (_, i) => (
-										<div key={i}>{i}</div>
-									))}
-								</div>
-							</div>
-						</Tabs.TabPane>
-					))}
+					{/* 基础组件 */}
+					<TabPane tab={<IconFont type='icon-menu' />} key='base'>
+						<Title level={4}>基础组件</Title>
+						<BaseComponent />
+					</TabPane>
+					{/* 表单组件 */}
+					<TabPane tab={<IconFont type='icon-control' />} key='form'>
+						<Title level={4}>表单组件</Title>
+						<FormComponent />
+					</TabPane>
+					{/* 媒体组件 */}
+					<TabPane tab={<IconFont type='icon-menu' />} key='media'>
+						<Title level={4}>媒体组件</Title>
+						<MediaComponent />
+					</TabPane>
 				</Tabs>
 				<Button
 					className={styles.collapsed}

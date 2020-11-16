@@ -4,15 +4,19 @@ import classNames from "classnames"
 import styles from "./style.module.scss"
 import { Layout } from "antd"
 import { Materiel, Header, Attribute, Action } from "./components"
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
 
 function FormBuilder(props: IBaseProps) {
 	return (
 		<Layout className={classNames(styles.container)}>
 			<Header />
 			<Layout className={classNames(styles.layout)}>
-				<Materiel />
-				<Action />
-				<Attribute />
+				<DndProvider backend={HTML5Backend}>
+					<Materiel />
+					<Action />
+					<Attribute />
+				</DndProvider>
 			</Layout>
 		</Layout>
 	)

@@ -1,0 +1,36 @@
+@import "@/styles/index";
+$container_with: 230px;
+$spacing: 10px;
+.container {
+	min-width: $container_with;
+	@apply flex flex-wrap justify-between;
+	transition: all 10.3s;
+
+	.item {
+		transition: all 0.3s;
+		cursor: pointer;
+		user-select: none;
+		box-shadow: 1px 2px 4px rgba($color: #000000, $alpha: 0.16);
+		min-width: ($container_with - $spacing)/2;
+		max-width: ($container_with - $spacing)/2;
+		min-height: 100px;
+		box-sizing: border-box;
+		padding: 8px 6px;
+		margin-bottom: 10px;
+		@apply flex flex-col items-center;
+		.cover {
+			max-width: 100px;
+			max-height: 100px;
+			@apply object-cover;
+		}
+		.name {
+			@apply text-center;
+			margin-top: 10px;
+			color: $color_grey-2;
+		}
+		&.dragging {
+			opacity: 0.3;
+			background-color: rgba($color_black-2, 0.1);
+		}
+	}
+}

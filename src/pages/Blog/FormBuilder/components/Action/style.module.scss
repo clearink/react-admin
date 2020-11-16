@@ -10,7 +10,7 @@ $phone_width: 375px;
 	.action_area {
 		@apply select-none;
 		@include flex-center();
-		align-items: start;
+		align-items: flex-start;
 		height: 100%;
 		&:active {
 			cursor: move;
