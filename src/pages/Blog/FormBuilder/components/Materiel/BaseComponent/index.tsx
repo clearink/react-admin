@@ -3,12 +3,12 @@ import classNames from "classnames"
 import { motion as m } from "framer-motion"
 import btn from "@/assets/images/btn.jpg"
 import styles from "./style.module.scss"
-import { useDrag } from "react-dnd"
+import { DragPreviewImage, useDrag } from "react-dnd"
 import dnd from "@/configs/dnd"
 import { Input } from "antd"
 
 function _BaseComponent(props: any) {
-	const [{ isDragging }, ref] = useDrag({
+	const [{ isDragging }, ref, preview] = useDrag({
 		item: { type: dnd.COMPONENT },
 		begin: (monitor) => ({ type: "btn" }),
 		collect: (monitor) => ({
@@ -16,13 +16,16 @@ function _BaseComponent(props: any) {
 		}),
 	})
 	return (
-		<div
-			ref={ref}
-			className={classNames(styles.item, { [styles.dragging]: isDragging })}
-		>
-			<img alt={"123"} draggable={false} className={styles.cover} src={btn} />
-			<div className={styles.name}> Button 按钮</div>
-		</div>
+		<>
+			<DragPreviewImage connect={preview} src={btn} />
+			<div
+				ref={ref}
+				className={classNames(styles.item, { [styles.dragging]: isDragging })}
+			>
+				<img alt={"123"} draggable={false} className={styles.cover} src={btn} />
+				<div className={styles.name}> Button 按钮</div>
+			</div>
+		</>
 	)
 }
 const BaseComponent = memo(_BaseComponent)

@@ -12,10 +12,14 @@ const { Content } = Layout
 interface IProps {}
 function Action(props: IProps) {
 	const containerRef = useRef(null)
-	const [length, setLength] = useState(2)
+	const [length, setLength] = useState(0)
 	const [collectedProps, dropRef] = useDrop({
 		accept: dnd.COMPONENT,
-		collect: (monitor) => ({ isOver: monitor.isOver(),item:monitor.getItem()}),
+		collect: (monitor) => ({
+			isOver: monitor.isOver(),
+			item: monitor.getItem(),
+			canDrop: monitor.canDrop(),
+		}),
 	})
 
 	console.log("Action", collectedProps)
