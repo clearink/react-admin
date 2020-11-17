@@ -13,9 +13,9 @@ import { IRoute } from "@/@types/route"
 import { TMenu } from "@/@types/menu"
 import FilterValue from "@/utils/FilterValue"
 import "./style.scss"
+import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 
 const { Content, Footer } = Layout
-const GetCurrentUser = GetBoundAction(actions.getCurrentUser)
 const SaveMenu = GetBoundAction(menuActions.saveMenu)
 
 function BaseLayout(props: IBaseProps) {
@@ -25,6 +25,7 @@ function BaseLayout(props: IBaseProps) {
 		history: { push },
 	} = props
 	const isLogin = LoginUtil.isLogin()
+	const unwrap = useUnwrapAsyncThunk()
 	const { user } = useTypedSelector((state) => state.user)
 	const { menu } = useTypedSelector((state) => state.menu)
 
@@ -33,9 +34,9 @@ function BaseLayout(props: IBaseProps) {
 		if (isLogin && !user) {
 			console.log("登录了, 但是没有用户信息")
 			const user = LoginUtil.getToken()
-			GetCurrentUser({ id: user?.id })
+			unwrap(actions.getCurrentUser({ id: user?.id }))
 		}
-	}, [isLogin, user])
+	}, [isLogin, user, unwrap])
 
 	// 未登录
 	useEffect(() => {
