@@ -1,31 +1,25 @@
 import React, { memo } from "react"
 import classNames from "classnames"
-import { motion as m } from "framer-motion"
 import btn from "@/assets/images/btn.jpg"
 import styles from "./style.module.scss"
-import { DragPreviewImage, useDrag } from "react-dnd"
+import { useDrag } from "react-dnd"
 import dnd from "@/configs/dnd"
-import { Input } from "antd"
 
 function _BaseComponent(props: any) {
-	const [{ isDragging }, ref, preview] = useDrag({
-		item: { type: dnd.COMPONENT },
-		begin: (monitor) => ({ type: "btn" }),
+	const [{ isDragging }, ref] = useDrag({
+		item: { type: dnd.COMPONENT, name: "btn" },
 		collect: (monitor) => ({
 			isDragging: !!monitor.isDragging(),
 		}),
 	})
 	return (
-		<>
-			<DragPreviewImage connect={preview} src={btn} />
-			<div
-				ref={ref}
-				className={classNames(styles.item, { [styles.dragging]: isDragging })}
-			>
-				<img alt={"123"} draggable={false} className={styles.cover} src={btn} />
-				<div className={styles.name}> Button 按钮</div>
-			</div>
-		</>
+		<div
+			ref={ref}
+			className={classNames(styles.item, { [styles.dragging]: isDragging })}
+		>
+			<img alt={"123"} className={styles.cover} src={btn} />
+			<div className={styles.name}> Button 按钮</div>
+		</div>
 	)
 }
 const BaseComponent = memo(_BaseComponent)

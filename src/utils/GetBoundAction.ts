@@ -1,3 +1,4 @@
+// 仅仅用来绑定基本的action
 import store from "@/store"
 import { ActionCreatorsMapObject, bindActionCreators, Dispatch } from "redux"
 

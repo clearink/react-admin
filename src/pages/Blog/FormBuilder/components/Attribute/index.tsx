@@ -4,7 +4,6 @@ import classNames from "classnames"
 import styles from "./style.module.scss"
 import useBoolean from "@/hooks/useBoolean"
 import { DoubleLeftOutlined, DoubleRightOutlined } from "@ant-design/icons"
-const width = "30rem"
 interface IProps {}
 function Attribute(props: IProps) {
 	const [collapsed, toggle] = useBoolean()

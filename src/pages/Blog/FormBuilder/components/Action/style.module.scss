@@ -1,28 +1,35 @@
 @import "@/styles/index";
 
 $phone_width: 375px;
+$min_grid_height: 500px;
 .action {
 	flex: auto;
 	background-color: $color_grey-1;
 	height: 100%;
-	overflow: hidden;
+	overflow: hidden auto;
+	&::-webkit-scrollbar {
+		width: 0.5rem;
+		background-color: white;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 4rem;
+		background-color: rgba($color_primary, $alpha: 0.6);
+	}
 
 	.action_area {
 		@apply select-none;
 		@include flex-center();
 		align-items: flex-start;
 		height: 100%;
-		&:active {
-			cursor: move;
-		}
 
 		.page_container {
 			width: $phone_width;
-			min-height: 500px;
-			@apply bg-white relative;
-			top: 100px;
+			@apply bg-white;
+			margin-top: 20%;
+			margin-bottom: 20%;
 			border-radius: 3px;
-			box-shadow: 2px 0 8px rgba($color: black, $alpha: 0.4);
+			box-shadow: 1px 0 14px rgba($color: black, $alpha: 0.3);
+			min-height: $min_grid_height;
 		}
 	}
 	.grid_item_container {

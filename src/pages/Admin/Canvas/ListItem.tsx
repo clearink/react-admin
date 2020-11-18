@@ -2,21 +2,21 @@ import React from "react"
 import { selectors } from "@/store/reducers/test"
 import useCacheSelector from "@/hooks/useCacheSelector"
 import { Button } from "antd"
-import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/list"
+import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 interface IProps {
 	id: number
 }
-const boundFetchList = GetBoundAction(actions)
 function ListItem(props: IProps) {
 	const test = useCacheSelector(selectors.selectById, props.id)
+	const unwrap = useUnwrapAsyncThunk()
 	return (
 		<div>
 			{test?.id} ---------- {test?.val}
 			<Button
 				onClick={() => {
 					console.log(12)
-					boundFetchList.fetchList()
+					unwrap(actions.fetchList())
 				}}
 			>
 				123112

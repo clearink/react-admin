@@ -10,7 +10,7 @@ type list = { id: number; title: string; content: string }
 const listAdapter = createEntityAdapter<list>()
 
 // thunk action
-const fetchList = createAsyncThunk("list/GetList", async () => {
+const fetchList = createAsyncThunk<list[]>("list/GetList", async () => {
 	const response = await api.GetPostList()
 	return response.data
 })

@@ -4,18 +4,21 @@ import { Link } from "react-router-dom"
 import styles from "./style.module.scss"
 import { actions } from "@/store/reducers/type"
 import useTypedSelector from "@/hooks/useTypedSelector"
-import GetBoundAction from "@/utils/GetBoundAction"
+import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 
 // 绑定dispatch
-const boundFetchList = GetBoundAction(actions.fetchTypeList)
 
 interface IProps {}
 function BlogHeader(props: PropsWithChildren<IProps>) {
 	const { loading, types } = useTypedSelector((state) => state.type)
-
+	const unwrap = useUnwrapAsyncThunk()
 	useEffect(() => {
-		if (!types.length) boundFetchList()
-	}, [types.length])
+		if (!types.length) {
+			unwrap(actions.fetchTypeList()).catch(() => {
+				console.log("请求失败")
+			})
+		}
+	}, [types.length, unwrap])
 
 	return (
 		<div className='flex items-center justify-between flex-wrap'>

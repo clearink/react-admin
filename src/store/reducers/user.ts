@@ -10,9 +10,9 @@ type user = {
 	[key: string]: any
 }
 
-const login = createAsyncThunk("user/login", async () => {
+const login = createAsyncThunk<user[]>("user/login", async () => {
 	const res = await api.Login()
-	return res.data as user[]
+	return res.data
 })
 const getCurrentUser = createAsyncThunk(
 	"user/getCurrentUser",

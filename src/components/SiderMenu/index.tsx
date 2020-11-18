@@ -10,7 +10,6 @@ import { actions } from "@/store/reducers/menu"
 import "./style.scss"
 
 const ToggleMenu = GetBoundAction(actions.toggleMenu)
-
 function SiderMenu() {
 	const [collapsedMenu, setCollapsedMenu] = useState(false)
 	const { menu, collapsed } = useTypedSelector((state) => state.menu)

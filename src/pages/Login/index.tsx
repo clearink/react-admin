@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom"
 import { actions } from "@/store/reducers/user"
 import { unwrapResult } from "@reduxjs/toolkit"
 import useTypedSelector from "@/hooks/useTypedSelector"
-import GetBoundAction from "@/utils/GetBoundAction"
+import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import "./style.scss"
 
 const { useForm } = Form
@@ -16,14 +16,13 @@ const formValidateMessages = {
 	required: "请输入 ${name}",
 }
 
-const boundLogin = GetBoundAction(actions.login)
-
 function Login(props: IBaseProps) {
 	const [form] = useForm()
 	const { loginLoading } = useTypedSelector((state) => state.user)
 	const { push } = useHistory()
+	const unwrap = useUnwrapAsyncThunk()
 	const handleSubmit = async (values: Store) => {
-		const resAction = await boundLogin()
+		const resAction = await unwrap(actions.login())
 		unwrapResult(resAction as any)
 		message.success("登录成功")
 		push("/")
