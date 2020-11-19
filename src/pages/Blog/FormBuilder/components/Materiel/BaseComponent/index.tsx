@@ -6,15 +6,16 @@ import { useDrag } from "react-dnd"
 import dnd from "@/configs/dnd"
 
 function _BaseComponent(props: any) {
-	const [{ isDragging }, ref] = useDrag({
-		item: { type: dnd.COMPONENT, name: "btn" },
+	const [{ isDragging }, dragRef] = useDrag({
+		item: { type: dnd.COMPONENT, name: "button" },
 		collect: (monitor) => ({
 			isDragging: !!monitor.isDragging(),
 		}),
 	})
 	return (
 		<div
-			ref={ref}
+			ref={dragRef}
+			unselectable='on'
 			className={classNames(styles.item, { [styles.dragging]: isDragging })}
 		>
 			<img alt={"123"} className={styles.cover} src={btn} />

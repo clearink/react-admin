@@ -25,7 +25,7 @@ $min_grid_height: 500px;
 		.page_container {
 			width: $phone_width;
 			@apply bg-white;
-			margin-top: 20%;
+			margin: 200px 0;
 			margin-bottom: 20%;
 			border-radius: 3px;
 			box-shadow: 1px 0 14px rgba($color: black, $alpha: 0.3);
@@ -36,7 +36,7 @@ $min_grid_height: 500px;
 		@apply box-border bg-white;
 		border: 2px solid transparent;
 		transition: all 0.2s ease;
-		&:hover {
+		&:hover, &.active {
 			border-color: $color_primary;
 		}
 		&:active {
