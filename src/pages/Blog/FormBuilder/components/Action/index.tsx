@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react"
 import { Button, Input, Layout } from "antd"
 import classNames from "classnames"
-import GridLayout, { Layout as rglLayout } from "react-grid-layout"
+import GridLayout from "react-grid-layout"
 import TickMark from "../TickMark"
 import styles from "./style.module.scss"
 import { useDrop } from "react-dnd"
 import dnd from "@/configs/dnd"
+import gridLayout from "@/configs/gridLayout"
 
 function BaseCCC(props: { [key: string]: any }) {
 	const { children, className, ...rest } = props
@@ -68,9 +69,10 @@ function Action(props: IProps) {
 					margin={[1, 1]}
 					className={styles.page_container}
 					layout={length}
-					cols={12}
-					rowHeight={30}
-					width={375}
+					cols={gridLayout.COLS}
+					rowHeight={gridLayout.ROW_HEIGHT}
+					style={{ width: gridLayout.WIDTH }}
+					width={gridLayout.WIDTH}
 				>
 					{length.map((item) => (
 						<BaseCCC key={item.i} />
@@ -85,8 +87,6 @@ function Action(props: IProps) {
 							i: p.length.toString(),
 							x: 0,
 							y: Infinity,
-							minX: 2,
-							minH: 2,
 							w: 12,
 							h: 3,
 						})

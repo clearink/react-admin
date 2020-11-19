@@ -1,6 +1,5 @@
 @import "@/styles/index";
 
-$phone_width: 375px;
 $min_grid_height: 500px;
 .action {
 	flex: auto;
@@ -23,7 +22,6 @@ $min_grid_height: 500px;
 		height: 100%;
 
 		.page_container {
-			width: $phone_width;
 			@apply bg-white;
 			margin: 200px 0;
 			margin-bottom: 20%;
@@ -32,15 +30,20 @@ $min_grid_height: 500px;
 			min-height: $min_grid_height;
 		}
 	}
+
 	.grid_item_container {
 		@apply box-border bg-white;
+		overflow: hidden;
 		border: 2px solid transparent;
 		transition: all 0.2s ease;
-		&:hover, &.active {
-			border-color: $color_primary;
+		&:hover,
+
+		&.active {
+			border-color: rgba($color_primary, $alpha: 0.6);
 		}
 		&:active {
-			border-color: transparent;
+			border-color: $color_primary;
+			cursor: move;
 		}
 		&:global {
 			&.react-draggable-dragging {
@@ -51,7 +54,7 @@ $min_grid_height: 500px;
 		}
 		.form_item_wrap {
 			@apply h-full box-border;
-			padding: 20px 16px;
+			padding: 10px 8px;
 			border-radius: 4px;
 			box-shadow: 0 2px 10px rgba($color: black, $alpha: 0.2);
 		}

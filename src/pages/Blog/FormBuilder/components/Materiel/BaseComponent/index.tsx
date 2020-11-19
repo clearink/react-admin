@@ -15,10 +15,9 @@ function _BaseComponent(props: any) {
 	return (
 		<div
 			ref={dragRef}
-			unselectable='on'
 			className={classNames(styles.item, { [styles.dragging]: isDragging })}
 		>
-			<img alt={"123"} className={styles.cover} src={btn} />
+			<img draggable={false} alt={"123"} className={styles.cover} src={btn} />
 			<div className={styles.name}> Button 按钮</div>
 		</div>
 	)
