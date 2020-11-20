@@ -3,7 +3,6 @@ const {
 	fixBabelImports,
 	addWebpackAlias,
 	addPostcssPlugins,
-	addWebpackExternals,
 } = require("customize-cra")
 const WebpackBar = require("webpackbar")
 const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin")
@@ -12,12 +11,18 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer")
 const isProd = process.env.NODE_ENV === "production"
 const isAnalyze = process.env.ANALYZE === "true"
 module.exports = override(
-	fixBabelImports("import", {
-		libraryName: "antd",
-		libraryDirectory: "es",
-		style: "css",
-	}),
-	addWebpackExternals({}),
+	fixBabelImports(
+		"import",
+		// {
+		// 	libraryName: "antd",
+		// 	libraryDirectory: "es",
+		// 	style: "css",
+		// },
+		{
+			libraryName: "zarm",
+			style: "css",
+		}
+	),
 	// addWebpackPlugin 一次只能push一个plugin
 	(config) => {
 		config.plugins.push(new WebpackBar())

@@ -1,55 +1,48 @@
-import React, { useState, useRef } from "react"
-import { Button, Input, Layout } from "antd"
+import React from "react"
+import { Layout } from "antd"
 import classNames from "classnames"
-import GridLayout from "react-grid-layout"
+import ReactGridLayout from "@/components/ReactGridLayout"
 import TickMark from "../TickMark"
 import styles from "./style.module.scss"
 import { useDrop } from "react-dnd"
 import dnd from "@/configs/dnd"
-import gridLayout from "@/configs/gridLayout"
-
-function BaseCCC(props: { [key: string]: any }) {
-	const { children, className, ...rest } = props
-	const [isActive, dropRef] = useDrop({
-		accept: dnd.COMPONENT,
-		drop: (item: { type: string; name: string }, monitor) => {
-			console.log("我将在我的位置之前新增一条数据", item)
-			// console.log("BaseCCC", monitor.isOver({ shallow: false }))
-			// // console.log(item, monitor, item.name, monitor.getHandlerId())
-		},
-		collect(monitor) {
-			return monitor.canDrop() && monitor.isOver({ shallow: false })
-		},
-	})
-	return (
-		<div
-			ref={dropRef}
-			className={classNames(styles.grid_item_container, className, {
-				[styles.active]: isActive,
-			})}
-			{...rest}
-		>
-			<div className={classNames(styles.form_item_wrap)}>
-				<h1>标题</h1>
-				<Input />
-			</div>
-			{children}
-		</div>
-	)
-}
-
+import gridLayout from "@/configs/pageBuilder"
+import useTypedSelector from "@/hooks/useTypedSelector"
+import BuilderComponent from "./BuilderComponent"
+import { actions } from "@/store/reducers/builder"
+import { nanoid } from "@reduxjs/toolkit"
+import GetBoundAction from "@/utils/GetBoundAction"
+import baseComponentMap from "@/configs/baseComponentMap"
+const boundActions = GetBoundAction(actions)
 const { Content } = Layout
 interface IProps {}
 function Action(props: IProps) {
-	const [length, setLength] = useState<any[]>([])
+	const builderList = useTypedSelector((state) => state.builder)
 	const [, dropRef] = useDrop({
 		accept: dnd.COMPONENT,
 		drop: (item: { type: string; name: string }, monitor) => {
 			const isOver = monitor.isOver({ shallow: false })
-			if (isOver) {
-				console.log("我将在末尾添加一条数据", item)
+			const canDrop = monitor.canDrop()
+			if (isOver && canDrop) {
+				console.log("我将在末尾添加一条数据")
+				// 发送Action
+				const id = nanoid(8) // 生成唯一id
+				const config = baseComponentMap[item.name].config ?? {} // 可配置信息
+				console.log(Object);
+				// boundActions.add({
+				// 	id,
+				// 	position: { i: id, x: 0, y: Infinity, w: 12, h: 3 }, // 位置信息
+				// 	type: item.name,
+				// 	// 可配置信息
+				// 	config,
+				// 	// 配置属性 应当有默认值
+				// 	value: Object.entries(config).reduce((pre, [k, v]) => {
+				// 		if (Array.isArray(v)) return { ...pre, [k]: v[0] }
+				// 		if (typeof v === "string") return { ...pre, [k]: v }
+				// 		return { ...pre, [k]: null }
+				// 	}, {}),
+				// })
 			}
-			// console.log(item, monitor, item.name, monitor.getHandlerId())
 		},
 	})
 
@@ -61,40 +54,29 @@ function Action(props: IProps) {
 			<TickMark className='mt-20 absolute ml-0' vertical end={1050} step={50} />
 
 			{/* 操作区域 */}
-			<div className={classNames(styles.action_area)} ref={dropRef}>
-				<GridLayout
+			<div className={classNames(styles.action_area)}>
+				<ReactGridLayout
+					innerRef={dropRef}
 					onLayoutChange={(l) => {
-						setLength(l)
+						// console.log(l)
 					}}
 					margin={[1, 1]}
 					className={styles.page_container}
-					layout={length}
 					cols={gridLayout.COLS}
 					rowHeight={gridLayout.ROW_HEIGHT}
 					style={{ width: gridLayout.WIDTH }}
 					width={gridLayout.WIDTH}
 				>
-					{length.map((item) => (
-						<BaseCCC key={item.i} />
+					{builderList.map((item) => (
+						<BuilderComponent
+							key={item.id}
+							data-grid={item.position}
+							config={item}
+							type={item.type}
+						/>
 					))}
-				</GridLayout>
+				</ReactGridLayout>
 			</div>
-			<Button
-				className='absolute top-0'
-				onClick={() => {
-					setLength((p) => {
-						return p.concat({
-							i: p.length.toString(),
-							x: 0,
-							y: Infinity,
-							w: 12,
-							h: 3,
-						})
-					})
-				}}
-			>
-				+1
-			</Button>
 		</Content>
 	)
 }

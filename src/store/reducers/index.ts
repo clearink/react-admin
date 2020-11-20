@@ -5,6 +5,15 @@ import menu from "./menu"
 import list from "./list"
 import test from "./test"
 import type from "./type"
-const rootReducer = combineReducers({ counter, user, menu, list, test, type })
+import builder from "./builder"
+const rootReducer = combineReducers({
+	counter,
+	user,
+	menu,
+	list,
+	test,
+	type,
+	builder,
+})
 
 export default rootReducer
