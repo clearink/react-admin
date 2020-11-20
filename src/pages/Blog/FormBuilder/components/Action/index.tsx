@@ -17,7 +17,7 @@ const boundActions = GetBoundAction(actions)
 const { Content } = Layout
 interface IProps {}
 function Action(props: IProps) {
-	const builderList = useTypedSelector((state) => state.builder)
+	const { builderList } = useTypedSelector((state) => state.builder)
 	const [, dropRef] = useDrop({
 		accept: dnd.COMPONENT,
 		drop: (item: { type: string; name: string }, monitor) => {
@@ -28,20 +28,17 @@ function Action(props: IProps) {
 				// 发送Action
 				const id = nanoid(8) // 生成唯一id
 				const config = baseComponentMap[item.name].config ?? {} // 可配置信息
-				console.log(Object);
-				// boundActions.add({
-				// 	id,
-				// 	position: { i: id, x: 0, y: Infinity, w: 12, h: 3 }, // 位置信息
-				// 	type: item.name,
-				// 	// 可配置信息
-				// 	config,
-				// 	// 配置属性 应当有默认值
-				// 	value: Object.entries(config).reduce((pre, [k, v]) => {
-				// 		if (Array.isArray(v)) return { ...pre, [k]: v[0] }
-				// 		if (typeof v === "string") return { ...pre, [k]: v }
-				// 		return { ...pre, [k]: null }
-				// 	}, {}),
-				// })
+				boundActions.add({
+					id,
+					position: { i: id, x: 0, y: Infinity, w: 12, h: 3 }, // 位置信息
+					type: item.name,
+					// 可配置信息
+					config,
+					// 配置属性 应当有默认值
+					value: Object.entries(config).reduce((pre, [k, v]: [string, any]) => {
+						return { ...pre, [k]: v.default }
+					}, {}),
+				})
 			}
 		},
 	})

@@ -38,7 +38,6 @@ function BaseComponentList(props: any) {
 	return (
 		<div className={classNames(styles.container)}>
 			{baseComponentList.map((config) => {
-				console.log(config);
 				return <BaseComponent key={config.type} config={config} />
 			})}
 		</div>

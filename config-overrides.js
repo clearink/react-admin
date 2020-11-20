@@ -11,19 +11,15 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer")
 const isProd = process.env.NODE_ENV === "production"
 const isAnalyze = process.env.ANALYZE === "true"
 module.exports = override(
-	fixBabelImports(
-		"import",
-		// {
-		// 	libraryName: "antd",
-		// 	libraryDirectory: "es",
-		// 	style: "css",
-		// },
-		{
-			libraryName: "zarm",
-			style: "css",
-		}
-	),
-	// addWebpackPlugin 一次只能push一个plugin
+	fixBabelImports("antd", {
+		libraryName: "antd",
+		libraryDirectory: "es",
+		style: "css",
+	}),
+	fixBabelImports("zarm", {
+		libraryName: "zarm",
+		style: "css",
+	}),
 	(config) => {
 		config.plugins.push(new WebpackBar())
 		if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin()) // 生产环境启用

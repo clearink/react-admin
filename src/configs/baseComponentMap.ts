@@ -11,38 +11,38 @@ export default {
 		name: "Button 按钮",
 		cover: button, // 封面图
 		config: {
-			children: { name: "文本", type: "text" }, //文本
+			children: { name: "文本", type: "Input", default: "按钮" }, //文本
 			theme: {
 				name: "主题",
-				type: "select",
+				type: "Select",
 				value: ["primary", "default", "danger"],
 				default: "primary",
 			}, //类型
 			size: {
 				name: "尺寸",
-				type: "select",
+				type: "Select",
 				value: ["md", "lg", "sm", "xs"],
 				default: "md",
 			}, // 尺寸
 			shape: {
 				name: "形状",
-				type: "select",
+				type: "Select",
 				value: ["radius", "rect", "round", "circle"],
 				default: "radius",
 			},
 			block: {
 				name: "块级元素",
-				type: "switch",
+				type: "Switch",
 				default: false,
 			},
 			ghost: {
 				name: "幽灵按钮",
-				type: "switch",
+				type: "Switch",
 				default: false,
 			},
 			shadow: {
 				name: "阴影",
-				type: "switch",
+				type: "Switch",
 				default: false,
 			},
 		},
@@ -54,19 +54,19 @@ export default {
 		config: {
 			theme: {
 				name: "主题",
-				type: "select",
+				type: "Select",
 				value: ["primary", "default", "success", "warning", "danger"],
 				default: "primary",
 			}, // 主题
 			size: {
 				name: "尺寸",
-				type: "select",
+				type: "Select",
 				value: ["md", "sm", "lg"],
 				default: "md",
 			},
 			type: {
 				name: "类型",
-				type: "select",
+				type: "Select",
 				value: [
 					"add",
 					"add-round",
@@ -98,7 +98,7 @@ export default {
 					"date",
 					"time",
 				],
-				default:"add"
+				default: "add",
 			},
 		},
 	},

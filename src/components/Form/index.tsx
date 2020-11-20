@@ -11,7 +11,7 @@ import FormItem from "../FormItem"
  */
 
 interface IForm<V> {
-	children: ReactNode
+	children?: ReactNode
 	form: UseFormMethods<V>
 	onSubmit: SubmitHandler<V>
 	style?: CSSProperties

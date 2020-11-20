@@ -29,7 +29,7 @@ function HookForm() {
 	})
 	return (
 		<div>
-			<PageHeaderWrap title='React-Hook-Form test' className='bg-white' />
+			<PageHeaderWrap title='React-Hook-Form 封装测试' className='bg-white' />
 			<div>1231</div>
 			<Form
 				form={methods}

@@ -71,6 +71,7 @@ function FormItem(props: IFormItem) {
 					name={name}
 					rules={rules}
 					render={render}
+					{...rest}
 				/>
 			)
 
@@ -83,6 +84,7 @@ function FormItem(props: IFormItem) {
 			// 有 refName 字段
 			if (refName)
 				return cloneElement(child, {
+					...rest,
 					[refName]: register(rules),
 					name,
 					id: name,

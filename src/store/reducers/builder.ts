@@ -10,13 +10,17 @@ type TPageBuilder = {
 }
 const slice = createSlice({
 	name: "page-builder",
-	initialState: [] as TPageBuilder[],
+	initialState: {
+		selectId: null as null | string,
+		builderList: [] as TPageBuilder[],
+	},
 	reducers: {
 		add(state, action: PayloadAction<TPageBuilder>) {
-			state.push(action.payload)
+			state.builderList.push(action.payload)
 		},
-		update(state, action: PayloadAction<TPageBuilder[]>) {
-			return action.payload
+		update(state, action: PayloadAction<TPageBuilder[]>) {},
+		active(state, action: PayloadAction<null | string>) {
+			state.selectId = action.payload
 		},
 	},
 })
