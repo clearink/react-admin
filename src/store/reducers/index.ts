@@ -6,6 +6,7 @@ import list from "./list"
 import test from "./test"
 import type from "./type"
 import builder from "./builder"
+import materiel from "./materiel"
 const rootReducer = combineReducers({
 	counter,
 	user,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
 	test,
 	type,
 	builder,
+	materiel,
 })
 
 export default rootReducer

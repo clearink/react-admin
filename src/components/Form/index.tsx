@@ -3,6 +3,8 @@ import { FormProvider, UseFormMethods, SubmitHandler } from "react-hook-form"
 import FormItem from "../FormItem"
 
 /**
+ * 作为 antd Form 的临时替代
+ * 
  * 封装react hook form
  * 仅仅只为Form.Item 提供 methods
  *

@@ -1,37 +1,44 @@
 // 绑定drop
-import React, { ComponentType, isValidElement, memo, useMemo } from "react"
+import React, {
+	ComponentType,
+	isValidElement,
+	memo,
+	useMemo,
+	useState,
+} from "react"
 import classNames from "classnames"
-import dnd from "@/configs/dnd"
 import styles from "./style.module.scss"
 import { useDrop } from "react-dnd"
-import componentMap from "@/configs/componentMap"
+import BuilderMap from "@/configs/BuilderMap"
 import { actions } from "@/store/reducers/builder"
 import GetBoundAction from "@/utils/GetBoundAction"
 import useTypedSelector from "@/hooks/useTypedSelector"
+import h5Config from "@/configs/h5Config"
 const boundActions = GetBoundAction(actions)
 
 //TODO 应该拖拽时不能选中
-function BuilderComponent(props: { [key: string]: any }) {
-	const { children, className, item, type, config, ...rest } = props
+function Builder(props: { [key: string]: any }) {
+	const { children, className, item, ...rest } = props
 	const selectId = useTypedSelector((state) => state.builder.selectId)
+	const { type, value, id } = item
+
 	const [isActive, dropRef] = useDrop({
-		accept: dnd.COMPONENT,
+		accept: h5Config.TYPE,
 		drop: (item: { type: string; name: string }, monitor) => {
-			console.log("我将在我的位置之后新增一条数据", item)
+			console.log("我将在我的位置之后新增一条数据")
 		},
 		collect(monitor) {
 			return monitor.canDrop() && monitor.isOver({ shallow: false })
 		},
 	})
 
-	// console.log(props);
 	const renderComponent = useMemo(() => {
-		const MapComponent: ComponentType<any> = componentMap[type]
+		const MapComponent = BuilderMap[type]
 		if (!isValidElement(<MapComponent />)) {
 			return null
 		}
-		return <MapComponent {...config.value} />
-	}, [config.value, type])
+		return <MapComponent {...value} />
+	}, [type, value])
 	return (
 		<div
 			ref={dropRef}
@@ -39,19 +46,15 @@ function BuilderComponent(props: { [key: string]: any }) {
 				[styles.active]: isActive,
 			})}
 			{...rest}
+			onMouseDown={(e) => {
+				rest.onMouseDown(e)
+				if (selectId !== id) boundActions.active(id)
+			}}
 		>
-			<div
-				className={classNames(styles.form_item_wrap)}
-				onClick={() => {
-					console.log("object")
-					// if (selectId !== config.id) boundActions.active(config.id)
-				}}
-			>
-				{renderComponent}
-			</div>
+			<div className={classNames(styles.form_item_wrap)}>{renderComponent}</div>
 			{children}
 		</div>
 	)
 }
 
-export default memo(BuilderComponent)
+export default memo(Builder)

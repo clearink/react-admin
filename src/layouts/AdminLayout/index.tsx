@@ -73,11 +73,6 @@ function BaseLayout(props: IBaseProps) {
 				<LayoutHeader />
 				<Content className='content-wrap'>{children}</Content>
 				<Footer className='footer_content__wrap'>
-					<div className='footer_content'>
-						<span>react blog</span>
-						<GithubFilled />
-						<a href='https://github.com/clearink/react-blog'>github</a>
-					</div>
 					<div className='footer_content--copyright'>
 						<span>copyright</span>
 						<CopyrightOutlined />

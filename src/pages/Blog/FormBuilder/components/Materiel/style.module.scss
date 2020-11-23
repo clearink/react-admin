@@ -7,6 +7,7 @@ $collapsed_slider_width: 5rem;
 .container {
 	@apply bg-white;
 	@extend .animate;
+	user-select: none;
 	z-index: 2;
 	position: absolute;
 	height: 100%;

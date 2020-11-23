@@ -15,39 +15,33 @@ $min_grid_height: 500px;
 		background-color: rgba($color_primary, $alpha: 0.6);
 	}
 
-	.action_area {
+	.page_container {
 		@apply select-none;
-		@include flex-center();
-		align-items: flex-start;
-		height: 100%;
-
-		.page_container {
-			@apply bg-white;
-			margin: 200px 0;
-			border-radius: 3px;
-			box-shadow: 1px 0 14px rgba($color: black, $alpha: 0.3);
-			min-height: $min_grid_height;
-		}
+		@apply bg-white;
+		margin: 200px auto;
+		border-radius: 3px;
+		box-shadow: 1px 0 14px rgba($color: black, $alpha: 0.3);
+		min-height: $min_grid_height;
 	}
 }
 
 .grid_item_container {
 	@apply box-border bg-white;
 	border: 2px solid transparent;
-	&:hover,
-	&.active {
+	&:hover {
+		cursor: move;
 		border-color: rgba($color_primary, $alpha: 0.6);
 	}
 	&:active {
 		border-color: $color_primary;
-		cursor: move;
 	}
 	.form_item_wrap {
+		pointer-events: none;
 		@include flex-center;
 		@apply h-full box-border;
 		padding: 10px 8px;
-		border-radius: 2px;
 		overflow: hidden;
-		box-shadow: 0 2px 10px rgba($color: black, $alpha: 0.2);
+		box-shadow: 0 1px 1px rgba($color_grey-2, $alpha: 0.2);
+		will-change: transform;
 	}
 }

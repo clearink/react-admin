@@ -1,18 +1,29 @@
-import React from "react"
-import { Tabs, Typography, Button } from "antd"
+import React, { useEffect } from "react"
+import { Tabs, Typography, Button, Spin, message } from "antd"
 import IconFont from "@/components/IconFont"
 import useBoolean from "@/hooks/useBoolean"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import BaseComponent from "./BaseComponent"
-import FormComponent from "./FormComponent"
-import MediaComponent from "./MediaComponent"
+import BaseMateriel from "./BaseMaterielList"
+import FormMateriel from "./FormMaterielList"
+import MediaMateriel from "./MediaMaterielList"
+import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
+import { actions } from "@/store/reducers/materiel"
+import useTypedSelector from "@/hooks/useTypedSelector"
 const { Title } = Typography
 const { TabPane } = Tabs
-// 缩略宽度
+
+// 物料
 interface IProps {}
 function Materiel(props: IProps) {
 	const [collapsed, toggle] = useBoolean()
+	const loading = useTypedSelector((state) => state.materiel.loading)
+
+	// // 请求数据
+	// const unwrap = useUnwrapAsyncThunk()
+	// useEffect(() => {
+	// 	unwrap(actions.fetchMateriel())
+	// }, [unwrap])
 	return (
 		<>
 			<div
@@ -20,23 +31,22 @@ function Materiel(props: IProps) {
 					[styles.collapsed]: collapsed,
 				})}
 			>
-				<Tabs tabPosition='left' className={styles.tab__list}>
-					{/* 基础组件 */}
-					<TabPane tab={<IconFont type='icon-menu' />} key='base'>
-						<Title level={4}>基础组件</Title>
-						<BaseComponent />
-					</TabPane>
-					{/* 表单组件 */}
-					<TabPane tab={<IconFont type='icon-control' />} key='form'>
-						<Title level={4}>表单组件</Title>
-						<FormComponent />
-					</TabPane>
-					{/* 媒体组件 */}
-					<TabPane tab={<IconFont type='icon-menu' />} key='media'>
-						<Title level={4}>媒体组件</Title>
-						<MediaComponent />
-					</TabPane>
-				</Tabs>
+				<Spin spinning={loading}>
+					<Tabs tabPosition='left' className={styles.tab__list}>
+						<TabPane tab={<IconFont type='icon-menu' />} key='base'>
+							<Title level={4}>基础组件</Title>
+							<BaseMateriel />
+						</TabPane>
+						<TabPane tab={<IconFont type='icon-control' />} key='form'>
+							<Title level={4}>表单组件</Title>
+							<FormMateriel />
+						</TabPane>
+						<TabPane tab={<IconFont type='icon-menu' />} key='media'>
+							<Title level={4}>媒体组件</Title>
+							<MediaMateriel />
+						</TabPane>
+					</Tabs>
+				</Spin>
 				<Button
 					className={styles.collapsed}
 					type='link'

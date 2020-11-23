@@ -12,23 +12,27 @@ import {
 	ControllerProps,
 	get,
 	useFormContext,
+	useWatch,
 } from "react-hook-form"
 import { motion as m, AnimatePresence } from "framer-motion"
 import { animateProps, errorVariants } from "@/configs/animate"
 import { Col } from "antd"
 import classNames from "classnames"
 import "./style.scss"
+import withDefaultProps from "@/hocs/withDefaultProps"
 /**
  * 封装react hook form
  */
 interface IFormItem {
+	propName: string
+	required: boolean
 	children?: ReactNode
-	required?: boolean
-	refName?: string
 	label?: ReactNode
 	name?: string
 	rules?: any
+	refName?: string
 	render?: ControllerProps<any>["render"]
+	defaultValue?: any
 	[key: string]: any
 }
 
@@ -41,10 +45,11 @@ function FormItem(props: IFormItem) {
 		refName,
 		label,
 		name,
-		required = false,
+		required,
 		rules,
 		render,
-		...rest
+		defaultValue,
+		propName,
 	} = props
 	const { errors, register, control } = useFormContext()
 
@@ -64,37 +69,57 @@ function FormItem(props: IFormItem) {
 
 	// 渲染输入组件
 	const renderComponent = () => {
-		if (typeof render === "function" && name)
+		// 没有name 直接返回
+		if (!name) return children
+
+		if (typeof render === "function")
 			return (
 				<Controller
 					control={control}
 					name={name}
 					rules={rules}
 					render={render}
-					{...rest}
 				/>
 			)
 
 		return Children.map(children, (child) => {
-			// formItem如果不是有效的element 或者没有name属性
-			if (!isValidElement(child) || !name) return child
+			// formItem如果不是有效的element
+			if (!isValidElement(child)) return child
+			if (propName !== "value")
+				return (
+					<Controller
+						control={control}
+						name={name}
+						rules={rules}
+						defaultValue={defaultValue}
+						render={({ value, ...rest }) =>
+							cloneElement(child, {
+								id: name,
+								...rest,
+								[propName]: value,
+							})
+						}
+					/>
+				)
 
 			//	id 字段是为了配合label
-
 			// 有 refName 字段
 			if (refName)
 				return cloneElement(child, {
-					...rest,
-					[refName]: register(rules),
 					name,
 					id: name,
+					[refName]: register(rules),
 				})
+
 			return (
 				<Controller
 					control={control}
 					name={name}
-					as={cloneElement(child, { id: name })}
+					as={cloneElement(child, {
+						id: name,
+					})}
 					rules={rules}
+					defaultValue={defaultValue}
 				/>
 			)
 		})
@@ -132,4 +157,6 @@ function FormItem(props: IFormItem) {
 		</div>
 	)
 }
-export default memo(FormItem)
+export default memo(
+	withDefaultProps(FormItem, { propName: "value", required: false })
+)

@@ -1,10 +1,4 @@
-/*
- * @Description:
- * @Author: clearink
- * @Date: 2020-09-27 09:30:50
- * @LastEditors: clearink
- * @LastEditTime: 2020-10-20 11:58:00
- */
+// framer-motion 动画配置
 export const animateProps = {
 	initial: "initial",
 	animate: "animate",

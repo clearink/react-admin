@@ -45,6 +45,7 @@ $sider_width: 30rem;
 	}
 }
 .placeholder {
+	@extend .placeholder;
 	@include animate;
 	width: $sider_width;
 	&.collapsed {

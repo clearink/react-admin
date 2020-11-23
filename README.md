@@ -2,6 +2,8 @@
 
 ## TODO
 
-1. ### <span style='text-decoration: line-through'>登录组件</span>
+- 添加更多的基础组件
+- 配置文件新增组件初始位置信息
+- 数据库存储配置信息是否可行
 
-2. ### <span style='text-decoration: line-through'>后台</span>
+- 如不行 如何优化本地配置文件

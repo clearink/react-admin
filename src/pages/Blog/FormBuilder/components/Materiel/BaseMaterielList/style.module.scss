@@ -24,7 +24,7 @@ $spacing: 10px;
 			border-color: $color_primary;
 		}
 		.cover {
-			width: 100px;
+			max-width: 100px;
 			height: 60px;
 			@apply object-cover;
 		}

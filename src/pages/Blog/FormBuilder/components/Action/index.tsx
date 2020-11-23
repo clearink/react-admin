@@ -5,39 +5,28 @@ import ReactGridLayout from "@/components/ReactGridLayout"
 import TickMark from "../TickMark"
 import styles from "./style.module.scss"
 import { useDrop } from "react-dnd"
-import dnd from "@/configs/dnd"
-import gridLayout from "@/configs/pageBuilder"
+import gridLayout from "@/configs/h5Config"
 import useTypedSelector from "@/hooks/useTypedSelector"
-import BuilderComponent from "./BuilderComponent"
+import Builder from "./Builder"
 import { actions } from "@/store/reducers/builder"
-import { nanoid } from "@reduxjs/toolkit"
 import GetBoundAction from "@/utils/GetBoundAction"
-import baseComponentMap from "@/configs/baseComponentMap"
+import h5Config from "@/configs/h5Config"
+import { IDropItem } from "@/@types/page-builder"
 const boundActions = GetBoundAction(actions)
 const { Content } = Layout
-interface IProps {}
-function Action(props: IProps) {
-	const { builderList } = useTypedSelector((state) => state.builder)
+function Action() {
+	const builderList = useTypedSelector((state) => state.builder.builderList)
 	const [, dropRef] = useDrop({
-		accept: dnd.COMPONENT,
-		drop: (item: { type: string; name: string }, monitor) => {
+		accept: h5Config.TYPE,
+		drop: (item: IDropItem, monitor) => {
 			const isOver = monitor.isOver({ shallow: false })
 			const canDrop = monitor.canDrop()
 			if (isOver && canDrop) {
-				console.log("我将在末尾添加一条数据")
-				// 发送Action
-				const id = nanoid(8) // 生成唯一id
-				const config = baseComponentMap[item.name].config ?? {} // 可配置信息
+				const { config, name } = item
 				boundActions.add({
-					id,
-					position: { i: id, x: 0, y: Infinity, w: 12, h: 3 }, // 位置信息
-					type: item.name,
-					// 可配置信息
-					config,
-					// 配置属性 应当有默认值
-					value: Object.entries(config).reduce((pre, [k, v]: [string, any]) => {
-						return { ...pre, [k]: v.default }
-					}, {}),
+					type: name,
+					config: config.configs,
+					value: config.defaultValues,
 				})
 			}
 		},
@@ -51,29 +40,22 @@ function Action(props: IProps) {
 			<TickMark className='mt-20 absolute ml-0' vertical end={1050} step={50} />
 
 			{/* 操作区域 */}
-			<div className={classNames(styles.action_area)}>
-				<ReactGridLayout
-					innerRef={dropRef}
-					onLayoutChange={(l) => {
-						// console.log(l)
-					}}
-					margin={[1, 1]}
-					className={styles.page_container}
-					cols={gridLayout.COLS}
-					rowHeight={gridLayout.ROW_HEIGHT}
-					style={{ width: gridLayout.WIDTH }}
-					width={gridLayout.WIDTH}
-				>
-					{builderList.map((item) => (
-						<BuilderComponent
-							key={item.id}
-							data-grid={item.position}
-							config={item}
-							type={item.type}
-						/>
-					))}
-				</ReactGridLayout>
-			</div>
+			<ReactGridLayout
+				innerRef={dropRef}
+				onLayoutChange={(l) => {
+					// console.log(l)
+				}}
+				margin={[0, 0]}
+				className={styles.page_container}
+				cols={gridLayout.COLS}
+				rowHeight={gridLayout.ROW_HEIGHT}
+				style={{ width: gridLayout.WIDTH }}
+				width={gridLayout.WIDTH}
+			>
+				{builderList.map((item) => {
+					return <Builder item={item} data-grid={item.position} key={item.id} />
+				})}
+			</ReactGridLayout>
 		</Content>
 	)
 }
