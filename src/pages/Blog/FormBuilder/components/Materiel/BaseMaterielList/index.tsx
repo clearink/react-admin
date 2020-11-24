@@ -6,6 +6,7 @@ import BaseMateriel from "./BaseMateriel"
 import useCacheSelector from "@/hooks/useCacheSelector"
 import { selectors } from "@/store/reducers/materiel"
 const materielList = BaseConfig.list
+console.log(materielList);
 // 绑定拖拽
 
 function BaseMaterielList() {

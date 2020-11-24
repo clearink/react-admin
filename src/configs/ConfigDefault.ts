@@ -1,13 +1,25 @@
 import FilterValue from "@/utils/FilterValue"
 export default class ConfigDefault {
+	get list(): any[] {
+		return Object.values(FilterValue(this, "layout"))
+	}
+
+	get position(): Object {
+		return this["layout"]
+	}
+
 	get defaultValues(): Object {
-		return Object.entries(this).reduce((pre, [k, v]) => {
-			return { ...pre, [k]: v.default }
-		}, {})
+		const result = {}
+		for (let [k, v] of Object.entries(this)) {
+			result[k] = v.default
+		}
+		return result
 	}
 	get configs(): Object {
-		return Object.entries(this).reduce((pre, [k, v]) => {
-			return { ...pre, [k]: FilterValue(v, "default") }
-		}, {})
+		const result = {}
+		for (let [k, v] of Object.entries(this)) {
+			result[k] = FilterValue(v, "default", "layout")
+		}
+		return result
 	}
 }

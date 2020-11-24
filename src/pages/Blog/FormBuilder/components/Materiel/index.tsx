@@ -38,7 +38,7 @@ function Materiel(props: IProps) {
 							<BaseMateriel />
 						</TabPane>
 						<TabPane tab={<IconFont type='icon-control' />} key='form'>
-							<Title level={4}>表单组件</Title>
+							<Title level={4}>高级组件</Title>
 							<FormMateriel />
 						</TabPane>
 						<TabPane tab={<IconFont type='icon-menu' />} key='media'>

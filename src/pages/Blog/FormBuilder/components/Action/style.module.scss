@@ -32,6 +32,7 @@ $min_grid_height: 500px;
 		cursor: move;
 		border-color: rgba($color_primary, $alpha: 0.6);
 	}
+	&.active,
 	&:active {
 		border-color: $color_primary;
 	}

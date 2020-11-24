@@ -73,5 +73,9 @@ class CarouselConfig extends ConfigDefault {
 		type: "Switch",
 		default: false,
 	}
+
+	layout = {
+		h: 6,
+	}
 }
 export default new CarouselConfig()

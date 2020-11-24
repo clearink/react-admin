@@ -1,11 +1,5 @@
 // 绑定drop
-import React, {
-	ComponentType,
-	isValidElement,
-	memo,
-	useMemo,
-	useState,
-} from "react"
+import React, { isValidElement, memo, useMemo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
 import { useDrop } from "react-dnd"
@@ -15,7 +9,6 @@ import GetBoundAction from "@/utils/GetBoundAction"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import h5Config from "@/configs/h5Config"
 const boundActions = GetBoundAction(actions)
-
 //TODO 应该拖拽时不能选中
 function Builder(props: { [key: string]: any }) {
 	const { children, className, item, ...rest } = props
@@ -34,10 +27,9 @@ function Builder(props: { [key: string]: any }) {
 
 	const renderComponent = useMemo(() => {
 		const MapComponent = BuilderMap[type]
-		if (!isValidElement(<MapComponent />)) {
-			return null
+		if (MapComponent && isValidElement(<MapComponent />)) {
+			return <MapComponent {...value} />
 		}
-		return <MapComponent {...value} />
 	}, [type, value])
 	return (
 		<div

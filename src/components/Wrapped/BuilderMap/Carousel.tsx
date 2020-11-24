@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react"
+import React, { memo } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Carousel } from "zarm"
 import { nanoid } from "@reduxjs/toolkit"

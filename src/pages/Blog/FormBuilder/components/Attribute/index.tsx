@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { isValidElement, useEffect, useMemo } from "react"
 import { Button, Result } from "antd"
 import classNames from "classnames"
 import styles from "./style.module.scss"
@@ -22,11 +22,12 @@ function Attribute(props: IProps) {
 		if (!formMeta) return null
 		return Object.entries(formMeta.config).map(([name, value]) => {
 			const FormComponent = FormMap[value.type]
-			return (
-				<Form.Item required key={name} name={name} label={value.name}>
-					<FormComponent config={value.value} />
-				</Form.Item>
-			)
+			if (FormComponent && isValidElement(<FormComponent />))
+				return (
+					<Form.Item required key={name} name={name} label={value.name}>
+						<FormComponent config={value.value} />
+					</Form.Item>
+				)
 		})
 	}, [formMeta])
 

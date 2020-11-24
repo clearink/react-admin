@@ -1,44 +1,38 @@
+import { AddInput, AddSelect, AddSwitch } from "@/utils/QuickConfig"
 import ConfigDefault from "../ConfigDefault"
 
 class ButtonConfig extends ConfigDefault {
-	children = { name: "文本", type: "Input", default: "按钮" } //文本
-
+	children = { name: "文本", ...AddInput("按钮") } //文本
 	theme = {
 		name: "主题",
-		type: "Select",
 		value: ["primary", "default", "danger"],
-		default: "primary",
+		...AddSelect("primary"),
 	} //类型
 
 	size = {
 		name: "尺寸",
-		type: "Select",
 		value: ["md", "lg", "sm", "xs"],
-		default: "md",
+		...AddSelect("md"),
 	} // 尺寸
 
 	shape = {
 		name: "形状",
-		type: "Select",
 		value: ["radius", "rect", "round", "circle"],
-		default: "radius",
+		...AddSwitch("radius"),
 	}
 
 	block = {
 		name: "块级元素",
-		type: "Switch",
-		default: false,
+		...AddSwitch(),
 	}
 	ghost = {
 		name: "幽灵按钮",
-		type: "Switch",
-		default: false,
+		...AddSwitch(),
 	}
 
 	shadow = {
 		name: "阴影",
-		type: "Switch",
-		default: false,
+		...AddSwitch(),
 	}
 }
 export default new ButtonConfig()
