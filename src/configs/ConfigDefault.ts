@@ -1,11 +1,11 @@
 import FilterValue from "@/utils/FilterValue"
 export default class ConfigDefault {
 	get list(): any[] {
-		return Object.values(FilterValue(this, "layout"))
+		return Object.values(FilterValue(this, "position"))
 	}
 
-	get position(): Object {
-		return this["layout"]
+	get layout(): Object {
+		return this["position"]
 	}
 
 	get defaultValues(): Object {
@@ -18,7 +18,7 @@ export default class ConfigDefault {
 	get configs(): Object {
 		const result = {}
 		for (let [k, v] of Object.entries(this)) {
-			result[k] = FilterValue(v, "default", "layout")
+			result[k] = FilterValue(v, "default", "position")
 		}
 		return result
 	}

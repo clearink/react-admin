@@ -15,5 +15,6 @@ export interface IDropItem {
 	config: {
 		defaultValues: Object
 		configs: Object
+		layout: Object
 	}
 }

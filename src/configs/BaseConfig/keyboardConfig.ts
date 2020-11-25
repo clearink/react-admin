@@ -7,5 +7,9 @@ class keyboardConfig extends ConfigDefault {
 		value: ["number", "price", "idcard"],
 		...AddSelect("number"),
 	}
+
+	position = {
+		h: 9,
+	}
 }
 export default new keyboardConfig()

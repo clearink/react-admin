@@ -34,5 +34,6 @@ class ButtonConfig extends ConfigDefault {
 		name: "阴影",
 		...AddSwitch(),
 	}
+
 }
 export default new ButtonConfig()

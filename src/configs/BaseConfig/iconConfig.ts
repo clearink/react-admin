@@ -47,5 +47,10 @@ class IconConfig extends ConfigDefault {
 		],
 		...AddSelect("add"),
 	}
+
+	position = {
+		h: 2,
+		w: 2,
+	}
 }
 export default new IconConfig()

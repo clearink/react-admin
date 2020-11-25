@@ -23,11 +23,12 @@ function Action() {
 			const canDrop = monitor.canDrop()
 			if (isOver && canDrop) {
 				const { config, name } = item
-				console.log(config.configs, config.defaultValues)
+				console.log("config.layout", config.layout)
 				boundActions.add({
 					type: name,
 					config: config.configs,
 					value: config.defaultValues,
+					layout: config.layout,
 				})
 			}
 		},

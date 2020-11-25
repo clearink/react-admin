@@ -2,7 +2,7 @@
 
 import { ComponentType } from "react"
 import { Input, InputNumber } from "antd"
-import { Select, Switch } from "@/components/FormMapWrap"
+import { Select, Switch } from "@/components/Wrapped/ConfigWrap"
 export default {
 	Select,
 	Switch,

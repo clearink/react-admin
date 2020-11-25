@@ -74,8 +74,8 @@ class CarouselConfig extends ConfigDefault {
 		default: false,
 	}
 
-	layout = {
-		h: 6,
+	position = {
+		h: 8,
 	}
 }
 export default new CarouselConfig()

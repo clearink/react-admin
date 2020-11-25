@@ -26,18 +26,25 @@ const slice = createSlice({
 		// 生成一个组件
 		add(
 			state,
-			action: PayloadAction<{ type: string; config: Object; value: Object }>
+			action: PayloadAction<{
+				type: string
+				config: Object
+				value: Object
+				layout: Object
+			}>
 		) {
 			const id = nanoid(8)
+			const { layout, ...rest } = action.payload
 			state.builderList.push({
 				id,
-				...action.payload,
+				...rest,
 				position: {
 					i: id,
 					x: 0,
 					y: Infinity,
 					w: h5Config.COLS,
 					h: h5Config.INIT_HEIGHT,
+					...layout,
 				}, // 位置信息
 			})
 		},

@@ -36,13 +36,18 @@ $min_grid_height: 500px;
 	&:active {
 		border-color: $color_primary;
 	}
+
+	:global {
+		.react-resizable-handle {
+			width: 10px;
+			height: 10px;
+		}
+	}
 	.form_item_wrap {
 		pointer-events: none;
 		@include flex-center;
 		@apply h-full box-border;
-		padding: 10px 8px;
 		overflow: hidden;
-		box-shadow: 0 1px 1px rgba($color_grey-2, $alpha: 0.2);
 		will-change: transform;
 	}
 }
