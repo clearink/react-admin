@@ -1,10 +1,11 @@
 import FilterValue from "@/utils/FilterValue"
-export default class ConfigDefault {
+
+export default abstract class ConfigDefault {
 	get list(): any[] {
 		return Object.values(FilterValue(this, "position"))
 	}
 
-	get layout(): Object {
+	get layout() {
 		return this["position"]
 	}
 

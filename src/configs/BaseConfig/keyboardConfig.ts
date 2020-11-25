@@ -10,6 +10,7 @@ class keyboardConfig extends ConfigDefault {
 
 	position = {
 		h: 9,
+		minH: 9,
 	}
 }
 export default new keyboardConfig()

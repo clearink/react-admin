@@ -33,5 +33,6 @@ class CalendarConfig extends ConfigDefault {
 		type: "Switch",
 		default: false,
 	}
+
 }
 export default new CalendarConfig()

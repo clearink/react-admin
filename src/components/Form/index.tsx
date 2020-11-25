@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactNode } from "react"
 import { FormProvider, UseFormMethods, SubmitHandler } from "react-hook-form"
-import FormItem from "../FormItem"
+import FormItem from "./FormItem"
 
 /**
  * 作为 antd Form 的临时替代

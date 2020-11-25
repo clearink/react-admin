@@ -73,9 +73,5 @@ class CarouselConfig extends ConfigDefault {
 		type: "Switch",
 		default: false,
 	}
-
-	position = {
-		h: 8,
-	}
 }
 export default new CarouselConfig()
