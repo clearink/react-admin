@@ -29,11 +29,11 @@ $min_grid_height: 500px;
 	@apply box-border bg-white;
 	border: 2px solid transparent;
 	&:hover {
-		cursor: move;
 		border-color: rgba($color_primary, $alpha: 0.6);
 	}
 	&.active,
 	&:active {
+		cursor: move;
 		border-color: $color_primary;
 	}
 

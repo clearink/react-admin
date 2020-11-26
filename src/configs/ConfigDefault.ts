@@ -12,6 +12,7 @@ export default abstract class ConfigDefault {
 	get defaultValues(): Object {
 		const result = {}
 		for (let [k, v] of Object.entries(this)) {
+			if (k === "position") continue
 			result[k] = v.default
 		}
 		return result
@@ -19,7 +20,8 @@ export default abstract class ConfigDefault {
 	get configs(): Object {
 		const result = {}
 		for (let [k, v] of Object.entries(this)) {
-			result[k] = FilterValue(v, "default", "position")
+			if (k === "position") continue
+			result[k] = FilterValue(v, "default") // 去除掉每个的 default 属性
 		}
 		return result
 	}

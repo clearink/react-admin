@@ -1,20 +1,44 @@
+import { IConfigList } from "@/@types/page-config"
+import { AddInput, AddList } from "@/utils/QuickConfig"
 import ConfigDefault from "../ConfigDefault"
+
+class ImgListConfig extends ConfigDefault {}
 
 // 走马灯
 class CarouselConfig extends ConfigDefault {
-	imgList = {
+	imgList: IConfigList = {
 		name: "图片",
-		type: "Select",
-		value: [
-			"https://static.zhongan.com/website/health/zarm/images/banners/1.png",
-			"https://static.zhongan.com/website/health/zarm/images/banners/2.png",
-			"https://static.zhongan.com/website/health/zarm/images/banners/3.png",
-		],
-		default: [
-			"https://static.zhongan.com/website/health/zarm/images/banners/1.png",
-			"https://static.zhongan.com/website/health/zarm/images/banners/2.png",
-			"https://static.zhongan.com/website/health/zarm/images/banners/3.png",
-		],
+		// 这里应该是与 CarouselConfig 相同的一个类
+		// 但是 redux 无法存储 继承信息
+		value: {
+			src: {
+				name: "图片地址",
+				...AddInput(),
+				hidden: false,
+			},
+			href: {
+				name: "外部链接",
+				...AddInput(),
+				hidden: true,
+			},
+		},
+		...AddList([
+			{
+				src:
+					"https://static.zhongan.com/website/health/zarm/images/banners/1.png",
+				href: "https://zarm.gitee.io/#/components/radio",
+			},
+			{
+				src:
+					"https://static.zhongan.com/website/health/zarm/images/banners/2.png",
+				href: "https://zarm.gitee.io/#/components/radio",
+			},
+			{
+				src:
+					"https://static.zhongan.com/website/health/zarm/images/banners/3.png",
+				href: "https://zarm.gitee.io/#/components/radio",
+			},
+		]),
 	}
 	direction = {
 		name: "方向",
@@ -72,6 +96,11 @@ class CarouselConfig extends ConfigDefault {
 		name: "分页器",
 		type: "Switch",
 		default: false,
+	}
+
+	position = {
+		h: 8,
+		minH: 8,
 	}
 }
 export default new CarouselConfig()
