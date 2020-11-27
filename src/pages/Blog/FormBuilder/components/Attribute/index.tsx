@@ -17,23 +17,7 @@ function Attribute(props: IProps) {
 	// TODO 自动根据是否选择打开
 	const [collapsed, toggle] = useBoolean()
 	const formMeta = useCacheSelector(selectors.selectConfig)
-
 	const [form] = Form.useForm()
-	// const FormItemList = useMemo(() => {
-	// 	if (!formMeta) return null
-	// 	return Object.entries(formMeta.config).map(
-	// 		([key, { name, type, value }]) => {
-	// 			const FormComponent = FormMap[type]
-	// 			if (FormComponent && isValidElement(<FormComponent />))
-	// 				return (
-	// 					<Form.Item required key={key} name={key} label={name}>
-	// 						<FormComponent config={value} name={name} />
-	// 					</Form.Item>
-	// 				)
-	// 			return null
-	// 		}
-	// 	)
-	// }, [formMeta])
 
 	useEffect(() => {
 		if (!formMeta) return
@@ -46,6 +30,10 @@ function Attribute(props: IProps) {
 			value,
 			id: formMeta.id,
 		})
+	}
+	const handleDelete = () => {
+		console.log(formMeta)
+		if (formMeta) boundActions.delete(formMeta.id)
 	}
 	return (
 		<>
@@ -67,6 +55,15 @@ function Attribute(props: IProps) {
 						>
 							<Button block type='primary' htmlType='submit'>
 								修改
+							</Button>
+							<Button
+								block
+								danger
+								type='primary'
+								onClick={handleDelete}
+								className='mt-8'
+							>
+								删除
 							</Button>
 						</RenderForm>
 					</>

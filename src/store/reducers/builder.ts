@@ -6,6 +6,7 @@ import {
 	nanoid,
 	PayloadAction,
 	createSelector,
+	createEntityAdapter,
 } from "@reduxjs/toolkit"
 import { AppState } from ".."
 
@@ -16,6 +17,9 @@ type TPageBuilder = {
 	type: string
 	id: string
 }
+
+const builderListAdapter = createEntityAdapter<TPageBuilder>()
+
 const slice = createSlice({
 	name: "page-builder",
 	initialState: {
@@ -56,6 +60,13 @@ const slice = createSlice({
 		},
 		active(state, action: PayloadAction<null | string>) {
 			state.selectId = action.payload
+		},
+		delete(state, action: PayloadAction<string | number>) {
+			const id = action.payload
+			return {
+				selectId: null,
+				builderList: state.builderList.filter((item) => item.id !== id),
+			}
 		},
 	},
 })

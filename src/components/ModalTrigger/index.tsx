@@ -28,7 +28,6 @@ function ModalTrigger(props: IProps, ref: Ref<IModalTriggerRef>) {
 
 	const wrappedTrigger = useMemo(() => {
 		if (!trigger || !isValidElement(trigger)) return trigger
-		console.log(trigger.props)
 		return cloneElement(trigger, {
 			onClick: (e: MouseEvent) => {
 				const { onClick } = trigger.props

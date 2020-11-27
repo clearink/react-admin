@@ -1,5 +1,11 @@
 import { IConfigList } from "@/@types/page-config"
-import { AddInput, AddList, AddNumber, AddSwitch } from "@/utils/QuickConfig"
+import {
+	AddHidden,
+	AddInput,
+	AddList,
+	AddNumber,
+	AddSwitch,
+} from "@/utils/QuickConfig"
 import ConfigDefault from "../ConfigDefault"
 
 // 走马灯
@@ -9,19 +15,24 @@ class CarouselConfig extends ConfigDefault {
 		// 这里应该是与 CarouselConfig 相同的一个类
 		// 但是 redux 无法存储 继承信息
 		value: {
+			name: {
+				name: "名称",
+				...AddInput(""),
+			},
 			src: {
 				name: "图片地址",
 				...AddInput("12321"),
-				hidden: false,
+				...AddHidden(),
 			},
 			href: {
 				name: "外部链接",
 				...AddInput("1221312"),
-				hidden: true,
+				...AddHidden(),
 			},
 		},
 		...AddList([
 			{
+				name: "图片1",
 				src:
 					"https://static.zhongan.com/website/health/zarm/images/banners/1.png",
 				href: "https://zarm.gitee.io/#/components/radio",

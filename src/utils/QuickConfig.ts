@@ -1,3 +1,5 @@
+import { nanoid } from "@reduxjs/toolkit"
+
 // 快速向配置文件添加属性
 export function AddValue(key: string, value: any) {
 	return { [key]: value }
@@ -6,6 +8,9 @@ export function AddType(type: string) {
 	return AddValue("type", type)
 }
 
+export function AddHidden() {
+	return AddValue("hidden", true)
+}
 export function AddInput(value: any = "") {
 	return {
 		...AddType("Input"),
@@ -35,6 +40,9 @@ export function AddNumber(value: number) {
 export function AddList(value: any[] = []) {
 	return {
 		...AddType("List"),
-		...AddValue("default", value),
+		...AddValue(
+			"default",
+			value.map((item) => ({ id: nanoid(8), ...item }))
+		),
 	}
 }

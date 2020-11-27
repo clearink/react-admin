@@ -1,28 +1,61 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
-import React, { memo, useMemo } from "react"
+import Icon, {
+	EditFilled,
+	MinusCircleFilled,
+	MinusCircleOutlined,
+	MinusOutlined,
+} from "@ant-design/icons"
+import { Popconfirm, Tooltip } from "antd"
+import { FormInstance } from "antd/lib/form"
+import React, { memo, Ref, useContext, useMemo } from "react"
+import { ConfigListContext } from "."
 import styles from "./style.module.scss"
 interface IProps {
 	data: any[]
-	config: Object
+	config: {
+		[key: string]: any
+	}
 }
 // 用于 configList 预览的组件
 function ListItem(props: IProps) {
-  const { data, config } = props
-	// config 中选出需要隐藏的数据
-	console.log(`ListItemListItemListItemListItemListItemListItemListItem`, props);
-	const renderChildren = useMemo(()=>{
-		return data.map(item=>{
-			// 不知道 item中有哪些数据 
-			// 由 config 得到该显示哪些数据
-		})
-	},[config, data])
-	return (
-		<div className={styles.item_list_wrap}>
-			{data.map((item) => {
-				return <div key={item.src}>{item.src}</div>
-			})}
-		</div>
-	)
+	const { data, config } = props
+	const { handleStartUpdate, handleDelete } = useContext<{
+		handleStartUpdate: (item: Object) => {}
+		handleDelete: (id: string | number) => {}
+	}>(ConfigListContext)
+	// 由 config 得到该显示哪些数据
+	const dataKeys = useMemo(() => {
+		return Object.entries(config).reduce((pre, [key, cur]) => {
+			if (cur.hidden) return pre
+			return pre.concat(key)
+		}, [] as string[])
+	}, [config])
+	// 显示数据
+
+	const renderChildren = useMemo(() => {
+		return data.map((item, index) => (
+			<div className={styles.item_list} key={item.id ?? index}>
+				{dataKeys.map((key) => {
+					return (
+						<div className={styles.item} key={key}>
+							{item[key]}
+						</div>
+					)
+				})}
+				<EditFilled
+					onClick={() => handleStartUpdate(item)}
+					className={styles.icon}
+				/>
+				<Popconfirm
+					title='确认删除该数据吗?'
+					onConfirm={() => handleDelete(item.id)}
+				>
+					<MinusCircleFilled className={styles.icon} />
+				</Popconfirm>
+			</div>
+		))
+	}, [dataKeys, data, handleDelete, handleStartUpdate])
+	return <div className={styles.item_list_wrap}>{renderChildren}</div>
 }
 
 export default memo(

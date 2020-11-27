@@ -1,7 +1,6 @@
 import React, { isValidElement, memo, useMemo } from "react"
 import Form, { FormInstance, FormProps } from "antd/lib/form"
 import FormMap from "@/configs/FormMap"
-import { message } from "antd"
 interface IProps<T> extends FormProps {
 	config?: { [key: string]: any }
 	form: FormInstance<T>
