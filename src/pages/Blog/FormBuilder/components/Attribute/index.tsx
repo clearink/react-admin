@@ -9,6 +9,7 @@ import FormMap from "@/configs/FormMap"
 import { selectors, actions } from "@/store/reducers/builder"
 import useCacheSelector from "@/hooks/useCacheSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
+import RenderForm from "@/components/RenderForm"
 
 const boundActions = GetBoundAction(actions)
 interface IProps {}
@@ -18,18 +19,21 @@ function Attribute(props: IProps) {
 	const formMeta = useCacheSelector(selectors.selectConfig)
 
 	const [form] = Form.useForm()
-	const FormItemList = useMemo(() => {
-		if (!formMeta) return null
-		return Object.entries(formMeta.config).map(([name, value]) => {
-			const FormComponent = FormMap[value.type]
-			if (FormComponent && isValidElement(<FormComponent />))
-				return (
-					<Form.Item required key={name} name={name} label={value.name}>
-						<FormComponent config={value.value} />
-					</Form.Item>
-				)
-		})
-	}, [formMeta])
+	// const FormItemList = useMemo(() => {
+	// 	if (!formMeta) return null
+	// 	return Object.entries(formMeta.config).map(
+	// 		([key, { name, type, value }]) => {
+	// 			const FormComponent = FormMap[type]
+	// 			if (FormComponent && isValidElement(<FormComponent />))
+	// 				return (
+	// 					<Form.Item required key={key} name={key} label={name}>
+	// 						<FormComponent config={value} name={name} />
+	// 					</Form.Item>
+	// 				)
+	// 			return null
+	// 		}
+	// 	)
+	// }, [formMeta])
 
 	useEffect(() => {
 		if (!formMeta) return
@@ -55,17 +59,16 @@ function Attribute(props: IProps) {
 						<Typography.Title level={4} className='mb-8'>
 							配置属性
 						</Typography.Title>
-						<Form
+						<RenderForm
 							initialValues={formMeta.value}
+							config={formMeta.config}
 							form={form}
 							onFinish={handleUpdate}
 						>
-							{FormItemList}
-
 							<Button block type='primary' htmlType='submit'>
 								修改
 							</Button>
-						</Form>
+						</RenderForm>
 					</>
 				) : (
 					<Result

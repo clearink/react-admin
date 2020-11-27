@@ -25,6 +25,12 @@ export function AddSwitch(value: any = false) {
 		...AddValue("default", value),
 	}
 }
+export function AddNumber(value: number) {
+	return {
+		...AddType("InputNumber"),
+		...AddValue("default", value),
+	}
+}
 
 export function AddList(value: any[] = []) {
 	return {

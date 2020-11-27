@@ -2,8 +2,9 @@ import React, {
 	cloneElement,
 	forwardRef,
 	isValidElement,
+	memo,
 	ReactNode,
-	RefObject,
+	Ref,
 	useImperativeHandle,
 	useMemo,
 } from "react"
@@ -15,11 +16,15 @@ interface IProps extends Omit<ModalProps, "visible"> {
 	trigger?: ReactNode
 	children?: ReactNode
 }
-function ModalTrigger<T>(props: IProps, ref: RefObject<T>) {
+export interface IModalTriggerRef {
+	toggle: () => void
+	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
+}
+function ModalTrigger(props: IProps, ref: Ref<IModalTriggerRef>) {
 	const { trigger, children, ...rest } = props
 	const [visible, toggle] = useBoolean(false)
 
-	useImperativeHandle(ref, () => ({ toggle }))
+	useImperativeHandle(ref, () => ({ toggle }), [toggle])
 
 	const wrappedTrigger = useMemo(() => {
 		if (!trigger || !isValidElement(trigger)) return trigger
@@ -41,4 +46,4 @@ function ModalTrigger<T>(props: IProps, ref: RefObject<T>) {
 	)
 }
 
-export default forwardRef(ModalTrigger)
+export default memo(forwardRef(ModalTrigger))

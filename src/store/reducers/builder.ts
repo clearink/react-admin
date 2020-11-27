@@ -26,12 +26,11 @@ const slice = createSlice({
 		// 生成一个组件
 		add(
 			state,
-			action: PayloadAction<{
-				type: string
-				config: Object
-				value: Object
-				layout: Object
-			}>
+			action: PayloadAction<
+				Omit<Omit<TPageBuilder, "position">, "id"> & {
+					layout: Object
+				}
+			>
 		) {
 			const id = nanoid(8)
 			const { layout, ...rest } = action.payload

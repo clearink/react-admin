@@ -6,7 +6,7 @@ export interface IBuilderLayout {
 	h: number
 }
 export interface IBuilderConfig {
-	[key: any]: any
+	[key: string]: any
 }
 
 export interface IDropItem {

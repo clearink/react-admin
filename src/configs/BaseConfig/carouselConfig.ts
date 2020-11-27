@@ -1,8 +1,6 @@
 import { IConfigList } from "@/@types/page-config"
-import { AddInput, AddList } from "@/utils/QuickConfig"
+import { AddInput, AddList, AddNumber, AddSwitch } from "@/utils/QuickConfig"
 import ConfigDefault from "../ConfigDefault"
-
-class ImgListConfig extends ConfigDefault {}
 
 // 走马灯
 class CarouselConfig extends ConfigDefault {
@@ -13,12 +11,12 @@ class CarouselConfig extends ConfigDefault {
 		value: {
 			src: {
 				name: "图片地址",
-				...AddInput(),
+				...AddInput("12321"),
 				hidden: false,
 			},
 			href: {
 				name: "外部链接",
-				...AddInput(),
+				...AddInput("1221312"),
 				hidden: true,
 			},
 		},
@@ -26,16 +24,6 @@ class CarouselConfig extends ConfigDefault {
 			{
 				src:
 					"https://static.zhongan.com/website/health/zarm/images/banners/1.png",
-				href: "https://zarm.gitee.io/#/components/radio",
-			},
-			{
-				src:
-					"https://static.zhongan.com/website/health/zarm/images/banners/2.png",
-				href: "https://zarm.gitee.io/#/components/radio",
-			},
-			{
-				src:
-					"https://static.zhongan.com/website/health/zarm/images/banners/3.png",
 				href: "https://zarm.gitee.io/#/components/radio",
 			},
 		]),
@@ -47,55 +35,50 @@ class CarouselConfig extends ConfigDefault {
 		value: ["left", "right", "up", "down"],
 	}
 
-	height = { name: "轮播高度", type: "InputNumber", default: 160 }
+	height = {
+		name: "轮播高度",
+		...AddNumber(160),
+	}
 
 	//
 	// activeIndex = { name: "" }
 
 	loop = {
 		name: "循环",
-		type: "Switch",
-		default: true,
+		...AddSwitch(true),
 	}
 
 	swipeable = {
 		name: "滑动",
-		type: "Switch",
-		default: false,
+		...AddSwitch(false),
 	}
 
 	autoPlay = {
 		name: "自动轮播",
-		type: "Switch",
-		default: true,
+		...AddSwitch(true),
 	}
 
 	autoPlayIntervalTime = {
 		name: "轮播间隔",
-		type: "InputNumber",
-		default: 3000,
+		...AddNumber(3000),
 	}
 
 	moveDistanceRatio = {
 		name: "移动距离比例",
-		type: "InputNumber",
-		default: 0.5,
+		...AddNumber(0.5),
 	}
 	moveTimeSpan = {
 		name: "移动时间跨度",
-		type: "InputNumber",
-		default: 300,
+		...AddNumber(300),
 	}
 	animationDuration = {
 		name: "动画时间",
-		type: "InputNumber",
-		default: 300,
+		...AddNumber(300),
 	}
 
 	showPagination = {
 		name: "分页器",
-		type: "Switch",
-		default: false,
+		...AddSwitch(true),
 	}
 
 	position = {
