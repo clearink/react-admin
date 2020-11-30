@@ -11,14 +11,16 @@ export function AddType(type: string) {
 export function AddHidden() {
 	return AddValue("hidden", true)
 }
-export function AddInput(value: any = "") {
+// 使该字段可选
+export const AddOptional = AddValue("optional", true)
+export function AddInput(value?: any) {
 	return {
 		...AddType("Input"),
 		...AddValue("default", value),
 	}
 }
 
-export function AddSelect(value: any = "") {
+export function AddSelect(value: any) {
 	return {
 		...AddType("Select"),
 		...AddValue("default", value),
@@ -30,7 +32,7 @@ export function AddSwitch(value: any = false) {
 		...AddValue("default", value),
 	}
 }
-export function AddNumber(value: number) {
+export function AddNumber(value?: number) {
 	return {
 		...AddType("InputNumber"),
 		...AddValue("default", value),

@@ -1,8 +1,21 @@
-import { AddInput, AddOptional, AddSelect, AddSwitch, AddType } from "@/utils/QuickConfig"
+import {
+	AddInput,
+	AddOptional,
+	AddSelect,
+	AddSwitch,
+	AddType,
+} from "@/utils/QuickConfig"
 import ConfigDefault from "../ConfigDefault"
 
-class ButtonConfig extends ConfigDefault {
-	children = { name: "文本", ...AddInput("按钮") } //文本
+class FormConfig extends ConfigDefault {
+	title = {
+		name: "title",
+		...AddInput("表单标题"),
+	} //文本
+
+	// 此处应该是一个buttonConfig
+	submit = {}
+
 	theme = {
 		name: "主题",
 		value: ["primary", "default", "danger"],
@@ -41,4 +54,4 @@ class ButtonConfig extends ConfigDefault {
 		...AddInput(),
 	}
 }
-export default new ButtonConfig()
+export default new FormConfig()

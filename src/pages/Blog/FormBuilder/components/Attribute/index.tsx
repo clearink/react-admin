@@ -1,19 +1,17 @@
-import React, { isValidElement, useEffect, useMemo } from "react"
-import { Button, Result } from "antd"
+import React, { useEffect } from "react"
+import { Button, Result, Modal, Popconfirm } from "antd"
 import classNames from "classnames"
 import styles from "./style.module.scss"
 import useBoolean from "@/hooks/useBoolean"
 import { DoubleLeftOutlined, DoubleRightOutlined } from "@ant-design/icons"
 import { Form, Typography } from "antd"
-import FormMap from "@/configs/FormMap"
 import { selectors, actions } from "@/store/reducers/builder"
 import useCacheSelector from "@/hooks/useCacheSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
 import RenderForm from "@/components/RenderForm"
 
 const boundActions = GetBoundAction(actions)
-interface IProps {}
-function Attribute(props: IProps) {
+function Attribute() {
 	// TODO 自动根据是否选择打开
 	const [collapsed, toggle] = useBoolean()
 	const formMeta = useCacheSelector(selectors.selectConfig)
@@ -24,6 +22,8 @@ function Attribute(props: IProps) {
 		form.setFieldsValue(formMeta.value)
 	}, [form, formMeta])
 
+
+	// 更新组件
 	const handleUpdate = (value: any) => {
 		if (!formMeta) return
 		boundActions.update({
@@ -31,8 +31,9 @@ function Attribute(props: IProps) {
 			id: formMeta.id,
 		})
 	}
+
+	// 删除该组件
 	const handleDelete = () => {
-		console.log(formMeta)
 		if (formMeta) boundActions.delete(formMeta.id)
 	}
 	return (
@@ -56,15 +57,18 @@ function Attribute(props: IProps) {
 							<Button block type='primary' htmlType='submit'>
 								修改
 							</Button>
-							<Button
-								block
-								danger
-								type='primary'
-								onClick={handleDelete}
-								className='mt-8'
+							<Popconfirm
+								title='您将删除该组件'
+								cancelText='取消'
+								okText='删除'
+								okType='danger'
+								okButtonProps={{ type: "primary" }}
+								onConfirm={handleDelete}
 							>
-								删除
-							</Button>
+								<Button block danger type='primary' className='mt-8'>
+									删除
+								</Button>
+							</Popconfirm>
 						</RenderForm>
 					</>
 				) : (

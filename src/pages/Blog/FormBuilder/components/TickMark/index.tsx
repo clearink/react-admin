@@ -21,7 +21,7 @@ const defaultProps = {
 	start: 0,
 	end: 10,
 }
-function _TickMark(props: IProps) {
+function TickMark(props: IProps) {
 	const { vertical, step, start, end, style, className } = props
 
 	const markStep = useMemo(() => Math.floor(step / 10), [step])
@@ -67,5 +67,4 @@ function _TickMark(props: IProps) {
 	)
 }
 
-const TickMark = withDefaultProps(memo(_TickMark), defaultProps)
-export default TickMark
+export default withDefaultProps(memo(TickMark), defaultProps)

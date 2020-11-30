@@ -1,13 +1,7 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
-import Icon, {
-	EditFilled,
-	MinusCircleFilled,
-	MinusCircleOutlined,
-	MinusOutlined,
-} from "@ant-design/icons"
-import { Popconfirm, Tooltip } from "antd"
-import { FormInstance } from "antd/lib/form"
-import React, { memo, Ref, useContext, useMemo } from "react"
+import { DeleteFilled, EditFilled, MinusCircleFilled } from "@ant-design/icons"
+import { Popconfirm } from "antd"
+import React, { memo, useContext, useMemo } from "react"
 import { ConfigListContext } from "."
 import styles from "./style.module.scss"
 interface IProps {
@@ -38,7 +32,7 @@ function ListItem(props: IProps) {
 				{dataKeys.map((key) => {
 					return (
 						<div className={styles.item} key={key}>
-							{item[key]}
+							{item[key] ?? "暂未设置"}
 						</div>
 					)
 				})}
@@ -50,7 +44,7 @@ function ListItem(props: IProps) {
 					title='确认删除该数据吗?'
 					onConfirm={() => handleDelete(item.id)}
 				>
-					<MinusCircleFilled className={styles.icon} />
+					<DeleteFilled className={styles.icon} />
 				</Popconfirm>
 			</div>
 		))

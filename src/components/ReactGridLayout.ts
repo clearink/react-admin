@@ -3,6 +3,6 @@ import ReactGridLayout, { ReactGridLayoutProps } from "react-grid-layout"
 
 export default ReactGridLayout as ComponentType<
 	ReactGridLayoutProps & {
-		innerRef?: any
+		innerRef?: React.Ref<any>
 	}
 >

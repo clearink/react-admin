@@ -1,8 +1,7 @@
 import { IBaseProps } from "@/@types/fc"
 import React, { useEffect } from "react"
-import { List } from "antd"
+import SlateEditor from "@/components/SlateEditor"
 import styles from "./style.module.scss"
-
 
 function Blog(props: IBaseProps) {
 	useEffect(() => {
@@ -10,9 +9,7 @@ function Blog(props: IBaseProps) {
 	}, [])
 	return (
 		<div className={styles.container}>
-			<List dataSource={[]}>
-				<div className='bg-red-400 h-screen'>1232112</div>
-			</List>
+			<SlateEditor />
 		</div>
 	)
 }

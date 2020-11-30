@@ -8,17 +8,26 @@ import { actions } from "@/store/reducers/builder"
 import GetBoundAction from "@/utils/GetBoundAction"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import h5Config from "@/configs/h5Config"
+import { IDropItem } from "@/@types/page-builder"
 const boundActions = GetBoundAction(actions)
 //TODO 应该拖拽时不能选中
 function Builder(props: { [key: string]: any }) {
 	const { children, className, item, ...rest } = props
 	const selectId = useTypedSelector((state) => state.builder.selectId)
 	const { type, value, id } = item
-
 	const [isActive, dropRef] = useDrop({
 		accept: h5Config.TYPE,
-		drop: (item: { type: string; name: string }, monitor) => {
-			console.log("我将在我的位置之后新增一条数据")
+		drop: ({ config, name }: IDropItem, monitor) => {
+			const isOver = monitor.isOver({ shallow: false })
+			const canDrop = monitor.canDrop()
+			if (isOver && canDrop) {
+				boundActions.add({
+					type: name,
+					config: config.configs,
+					value: config.defaultValues,
+					layout: { ...config.layout, y: item.position.y },
+				})
+			}
 		},
 		collect(monitor) {
 			return monitor.canDrop() && monitor.isOver({ shallow: false })
@@ -31,6 +40,7 @@ function Builder(props: { [key: string]: any }) {
 			return <MapComponent {...value} />
 		}
 	}, [type, value])
+
 	return (
 		<div
 			ref={dropRef}

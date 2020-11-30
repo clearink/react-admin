@@ -23,6 +23,8 @@
 		"react-redux": "^7.2.1",
 		"react-router-dom": "^5.2.0",
 		"redux-logger": "^3.0.6",
+		"slate": "^0.59.0",
+		"slate-react": "^0.59.0",
 		"yup": "^0.29.3",
 		"zarm": "^2.6.1"
 	},

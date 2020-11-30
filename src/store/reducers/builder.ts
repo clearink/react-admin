@@ -1,24 +1,23 @@
-import { IBuilderConfig, IBuilderLayout } from "@/@types/page-builder"
+import { IBuilderConfig } from "@/@types/page-builder"
 import h5Config from "@/configs/h5Config"
+import FilterValue from "@/utils/FilterValue"
 // 存储用于生成组件的信息
 import {
 	createSlice,
 	nanoid,
 	PayloadAction,
 	createSelector,
-	createEntityAdapter,
+	current,
 } from "@reduxjs/toolkit"
 import { AppState } from ".."
 
 type TPageBuilder = {
-	position: IBuilderLayout
+	position: ReactGridLayout.Layout
 	config: IBuilderConfig
 	value: any
 	type: string
 	id: string
 }
-
-const builderListAdapter = createEntityAdapter<TPageBuilder>()
 
 const slice = createSlice({
 	name: "page-builder",
@@ -31,7 +30,7 @@ const slice = createSlice({
 		add(
 			state,
 			action: PayloadAction<
-				Omit<Omit<TPageBuilder, "position">, "id"> & {
+				Omit<TPageBuilder, "position" | "id"> & {
 					layout: Object
 				}
 			>
@@ -50,6 +49,17 @@ const slice = createSlice({
 					...layout,
 				}, // 位置信息
 			})
+		},
+		// 排序
+		sort(state, action: PayloadAction<ReactGridLayout.Layout[]>) {
+			const { builderList } = state
+			// 只用按顺序更新position即可
+			for (let i = 0; i < action.payload.length; i++) {
+				builderList[i].position = FilterValue(
+					action.payload[i],
+					([, v]) => v !== undefined
+				)
+			}
 		},
 		update(state, action: PayloadAction<{ id: string; value: Object }>) {
 			const { id, value } = action.payload
@@ -73,7 +83,6 @@ const slice = createSlice({
 export const actions = slice.actions
 export default slice.reducer
 
-// 创建 selector
 /**
  * 缓存 selector 可以避免不必要的渲染
  */

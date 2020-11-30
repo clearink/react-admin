@@ -2,7 +2,6 @@ import React, {
 	createContext,
 	memo,
 	ReactNode,
-	Ref,
 	useMemo,
 	useRef,
 	useState,
@@ -15,7 +14,6 @@ import RenderForm from "../RenderForm"
 import styles from "./style.module.scss"
 import ListItem from "./ListItem"
 import { nanoid } from "@reduxjs/toolkit"
-import FilterValue from "@/utils/FilterValue"
 
 export const ConfigListContext = createContext<any>(null)
 /**

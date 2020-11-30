@@ -31,9 +31,9 @@ $min_grid_height: 500px;
 	&:hover {
 		border-color: rgba($color_primary, $alpha: 0.6);
 	}
+
 	&.active,
 	&:active {
-		cursor: move;
 		border-color: $color_primary;
 	}
 

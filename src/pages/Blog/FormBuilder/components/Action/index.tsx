@@ -6,23 +6,23 @@ import TickMark from "../TickMark"
 import styles from "./style.module.scss"
 import { useDrop } from "react-dnd"
 import gridLayout from "@/configs/h5Config"
-import useTypedSelector from "@/hooks/useTypedSelector"
 import Builder from "./Builder"
 import { actions } from "@/store/reducers/builder"
 import GetBoundAction from "@/utils/GetBoundAction"
 import h5Config from "@/configs/h5Config"
 import { IDropItem } from "@/@types/page-builder"
+import useTypedSelector from "@/hooks/useTypedSelector"
+import useThrottle from "@/hooks/useThrottle"
 const boundActions = GetBoundAction(actions)
 const { Content } = Layout
 function Action() {
 	const builderList = useTypedSelector((state) => state.builder.builderList)
 	const [, dropRef] = useDrop({
 		accept: h5Config.TYPE,
-		drop: (item: IDropItem, monitor) => {
+		drop: ({ config, name }: IDropItem, monitor) => {
 			const isOver = monitor.isOver({ shallow: false })
 			const canDrop = monitor.canDrop()
 			if (isOver && canDrop) {
-				const { config, name } = item
 				boundActions.add({
 					type: name,
 					config: config.configs,
@@ -33,6 +33,8 @@ function Action() {
 		},
 	})
 
+	// 页面布局更改
+	const handleLayoutChange = useThrottle(boundActions.sort)
 	return (
 		<Content className={classNames(styles.action)}>
 			{/* 水平刻度线 */}
@@ -43,9 +45,7 @@ function Action() {
 			{/* 操作区域 */}
 			<ReactGridLayout
 				innerRef={dropRef}
-				onLayoutChange={(l) => {
-					// console.log(l)
-				}}
+				onLayoutChange={handleLayoutChange}
 				margin={[0, 0]}
 				className={styles.page_container}
 				cols={gridLayout.COLS}

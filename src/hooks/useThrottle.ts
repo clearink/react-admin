@@ -8,7 +8,7 @@ interface IRef {
 // 函数节流
 export default function useThrottle<T extends Function>(
 	fn: T,
-	delay: number,
+	delay: number = 17,
 	immediate: boolean = false
 ) {
 	const memoried = useRef<IRef>({
