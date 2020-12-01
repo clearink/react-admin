@@ -26,7 +26,7 @@ const fetchMateriel = createAsyncThunk<TComponentConfig[]>(
 	async () => {
 		return new Promise<TComponentConfig[]>((resolve, reject) => {
 			setTimeout(() => {
-				resolve(BaseConfig.list)
+				resolve([])
 			}, 400)
 		})
 	}

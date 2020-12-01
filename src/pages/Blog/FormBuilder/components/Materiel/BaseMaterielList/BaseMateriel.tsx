@@ -9,7 +9,7 @@ interface IProps {
 		type: string
 		name: string
 		cover: string
-		config: { getDefault: () => Object }
+		config: any
 	}
 }
 function Materiel(props: IProps) {

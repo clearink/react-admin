@@ -3,9 +3,6 @@ import classNames from "classnames"
 import styles from "./style.module.scss"
 import BaseConfig from "@/configs/BaseConfig"
 import BaseMateriel from "./BaseMateriel"
-import useCacheSelector from "@/hooks/useCacheSelector"
-import { selectors } from "@/store/reducers/materiel"
-const materielList = BaseConfig.list
 // 绑定拖拽
 
 function BaseMaterielList() {
@@ -13,8 +10,8 @@ function BaseMaterielList() {
 	// console.log(list)
 	return (
 		<div className={classNames(styles.container)}>
-			{materielList.map((config) => (
-				<BaseMateriel key={config.type} config={config} />
+			{BaseConfig.map((config) => (
+				<BaseMateriel key={config.type} config={config as any} />
 			))}
 		</div>
 	)

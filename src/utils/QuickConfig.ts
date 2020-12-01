@@ -13,6 +13,9 @@ export function AddHidden() {
 }
 // 使该字段可选
 export const AddOptional = AddValue("optional", true)
+
+// name
+export const AddName = (name: string) => AddValue("name", name)
 export function AddInput(value?: any) {
 	return {
 		...AddType("Input"),
