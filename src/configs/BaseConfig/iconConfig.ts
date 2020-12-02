@@ -1,18 +1,16 @@
-import { AddSelect } from "@/utils/QuickConfig"
-import ConfigDefault from "../ConfigDefault"
-
-class IconConfig extends ConfigDefault {
-	theme = {
-		name: "主题",
-		value: ["primary", "default", "success", "warning", "danger"],
+import { AddName, AddSelect } from "@/utils/QuickConfig"
+export default {
+	theme: {
+		...AddName("主题"),
 		...AddSelect("primary"),
-	} // 主题
-	size = {
+		value: ["primary", "default", "success", "warning", "danger"],
+	},
+	size: {
 		name: "尺寸",
-		value: ["md", "sm", "lg"],
 		...AddSelect("md"),
-	}
-	type = {
+		value: ["md", "sm", "lg"],
+	},
+	type: {
 		name: "类型",
 		value: [
 			"add",
@@ -46,11 +44,9 @@ class IconConfig extends ConfigDefault {
 			"time",
 		],
 		...AddSelect("add"),
-	}
-
-	position = {
+	},
+	position: {
 		h: 2,
 		w: 2,
-	}
+	},
 }
-export default new IconConfig()

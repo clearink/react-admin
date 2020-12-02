@@ -10,24 +10,28 @@ import Builder from "./Builder"
 import { actions } from "@/store/reducers/builder"
 import GetBoundAction from "@/utils/GetBoundAction"
 import h5Config from "@/configs/h5Config"
-import { IDropItem } from "@/@types/page-builder"
+import { IConfigItem } from "@/@types/buildConfig"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import useThrottle from "@/hooks/useThrottle"
+import ConfigUtils from "@/utils/ConfigUtils"
 const boundActions = GetBoundAction(actions)
 const { Content } = Layout
 function Action() {
 	const builderList = useTypedSelector((state) => state.builder.builderList)
 	const [, dropRef] = useDrop({
 		accept: h5Config.TYPE,
-		drop: ({ config, name }: IDropItem, monitor) => {
+		drop: ({ config, name }: IConfigItem, monitor) => {
 			const isOver = monitor.isOver({ shallow: false })
 			const canDrop = monitor.canDrop()
 			if (isOver && canDrop) {
+				const defaultValues = ConfigUtils.getDefaultValues(config) // 默认值
+				const configs = ConfigUtils.getConfigs(config) // 配置
+				const layout = ConfigUtils.getLayout(config) // 位置
 				boundActions.add({
 					type: name,
-					config: config.configs,
-					value: config.defaultValues,
-					layout: config.layout,
+					layout,
+					config: configs,
+					value: defaultValues,
 				})
 			}
 		},

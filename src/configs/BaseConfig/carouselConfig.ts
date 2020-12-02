@@ -1,35 +1,38 @@
-import { IConfigList } from "@/@types/page-config"
 import {
 	AddHidden,
 	AddInput,
 	AddList,
+	AddName,
 	AddNumber,
+	AddSelect,
 	AddSwitch,
 } from "@/utils/QuickConfig"
-import ConfigDefault from "../ConfigDefault"
+
+export const imgConfig = {
+	name: {
+		name: "名称",
+		...AddInput(""),
+	},
+	src: {
+		name: "图片地址",
+		...AddInput("12321"),
+		...AddHidden(),
+	},
+	href: {
+		name: "外部链接",
+		...AddInput("1221312"),
+		...AddHidden(),
+	},
+}
 
 // 走马灯
-class CarouselConfig extends ConfigDefault {
-	imgList: IConfigList = {
+export default {
+	imgList: {
+		...AddName("图片"),
 		name: "图片",
 		// 这里应该是与 CarouselConfig 相同的一个类
 		// 但是 redux 无法存储 继承信息
-		value: {
-			name: {
-				name: "名称",
-				...AddInput(""),
-			},
-			src: {
-				name: "图片地址",
-				...AddInput("12321"),
-				...AddHidden(),
-			},
-			href: {
-				name: "外部链接",
-				...AddInput("1221312"),
-				...AddHidden(),
-			},
-		},
+		config: imgConfig,
 		...AddList([
 			{
 				name: "图片1",
@@ -38,63 +41,51 @@ class CarouselConfig extends ConfigDefault {
 				href: "https://zarm.gitee.io/#/components/radio",
 			},
 		]),
-	}
-	direction = {
-		name: "方向",
-		type: "Select",
-		default: "left",
+	},
+	direction: {
+		...AddName("方向"),
+		...AddSelect("left"),
 		value: ["left", "right", "up", "down"],
-	}
-
-	height = {
+	},
+	height: {
 		name: "轮播高度",
 		...AddNumber(160),
-	}
-
-	//
-	// activeIndex = { name: "" }
-
-	loop = {
+	},
+	loop: {
 		name: "循环",
 		...AddSwitch(true),
-	}
-
-	swipeable = {
+	},
+	swipeable: {
 		name: "滑动",
 		...AddSwitch(false),
-	}
-
-	autoPlay = {
+	},
+	autoPlay: {
 		name: "自动轮播",
 		...AddSwitch(true),
-	}
-
-	autoPlayIntervalTime = {
+	},
+	autoPlayIntervalTime: {
 		name: "轮播间隔",
 		...AddNumber(3000),
-	}
-
-	moveDistanceRatio = {
+	},
+	moveDistanceRatio: {
 		name: "移动距离比例",
 		...AddNumber(0.5),
-	}
-	moveTimeSpan = {
+	},
+	moveTimeSpan: {
 		name: "移动时间跨度",
 		...AddNumber(300),
-	}
-	animationDuration = {
+	},
+	animationDuration: {
 		name: "动画时间",
 		...AddNumber(300),
-	}
+	},
 
-	showPagination = {
+	showPagination: {
 		name: "分页器",
 		...AddSwitch(true),
-	}
-
-	position = {
+	},
+	position: {
 		h: 8,
 		minH: 8,
-	}
+	},
 }
-export default new CarouselConfig()

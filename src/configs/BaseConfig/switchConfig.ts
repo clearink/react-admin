@@ -1,25 +1,14 @@
-import {
-	AddInput,
-	AddNumber,
-	AddOptional,
-	AddSelect,
-	AddSwitch,
-} from "@/utils/QuickConfig"
-import ConfigDefault from "../ConfigDefault"
+import { AddDisable, AddSwitch } from "@/utils/QuickConfig"
 
-class switchConfig extends ConfigDefault {
-	checked = {
+export default {
+	checked: {
 		name: "选中",
 		...AddSwitch(true),
-	}
-	disabled = {
-		name: "禁用",
-		...AddSwitch(),
-	}
+	},
+	...AddDisable(),
 
-	position = {
+	position: {
 		h: 2,
 		w: 3,
-	}
+	},
 }
-export default new switchConfig()

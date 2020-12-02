@@ -5,51 +5,42 @@ import {
 	AddSelect,
 	AddSwitch,
 } from "@/utils/QuickConfig"
-import ConfigDefault from "../ConfigDefault"
-
-class stepperConfig extends ConfigDefault {
-	shape = {
+export default {
+	shape: {
 		name: "形状",
 		value: ["radius", "rect", "circle"],
 		...AddSelect("radius"),
-	}
+	},
 
-	size = {
+	size: {
 		name: "尺寸",
 		value: ["md", "lg"],
 		...AddSelect("md"),
-	} // 尺寸
-
-	value = {
+	},
+	value: {
 		name: "值",
 		...AddInput(10),
-	}
-
-	min = {
+	},
+	min: {
 		name: "最小值",
 		...AddNumber(),
 		...AddOptional,
-	}
-
-	max = {
+	},
+	max: {
 		name: "最大值",
 		...AddNumber(),
 		...AddOptional,
-	}
-
-	disabled = {
+	},
+	disabled: {
 		name: "禁用",
 		...AddSwitch(),
-	}
-
-	step = {
+	},
+	step: {
 		name: "步长",
 		...AddNumber(1),
-	}
-
-	position = {
+	},
+	position: {
 		h: 2,
 		w: 7,
-	}
+	},
 }
-export default new stepperConfig()

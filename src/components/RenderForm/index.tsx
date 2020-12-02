@@ -10,11 +10,12 @@ interface IProps<T> extends FormProps {
 // 传入配置属性 与 formInstance
 function RenderForm<T>(props: IProps<T>) {
 	const { config, form, children, ...rest } = props
+	console.log("RenderForm", props)
 	const renderItemList = useMemo(() => {
 		if (!config) return null
 		return Object.entries(config).map(
 			// 字段名 描述 类型  可选    默认值
-			([key, { name, type, optional, value }]) => {
+			([key, { name, type, optional, config, value }]) => {
 				const FormComponent = FormMap[type]
 				if (!FormComponent || !isValidElement(<FormComponent />)) return null
 				return (
@@ -24,7 +25,11 @@ function RenderForm<T>(props: IProps<T>) {
 						name={key}
 						label={name}
 					>
-						<FormComponent config={value} name={name} placeholder={name} />
+						<FormComponent
+							config={value ?? config}
+							name={name}
+							placeholder={name}
+						/>
 					</Form.Item>
 				)
 			}

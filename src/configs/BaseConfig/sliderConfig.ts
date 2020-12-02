@@ -1,53 +1,44 @@
 import {
+	AddDisable,
 	AddInput,
 	AddNumber,
 	AddOptional,
-	AddSelect,
 	AddSwitch,
 } from "@/utils/QuickConfig"
 import ConfigDefault from "../ConfigDefault"
 
-class sliderConfig extends ConfigDefault {
-	value = {
+export default {
+	value: {
 		name: "值",
 		...AddInput(10),
-	}
-
-	min = {
+	},
+	min: {
 		name: "最小值",
 		...AddNumber(0),
-	}
-
-	max = {
+	},
+	max: {
 		name: "最大值",
 		...AddNumber(100),
-	}
-
-	disabled = {
-		name: "禁用",
-		...AddSwitch(),
-	}
-
-	step = {
+	},
+	...AddDisable(),
+	step: {
 		name: "步长",
 		...AddNumber(1),
-	}
-	vertical = {
+	},
+	vertical: {
 		name: "垂直",
 		...AddSwitch(),
-	}
-	showMark = {
+	},
+	showMark: {
 		name: "显示刻度",
 		...AddSwitch(),
-	}
-
-	marks = {
+	},
+	marks: {
 		name: "自定义刻度",
 		...AddInput(),
 		...AddOptional,
-	}
-	position = {
+	},
+	position: {
 		h: 2,
-	}
+	},
 }
-export default new sliderConfig()

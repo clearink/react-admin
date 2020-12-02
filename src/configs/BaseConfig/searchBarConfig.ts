@@ -1,4 +1,5 @@
 import {
+	AddDisable,
 	AddInput,
 	AddNumber,
 	AddOptional,
@@ -7,48 +8,39 @@ import {
 } from "@/utils/QuickConfig"
 import ConfigDefault from "../ConfigDefault"
 
-class searchConfig extends ConfigDefault {
-	placeholder = {
-		name: "占位符",
+export default {
+	placeholder: {
 		...AddInput("搜索"),
-	}
-
-	value = {
+		name: "占位符",
+	},
+	value: {
 		name: "值",
 		...AddInput(),
 		...AddOptional,
-	}
-
-	shape = {
+	},
+	shape: {
+		...AddSelect("radius"),
 		name: "形状",
 		value: ["rect", "radius", "round"],
-		...AddSelect("radius"),
-	}
-
-	disabled = {
-		name: "禁用",
-		...AddSwitch(),
-	}
-
-	showCancel = {
+	},
+	...AddDisable(),
+	showCancel: {
 		name: "显示取消按钮",
 		...AddSwitch(),
-	}
-	cancelText = {
+	},
+	cancelText: {
 		name: "取消按钮文字",
 		...AddInput("取消"),
-	}
-	maxLength = {
+	},
+	maxLength: {
 		name: "最大字数",
 		...AddNumber(100),
-	}
-	clearable = {
+	},
+	clearable: {
 		name: "可清空",
 		...AddSwitch(),
-	}
-
-	position = {
+	},
+	position: {
 		h: 2,
-	}
+	},
 }
-export default new searchConfig()

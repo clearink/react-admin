@@ -14,3 +14,11 @@
 - 预览功能
 
 - 导出功能
+
+
+  config 规则
+
+    name
+    type 
+    value // value 可以是另一个config
+    default

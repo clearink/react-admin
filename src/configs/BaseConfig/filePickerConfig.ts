@@ -1,25 +1,24 @@
-import ConfigDefault from "../ConfigDefault"
+import {
+	AddDisable,
+	AddInput,
+	AddName,
+	AddSelect,
+	AddSwitch,
+} from "@/utils/QuickConfig"
 
-class FilePickerConfig extends ConfigDefault {
-	accept = { name: "文件格式", type: "Input", default: "*" }
-
-	capture = {
-		name: "原生能力",
-		type: "Select",
+export default {
+	accept: {
+		...AddName("文件格式"),
+		...AddInput("*"),
+	},
+	capture: {
+		...AddName("原生能力"),
+		...AddSelect(""),
 		value: ["", "camera", "camcorder", "microphone"],
-		default: "",
-	}
-
-	multiple = {
-		name: "多选",
-		type: "Switch",
-		default: false,
-	}
-
-	disabled = {
-		name: "禁用",
-		type: "Switch",
-		default: false,
-	}
+	},
+	multiple: {
+		...AddName("多选"),
+		...AddSwitch(),
+	},
+	...AddDisable(),
 }
-export default new FilePickerConfig()

@@ -1,4 +1,4 @@
-import { IBuilderConfig } from "@/@types/page-builder"
+import { TBuilderItem } from "@/@types/buildConfig"
 import h5Config from "@/configs/h5Config"
 import FilterValue from "@/utils/FilterValue"
 // 存储用于生成组件的信息
@@ -7,30 +7,21 @@ import {
 	nanoid,
 	PayloadAction,
 	createSelector,
-	current,
 } from "@reduxjs/toolkit"
 import { AppState } from ".."
-
-type TPageBuilder = {
-	position: ReactGridLayout.Layout
-	config: IBuilderConfig
-	value: any
-	type: string
-	id: string
-}
 
 const slice = createSlice({
 	name: "page-builder",
 	initialState: {
 		selectId: null as null | string,
-		builderList: [] as TPageBuilder[],
+		builderList: [] as TBuilderItem[],
 	},
 	reducers: {
 		// 生成一个组件
 		add(
 			state,
 			action: PayloadAction<
-				Omit<TPageBuilder, "position" | "id"> & {
+				Omit<TBuilderItem, "position" | "id"> & {
 					layout: Object
 				}
 			>

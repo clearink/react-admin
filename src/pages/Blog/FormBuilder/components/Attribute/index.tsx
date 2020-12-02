@@ -22,7 +22,6 @@ function Attribute() {
 		form.setFieldsValue(formMeta.value)
 	}, [form, formMeta])
 
-
 	// 更新组件
 	const handleUpdate = (value: any) => {
 		if (!formMeta) return
@@ -49,7 +48,6 @@ function Attribute() {
 							配置属性
 						</Typography.Title>
 						<RenderForm
-							initialValues={formMeta.value}
 							config={formMeta.config}
 							form={form}
 							onFinish={handleUpdate}

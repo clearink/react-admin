@@ -25,71 +25,65 @@ import switchConfig from "./switchConfig"
 import formConfig from "./formConfig"
 
 // 配置列表
-export default [
-	{
+export default {
+	Button: {
 		...AddType("Button"),
 		name: "按钮",
 		cover: button, // 封面图
 		config: buttonConfig,
 	},
-	{
+	Form: {
 		...AddType("Form"),
 		name: "表单",
 		cover: button, // 封面图
 		config: formConfig,
 	},
-	{
+	Icon: {
 		type: "Icon",
 		name: "图标",
 		cover: icon,
 		config: iconConfig,
 	},
-	{
+	FilePicker: {
 		type: "FilePicker",
 		name: "文件选择器",
 		cover: filePicker,
 		config: filePickerConfig,
 	},
-	{
+	Carousel: {
 		type: "Carousel",
 		name: "走马灯",
 		cover: carousel,
 		config: carouselConfig,
 	},
-	{
+	Keyboard: {
 		...AddType("Keyboard"),
 		name: "虚拟键盘",
 		cover: keyboard,
 		config: keyboardConfig,
 	},
-	{
+	SearchBar: {
 		...AddType("SearchBar"),
 		name: "搜索栏",
 		cover: searchBar,
 		config: searchBarConfig,
 	},
-	{
+	Slider: {
 		...AddType("Slider"),
 		name: "滑动输入条",
 		cover: slider,
 		config: sliderConfig,
 	},
-	{
+	Stepper: {
 		...AddType("Stepper"),
 		name: "步进器",
 		cover: stepper,
 		config: stepperConfig,
 	},
-	{
+	Switch: {
 		...AddType("Switch"),
 		name: "开关",
 		cover: switchCover,
 		config: switchConfig,
 	},
-] as {
-	type: string
-	name: string
-	cover: string // 封面图
-	config: any
-	[key: string]: any
-}[]
+}

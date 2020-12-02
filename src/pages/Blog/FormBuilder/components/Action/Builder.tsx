@@ -8,7 +8,8 @@ import { actions } from "@/store/reducers/builder"
 import GetBoundAction from "@/utils/GetBoundAction"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import h5Config from "@/configs/h5Config"
-import { IDropItem } from "@/@types/page-builder"
+import { IDropItem } from "@/@types/buildConfig"
+import ConfigUtils from "@/utils/ConfigUtils"
 const boundActions = GetBoundAction(actions)
 //TODO 应该拖拽时不能选中
 function Builder(props: { [key: string]: any }) {
@@ -21,11 +22,14 @@ function Builder(props: { [key: string]: any }) {
 			const isOver = monitor.isOver({ shallow: false })
 			const canDrop = monitor.canDrop()
 			if (isOver && canDrop) {
+				const defaultValues = ConfigUtils.getDefaultValues(config) // 默认值
+				const configs = ConfigUtils.getConfigs(config) // 配置
+				const layout = ConfigUtils.getLayout(config) // 位置
 				boundActions.add({
 					type: name,
-					config: config.configs,
-					value: config.defaultValues,
-					layout: { ...config.layout, y: item.position.y },
+					layout: { ...layout, y: item.position.y },
+					config: configs,
+					value: defaultValues,
 				})
 			}
 		},
