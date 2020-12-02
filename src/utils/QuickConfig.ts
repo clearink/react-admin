@@ -47,7 +47,7 @@ export function AddNumber(value?: number) {
 /**   高级		 */
 
 // list 添加 id
-export function AddList(value: any[] = []) {
+export function AddList(value: any[] = []): { type: string; default: string } {
 	return {
 		...AddType("List"),
 		...AddValue(

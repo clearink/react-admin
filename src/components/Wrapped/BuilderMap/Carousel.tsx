@@ -14,11 +14,12 @@ interface IProps {
 function WrappedCarousel(props: IProps) {
 	const { imgList, ...rest } = props
 	const id = nanoid(8)
+	console.log("WrappedCarousel", props)
 	return (
 		<Carousel key={id} {...rest}>
-			{imgList.map((item) => (
-				<a href={item.href} key={item.src}>
-					<img src={item.src} alt='cover' className={styles.carousel_img} />
+			{([] as { href: string; src: string }[]).map((item) => (
+				<a href={item?.href} key={item?.src}>
+					<img src={item?.src} alt='cover' className={styles.carousel_img} />
 				</a>
 			))}
 		</Carousel>

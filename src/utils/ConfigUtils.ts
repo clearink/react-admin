@@ -13,9 +13,7 @@ export default class ConfigUtils {
 		const result: ObjectAny = {}
 		for (let [k, v] of Object.entries(obj)) {
 			if (k === "position") continue
-			console.log("getDefaultValues", k, v)
-			if (v.config) result[k] = ConfigUtils.getDefaultValues(v.config)
-			else result[k] = v.default
+			result[k] = v.default
 		}
 		return result
 	}
@@ -25,7 +23,8 @@ export default class ConfigUtils {
 	static getConfigs(obj: ObjectAny) {
 		const result: ObjectAny = {}
 		for (let [k, v] of Object.entries(obj)) {
-			if (k === "position") continue
+			if (["position", "default"].includes(k)) continue
+			// if (v.config) result[k] = ConfigUtils.getConfigs(v.config)
 			result[k] = FilterValue(v, "default") // 去除掉每个的 default 属性
 		}
 		return result

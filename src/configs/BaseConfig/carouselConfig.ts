@@ -29,10 +29,6 @@ export const imgConfig = {
 export default {
 	imgList: {
 		...AddName("图片"),
-		name: "图片",
-		// 这里应该是与 CarouselConfig 相同的一个类
-		// 但是 redux 无法存储 继承信息
-		config: imgConfig,
 		...AddList([
 			{
 				name: "图片1",
@@ -41,6 +37,7 @@ export default {
 				href: "https://zarm.gitee.io/#/components/radio",
 			},
 		]),
+		value: imgConfig,
 	},
 	direction: {
 		...AddName("方向"),
