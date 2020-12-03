@@ -17,7 +17,6 @@ function RenderForm<T>(props: IProps<T>) {
 			// 字段名 描述 类型  可选    默认值
 			([key, { name, type, optional, value }]) => {
 				const FormComponent = FormMap[type]
-				console.log(key, value,FormComponent)
 				if (!FormComponent || !isValidElement(<FormComponent />)) return null
 				return (
 					<Form.Item

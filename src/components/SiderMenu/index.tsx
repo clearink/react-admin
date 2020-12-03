@@ -9,7 +9,7 @@ import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/menu"
 import "./style.scss"
 
-const ToggleMenu = GetBoundAction(actions.toggleMenu)
+const boundToggle = GetBoundAction(actions.toggle)
 function SiderMenu() {
 	const [collapsedMenu, setCollapsedMenu] = useState(false)
 	const { menu, collapsed } = useTypedSelector((state) => state.menu)
@@ -43,7 +43,7 @@ function SiderMenu() {
 				collapsible
 				collapsedWidth={48}
 				collapsed={collapsedMenu}
-				onCollapse={ToggleMenu}
+				onCollapse={boundToggle}
 				breakpoint='md'
 				className='sider-menu__wrap'
 			>

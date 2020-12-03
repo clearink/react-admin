@@ -4,18 +4,12 @@ import { Button } from "antd"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/menu"
 
-const boundMenuActions = GetBoundAction(actions)
+const boundToggle = GetBoundAction(actions.toggle)
 
 function Application(props: IBaseProps) {
 	return (
 		<div>
-			<Button
-				onClick={() => {
-					boundMenuActions.toggleMenu()
-				}}
-			>
-				toggleMenu
-			</Button>
+			<Button onClick={boundToggle}>toggleMenu</Button>
 		</div>
 	)
 }

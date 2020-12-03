@@ -16,13 +16,10 @@ export default class ConfigUtils {
 		}
 		return result
 	}
-
-	// 这里应该要用到递归? 递归找到 config字段
-	// 获取 config 去除 position 和每个的 default
 	static getConfigs(obj: ObjectAny) {
 		const result: ObjectAny = {}
 		for (let [k, v] of Object.entries(obj)) {
-			if (["position"].includes(k)) continue
+			if (k === "position") continue
 			result[k] = FilterValue(v, "default") // 去除掉每个的 default 属性
 		}
 		return result

@@ -8,7 +8,7 @@ const slice = createSlice({
 		saveMenu(state, action: PayloadAction<TMenu[]>) {
 			state.menu = action.payload
 		},
-		toggleMenu(state) {
+		toggle(state) {
 			state.collapsed = !state.collapsed
 		},
 	},

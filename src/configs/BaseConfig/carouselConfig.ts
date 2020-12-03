@@ -8,7 +8,7 @@ import {
 	AddSwitch,
 } from "@/utils/QuickConfig"
 
-export const imgConfig = {
+const imgConfig = {
 	name: {
 		name: "名称",
 		...AddInput(""),

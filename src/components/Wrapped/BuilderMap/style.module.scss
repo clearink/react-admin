@@ -24,3 +24,11 @@ $icon_color: rgba($color_grey-2, $alpha: 0.7);
 	width: 100%;
 	height: 100%;
 }
+
+.form_wrap{
+	width: 100%;
+	height: 100%;
+	.form_title{
+		font-weight: bold;
+	}
+}

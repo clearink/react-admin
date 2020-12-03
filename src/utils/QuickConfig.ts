@@ -1,8 +1,12 @@
 import { nanoid } from "@reduxjs/toolkit"
 
 // 快速向配置文件添加属性
-export function AddValue(key: string, value: any): any {
+export function AddValue(key: string, value: any): Parameters<> {
 	return { [key]: value }
+}
+
+export function AddDefault<T extends any>(value: T): { default: T } {
+	return AddValue("default", value)
 }
 export function AddType(type: string): { type: string } {
 	return AddValue("type", type) as any
@@ -12,35 +16,42 @@ export function AddHidden(): { hidden: boolean } {
 	return AddValue("hidden", true)
 }
 // 使该字段可选
-export const AddOptional = AddValue("optional", true)
+export const AddOptional: { optional: boolean } = AddValue("optional", true)
 
 // name
 export const AddName = (name: string): { name: string } =>
 	AddValue("name", name) as any
 
-export function AddInput(value?: any): { type: string; default: string } {
+export function AddInput(value?: any) {
 	return {
 		...AddType("Input"),
-		...AddValue("default", value),
+		...AddDefault(value),
 	}
 }
 
 export function AddSelect(value: any) {
 	return {
 		...AddType("Select"),
-		...AddValue("default", value),
+		...AddDefault(value),
 	}
 }
-export function AddSwitch(value: any = false) {
+export function AddSwitch(value: boolean = false) {
 	return {
 		...AddType("Switch"),
-		...AddValue("default", value),
+		...AddDefault(value),
 	}
 }
 export function AddNumber(value?: number) {
 	return {
 		...AddType("InputNumber"),
-		...AddValue("default", value),
+		...AddDefault(value),
+	}
+}
+
+export function AddColor(value?: string) {
+	return {
+		...AddType("Color"),
+		...AddDefault(value),
 	}
 }
 

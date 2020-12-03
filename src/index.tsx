@@ -6,6 +6,7 @@ import store from "./store"
 import "@/styles/index.scss"
 import "@/styles/tailwind.output.css"
 // import "@/styles/tailwind.css"
+
 ReactDOM.render(
 	<Provider store={store}>
 		<App />
