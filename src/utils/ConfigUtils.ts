@@ -8,7 +8,6 @@ export default class ConfigUtils {
 	}
 
 	// 获取 默认值
-	// 需要递归
 	static getDefaultValues(obj: ObjectAny) {
 		const result: ObjectAny = {}
 		for (let [k, v] of Object.entries(obj)) {
@@ -23,8 +22,7 @@ export default class ConfigUtils {
 	static getConfigs(obj: ObjectAny) {
 		const result: ObjectAny = {}
 		for (let [k, v] of Object.entries(obj)) {
-			if (["position", "default"].includes(k)) continue
-			// if (v.config) result[k] = ConfigUtils.getConfigs(v.config)
+			if (["position"].includes(k)) continue
 			result[k] = FilterValue(v, "default") // 去除掉每个的 default 属性
 		}
 		return result

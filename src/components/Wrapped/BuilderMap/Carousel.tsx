@@ -17,7 +17,7 @@ function WrappedCarousel(props: IProps) {
 	console.log("WrappedCarousel", props)
 	return (
 		<Carousel key={id} {...rest}>
-			{([] as { href: string; src: string }[]).map((item) => (
+			{imgList.map((item) => (
 				<a href={item?.href} key={item?.src}>
 					<img src={item?.src} alt='cover' className={styles.carousel_img} />
 				</a>
