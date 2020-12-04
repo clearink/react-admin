@@ -95,7 +95,7 @@ function ConfigList(props: IProps) {
 					title={`新增${name}`}
 					ref={addRef}
 					trigger={
-						<Button type='primary' icon={<PlusOutlined />}>
+						<Button block type="dashed" icon={<PlusOutlined />}>
 							新增
 						</Button>
 					}

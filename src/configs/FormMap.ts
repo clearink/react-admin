@@ -1,8 +1,6 @@
 // 右边配置属性的map
-
-import { ComponentType } from "react"
 import { Input, InputNumber } from "antd"
-
+import { SketchPicker } from "react-color"
 // 封装过的
 import { Select, Switch } from "@/components/Wrapped/ConfigWrap"
 
@@ -15,6 +13,5 @@ export default {
 	Input,
 	InputNumber,
 	List: ConfigList,
-} as {
-	[key: string]: ComponentType<any>
+	Color: SketchPicker,
 }
