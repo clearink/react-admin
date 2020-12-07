@@ -6,7 +6,7 @@ import {
 	useFocused,
 	withReact,
 	ReactEditor,
-	useSelected
+	useSelected,
 } from "slate-react"
 import styles from "./style.module.scss"
 
@@ -15,7 +15,6 @@ import styles from "./style.module.scss"
 function SlateEditor() {
 	const editor = useMemo(() => withReact(createEditor()), [])
 	const focused = useFocused()
-	console.log(useSelected());
 	const [value, setValue] = useState<Node[]>([
 		{
 			type: "paragraph",
@@ -23,32 +22,11 @@ function SlateEditor() {
 		},
 	])
 
-	const handleFocus = () => {
-		// 检查是否 聚焦
-		if (!focused) {
-			ReactEditor.focus(editor) // 聚焦
-			// editor.selection({anchor: 1;
-				// focus: 1;})
-		}
-	}
 	return (
-		<Slate
-			editor={editor}
-			value={value}
-			onChange={(value) => {
-				console.log(value)
-				setValue(value)
-			}}
-		>
-			<div className={styles.container} onClick={handleFocus}>
-				<Editable
-					onKeyDown={(e) => {
-						if (e.key === "&") {
-							e.preventDefault()
-							editor.insertText(" and ")
-						}
-					}}
-				/>
+		<Slate editor={editor} value={value} onChange={setValue}>
+			<div className={styles.container}>
+				<div className={styles.toolbar}>toolbar</div>
+				<Editable className={styles.editor} autoFocus />
 			</div>
 		</Slate>
 	)
