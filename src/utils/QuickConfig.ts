@@ -18,9 +18,7 @@ export function AddType(type: string): { type: string } {
 }
 
 // 在右侧隐藏
-export function AddHidden(): { hidden: boolean } {
-	return AddValue("hidden", true)
-}
+export const AddHidden: { hidden: boolean } = AddValue("hidden", true)
 
 // 表单中可选
 export const AddOptional: { optional: boolean } = AddValue("optional", true)
@@ -63,10 +61,13 @@ export function AddColor(value?: string) {
 		...AddDefault(value),
 	}
 }
+export function AddLimit(limit: number = 1): { limit: number } {
+	return AddValue("limit", limit)
+}
 
 /**   高级		 */
 
-// list 
+// list
 // 同时添加 id
 export function AddList(value: any[] = []): { type: string; default: string } {
 	return {

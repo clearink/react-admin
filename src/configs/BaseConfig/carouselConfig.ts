@@ -16,12 +16,12 @@ const imgConfig = {
 	src: {
 		name: "图片地址",
 		...AddInput("12321"),
-		...AddHidden(),
+		...AddHidden,
 	},
 	href: {
 		name: "外部链接",
 		...AddInput("1221312"),
-		...AddHidden(),
+		...AddHidden,
 	},
 }
 

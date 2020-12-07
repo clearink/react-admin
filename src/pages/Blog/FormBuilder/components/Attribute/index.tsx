@@ -35,6 +35,7 @@ function Attribute() {
 	const handleDelete = () => {
 		if (formMeta) boundActions.delete(formMeta.id)
 	}
+	console.log('formMeta',formMeta);
 	return (
 		<>
 			<div

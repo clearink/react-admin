@@ -15,17 +15,24 @@ function RenderForm<T>(props: IProps<T>) {
 		if (!config) return null
 		return Object.entries(config).map(
 			// 字段名 描述 类型  可选    默认值
-			([key, { name, type, optional, value }]) => {
+			(item) => {
+				const [key, { name, type, optional, value, rules = [], ...rest }] = item
 				const FormComponent = FormMap[type]
 				if (!FormComponent || !isValidElement(<FormComponent />)) return null
+				console.log("renderItemList", item)
 				return (
 					<Form.Item
-						rules={[{ required: !optional, message: `${name}必填` }]}
+						rules={[{ required: !optional, message: `${name}必填` }, ...rules]}
 						key={key}
 						name={key}
 						label={name}
 					>
-						<FormComponent config={value} name={name} placeholder={name} />
+						<FormComponent
+							config={value}
+							name={name}
+							placeholder={name}
+							{...rest}
+						/>
 					</Form.Item>
 				)
 			}
