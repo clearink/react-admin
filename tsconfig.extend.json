@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"experimentalDecorators": true,
+		"downlevelIteration": true,
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
