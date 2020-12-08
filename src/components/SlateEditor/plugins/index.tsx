@@ -9,7 +9,7 @@ export const MyEditor = {
 
 export const MyElement = {
 	...Element,
-	isImageElement(value) {
+	isImageElement(value: any) {
 		return Element.isElement(value) && value.type === "image"
 	},
 }
