@@ -1,7 +1,10 @@
 export default {
-	BOLD: "BOLD",
-	CODE: "CODE",
-	LETTER_SPACING: "LETTER_SPACING",
-	LINE_HEIGHT: "LINE_HEIGHT",
-	ITALIC: "ITALIC",
+	BOLD: "bold",
+	CODE: "code",
+	LETTER_SPACING: "letterSpacing",
+	LINE_HEIGHT: "lineHeight",
+	ITALIC: "italic",
+	UNDERLINE: "underline",
+	DELETE_LINE: "line-through",
+	TEXT_CENTER: "center",
 }
