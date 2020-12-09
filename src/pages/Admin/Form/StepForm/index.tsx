@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 

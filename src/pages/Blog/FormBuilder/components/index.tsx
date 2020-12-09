@@ -1,5 +1,0 @@
-export { default as Materiel } from "./Materiel"
-export { default as Attribute } from "./Attribute"
-export { default as Action } from "./Action"
-export { default as Header } from "./Header"
-export { default as TickMark } from "./TickMark"

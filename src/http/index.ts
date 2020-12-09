@@ -59,21 +59,20 @@ class Http {
 				 * 处理各种错误码逻辑
 				 */
 				const {
-					status,
 					data: { code },
 				} = response
 				console.group("响应拦截器")
 				console.log(response)
 				console.groupEnd()
 				// 与后台协商接口状态
-				if (status === 200 || code === 200) {
+				if (code === 200) {
 					return response
 				}
-				if (code === 10001) {
+				if (code === 1001) {
 					// token 过期
 					LoginUtil.clearToken()
 				}
-				this.showError(response)
+				this.showError(response.data)
 				return Promise.reject(response)
 			},
 			// 多半是服务器问题

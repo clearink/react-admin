@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import api from "@/http/api"
 import LoginUtil from "@/utils/LoginUtil"
+import { Store } from "antd/lib/form/interface"
 
 type user = {
 	name: string
@@ -10,8 +11,8 @@ type user = {
 	[key: string]: any
 }
 
-const login = createAsyncThunk<user[]>("user/login", async () => {
-	const res = await api.Login()
+const login = createAsyncThunk("user/login", async (data: any) => {
+	const res = await api.Login(data)
 	return res.data
 })
 const getCurrentUser = createAsyncThunk(
@@ -40,11 +41,13 @@ const slice = createSlice({
 				state.loginLoading = true
 			})
 			.addCase(login.fulfilled, (state, action) => {
+				console.log("			.addCase(login.fulfilled, (state, action) => {", action)
 				state.loginLoading = false
+				const {result} = action.payload
 				//存储到redux中
-				state.user = action.payload[0]
+				state.user = result.userInfo
 				// 存储到storage
-				LoginUtil.setToken(action.payload[0])
+				LoginUtil.setToken(result.token)
 			})
 			.addCase(login.rejected, (state) => {
 				state.loginLoading = false

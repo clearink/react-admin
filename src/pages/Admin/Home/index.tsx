@@ -41,7 +41,7 @@ const slice = createSlice({
 })
 
 function Home(props: IBaseProps) {
-	const [{ current, images, direction, loading }, dispatch] = useReducer(
+	const [{ current, images, direction }, dispatch] = useReducer(
 		slice.reducer,
 		init
 	)

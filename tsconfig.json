@@ -21,8 +21,7 @@
     "jsx": "react"
   },
   "include": [
-    "src",
-    "src/components/SlateEditor/Toolbar/.tsx"
+    "src"
   ],
   "extends": "./tsconfig.extend.json"
 }

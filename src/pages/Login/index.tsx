@@ -4,7 +4,6 @@ import { Form, Input, Button, message } from "antd"
 import { Store } from "antd/lib/form/interface"
 import { useHistory } from "react-router-dom"
 import { actions } from "@/store/reducers/user"
-import { unwrapResult } from "@reduxjs/toolkit"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import "./style.scss"
@@ -22,8 +21,8 @@ function Login(props: IBaseProps) {
 	const { push } = useHistory()
 	const unwrap = useUnwrapAsyncThunk()
 	const handleSubmit = async (values: Store) => {
-		const resAction = await unwrap(actions.login())
-		unwrapResult(resAction as any)
+		const resAction = await unwrap(actions.login(values))
+		console.log(resAction)
 		message.success("登录成功")
 		push("/")
 	}
