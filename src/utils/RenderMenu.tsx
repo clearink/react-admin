@@ -43,7 +43,10 @@ export default function RenderMenu(config?: TMenu[]): ReactNode {
 		// 普通 hide=false title存在即可渲染
 		if (!item.hide && item.title)
 			return (
-				<Item key={item?.key ?? item.path}>
+				<Item
+					key={item?.key ?? item.path}
+					icon={item?.icon && <IconFont type={item.icon} />}
+				>
 					{item.path && <NavLink to={item.path}>{item.title}</NavLink>}
 				</Item>
 			)

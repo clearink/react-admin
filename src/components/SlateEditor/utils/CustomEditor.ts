@@ -7,98 +7,62 @@ import EditorType from "./EditorType"
  */
 
 const CustomEditor = {
-	isBoldMarkActive(editor: Editor) {
+	isTextFormatActive(editor: Editor, format: any) {
 		const [match] = Editor.nodes(editor, {
-			match: (n) => n[EditorType.BOLD] === true,
-			universal: true,
+			match: (n) => n[format] === true,
+			mode: "all",
 		})
 		return !!match
 	},
-	toggleBoldMark(editor: Editor) {
-		const isActive = CustomEditor.isBoldMarkActive(editor)
+	toggleTextFormat(editor: Editor, format: any) {
+		const isActive = CustomEditor.isTextFormatActive(editor, format)
 		Transforms.setNodes(
 			editor,
-			{ [EditorType.BOLD]: !isActive },
-			{ match: (n) => Text.isText(n), split: true }
+			{ [format]: isActive ? null : true },
+			{ match: Text.isText, split: true }
 		)
 	},
 
-	isCodeBlockActive(editor: Editor) {
+	isBlockFormatActive(editor: Editor, format: any) {
 		const [match] = Editor.nodes(editor, {
-			match: (n) => n.type === EditorType.CODE,
+			match: (n) => n.type === format,
+			mode: "all",
 		})
 		return !!match
 	},
-	toggleCodeBlock(editor: Editor) {
-		const isActive = CustomEditor.isCodeBlockActive(editor)
+	toggleBlockFormat(editor: Editor, format: any) {
+		const isActive = CustomEditor.isBlockFormatActive(editor, format)
 		Transforms.setNodes(
 			editor,
-			{ type: isActive ? null : EditorType.CODE },
+			{ type: isActive ? null : format },
 			{ match: (n) => Editor.isBlock(editor, n) }
 		)
 	},
 
-	isItalicsActive(editor: Editor) {
-		const [match] = Editor.nodes(editor, {
-			match: (n) => n[EditorType.ITALIC] === true,
-		})
-		return !!match
+	toggleBoldMark(editor: Editor) {
+		CustomEditor.toggleTextFormat(editor, EditorType.BOLD)
+	},
+
+	toggleCodeBlock(editor: Editor) {
+		CustomEditor.toggleBlockFormat(editor, EditorType.CODE)
 	},
 	toggleItalics(editor: Editor) {
-		const isActive = CustomEditor.isItalicsActive(editor)
-		Transforms.setNodes(
-			editor,
-			{ [EditorType.ITALIC]: !isActive },
-			{ match: (n) => Text.isText(n), split: true }
-		)
+		CustomEditor.toggleTextFormat(editor, EditorType.ITALIC)
 	},
 
-	isUnderLineActive(editor: Editor) {
-		const [match] = Editor.nodes(editor, {
-			match: (n) => n[EditorType.UNDERLINE] === true,
-		})
-		return !!match
-	},
 	// 下划线
 	toggleUnderLine(editor: Editor) {
-		const isActive = CustomEditor.isUnderLineActive(editor)
-		Transforms.setNodes(
-			editor,
-			{ [EditorType.UNDERLINE]: !isActive },
-			{ match: (n) => Text.isText(n), split: true }
-		)
+		CustomEditor.toggleTextFormat(editor, EditorType.UNDERLINE)
 	},
 
-	isDeleteLineActive(editor: Editor) {
-		const [match] = Editor.nodes(editor, {
-			match: (n) => n[EditorType.DELETE_LINE] === true,
-		})
-		return !!match
-	},
 	// 下划线
 	toggleDeleteLine(editor: Editor) {
-		const isActive = CustomEditor.isDeleteLineActive(editor)
-		Transforms.setNodes(
-			editor,
-			{ [EditorType.DELETE_LINE]: !isActive },
-			{ match: (n) => Text.isText(n), split: true }
-		)
+		CustomEditor.toggleTextFormat(editor, EditorType.DELETE_LINE)
 	},
 
 	// 居中
-	isTextCenterActive(editor: Editor) {
-		const [match] = Editor.nodes(editor, {
-			match: (n) => n.type === EditorType.TEXT_CENTER,
-		})
-		return !!match
-	},
 	toggleTextCenter(editor: Editor) {
-		const isActive = CustomEditor.isTextCenterActive(editor)
-		Transforms.setNodes(
-			editor,
-			{ type: isActive ? null : EditorType.TEXT_CENTER },
-			{ match: (n) => Editor.isBlock(editor, n) }
-		)
+		CustomEditor.toggleBlockFormat(editor, EditorType.TEXT_CENTER)
 	},
 
 	// 改变字间距

@@ -1,18 +1,14 @@
-import { createElement } from "react"
-import { RenderElementProps, useSlate } from "slate-react"
+import React from "react"
+import { RenderElementProps } from "slate-react"
 
 interface IProps extends RenderElementProps {
 	style?: React.CSSProperties
 }
 export default function DefaultElement(props: IProps) {
-	const { attributes, children, style, element } = props
-	const editor = useSlate()
-	return createElement(
-		editor.isInline(element) ? "span" : "div",
-		{
-			...attributes,
-			style,
-		},
-		children
+	const { attributes, children, style } = props
+	return (
+		<p {...attributes} style={style}>
+			{children}
+		</p>
 	)
 }

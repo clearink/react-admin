@@ -1,11 +1,5 @@
-import React, {
-	cloneElement,
-	ComponentType,
-	createElement,
-	CSSProperties,
-} from "react"
-import { Editor } from "slate"
-import { DefaultElement, RenderLeafProps, useSlate } from "slate-react"
+import React, { ComponentType, CSSProperties } from "react"
+import { DefaultElement, RenderLeafProps } from "slate-react"
 import EditorType from "../utils/EditorType"
 import Bold from "./Bold"
 import Code from "./Code"
@@ -108,8 +102,8 @@ export default [
 		// 居中
 		key: EditorType.TEXT_CENTER,
 		component: TextCenter,
-		element() {
-			console.log('		key: EditorType.TEXT_CENTER,');
+		element(props) {
+			console.log("		key: EditorType.TEXT_CENTER,",props)
 			return { textAlign: "center" }
 		},
 	},

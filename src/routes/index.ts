@@ -239,6 +239,70 @@ const routes: IRoute[] = [
 					},
 				],
 			},
+			{
+				path: "/admin/sys",
+				title: "系统管理",
+				icon: "icon-project",
+				component: withLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
+				routes: [
+					{
+						path: "/admin/sys/role",
+						title: "角色管理",
+						icon: "icon-user",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/System/Role"))
+						),
+					},
+					{
+						path: "/admin/sys/user",
+						title: "用户管理",
+						icon: "icon-user",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/System/User"))
+						),
+					},
+					{
+						path: "/admin/sys/menu",
+						title: "菜单管理",
+						icon: "icon-menu",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/System/Menu"))
+						),
+					},
+					{
+						path: "/admin/sys/dict",
+						title: "字典管理",
+						icon: "icon-file",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/System/Dict"))
+						),
+					},
+					{
+						path: "/admin/sys/log",
+						title: "日志管理",
+						icon: "icon-article",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/System/Log"))
+						),
+					},
+					{
+						path: "/admin/sys/message",
+						title: "消息管理",
+						icon: "icon-notification",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/System/Message"))
+						),
+					},
+					{
+						path: "/admin/sys/oss",
+						title: "OSS管理",
+						icon: "icon-image",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/System/Oss"))
+						),
+					},
+				],
+			},
 		],
 	},
 

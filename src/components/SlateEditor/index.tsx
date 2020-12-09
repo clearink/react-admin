@@ -19,6 +19,7 @@ import Toolbar from "./Toolbar"
 import DefaultElement from "./utils/DefaultElement"
 
 // 基于slate封装的富文本组件
+// 能否将slate自动生成的结构由4层缩减至2层
 // 待完成
 function SlateEditor() {
 	const editor = useMemo(() => withReact(createEditor()), [])
@@ -84,6 +85,7 @@ function SlateEditor() {
 				<Editable
 					className={styles.editor}
 					autoFocus
+					spellCheck={false}
 					renderElement={renderElement}
 					renderLeaf={renderLeaf}
 				/>
