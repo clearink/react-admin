@@ -10,6 +10,8 @@ export default function FindBreadcrumb(
 ): TBreadcrumb[] {
 	const result: TBreadcrumb[] = []
 	const path: TBreadcrumb[] = []
+
+
 	function find(config: TMenu[], path: TBreadcrumb[]) {
 		for (let item of config) {
 			if (item.routes) {

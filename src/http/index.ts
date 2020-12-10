@@ -5,7 +5,6 @@ import Axios, {
 	AxiosError,
 	AxiosResponse,
 } from "axios"
-import LocalStore from "@/utils/LocalStore"
 import { message } from "antd"
 import configs from "@/configs/app"
 import LoginUtil from "@/utils/LoginUtil"
