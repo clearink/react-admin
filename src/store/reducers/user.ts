@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import api from "@/http/api"
 import LoginUtil from "@/utils/LoginUtil"
-import { Store } from "antd/lib/form/interface"
 
 type user = {
 	name: string
@@ -11,17 +10,17 @@ type user = {
 	[key: string]: any
 }
 
-const login = createAsyncThunk("user/login", async (data: any) => {
-	const res = await api.Login(data)
-	return res.data
-})
-const getCurrentUser = createAsyncThunk(
-	"user/getCurrentUser",
-	async (params: Object) => {
-		const res = await api.Login(params)
-		return res.data as user[]
+const login = createAsyncThunk<user, Object>(
+	"user/login",
+	async (data: any) => {
+		const res = await api.Login(data)
+		return res.data
 	}
 )
+const getCurrentUser = createAsyncThunk("user/GetUserInfo", async () => {
+	const res = await api.GetUserInfo()
+	return res.data as user
+})
 
 const slice = createSlice({
 	name: "user",
@@ -41,9 +40,8 @@ const slice = createSlice({
 				state.loginLoading = true
 			})
 			.addCase(login.fulfilled, (state, action) => {
-				console.log("			.addCase(login.fulfilled, (state, action) => {", action)
 				state.loginLoading = false
-				const {result} = action.payload
+				const { result } = action.payload
 				//存储到redux中
 				state.user = result.userInfo
 				// 存储到storage
@@ -60,10 +58,9 @@ const slice = createSlice({
 			})
 			.addCase(getCurrentUser.fulfilled, (state, action) => {
 				state.fetchLoading = false
-
-				state.user = action.payload[0]
-				// 存储到storage
-				LoginUtil.setToken(action.payload[0])
+				const { result } = action.payload
+				//存储到redux中
+				state.user = result
 			})
 			.addCase(getCurrentUser.rejected, (state) => {
 				state.fetchLoading = false

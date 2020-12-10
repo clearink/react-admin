@@ -5,7 +5,7 @@ import React from "react"
 function UserManage() {
 	return (
 		<div>
-			<PageHeaderWrap title='角色管理' className='bg-white' />
+			<PageHeaderWrap title='用户管理' className='bg-white' />
 		</div>
 	)
 }

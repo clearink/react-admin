@@ -4,7 +4,7 @@ import { Layout } from "antd"
 import LayoutHeader from "@/components/LayoutHeader"
 import LoginUtil from "@/utils/LoginUtil"
 import SiderMenu from "@/components/SiderMenu"
-import {   CopyrightOutlined } from "@ant-design/icons"
+import { CopyrightOutlined } from "@ant-design/icons"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { actions } from "@/store/reducers/user"
 import { actions as menuActions } from "@/store/reducers/menu"
@@ -33,8 +33,7 @@ function BaseLayout(props: IBaseProps) {
 	useEffect(() => {
 		if (isLogin && !user) {
 			console.log("登录了, 但是没有用户信息")
-			const user = LoginUtil.getToken()
-			unwrap(actions.getCurrentUser({ id: user?.id }))
+			unwrap(actions.getCurrentUser())
 		}
 	}, [isLogin, user, unwrap])
 

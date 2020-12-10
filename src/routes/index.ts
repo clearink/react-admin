@@ -17,12 +17,12 @@ const routes: IRoute[] = [
 
 	// 后台管理
 	{
-		path: "",
+		path: "/",
 		component: withLazyLoad(lazy(() => import("@/layouts/AdminLayout"))),
 		routes: [
 			// home
 			{
-				path: "",
+				path: "/",
 				component: withLazyLoad(lazy(() => import("@/pages/Admin/Home"))),
 			},
 

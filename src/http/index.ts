@@ -41,8 +41,8 @@ class Http {
 	private requestIntercept(axios: AxiosStatic) {
 		axios.interceptors.request.use(
 			async (config: AxiosRequestConfig) => {
-				const token = LocalStore.get(configs.TOKEN)
-				if (token) config.headers.authToken = token
+				const token = LoginUtil.getToken()
+				if (token) config.headers[configs.TOKEN] = token
 				return config
 			},
 			(error) => {
@@ -68,10 +68,7 @@ class Http {
 				if (code === 200) {
 					return response
 				}
-				if (code === 1001) {
-					// token 过期
-					LoginUtil.clearToken()
-				}
+				this.errorHandle(response)
 				this.showError(response.data)
 				return Promise.reject(response)
 			},
@@ -85,6 +82,22 @@ class Http {
 				return Promise.reject(error)
 			}
 		)
+	}
+
+	// error handle
+
+	private errorHandle(response: AxiosResponse<any>) {
+		const {
+			data: { code },
+		} = response
+		switch (code) {
+			case 1001:
+				// token 过期
+				LoginUtil.clearToken()
+				break
+			default:
+				break
+		}
 	}
 
 	// antd message 更流畅
