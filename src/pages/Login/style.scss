@@ -2,41 +2,47 @@
 .login-page {
 	&__wrap {
 		@include flex-center();
-		min-height: 100vh;
 		transition: all 0.2s;
-		@include media(sm, max) {
-			background-color: rgba($color: white, $alpha: 0.9);
-		}
+		flex: 1;
+		// @include media(sm, max) {
+		// 	background-color: rgba($color: white, $alpha: 0.9);
+		// }
 		.login-box {
 			&__wrap {
 				@include flex-center(column);
 				border-radius: 1rem;
 				opacity: 0.9;
 				background-color: white;
-				position: relative;
-				bottom: 10rem;
 				box-shadow: 1rem 1rem 4rem rgb(168, 164, 164);
-				height: 38rem;
-				width: 40rem;
+				height: 55rem;
+				width: 50rem;
 
 				@include media(sm, max) {
 					background-color: transparent;
 					position: static;
 					box-shadow: none;
+					width: 350px;
 				}
 			}
 			&__title {
-				@include flex-center;
-				@apply text-4xl;
+				@include flex-center(column);
+				font-size: 18px;
 				flex-shrink: 0;
-				height: 11rem;
-
-				@include media(sm, max) {
-					flex-basis: 30%;
+				flex-basis: 26rem;
+				h1 {
+					font-weight: 700;
+					color: $color_primary;
 				}
 			}
 			&__form {
 				flex-grow: 1;
+
+				.login-box__username, .login-box__password, .login-box__submit{
+					height: 50px;
+				}
+				.login-box__submit{
+					font-size: 18px;
+				}
 			}
 		}
 	}

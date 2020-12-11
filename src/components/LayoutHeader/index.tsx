@@ -7,7 +7,6 @@ import {
 	SettingOutlined,
 	LogoutOutlined,
 } from "@ant-design/icons"
-import { SketchPicker } from "react-color"
 import LoginUtil from "@/utils/LoginUtil"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/user"
@@ -45,15 +44,10 @@ function LayoutHeader(props: IProps) {
 	)
 	return (
 		<Layout.Header className='layout-header__content'>
-			<Dropdown trigger={["click"]} overlay={<SketchPicker />}>
-				<div className='color-picker__wrap px-3'>
-					<div className='color-picker'></div>
-				</div>
-			</Dropdown>
 			<Dropdown overlay={menu}>
 				<span className='header_action px-3 flex items-center cursor-pointer'>
 					<Avatar className='mr-4' src={user?.avatar} alt='avatar' />
-					<span>{user?.name ?? <Spin />}</span>
+					<span>{user?.username ?? <Spin />}</span>
 				</span>
 			</Dropdown>
 			<span className='cursor-pointer px-3'>语言</span>

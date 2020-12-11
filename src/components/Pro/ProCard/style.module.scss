@@ -1,0 +1,74 @@
+@import "~@/styles/index.scss";
+
+.pro_card_container {
+	background-color: white;
+	box-sizing: border-box;
+	.card_head {
+		min-height: $base_spacing * 6;
+		padding: 0 $base_spacing * 3;
+		color: rgba(0, 0, 0, 0.85);
+		font-weight: 500;
+		font-size: 16px;
+		background: transparent;
+		border-radius: 2px 2px 0 0;
+	}
+	.card_head_wrap {
+		display: flex;
+		padding: $base_spacing * 2 0;
+		justify-content: space-between;
+		.head_title {
+			display: inline-block;
+			flex: 1;
+			@include ellipsis;
+		}
+		.head_extra {
+			color: rgba(0, 0, 0, 0.85);
+			font-weight: 400;
+			font-size: 14px;
+		}
+	}
+	.card_body {
+		padding: $base_spacing * 3;
+		&.contain_card {
+			display: flex;
+		}
+		&.body_column {
+			flex-direction: column !important;
+		}
+	}
+
+	&.bordered {
+		.card_head {
+			margin-bottom: -1px;
+			border-bottom: 1px solid $color_grey-1;
+		}
+		border: 1px solid $color_grey-1;
+	}
+
+	&.small {
+		.card_head {
+			min-height: $base_spacing * 4;
+			padding: 0 $base_spacing * 2;
+			font-size: 14px;
+		}
+		.card_head_wrap {
+			padding: $base_spacing 0;
+		}
+		.card_body {
+			padding: $base_spacing * 2;
+		}
+	}
+
+	&.ghost {
+		.card_head {
+			padding: 0;
+			font-size: 14px;
+		}
+		.card_head_wrap {
+			padding: 0;
+		}
+		.card_body {
+			padding: 0;
+		}
+	}
+}

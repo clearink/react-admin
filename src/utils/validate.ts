@@ -23,3 +23,5 @@ export const isBoolean = (obj: any) => validateType(obj, "Boolean")
 export const isFunction = (obj: any) => validateType(obj, "Function")
 export const isSymbol = (obj: any) => validateType(obj, "Symbol")
 export const isBigInt = (obj: any) => validateType(obj, "BigInt")
+
+export const isNullUndefined = (obj: any) => isNull(obj) || isUndefined(obj)

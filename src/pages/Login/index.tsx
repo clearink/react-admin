@@ -7,6 +7,7 @@ import { actions } from "@/store/reducers/user"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import "./style.scss"
+import { PoweroffOutlined, TeamOutlined } from "@ant-design/icons"
 
 const { useForm } = Form
 
@@ -30,7 +31,10 @@ function Login(props: IBaseProps) {
 	return (
 		<div className='login-page__wrap'>
 			<div className='login-box__wrap select-none'>
-				<h1 className='login-box__title'>欢迎登陆</h1>
+				<div className='login-box__title'>
+					<h1>LOGO</h1>
+					<h1>派博健康管理中心</h1>
+				</div>
 				<Form
 					form={form}
 					validateMessages={formValidateMessages}
@@ -38,25 +42,29 @@ function Login(props: IBaseProps) {
 					onFinish={handleSubmit}
 				>
 					<Form.Item name='username' rules={[{ required: true }]}>
-						<Input className='login-box__username' placeholder='username' />
+						<Input
+							className='login-box__username'
+							placeholder='请输入用户名称'
+							prefix={<TeamOutlined />}
+						/>
 					</Form.Item>
 					<Form.Item name='password' rules={[{ required: true }]}>
 						<Input.Password
 							className='login-box__password'
-							placeholder='password'
+							placeholder='请输入登录密码'
+							prefix={<PoweroffOutlined />}
 						/>
 					</Form.Item>
-					<Form.Item>
-						<Button
-							loading={loginLoading}
-							type='primary'
-							htmlType='submit'
-							className='h-16'
-							block
-						>
-							登录
-						</Button>
-					</Form.Item>
+
+					<Button
+						loading={loginLoading}
+						type='primary'
+						htmlType='submit'
+						className='login-box__submit'
+						block
+					>
+						登录
+					</Button>
 				</Form>
 			</div>
 		</div>

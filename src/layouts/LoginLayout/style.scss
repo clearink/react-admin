@@ -1,4 +1,15 @@
+@import "~@/styles/index.scss";
 .app-login-layout {
 	min-height: 100vh;
-	background-image: url(~@/assets/images/login-background.svg);
+	width: 100%;
+	background-color: $color_grey-3;
+	// background-image: url(~@/assets/images/login-background.svg);
+	@include flex-center(column);
+}
+
+.app-login-footer {
+	flex-basis: 100px;
+	text-align: center;
+	color: $color_grey-4;
+	font-weight: 700;
 }

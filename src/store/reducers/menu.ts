@@ -1,9 +1,14 @@
 import { TMenu } from "@/@types/menu"
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import https from "@/http/layout"
+const fetchMenu = createAsyncThunk("menu/fetch", async () => {
+	const response = await https.GetMenu()
+	return response.data
+})
 
 const slice = createSlice({
 	name: "menu",
-	initialState: { menu: [] as TMenu[], collapsed: false },
+	initialState: { menu: [] as TMenu[], collapsed: false, loading: false },
 	reducers: {
 		saveMenu(state, action: PayloadAction<TMenu[]>) {
 			state.menu = action.payload
@@ -12,6 +17,19 @@ const slice = createSlice({
 			state.collapsed = !state.collapsed
 		},
 	},
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchMenu.pending, (state, action) => {
+				state.loading = true
+			})
+			.addCase(fetchMenu.fulfilled, (state, action) => {
+				state.loading = false
+				state.menu = action.payload
+			})
+			.addCase(fetchMenu.rejected, (state, action) => {
+				state.loading = false
+			})
+	},
 })
-export const actions = { ...slice.actions }
+export const actions = { ...slice.actions, fetchMenu }
 export default slice.reducer

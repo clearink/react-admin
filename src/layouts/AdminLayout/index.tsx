@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from "react"
+import React, { useEffect, memo, useLayoutEffect } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Layout } from "antd"
 import LayoutHeader from "@/components/LayoutHeader"
@@ -30,7 +30,7 @@ function BaseLayout(props: IBaseProps) {
 	const { menu } = useTypedSelector((state) => state.menu)
 
 	// 登录了,但是没有用户信息
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (isLogin && !user) {
 			console.log("登录了, 但是没有用户信息")
 			unwrap(actions.getCurrentUser())
@@ -38,7 +38,7 @@ function BaseLayout(props: IBaseProps) {
 	}, [isLogin, user, unwrap])
 
 	// 未登录
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!isLogin) {
 			console.log("未登录")
 			push("/login")

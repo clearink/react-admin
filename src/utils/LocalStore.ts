@@ -25,6 +25,7 @@ class LocalStore {
 		const time = Number(hasExpires)
 		// 如果存在 expires
 		if (time && (isNaN(time) || time < Date.now())) {
+			console.log(`${key} 已过期`)
 			return LocalStore.remove(key)
 		}
 		try {

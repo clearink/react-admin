@@ -9,3 +9,9 @@
 	justify-content: center;
 	flex-direction: $direction;
 }
+
+@mixin ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

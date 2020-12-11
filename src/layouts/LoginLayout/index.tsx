@@ -22,8 +22,12 @@ function LoginLayout(props: IBaseProps) {
 
 	return (
 		<div className='app-login-layout'>
-			<ParticlesBg type='cobweb' bg />
+			{/* <ParticlesBg type='cobweb' bg /> */}
 			{children}
+			<footer className='app-login-footer'>
+				<p>Copyright © 派博生命科技, All Rights Reserved.</p>
+				<p>PEPPER LIFE TECHNOLOGY</p>
+			</footer>
 		</div>
 	)
 }
