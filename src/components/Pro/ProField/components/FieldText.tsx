@@ -22,7 +22,7 @@ function FieldText(props: IProps, ref: Ref<any>) {
 		return dom
 	}
 	const formDOM = (
-		<Input placeholder='请输入' ref={inputRef} allowClear {...rest} {...rest} />
+		<Input placeholder='请输入' ref={inputRef} allowClear {...rest} {...fieldProps} />
 	)
 	if (renderFormItem)
 		return renderFormItem(text, { mode, ...rest, ...fieldProps }, formDOM)

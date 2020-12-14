@@ -4,7 +4,7 @@ import { FormItemProps } from "antd/lib/form"
 import { FieldType } from "../ProField/components/type"
 import { BaseFormProps, ProFormItemProps } from "./components/BaseForm/type"
 
-export type extendProps = Omit<BaseFormProps, "fieldProps"> & FormItemProps & {}
+export type extendProps = Omit<BaseFormProps, "form"> & FormItemProps & {}
 
 export default function createField<F extends ProFormItemProps = any>(
 	Field: React.ComponentType<F> | React.ForwardRefExoticComponent<F>,
@@ -17,6 +17,7 @@ export default function createField<F extends ProFormItemProps = any>(
 			props
 		)
 		const { fieldProps, placeholder, ...formItemRest } = props
+		// 去除 FormItemProps 属性
 		return (
 			<Form.Item {...formItemRest}>
 				<Field
