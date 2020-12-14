@@ -1,0 +1,15 @@
+@import "@/styles/index.scss";
+.app-login-footer {
+	@include flex-center(column);
+	text-align: center;
+	color: $color_grey-4;
+	font-weight: 700;
+	p{
+		margin: 1rem 0;
+	}
+}
+
+.icon {
+	font-size: 26px;
+	color: #ccc;
+}

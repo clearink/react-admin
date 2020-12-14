@@ -1,0 +1,49 @@
+@import "@/styles/index.scss";
+
+.filter_bar {
+	@apply bg-white;
+	.filter_item {
+		display: flex;
+		align-items: baseline;
+		padding-top: 1rem;
+		&:not(:last-child) {
+			border-bottom: 1px solid rgba($color_text, 0.2);
+		}
+		.filter_title {
+			padding: 0 1rem;
+			white-space: nowrap;
+			&::after {
+				content: ":";
+				display: inline-block;
+				margin-left: 3px;
+				vertical-align: baseline;
+			}
+		}
+
+		.list_item {
+			min-width: 100px;
+			text-align: center;
+			border-radius: 5px !important;
+			margin-bottom: 1rem;
+		}
+	}
+}
+.value_list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.bed_card_list {
+	@apply bg-white px-16 py-8;
+	margin-top: 2rem;
+  @apply flex justify-between items-center flex-wrap;
+  .bed_card{
+    margin-bottom: 2rem;
+  }
+  .bed_info{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+  }
+}

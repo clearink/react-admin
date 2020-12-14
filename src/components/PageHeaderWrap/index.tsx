@@ -1,11 +1,14 @@
-import React, { useCallback, useMemo } from "react"
+import React, { memo, useCallback, useMemo } from "react"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import FindBreadcrumb from "@/utils/FindBreadcrumb"
 import { PageHeader } from "antd"
 import { PageHeaderProps } from "antd/lib/page-header"
 import { Link, useLocation } from "react-router-dom"
+import withDefaultProps from "@/hocs/withDefaultProps"
 
-interface IProps extends PageHeaderProps {}
+interface IProps extends PageHeaderProps {
+	ghost: boolean
+}
 // 自动获取面包屑的 PageHeader
 function PageHeaderWrap(props: IProps) {
 	const { menu } = useTypedSelector((state) => state.menu)
@@ -41,4 +44,4 @@ function PageHeaderWrap(props: IProps) {
 	)
 }
 
-export default PageHeaderWrap
+export default memo(withDefaultProps(PageHeaderWrap, { ghost: false }))

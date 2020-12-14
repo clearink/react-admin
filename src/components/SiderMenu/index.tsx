@@ -10,7 +10,7 @@ import { actions } from "@/store/reducers/menu"
 import "./style.scss"
 
 const boundToggle = GetBoundAction(actions.toggle)
-const theme = "dark"
+const theme = "light"
 function SiderMenu() {
 	const [collapsedMenu, setCollapsedMenu] = useState(false)
 	const { menu, collapsed } = useTypedSelector((state) => state.menu)
@@ -51,7 +51,7 @@ function SiderMenu() {
 			>
 				<div className='logo'>
 					<img src={logo} alt='logo' />
-					{!collapsed && <span>clear ink</span>}
+					<span>派博管理中心</span>
 				</div>
 				<Menu
 					onOpenChange={setOpenKeys as any} // 点击事件

@@ -4,7 +4,6 @@ import { Layout } from "antd"
 import LayoutHeader from "@/components/LayoutHeader"
 import LoginUtil from "@/utils/LoginUtil"
 import SiderMenu from "@/components/SiderMenu"
-import { CopyrightOutlined } from "@ant-design/icons"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { actions } from "@/store/reducers/user"
 import { actions as menuActions } from "@/store/reducers/menu"
@@ -12,10 +11,11 @@ import GetBoundAction from "@/utils/GetBoundAction"
 import { IRoute } from "@/@types/route"
 import { TMenu } from "@/@types/menu"
 import FilterValue from "@/utils/FilterValue"
+import Footer from "@/components/Footer"
 import "./style.scss"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 
-const { Content, Footer } = Layout
+const { Content } = Layout
 const SaveMenu = GetBoundAction(menuActions.saveMenu)
 
 function BaseLayout(props: IBaseProps) {
@@ -73,15 +73,9 @@ function BaseLayout(props: IBaseProps) {
 		<Layout className='app-base-layout'>
 			<SiderMenu />
 			<Layout className='content__layout'>
-				<LayoutHeader />
+				{/* <LayoutHeader /> */}
 				<Content className='content-wrap'>{children}</Content>
-				<Footer className='footer_content__wrap'>
-					<div className='footer_content--copyright'>
-						<span>copyright</span>
-						<CopyrightOutlined />
-						<span>clearink</span>
-					</div>
-				</Footer>
+				<Footer />
 			</Layout>
 		</Layout>
 	)

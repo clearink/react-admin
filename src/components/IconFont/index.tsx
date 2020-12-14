@@ -5,3 +5,7 @@ const IconFont = createFromIconfontCN({
 })
 
 export default IconFont
+
+export const PepLifeIcon = createFromIconfontCN({
+	scriptUrl: "https://at.alicdn.com/t/font_2268200_iik388pqlq8.js",
+})

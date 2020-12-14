@@ -7,7 +7,17 @@ $map-break-point: (
 );
 
 @mixin media($break-point: md, $type: min) {
-	@media screen and (#{$type}-width: map-get($map: $map-break-point, $key: $break-point)) {
-		@content;
+	$width: map-get(
+		$map: $map-break-point,
+		$key: $break-point,
+	);
+	@if $width {
+		@media screen and (#{$type}-width: $width) {
+			@content;
+		}
+	} @else{
+		@media screen and (#{$type}-width: $break-point) {
+			@content;
+		}
 	}
 }

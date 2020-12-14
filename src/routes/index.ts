@@ -6,15 +6,8 @@ const routes: IRoute[] = [
 	// 通用登录组件
 	{
 		path: "/login",
-		component: withLazyLoad(lazy(() => import("@/layouts/LoginLayout"))),
-		routes: [
-			{
-				path: "/login",
-				component: withLazyLoad(lazy(() => import("@/pages/Login"))),
-			},
-		],
+		component: withLazyLoad(lazy(() => import("@/pages/Login"))),
 	},
-
 	// 后台管理
 	{
 		path: "/",
@@ -23,7 +16,32 @@ const routes: IRoute[] = [
 			// home
 			{
 				path: "/",
+				icon: "icon-computer",
+				title: "管理首页",
 				component: withLazyLoad(lazy(() => import("@/pages/Admin/Home"))),
+			},
+			{
+				path: "/monitor",
+				component: withLazyLoad(
+					lazy(() => import("@/pages/Admin/Monitor/Layout"))
+				),
+				routes: [
+					{
+						path: "/monitor",
+						icon: "icon-computer",
+						title: "监控分析",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/Monitor"))
+						),
+					},
+					{
+						path: "/monitor/alarm",
+						icon: "icon-computer",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/Monitor/AlarmRecord"))
+						),
+					},
+				],
 			},
 
 			// dashboard
@@ -201,14 +219,7 @@ const routes: IRoute[] = [
 				path: "/canvas",
 				title: "画布",
 				icon: "icon-huabu",
-				component: withLazyLoad(lazy(() => import("@/layouts/BlankLayout"))),
-				routes: [
-					{
-						path: "/canvas",
-						title: "图片剪裁",
-						component: withLazyLoad(lazy(() => import("@/pages/Admin/Canvas"))),
-					},
-				],
+				component: withLazyLoad(lazy(() => import("@/pages/Admin/Canvas"))),
 			},
 			{
 				path: "/sys",

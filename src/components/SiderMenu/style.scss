@@ -1,4 +1,5 @@
 @import "@/styles/index";
+$collapsed_width: 48px;
 .sider-menu {
 	&__wrap {
 		position: fixed !important;
@@ -14,9 +15,9 @@
 		.logo {
 			width: 100%;
 			padding: 1.6rem 0.9rem;
-			min-height: 6rem;
-			color: white;
+			height: 6rem;
 			display: flex;
+			overflow: hidden;
 			align-items: center;
 			white-space: nowrap;
 			img {
@@ -45,8 +46,9 @@
 			}
 		}
 		.ant-menu-inline-collapsed {
-			width: 4.8rem !important;
-			.ant-menu-submenu-title {
+			width: $collapsed_width !important;
+			.ant-menu-submenu-title,
+			.ant-menu-item {
 				padding: 0 1.6rem !important;
 			}
 		}

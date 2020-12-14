@@ -1,0 +1,34 @@
+@import "~@/styles/index.scss";
+.common_header_wrap {
+	@apply shadow-sm;
+	@apply flex justify-center items-center bg-white;
+	min-height: 60px;
+	margin-bottom: 30px;
+	padding: 0 20px;
+	.header {
+		display: flex;
+		align-items: center;
+		color: $color_text;
+
+		.icon {
+			font-size: 20px;
+			margin-right: $base_spacing;
+		}
+		span {
+			font-size: 18px;
+			font-weight: 600;
+		}
+	}
+	.extra {
+		flex: auto;
+	}
+}
+.ghost{
+	background-color: transparent !important;
+	box-shadow: none;
+}
+.fixed{
+	position: fixed !important;
+	width: 100%;
+	z-index: 100;
+}

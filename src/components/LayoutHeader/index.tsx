@@ -17,6 +17,7 @@ interface IProps {}
 
 const BoundLogout = GetBoundAction(actions.logout)
 
+// 基础头部
 function LayoutHeader(props: IProps) {
 	const { user } = useSelector((state: AppState) => state.user)
 	const handleLogout = () => {

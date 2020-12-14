@@ -1,94 +1,70 @@
-import React, { memo, useReducer } from "react"
+import React, { memo } from "react"
 import { IBaseProps } from "@/@types/fc"
-import { Button, Space } from "antd"
-import chat from "@/assets/svg/chat.svg"
-import file from "@/assets/svg/file.svg"
-import image from "@/assets/svg/image.svg"
-import interact from "@/assets/svg/interact.svg"
-import propaganda from "@/assets/svg/propaganda.svg"
-import success from "@/assets/svg/success.svg"
-import { motion as m, AnimatePresence } from "framer-motion"
-import { animateProps, homeImageVariants } from "@/configs/animate"
-import useInterval from "@/hooks/useInterval"
-import { bindActionCreators, createSlice, Dispatch } from "@reduxjs/toolkit"
-import "./style.scss"
-
-const init = {
-	current: 0,
-	direction: 1,
-	images: [chat, file, image, interact, propaganda, success],
-	loading: false,
-}
-const slice = createSlice({
-	name: "banner",
-	initialState: init,
-	reducers: {
-		next(state) {
-			state.current = (state.current + 1) % state.images.length
-			state.direction = 1
-			state.loading = true
-		},
-		prev(state) {
-			state.loading = true
-			state.direction = -1
-			state.current =
-				(state.current - 1 + state.images.length) % state.images.length
-		},
-		complete(state) {
-			state.loading = false
-		},
-	},
-})
+import classNames from "classnames"
+import { PepLifeIcon } from "@/components/IconFont"
+import styles from "./style.module.scss"
+import Avatar from "antd/lib/avatar/avatar"
+import SysNotice from "./SysNotice"
+import { CommonHeader } from "@/components/PepLife"
 
 function Home(props: IBaseProps) {
-	const [{ current, images, direction }, dispatch] = useReducer(
-		slice.reducer,
-		init
-	)
-	const actions = bindActionCreators(slice.actions, dispatch as Dispatch)
-	const [clear, reload] = useInterval(() => {
-		actions.next()
-	}, 2000)
-
-	const handlePrev = () => {
-		actions.prev()
-		reload()
-	}
-
-	const handleNext = () => {
-		actions.next()
-		reload()
-	}
-
 	return (
-		<div className='home-page__wrap'>
-			<div className='image-list__wrap rounded-md'>
-				<AnimatePresence
-					initial={false}
-					custom={direction}
-					onExitComplete={() => dispatch(actions.complete)}
-				>
-					<m.img
-						className='image-item bg-gray-300 rounded-md'
-						key={current}
-						onHoverStart={clear}
-						onHoverEnd={reload}
-						src={images[current]}
-						transition={{
-							type: "tween",
-							duration: 0.3,
-						}}
-						alt='svg'
-						custom={direction}
-						{...animateProps}
-						variants={homeImageVariants}
-					/>
-				</AnimatePresence>
-			</div>
-			<Space>
-				<Button onClick={handlePrev}>prev</Button>
-				<Button onClick={handleNext}>next</Button>
-			</Space>
+		<div className={styles["home-page__wrap"]}>
+			<CommonHeader icon='icon-chilun' title='管理首页' fixed />
+			<main className={styles.content_wrap}>
+				<div className='flex mb-8 flex-col md:flex-row'>
+					<div className={classNames(styles.user_info, "mb-4 md:mb-0")}>
+						<Avatar
+							className={styles.avatar}
+							icon={<PepLifeIcon type='icon-user' className={styles.icon} />}
+							size={70}
+							src={"12312321"}
+						/>
+						<div className={styles.info}>
+							<p>李小明, 欢迎进入XXX康养中心系统</p>
+							<p>上次登录: 2020年8月10日 星期三 20:30:23</p>
+						</div>
+					</div>
+					<div className={styles.sys_info}>
+						<div className={styles.statistics}>
+							<div className={styles.title}>住户数量</div>
+							<div className={styles.value}>100</div>
+						</div>
+						<div className={styles.statistics}>
+							<div className={styles.title}>护管数量</div>
+							<div className={styles.value}>20</div>
+						</div>
+						<div className={styles.statistics}>
+							<div className={styles.title}>在线设备</div>
+							<div className={styles.value}>100</div>
+						</div>
+					</div>
+				</div>
+				<div className={styles.module_card}>
+					<div className={styles.card}>
+						<PepLifeIcon type='icon-user' className={styles.icon} />
+						<span className={styles.name}>监控分析</span>
+					</div>
+					<div className={styles.card}>
+						<PepLifeIcon type='icon-user' className={styles.icon} />
+						<span className={styles.name}>床位分配</span>
+					</div>
+					<div className={styles.card}>
+						<PepLifeIcon type='icon-user' className={styles.icon} />
+						<span className={styles.name}>住户管理</span>
+					</div>
+					<div className={styles.card}>
+						<PepLifeIcon type='icon-user' className={styles.icon} />
+						<span className={styles.name}>护管管理</span>
+					</div>
+					<div className={styles.card}>
+						<PepLifeIcon type='icon-user' className={styles.icon} />
+						<span className={styles.name}>设备管理</span>
+					</div>
+					<div className={styles.card_placeholder}></div>
+				</div>
+				<SysNotice />
+			</main>
 		</div>
 	)
 }
