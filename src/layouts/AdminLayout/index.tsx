@@ -39,10 +39,7 @@ function BaseLayout(props: IBaseProps) {
 
 	// 未登录
 	useLayoutEffect(() => {
-		if (!isLogin) {
-			console.log("未登录")
-			push("/login")
-		}
+		if (!isLogin) push("/login")
 	}, [isLogin, push])
 
 	// 获取菜单数据
@@ -65,6 +62,13 @@ function BaseLayout(props: IBaseProps) {
 		if (routes && menu.length === 0) SaveMenu(filterMenu(routes))
 	}, [routes, menu])
 
+	// 请求菜单数据
+	useEffect(() => {
+		;(async () => {
+			const result = await unwrap(menuActions.fetchMenu())
+			console.log(result)
+		})()
+	}, [unwrap])
 	return (
 		<Layout className='app-base-layout'>
 			<SiderMenu />

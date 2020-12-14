@@ -10,6 +10,7 @@ type VariableType =
 	| "Function"
 	| "Symbol"
 	| "BigInt"
+	| "Map"
 const validateType = (obj: any, type: VariableType) =>
 	Object.prototype.toString.call(obj) === `[object ${type}]`
 
@@ -18,10 +19,11 @@ export const isArray = Array.isArray
 export const isUndefined = (obj: any) => validateType(obj, "Undefined")
 export const isNull = (obj: any) => validateType(obj, "Null")
 export const isNumber = (obj: any) => validateType(obj, "Number")
-export const isString = (obj: any) => validateType(obj, "String")
+export const isString = (obj: any) => validateType(obj as string, "String")
 export const isBoolean = (obj: any) => validateType(obj, "Boolean")
 export const isFunction = (obj: any) => validateType(obj, "Function")
 export const isSymbol = (obj: any) => validateType(obj, "Symbol")
 export const isBigInt = (obj: any) => validateType(obj, "BigInt")
+export const isMap = (obj: any) => validateType(obj, "Map")
 
 export const isNullUndefined = (obj: any) => isNull(obj) || isUndefined(obj)

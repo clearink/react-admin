@@ -24,7 +24,11 @@ const slice = createSlice({
 			})
 			.addCase(fetchMenu.fulfilled, (state, action) => {
 				state.loading = false
-				state.menu = action.payload
+				console.log(
+					"	.addCase(fetchMenu.fulfilled, (state, action) => {",
+					action
+				)
+				// state.menu = action.payload
 			})
 			.addCase(fetchMenu.rejected, (state, action) => {
 				state.loading = false

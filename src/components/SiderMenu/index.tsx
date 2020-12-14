@@ -10,6 +10,7 @@ import { actions } from "@/store/reducers/menu"
 import "./style.scss"
 
 const boundToggle = GetBoundAction(actions.toggle)
+const theme = "dark"
 function SiderMenu() {
 	const [collapsedMenu, setCollapsedMenu] = useState(false)
 	const { menu, collapsed } = useTypedSelector((state) => state.menu)
@@ -46,6 +47,7 @@ function SiderMenu() {
 				onCollapse={boundToggle}
 				breakpoint='md'
 				className='sider-menu__wrap'
+				theme={theme}
 			>
 				<div className='logo'>
 					<img src={logo} alt='logo' />
@@ -55,7 +57,7 @@ function SiderMenu() {
 					onOpenChange={setOpenKeys as any} // 点击事件
 					className='menu'
 					mode='inline'
-					theme='dark'
+					theme={theme}
 					openKeys={openKeys}
 					selectedKeys={selectKeys}
 				>

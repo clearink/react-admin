@@ -1,5 +1,4 @@
 import React, { useEffect } from "react"
-import ParticlesBg from "particles-bg"
 import LoginUtil from "@/utils/LoginUtil"
 import { message } from "antd"
 import { useHistory } from "react-router-dom"
