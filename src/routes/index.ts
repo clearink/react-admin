@@ -22,23 +22,29 @@ const routes: IRoute[] = [
 			},
 			{
 				path: "/monitor",
+				icon: "icon-computer",
+				title: "监控分析",
+				hideChildren:true,
 				component: withLazyLoad(
 					lazy(() => import("@/pages/Admin/Monitor/Layout"))
 				),
 				routes: [
 					{
 						path: "/monitor",
-						icon: "icon-computer",
-						title: "监控分析",
 						component: withLazyLoad(
 							lazy(() => import("@/pages/Admin/Monitor"))
 						),
 					},
 					{
 						path: "/monitor/alarm",
-						icon: "icon-computer",
 						component: withLazyLoad(
 							lazy(() => import("@/pages/Admin/Monitor/AlarmRecord"))
+						),
+					},
+					{
+						path: "/monitor/analysis",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/Monitor/Analysis"))
 						),
 					},
 				],

@@ -11,5 +11,7 @@ interface IRoute {
 	title?: string
 	key?: string
 	hide?: boolean
+	/* 在菜单中隐藏子菜单 */
+	hideChildren?:boolean
 	[key: string]: any
 }

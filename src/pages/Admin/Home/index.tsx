@@ -6,6 +6,7 @@ import styles from "./style.module.scss"
 import Avatar from "antd/lib/avatar/avatar"
 import SysNotice from "./SysNotice"
 import { CommonHeader } from "@/components/PepLife"
+import { Link } from "react-router-dom"
 
 function Home(props: IBaseProps) {
 	return (
@@ -41,10 +42,10 @@ function Home(props: IBaseProps) {
 					</div>
 				</div>
 				<div className={styles.module_card}>
-					<div className={styles.card}>
+					<Link className={styles.card} to='/monitor'>
 						<PepLifeIcon type='icon-user' className={styles.icon} />
 						<span className={styles.name}>监控分析</span>
-					</div>
+					</Link>
 					<div className={styles.card}>
 						<PepLifeIcon type='icon-user' className={styles.icon} />
 						<span className={styles.name}>床位分配</span>

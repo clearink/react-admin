@@ -1,0 +1,30 @@
+@import "~@/styles/index.scss";
+.bed_card {
+	margin-bottom: 2rem;
+	width: 210px;
+}
+.bed_info {
+	display: flex;
+	min-height: 120px;
+	justify-content: space-between;
+	align-items: center;
+	.percent_name,
+	.bed_status {
+		@include flex-center(column);
+	}
+	.bed_status {
+		position: relative;
+		top: 16px;
+	}
+	.in_bed {
+		color: $color_success;
+	}
+	.leave_bed {
+		color: $color_warn;
+	}
+}
+.action_wrap {
+	display: flex;
+	font-size: 12px;
+	justify-content: center;
+}

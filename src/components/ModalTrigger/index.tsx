@@ -17,7 +17,7 @@ interface IProps extends Omit<ModalProps, "visible"> {
 	children?: ReactNode
 }
 export interface IModalTriggerRef {
-	toggle: () => void
+	toggle: (e?: MouseEvent, t?: () => void) => void
 	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
 }
 function ModalTrigger(props: IProps, ref: Ref<IModalTriggerRef>) {

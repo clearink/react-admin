@@ -51,7 +51,7 @@ function BaseLayout(props: IBaseProps) {
 			if (!Array.isArray(routes)) throw new Error("routes must array")
 			return routes.map((route) => {
 				// 确保 menu key 全局唯一
-				const key = `${parentKeys}😜${route.path ?? route.key}`
+				const key = `${parentKeys}😜${route.key ?? route.path}`
 				return {
 					...FilterValue(route, "component", "wrap"),
 					key,

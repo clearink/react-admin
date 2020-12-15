@@ -36,14 +36,5 @@
 .bed_card_list {
 	@apply bg-white px-16 py-8;
 	margin-top: 2rem;
-  @apply flex justify-between items-center flex-wrap;
-  .bed_card{
-    margin-bottom: 2rem;
-  }
-  .bed_info{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-  }
+	@apply flex justify-between items-center flex-wrap;
 }

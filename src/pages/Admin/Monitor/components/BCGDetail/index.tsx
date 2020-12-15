@@ -1,0 +1,33 @@
+import ModalTrigger from "@/components/ModalTrigger"
+import { CloseCircleOutlined } from "@ant-design/icons"
+import React, { PropsWithChildren, ReactNode } from "react"
+
+// 用户BCG 数据
+// 用一个ModalTrigger承载 主要是要请求数据
+interface BCGDetailProps {
+}
+function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
+	return (
+		<ModalTrigger
+			width={800}
+			title={
+				<h3 className='flex'>
+					<span>心率呼吸BCG</span>
+					<span className='flex-auto text-center text-blue-400'>
+						[五楼] [507] [02床] 张三丰（612044000000）
+					</span>
+				</h3>
+			}
+			centered
+			closeIcon={<CloseCircleOutlined style={{ fontSize: 25 }} />}
+			footer={null}
+		>
+			<p>12321</p>
+			<p>12321</p>
+			<p>12321</p>
+			<p>12321</p>
+		</ModalTrigger>
+	)
+}
+
+export default BCGDetail

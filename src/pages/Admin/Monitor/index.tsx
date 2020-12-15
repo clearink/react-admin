@@ -2,7 +2,9 @@ import React from "react"
 import styles from "./style.module.scss"
 import { CommonHeader } from "@/components/PepLife"
 import { BankOutlined } from "@ant-design/icons"
-import { Button, Card, Radio, Space, Tabs } from "antd"
+import { Button, Card, Radio, Row, Space, Tabs } from "antd"
+import BedCard from "./components/BedCard"
+import BCGDetail from './components/BCGDetail'
 // 监控分析
 function Monitor() {
 	return (
@@ -48,29 +50,11 @@ function Monitor() {
 			</div>
 			{/* 病床 */}
 			<div className={styles.bed_card_list}>
-				{Array.from({ length: 40 }, (_, i) => (
-					<Card
-						className={styles.bed_card}
-						key={i}
-						title='501房 - 01床'
-						style={{ width: 200 }}
-						actions={[
-							<Button key='bcg' type='link' size='small'>
-								心率呼吸BCG
-							</Button>,
-							<Button key='record' type='link' size='small'>
-								睡眠报告
-							</Button>,
-						]}
-					>
-						<div className={styles.bed_info}>
-							<div>在床</div>
-							<div>name</div>
-							<div>告警</div>
-						</div>
-					</Card>
+				{Array.from({ length: 30 }, (_, i) => (
+					<BedCard title='507房 - 01床' key={i} />
 				))}
 			</div>
+			<BCGDetail   />
 		</main>
 	)
 }

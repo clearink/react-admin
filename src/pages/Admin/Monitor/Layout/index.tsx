@@ -4,11 +4,11 @@ import { CommonHeader } from "@/components/PepLife"
 import { BankOutlined } from "@ant-design/icons"
 import styles from "./style.module.scss"
 import { IBaseProps } from "@/@types/fc"
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 
 // 监控分析 layout
 function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
-	const { children } = props
+	const { children, location } = props
 	const { push } = useHistory()
 	return (
 		<div className={styles.page_wrap}>
@@ -16,6 +16,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 				<Tabs
 					className={styles.navbar}
 					size='large'
+					defaultActiveKey={location.pathname}
 					onTabClick={(path) => push(path)}
 				>
 					<Tabs.TabPane tab='床位监控' key='/monitor'></Tabs.TabPane>
