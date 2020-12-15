@@ -1,15 +1,32 @@
-import ModalTrigger from "@/components/ModalTrigger"
+import ModalTrigger, { IModalTriggerRef } from "@/components/ModalTrigger"
+import useBoolean from "@/hooks/useBoolean"
 import { CloseCircleOutlined } from "@ant-design/icons"
-import React, { PropsWithChildren, ReactNode } from "react"
+import { Modal } from "antd"
+import React, {
+	PropsWithChildren,
+	ReactNode,
+	useContext,
+	useEffect,
+	useRef,
+} from "react"
+import { BCGContext } from "../.."
 
 // 用户BCG 数据
 // 用一个ModalTrigger承载 主要是要请求数据
 interface BCGDetailProps {
+	id: string | number | undefined
 }
 function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
+	const { id } = props
+	const { visible, toggle } = useContext(BCGContext)
+	useEffect(() => {
+		if (!id) return
+		console.log("fetch detail")
+	}, [id])
 	return (
-		<ModalTrigger
+		<Modal
 			width={800}
+			visible={visible}
 			title={
 				<h3 className='flex'>
 					<span>心率呼吸BCG</span>
@@ -18,6 +35,7 @@ function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
 					</span>
 				</h3>
 			}
+			onCancel={toggle}
 			centered
 			closeIcon={<CloseCircleOutlined style={{ fontSize: 25 }} />}
 			footer={null}
@@ -26,7 +44,7 @@ function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
 			<p>12321</p>
 			<p>12321</p>
 			<p>12321</p>
-		</ModalTrigger>
+		</Modal>
 	)
 }
 

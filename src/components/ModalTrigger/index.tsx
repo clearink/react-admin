@@ -18,13 +18,14 @@ interface IProps extends Omit<ModalProps, "visible"> {
 }
 export interface IModalTriggerRef {
 	toggle: (e?: MouseEvent, t?: () => void) => void
+	visible: boolean
 	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
 }
-function ModalTrigger(props: IProps, ref: Ref<IModalTriggerRef>) {
+function ModalTrigger(props: IProps, ref: Ref<IModalTriggerRef | undefined>) {
 	const { trigger, children, ...rest } = props
 	const [visible, toggle] = useBoolean(false)
 
-	useImperativeHandle(ref, () => ({ toggle }), [toggle])
+	useImperativeHandle(ref, () => ({ toggle, visible }), [toggle, visible])
 
 	const wrappedTrigger = useMemo(() => {
 		if (!trigger || !isValidElement(trigger)) return trigger

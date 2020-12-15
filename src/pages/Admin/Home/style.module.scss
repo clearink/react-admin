@@ -27,13 +27,6 @@ $line: 1px solid rgba($color_grey-4, 0.3);
 
 .user_info {
 	flex: auto;
-	.avatar {
-		@include flex-center;
-		color: $color_grey-4;
-		.icon {
-			font-size: 6rem;
-		}
-	}
 	.info {
 		margin-left: 2rem;
 		p {

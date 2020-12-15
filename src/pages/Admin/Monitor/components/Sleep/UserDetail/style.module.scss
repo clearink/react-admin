@@ -1,0 +1,13 @@
+@import "@/styles/index.scss";
+.info_header {
+  position: relative;
+  left: 10px;
+	&::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    width: 6px;
+    height: 100%;
+    background-color: $color_primary;
+	}
+}

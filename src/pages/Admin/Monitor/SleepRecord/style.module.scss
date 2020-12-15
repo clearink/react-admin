@@ -1,0 +1,29 @@
+@import "@/styles/index.scss";
+.user_info {
+	@apply flex items-center;
+	min-width: 200px;
+}
+.bed_info {
+	@apply flex-auto flex flex-col;
+	font-size: 18px;
+	font-weight: 500;
+	color: $color_text;
+}
+.text {
+	font-size: 18px;
+	color: $color_text;
+	font-weight: bold;
+}
+
+.custom_tab_btn {
+  @apply flex flex-col justify-center;
+  width: 9rem;
+  height: 7rem;
+  text-align: center;
+  font-size: 18px;
+  .icon{
+    margin-right: 0;
+    font-size: 30px;
+    margin-bottom: 1.4rem;
+  }
+}

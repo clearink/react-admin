@@ -1,12 +1,24 @@
-import React from "react"
+import React, { createContext, useState } from "react"
 import styles from "./style.module.scss"
-import { CommonHeader } from "@/components/PepLife"
-import { BankOutlined } from "@ant-design/icons"
-import { Button, Card, Radio, Row, Space, Tabs } from "antd"
+import { Radio, Space } from "antd"
 import BedCard from "./components/BedCard"
-import BCGDetail from './components/BCGDetail'
+import BCGDetail from "./components/BCGDetail"
+import useBoolean from "@/hooks/useBoolean"
+
+interface BCGContextProps {
+	visible: boolean
+	toggle: () => void
+	setBcgId?: React.Dispatch<React.SetStateAction<any>>
+}
+export const BCGContext = createContext<BCGContextProps>({
+	visible: false,
+	toggle: () => {},
+})
 // 监控分析
 function Monitor() {
+	const [bcgId, setBcgId] = useState(undefined)
+	const [visible, toggle] = useBoolean()
+
 	return (
 		<main className={styles.content_wrap}>
 			{/* 楼层 */}
@@ -49,12 +61,17 @@ function Monitor() {
 				</div>
 			</div>
 			{/* 病床 */}
-			<div className={styles.bed_card_list}>
-				{Array.from({ length: 30 }, (_, i) => (
-					<BedCard title='507房 - 01床' key={i} />
-				))}
-			</div>
-			<BCGDetail   />
+			<BCGContext.Provider value={{ visible, toggle, setBcgId }}>
+				<div className={styles.bed_card_list}>
+					{Array.from({ length: 30 }, (_, i) => (
+						<BedCard title='507房 - 01床' key={i} />
+					))}
+					{Array.from({ length: 6 }, (_, i) => (
+						<div className={styles.bed_card_placeholder} key={i} />
+					))}
+				</div>
+				<BCGDetail id={bcgId} />
+			</BCGContext.Provider>
 		</main>
 	)
 }

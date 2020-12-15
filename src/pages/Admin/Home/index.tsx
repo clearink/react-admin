@@ -3,24 +3,20 @@ import { IBaseProps } from "@/@types/fc"
 import classNames from "classnames"
 import { PepLifeIcon } from "@/components/IconFont"
 import styles from "./style.module.scss"
-import Avatar from "antd/lib/avatar/avatar"
+import { Avatar } from "antd"
 import SysNotice from "./SysNotice"
 import { CommonHeader } from "@/components/PepLife"
 import { Link } from "react-router-dom"
+import { UserOutlined } from "@ant-design/icons"
 
 function Home(props: IBaseProps) {
 	return (
 		<div className={styles["home-page__wrap"]}>
 			<CommonHeader icon='icon-chilun' title='管理首页' fixed />
 			<main className={styles.content_wrap}>
-				<div className='flex mb-8 flex-col md:flex-row'>
-					<div className={classNames(styles.user_info, "mb-4 md:mb-0")}>
-						<Avatar
-							className={styles.avatar}
-							icon={<PepLifeIcon type='icon-user' className={styles.icon} />}
-							size={70}
-							src={"12312321"}
-						/>
+				<div className='flex mb-8 flex-col lg:flex-row'>
+					<div className={classNames(styles.user_info, "mb-4 lg:mb-0")}>
+						<Avatar className='flex-shrink-0' icon={<UserOutlined />} size={70} src={"12312321"} />
 						<div className={styles.info}>
 							<p>李小明, 欢迎进入XXX康养中心系统</p>
 							<p>上次登录: 2020年8月10日 星期三 20:30:23</p>

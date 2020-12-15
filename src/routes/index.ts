@@ -1,4 +1,5 @@
 import { IRoute } from "@/@types/route"
+import CommonWrap from "@/components/PepLife/CommonWrap"
 import withLazyLoad from "@/hocs/withLazyLoad"
 import { lazy } from "react"
 
@@ -24,7 +25,7 @@ const routes: IRoute[] = [
 				path: "/monitor",
 				icon: "icon-computer",
 				title: "监控分析",
-				hideChildren:true,
+				hideChildren: true,
 				component: withLazyLoad(
 					lazy(() => import("@/pages/Admin/Monitor/Layout"))
 				),
@@ -45,6 +46,12 @@ const routes: IRoute[] = [
 						path: "/monitor/analysis",
 						component: withLazyLoad(
 							lazy(() => import("@/pages/Admin/Monitor/Analysis"))
+						),
+					},
+					{
+						path: "/monitor/sleep/:id",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/Monitor/SleepRecord"))
 						),
 					},
 				],

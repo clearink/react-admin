@@ -1,5 +1,5 @@
 @import "@/styles/index.scss";
-
+@import "./components/BedCard/style.module";
 .filter_bar {
 	@apply bg-white;
 	.filter_item {
@@ -37,4 +37,9 @@
 	@apply bg-white px-16 py-8;
 	margin-top: 2rem;
 	@apply flex justify-between items-center flex-wrap;
+}
+.bed_card_placeholder {
+	@extend .bed_card;
+	height: 0;
+	margin: 0;
 }

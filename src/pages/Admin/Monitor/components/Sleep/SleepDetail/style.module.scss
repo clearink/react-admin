@@ -1,0 +1,36 @@
+@import "@/styles/index.scss";
+.sleep_time,
+.sleep_percent {
+	min-height: 210px;
+}
+.sleep_percent {
+	height: 100%;
+	@apply flex items-center justify-end;
+}
+.leave_bed,
+.avg_bmp,
+.avg_rpm {
+	height: 88px;
+	color: white;
+	padding: 10px;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	.number {
+		font-size: 20px;
+		text-align: center;
+	}
+	.icon {
+		@apply w-1/2;
+		font-size: 40px;
+	}
+}
+.leave_bed {
+	background-color: $color_light-1;
+}
+.avg_bmp {
+	background-color: $color_light-2;
+}
+.avg_rpm {
+	background-color: $color_light-3;
+}

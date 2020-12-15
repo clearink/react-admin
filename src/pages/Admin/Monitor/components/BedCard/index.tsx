@@ -1,14 +1,21 @@
-import React from "react"
+import React, { useContext } from "react"
 import classNames from "classnames"
-import { Button, Card, Progress, Space } from "antd"
+import { Card, Progress, Space } from "antd"
 import styles from "./style.module.scss"
 import { CardProps } from "antd/lib/card"
 import { PepLifeIcon } from "@/components/IconFont"
+import { BCGContext } from "../.."
+import { Link } from "react-router-dom"
 
 interface BedCardProps extends CardProps {}
 // 用户 Card
 function BedCard(props: BedCardProps) {
 	const { title } = props
+	const { toggle, setBcgId } = useContext(BCGContext)
+	const handleBcgDetail = () => {
+		toggle()
+		setBcgId?.(1)
+	}
 	return (
 		<Card
 			size='small'
@@ -17,11 +24,11 @@ function BedCard(props: BedCardProps) {
 			actions={[
 				<Space size={2} key='bcg' className='action_wrap'>
 					<PepLifeIcon type='icon-user' />
-					<span>心率呼吸BCG</span>
+					<span onClick={handleBcgDetail}>心率呼吸BCG</span>
 				</Space>,
 				<Space size={2} key='sleep' className='action_wrap'>
 					<PepLifeIcon type='icon-user' />
-					<span>睡眠报告</span>
+					<Link to={`/monitor/sleep/${1}`}>睡眠报告</Link>
 				</Space>,
 			]}
 			{...props}
@@ -32,7 +39,7 @@ function BedCard(props: BedCardProps) {
 					<span>在床</span>
 				</span>
 				<div className={styles.percent_name}>
-					<span>在床</span>
+					<span className={styles.name}>张三丰</span>
 					<Progress
 						showInfo
 						strokeColor={{

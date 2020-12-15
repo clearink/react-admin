@@ -1,6 +1,6 @@
 # REACT_ADMIN
 
+## yarn
+## yarn build:css
 
-# layout 自由配置
-
-# proTable
+## yarn start

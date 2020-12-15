@@ -16,7 +16,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 				<Tabs
 					className={styles.navbar}
 					size='large'
-					defaultActiveKey={location.pathname}
+					activeKey={location.pathname}
 					onTabClick={(path) => push(path)}
 				>
 					<Tabs.TabPane tab='床位监控' key='/monitor'></Tabs.TabPane>
