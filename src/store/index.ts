@@ -5,7 +5,9 @@ import rootReducer from "./reducers"
 
 const store = configureStore({
 	reducer: rootReducer,
-	middleware: getDefaultMiddleware().concat(logger),
+	middleware: getDefaultMiddleware().concat(
+		//logger
+		),
 })
 
 // 热模块替换

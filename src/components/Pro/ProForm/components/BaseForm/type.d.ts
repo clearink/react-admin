@@ -28,10 +28,3 @@ export interface BaseFormProps extends FormProps, CommonFormProps {
 	fieldProps?: any
 	form?: FormInstance
 }
-
-export interface ProFormItemProps<T = {}> extends FormItemProps {
-	fieldProps?: T
-	placeholder?: string
-	allowClear?: boolean
-	disabled?: boolean
-}

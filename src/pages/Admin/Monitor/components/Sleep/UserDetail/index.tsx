@@ -1,15 +1,17 @@
 import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { DatePicker, Form, Input, Radio } from "antd"
+import { DatePicker, Form, Input, Radio, Select } from "antd"
 
 // 用户详情
 function UserDetail() {
+	const [userForm] = Form.useForm()
+	const [contactForm] = Form.useForm()
 	return (
 		<div className='flex w-full justify-between'>
 			<div className='w-11/24'>
 				<header className={styles.info_header}>住户信息</header>
-				<Form className='p-12' labelCol={{ span: 4 }}>
+				<Form form={userForm} className='p-12' labelCol={{ span: 4 }}>
 					<div className='justify-between lg:flex'>
 						<Form.Item
 							name='sex'
@@ -17,8 +19,9 @@ function UserDetail() {
 							required
 							label='性别'
 							labelCol={{ span: 8 }}
+							initialValue='male'
 						>
-							<Radio.Group defaultValue='male'>
+							<Radio.Group>
 								<Radio value='male'>男</Radio>
 								<Radio value='female'>女</Radio>
 							</Radio.Group>
@@ -48,17 +51,51 @@ function UserDetail() {
 						<Input />
 					</Form.Item>
 					<Form.Item name='address' required label='家庭住址'>
-					<Input.TextArea
+						<Input.TextArea
 							placeholder='请输入家庭住址'
 							rows={8}
 							showCount
-							maxLength={100}
+							maxLength={300}
 						/>
 					</Form.Item>
 				</Form>
 			</div>
 			<div className='w-11/24'>
 				<header className={styles.info_header}>紧急联系人信息</header>
+				<Form form={contactForm} className='p-12' labelCol={{ span: 8 }}>
+					<Form.Item label='联系人(一)' name={["contact", "0", "name"]}>
+						<Input />
+					</Form.Item>
+					<Form.Item label='联系人电话(一)' name={["contact", "0", "phone"]}>
+						<Input />
+					</Form.Item>
+					<Form.Item label='关系类型(一)' name={["contact", "0", "kinship"]}>
+						<Select
+							options={[
+								{
+									label: "子女/亲属/朋友",
+									value: 1,
+								},
+							]}
+						/>
+					</Form.Item>
+					<Form.Item label='联系人(一)' name={["contact", "1", "name"]}>
+						<Input />
+					</Form.Item>
+					<Form.Item label='联系人电话(一)' name={["contact", "1", "phone"]}>
+						<Input />
+					</Form.Item>
+					<Form.Item label='关系类型(一)' name={["contact", "1", "kinship"]}>
+						<Select
+							options={[
+								{
+									label: "子女/亲属/朋友",
+									value: 1,
+								},
+							]}
+						/>
+					</Form.Item>
+				</Form>
 			</div>
 		</div>
 	)

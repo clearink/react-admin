@@ -1,34 +1,44 @@
-import React, { FC, memo } from "react"
-import { Form } from "antd"
+import React, { ComponentType, CSSProperties, FC, memo } from "react"
+import { Form, Input } from "antd"
 import { FormItemProps } from "antd/lib/form"
 import { FieldType } from "../ProField/components/type"
-import { BaseFormProps, ProFormItemProps } from "./components/BaseForm/type"
+import { BaseFormProps } from "./components/BaseForm/type"
 
 export type extendProps = Omit<BaseFormProps, "form"> & FormItemProps & {}
 
+export interface ProFormItemProps<T = {}> extends FormItemProps {
+	fieldProps?: { style?: CSSProperties } & T
+	placeholder?: string
+	allowClear?: boolean
+	disabled?: boolean
+}
+// 给组件包裹一层 Form.Item
 export default function createField<F extends ProFormItemProps = any>(
 	Field: React.ComponentType<F> | React.ForwardRefExoticComponent<F>,
 	config: FormItemProps & { field: FieldType }
 ) {
-	const { field } = config
-	const FieldWithFormItem: FC<F> = (props: F & extendProps) => {
-		console.log(
-			"	const FieldWithFormItem: FC<F> = (props: F & extendProps) => {",
-			props
-		)
-		const { fieldProps, placeholder, ...formItemRest } = props
-		// 去除 FormItemProps 属性
+	const FormItemWithField: FC<F> = (props) => {
+		const { field, ...defaultFormItemProps } = config
+		const { placeholder, fieldProps, ...RestFormItemProps } = props
 		return (
-			<Form.Item {...formItemRest}>
+			<Form.Item {...RestFormItemProps}>
 				<Field
-					field={field}
 					mode='edit'
-					{...props}
-					fieldProps={fieldProps}
+					field={field}
 					placeholder={placeholder}
+					fieldProps={fieldProps}
+					{...defaultFormItemProps}
+					{...props}
 				/>
 			</Form.Item>
 		)
 	}
-	return memo(FieldWithFormItem)
+	return FormItemWithField
 }
+
+/**
+ * field: FieldType;
+ * mode: string;
+ * fieldProps: any;
+ * placeholder: string | undefined;
+ */

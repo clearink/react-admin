@@ -1,5 +1,5 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
-import React, { memo, ReactNode, useMemo } from "react"
+import React, { forwardRef, memo, ReactNode, Ref, useMemo } from "react"
 import { FieldType, ProFieldType, ProFieldProps } from "./components/type"
 import { OmitUndefined, pickProFieldProps } from "./utils"
 import renderField from "./renderField"
@@ -14,7 +14,7 @@ export interface TProFieldProps extends ProFieldProps {
 	filedProps?: any
 	onChange?: (value: any) => void
 }
-function ProField(props: TProFieldProps) {
+function ProField(props: TProFieldProps, ref: Ref<any>) {
 	const { field, text, value, onChange, ...rest } = props
 	let type: FieldType
 	let fieldProps = useMemo(
@@ -31,9 +31,16 @@ function ProField(props: TProFieldProps) {
 		<>
 			{renderField(text ?? fieldProps?.value, type, {
 				...rest,
+				ref,
 				fieldProps: pickProFieldProps(fieldProps),
 			})}
 		</>
 	)
 }
-export default memo(withDefaultProps(ProField, { field: "text", mode: "read" }))
+export default memo(
+	withDefaultProps(forwardRef(ProField), {
+		text: "",
+		field: "text",
+		mode: "read",
+	})
+)

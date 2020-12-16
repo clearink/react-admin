@@ -13,6 +13,9 @@ function WorkPlace(props: IBaseProps) {
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<Typography.Title level={4}>pro form</Typography.Title>
 			<BaseForm
+				onFinish={(values) => {
+					console.log(values)
+				}}
 				style={{ width: 340, margin: "0 auto" }}
 				submitConfig={{
 					submitButtonProps: {
@@ -48,22 +51,18 @@ function WorkPlace(props: IBaseProps) {
 					Ant Design 是西湖区最具影响力的 Web 设计规范
 				</div>
 				<ProFormText
+					name='user'
 					fieldProps={{
 						size: "large",
 						prefix: <MobileTwoTone />,
 					}}
-					name='id'
-					placeholder='请输入手机号'
 					rules={[
 						{
 							required: true,
-							message: "请输入手机号!",
-						},
-						{
-							pattern: /^1\d{10}$/,
-							message: "不合法的手机号格式!",
+							message: "请输入phone",
 						},
 					]}
+					placeholder='请输入'
 				/>
 			</BaseForm>
 		</div>
