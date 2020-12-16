@@ -1,3 +1,4 @@
+// 金钱格式化
 export const formatMoney = (
 	money: string | number,
 	separator: string = ","
@@ -9,5 +10,5 @@ export const removeSeparator = (
 	data: number | string,
 	separator: string = ""
 ) => {
-	return `${data}`.replace(new RegExp(`(${separator}*)`, 'gi'), "")
+	return `${data}`.replace(new RegExp(`(${separator}*)`, "gi"), "")
 }

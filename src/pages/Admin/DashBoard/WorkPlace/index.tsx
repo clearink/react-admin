@@ -1,96 +1,114 @@
 import React, { useState } from "react"
+import { Space, Avatar, Button, InputNumber, Select } from "antd"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
+import {
+	FieldAvatar2,
+	FieldCheckbox2,
+	FieldDigit2,
+	FieldMoney2,
+	FieldPercent2,
+	FieldProgress2,
+	FieldRadio2,
+	FieldRate2,
+	FieldSelect2,
+	FieldText2,
+} from "@/components/Pro/ProField2"
 import "./style.scss"
-import { Typography, Form, Input } from "antd"
-import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import ProFormText from "@/components/Pro/ProForm/components/ProFormText"
-import { MobileTwoTone } from "@ant-design/icons"
+import { UserOutlined } from "@ant-design/icons"
+import { FieldMode } from "@/components/Pro/ProField2/type"
+import useFetchData from "@/hooks/useFetchData"
 
 function WorkPlace(props: IBaseProps) {
+	const [mode, setMode] = useState<FieldMode>("read")
+
 	return (
-		<div className='dashboard_page__wrap'>
+		<div className='dashboard_page__wrap h-full flex flex-col'>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
-			<Typography.Title level={4}>pro form</Typography.Title>
-			<BaseForm
-				onFinish={(values) => {
-					console.log(values)
-				}}
-				style={{ width: 340, margin: "0 auto" }}
-				submitConfig={{
-					submitButtonProps: {
-						text: "登录",
-						block: true,
-						size: "large",
-					},
-					render: (_, dom) => dom.pop(),
-				}}
-			>
-				<h1
-					style={{
-						textAlign: "center",
+			<div className='p-10'>
+				<Button
+					onClick={() => {
+						setMode(mode === "read" ? "edit" : "read")
 					}}
 				>
-					<img
-						style={{
-							height: "44px",
-							marginRight: 16,
+					change
+				</Button>
+			</div>
+			<main className='bg-white p-20 flex-auto m-10'>
+				<Space direction='vertical'>
+					<FieldText2 text='-' mode={mode} />
+					<FieldAvatar2 text='121' icon={<UserOutlined />} mode={mode} />
+					<FieldMoney2 text='10022' mode={mode} />
+					<FieldDigit2 text='12031231231' mode={mode} />
+					<FieldPercent2 text={40} mode={mode} />
+					<FieldRate2 text={3} mode={mode} />
+					<FieldSelect2
+						text={["open", "all"]}
+						// fetchUrl='/sys/permission/queryMenu'
+						mode={mode}
+						fieldEnum={{
+							all: { text: "全部", disabled: true, status: "default" },
+							open: {
+								text: "未解决",
+								status: "error",
+							},
+							closed: {
+								text: "已解决",
+								status: "success",
+							},
+							processing: {
+								text: "解决中",
+								status: "processing",
+							},
 						}}
-						alt='logo'
-						src='https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
 					/>
-					Ant Design
-				</h1>
-				<div
-					style={{
-						marginTop: 12,
-						textAlign: "center",
-						marginBottom: 40,
-					}}
-				>
-					Ant Design 是西湖区最具影响力的 Web 设计规范
-				</div>
-				<ProFormText
-					name='user'
-					fieldProps={{
-						size: "large",
-						prefix: <MobileTwoTone />,
-					}}
-					rules={[
-						{
-							required: true,
-							message: "请输入phone",
-						},
-					]}
-					placeholder='请输入'
-				/>
-			</BaseForm>
+
+					<FieldCheckbox2
+						text={["open", "all"]}
+						// fetchUrl='/sys/permission/queryMenu'
+						mode={mode}
+						fieldEnum={{
+							all: { text: "全部", disabled: true, status: "default" },
+							open: {
+								text: "未解决",
+								status: "error",
+							},
+							closed: {
+								text: "已解决",
+								status: "success",
+							},
+							processing: {
+								text: "解决中",
+								status: "processing",
+							},
+						}}
+					/>
+
+					<FieldRadio2
+						text='open'
+						// fetchUrl='/sys/permission/queryMenu'
+						mode={mode}
+						fieldEnum={{
+							all: { text: "全部", disabled: true, status: "default" },
+							open: {
+								text: "未解决",
+								status: "error",
+							},
+							closed: {
+								text: "已解决",
+								status: "success",
+							},
+							processing: {
+								text: "解决中",
+								status: "processing",
+							},
+						}}
+					/>
+					<FieldProgress2 steps={10} text={40} mode={mode} />
+				</Space>
+			</main>
 		</div>
 	)
 }
 
 export default WorkPlace
-
-/**
- * <Divider />
-			<ProField
-				text='0.3'
-				field={{ type: "percent", style: { width: 400 } }}
-				mode={mode}
-			/>
-			<Divider />
-			<ProField
-				text='-0.3'
-				field={{
-					type: "percent",
-					hasColor: true,
-				}}
-				mode={mode}
-			/>
-			<Divider />
-			<ProField text='19897979797979' field='number' mode={mode} />
-			<Divider />
-			<ProField text={2000000} field='second' mode={mode} />
-			<Divider />
-			<ProField text={2.5} field='rate' mode={mode} />
- */

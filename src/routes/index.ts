@@ -56,7 +56,29 @@ const routes: IRoute[] = [
 					},
 				],
 			},
-
+			{
+				path: "/bedallot",
+				icon: "icon-computer",
+				title: "床位分配",
+				hideChildren: true,
+				component: withLazyLoad(
+					lazy(() => import("@/pages/Admin/BedAllot/Layout"))
+				),
+				routes: [
+					{
+						path: "/bedallot",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/BedAllot"))
+						),
+					},
+					{
+						path: "/bedallot/room",
+						component: withLazyLoad(
+							lazy(() => import("@/pages/Admin/BedAllot/RoomAllot"))
+						),
+					},
+				],
+			},
 			// dashboard
 			{
 				path: "/dashboard",

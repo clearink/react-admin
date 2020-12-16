@@ -10,7 +10,7 @@ function SleepDetail() {
 		<div>
 			<div className='flex justify-around flex-wrap'>
 				<Card
-					className={classNames("w-5/12 mb-8")}
+					className={"w-full mb-8 lg:w-10/24"}
 					title='整体情况'
 					size='small'
 				>
@@ -21,7 +21,11 @@ function SleepDetail() {
 						className={styles.sleep_percent}
 					/>
 				</Card>
-				<Card className='w-5/12 mb-8' title='睡眠分布' size='small'>
+				<Card
+					className={"w-full mb-8 lg:w-10/24"}
+					title='睡眠分布'
+					size='small'
+				>
 					<div className={classNames("flex h-full", styles.sleep_time)}>
 						<div className='flex items-center justify-center flex-col w-1/3'>
 							<p>睡眠时长:</p>
@@ -64,9 +68,7 @@ function SleepDetail() {
 						<span>平均心率(bmp)</span>
 					</div>
 				</div>
-				<div
-					className={classNames("w-full  mb-4  lg:w-3/12", styles.avg_rpm)}
-				>
+				<div className={classNames("w-full  mb-4  lg:w-3/12", styles.avg_rpm)}>
 					<UserAddOutlined className={styles.icon} />
 					<div className='flex flex-col'>
 						<span className={styles.number}>0</span>

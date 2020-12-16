@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from "react"
 import { Menu, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
+import classNames from "classnames"
 import { useLocation } from "react-router-dom"
 import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 import useTypedSelector from "@/hooks/useTypedSelector"
@@ -37,7 +38,7 @@ function SiderMenu() {
 	return (
 		<>
 			<div
-				className='sider-menu__placeholder'
+				className={"sider-menu__placeholder"}
 				style={{ flexBasis: collapsed ? "48px" : "20rem" }}
 			/>
 			<Layout.Sider
@@ -49,7 +50,11 @@ function SiderMenu() {
 				className='sider-menu__wrap'
 				theme={theme}
 			>
-				<div className='logo'>
+				<div
+					className={classNames("logo", {
+						collapsed,
+					})}
+				>
 					<img src={logo} alt='logo' />
 					<span>派博管理中心</span>
 				</div>

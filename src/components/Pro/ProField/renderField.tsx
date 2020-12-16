@@ -13,8 +13,7 @@ import FieldRadio from "./components/FieldRadio"
 import FieldProgress from "./components/FieldProgress"
 import FieldDate from "./components/FieldDate"
 import FieldFromNow from "./components/FieldFromNow"
-import FieldPassword from './components/FieldPassword'
-
+import FieldPassword from "./components/FieldPassword"
 
 function renderField(
 	fieldValue: any,
