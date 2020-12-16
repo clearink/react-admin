@@ -1,0 +1,13 @@
+.page_wrap {
+	@apply p-2  flex-auto h-full;
+	@apply flex;
+	.left {
+		@apply h-full bg-white;
+		flex-basis: 240px;
+	}
+	.right {
+    @apply h-full bg-white;
+    margin-left: 20px;
+		flex: auto;
+	}
+}

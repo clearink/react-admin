@@ -20,7 +20,7 @@ function Monitor() {
 	const [visible, toggle] = useBoolean()
 
 	return (
-		<main className={styles.content_wrap}>
+		<main>
 			{/* 楼层 */}
 			<div className={styles.filter_bar}>
 				<div className={styles.filter_item}>

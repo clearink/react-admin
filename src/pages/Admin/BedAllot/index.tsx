@@ -1,13 +1,13 @@
 import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { CommonHeader } from "@/components/PepLife"
-import { UserOutlined } from "@ant-design/icons"
+import { Card, Typography } from "antd"
 
 function BedAllot() {
 	return (
 		<div className={styles.page_wrap}>
-			 楼层分布
+			<Card title='楼层分布' className={styles.left}></Card>
+			<div className={styles.right}></div>
 		</div>
 	)
 }
