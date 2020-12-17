@@ -21,8 +21,7 @@ function FieldDate(props: FieldDateProps) {
 		render,
 		renderFormItem,
 		timeFormat,
-		picker,
-		fromNow,// 是否是根据当前时间算的
+		fromNow, // 是否是根据当前时间算的
 		...rest
 	} = props
 	const timeValue = useMemo(() => {
@@ -30,7 +29,6 @@ function FieldDate(props: FieldDateProps) {
 		return moment(text)
 	}, [text])
 	if (mode === "read") {
-		
 		const dom = (
 			<span>
 				{fromNow ? timeValue.fromNow() : timeValue.format(timeFormat)}
@@ -42,7 +40,7 @@ function FieldDate(props: FieldDateProps) {
 		return dom
 	}
 	// picker 属性有问题 只能先用any
-	const formItemDom = <DatePicker picker={picker as any} {...rest} />
+	const formItemDom = <DatePicker {...rest} picker={rest.picker as any} />
 	if (renderFormItem)
 		return renderFormItem(text, { mode, ...rest }, formItemDom)
 	return formItemDom

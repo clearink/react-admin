@@ -20,7 +20,7 @@ $collapsed_width: 48px;
 			overflow: hidden;
 			align-items: center;
 			white-space: nowrap;
-		
+
 			img {
 				width: 4rem;
 				object-fit: cover;
@@ -38,11 +38,11 @@ $collapsed_width: 48px;
 			overflow: hidden auto;
 			&::-webkit-scrollbar {
 				width: 0.5rem;
-				background-color: $color_black-2;
+				background-color: rgba($color_primary, $alpha: 0.1);
 			}
 			&::-webkit-scrollbar-thumb {
 				border-radius: 1rem;
-				background-color: $color_grey-2;
+				background-color: $color_primary;
 			}
 		}
 		.ant-menu-inline-collapsed {

@@ -1,0 +1,43 @@
+@import "@/styles/index.scss";
+.page_wrap {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	.navbar {
+		margin-left: 5rem;
+		:global {
+			.ant-tabs-nav {
+				margin: 0;
+				height: 6rem;
+			}
+		}
+	}
+}
+.content_wrap {
+	flex: auto;
+	width: 100%;
+	margin: 8rem auto 4rem;
+	@apply px-8 flex flex-shrink-0;
+}
+
+.tree_title_wrap {
+	display: flex;
+	flex: auto;
+	justify-content: space-between;
+
+	.action {
+		opacity: 0;
+	}
+	&:hover .action {
+		opacity: 1;
+	}
+}
+:global {
+	.ant-tree-node-content-wrapper,
+	.ant-tree-node-content-wrapper-open {
+		display: flex;
+		.ant-tree-title {
+			flex: auto;
+		}
+	}
+}

@@ -1,0 +1,26 @@
+@import "@/styles/index";
+.user_info {
+	@apply mx-24;
+	@include flex-center(column);
+	font-size: 18px;
+	color: $color_text;
+	flex-basis: 70px;
+	flex-shrink: 0;
+	text-align: center;
+}
+.bed_info {
+	font-size: 18px;
+	color: $color_text;
+}
+.sleep_time {
+	position: relative;
+	@apply mb-12;
+	&::before {
+		content: "";
+		position: absolute;
+		left: -10px;
+		width: 4px;
+		height: 100%;
+		background-color: $color_primary;
+	}
+}

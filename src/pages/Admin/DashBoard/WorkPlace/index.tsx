@@ -2,16 +2,15 @@ import React, { useState } from "react"
 import { Button } from "antd"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
-import { FieldSelect } from "@/components/Pro/ProField"
+import { FieldDate, FieldSelect } from "@/components/Pro/ProField"
 import "./style.scss"
 import { FieldMode } from "@/components/Pro/ProField/type"
 import { isArray } from "@/utils/validate"
 
 function WorkPlace(props: IBaseProps) {
 	const [mode, setMode] = useState<FieldMode>("edit")
-
 	return (
-		<div className='dashboard_page__wrap h-full flex flex-col'>
+		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<div className='p-10'>
 				<Button
@@ -22,7 +21,7 @@ function WorkPlace(props: IBaseProps) {
 					change
 				</Button>
 			</div>
-			<main className='bg-white p-20 flex-auto m-10'>
+			<main className='p-20 flex-auto m-10'>
 				<FieldSelect
 					fetchUrl='/sys/dict/getDictItems/MEMBER_TYPE'
 					fieldEnum={{

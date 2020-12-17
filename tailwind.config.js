@@ -6,7 +6,6 @@ function createGridLayoutWidth(colNum = 24) {
 	}
 	return result
 }
-
 module.exports = {
 	purge: ["./src/**/*.tsx", "./src/**/*.scss"],
 	theme: {
