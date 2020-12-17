@@ -1,32 +1,26 @@
-import React, {
-	forwardRef,
-	memo,
-	Ref,
-	useImperativeHandle,
-	useRef,
-} from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React, { memo } from "react"
 import { Input } from "antd"
-import { ProFieldProps } from "./type"
+import { InputProps } from "antd/lib/input"
+import { BaseProFieldProps } from "../type"
+import withDefaultProps from "@/hocs/withDefaultProps"
 
-interface IProps extends ProFieldProps {}
-function FieldText(props: IProps, ref: Ref<any>) {
-	const { text, mode, render, renderFormItem, fieldProps, ...rest } = props
+interface FieldTextProps extends BaseProFieldProps, InputProps {}
 
-	const inputRef = useRef<any>()
-	useImperativeHandle(ref, () => inputRef.current ?? {}, [])
-
+function FieldText(props: FieldTextProps) {
+	const { mode, render, renderFormItem, text, ...rest } = props
 	if (mode === "read") {
 		const dom = <span>{text}</span>
-		if (render) return render(text, { mode, ...rest, ...fieldProps }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	const formDOM = (
-		<Input placeholder='请输入' ref={inputRef} allowClear {...rest} {...fieldProps} />
-	)
+	const formItemDom = <Input placeholder='请输入' {...rest} />
 	if (renderFormItem)
-		return renderFormItem(text, { mode, ...rest, ...fieldProps }, formDOM)
-	return formDOM
+		return renderFormItem(text, { mode, ...rest }, formItemDom)
+	return formItemDom
 }
-
-export default memo(withDefaultProps(forwardRef(FieldText), { text: "-" }))
+export default memo(
+	withDefaultProps(FieldText, {
+		mode: "read",
+		text: "",
+	})
+)

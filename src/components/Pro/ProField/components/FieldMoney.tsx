@@ -1,58 +1,40 @@
-import React, { forwardRef, memo, ReactNode, Ref, useMemo } from "react"
+import React, {
+	forwardRef,
+	memo,
+	Ref,
+	useImperativeHandle,
+	useMemo,
+	useRef,
+} from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { InputNumber } from "antd"
 import { formatMoney, removeSeparator } from "@/utils/regExp"
-import { ProFieldProps } from "./type"
+import { BaseProFieldProps } from "../type"
+import { InputNumberProps } from "antd/lib/input-number"
+import { moneySign } from "../utils"
 
-interface IProps extends ProFieldProps {
-	text: any
-	fieldProps: any
-	locale: "zh-cn" | "en-us" | false
+interface FieldMoneyProps extends BaseProFieldProps, InputNumberProps {
+	locale?: keyof typeof moneySign
 }
 
-function FieldMoney(props: IProps, ref: Ref<any>) {
-	const {
-		text,
-		mode,
-		render,
-		renderFormItem,
-		locale,
-		fieldProps,
-		...rest
-	} = props
-	// 前缀
-	const prefix = useMemo(() => {
-		if (locale === "en-us") return "$"
-		else if (locale === "zh-cn") return "￥"
-		return ""
-	}, [locale])
-	// const inputRef = useRef()
-	// useImperativeHandle(ref, () => inputRef.current ?? {}, [])
+function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
+	const { text, mode, render, renderFormItem, locale, ...rest } = props
+
+	const inputRef = useRef()
+	useImperativeHandle(ref, () => inputRef.current ?? {}, [])
+
+	const prefix = useMemo(() => moneySign[locale ?? ""], [locale]) // 前缀
 
 	if (mode === "read") {
 		const money = formatMoney(text)
 		const dom = <span>{`${prefix}${money}`}</span>
-		if (render) return render(text, { mode, ...rest, ...fieldProps }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	const formDom = (
-		<InputNumber
-			placeholder='请输入'
-			min={0}
-			precision={2}
-			formatter={(value) => {
-				if (value) return formatMoney(value)
-				return ""
-			}}
-			{...rest}
-			parser={(value) => (value ? removeSeparator(value, "\\s|(,*)") : "")}
-			{...fieldProps}
-		/>
-	)
-	// 渲染 form
+	const formItemDom = <InputNumber ref={inputRef} {...rest} />
 	if (renderFormItem)
-		return renderFormItem(text, { mode, ...rest, ...fieldProps }, formDom)
-	return formDom
+		return renderFormItem(text, { mode, ...rest }, formItemDom)
+	return formItemDom
 }
 
 export default memo(
@@ -60,5 +42,12 @@ export default memo(
 		text: "0",
 		mode: "read",
 		locale: "zh-cn",
+		placeholder: "请输入",
+		min: 0,
+		precision: 2,
+		style: { width: 150 },
+		formatter: (value: string | number) => (value ? formatMoney(value) : ""),
+		parser: (value: string) =>
+			value ? removeSeparator(value, "\\s+|(,*)") : "",
 	})
 )

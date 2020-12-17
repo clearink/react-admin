@@ -1,4 +1,5 @@
 import { PepLifeIcon } from "@/components/IconFont"
+import { UserOutlined } from "@ant-design/icons"
 import { Button, Card, PageHeader, Space } from "antd"
 import Avatar from "antd/lib/avatar/avatar"
 import React, { memo, useMemo } from "react"
@@ -41,9 +42,9 @@ function SysNotice() {
 							<Avatar
 								size={30}
 								src={item.avatar}
-								icon={<PepLifeIcon type='icon-user' className={styles.icon} />}
+								icon={<UserOutlined className={styles.icon} />}
 							/>
-							<span>{item.name}</span>
+							<span className='ml-4'>{item.name}</span>
 						</div>
 						<div className={styles.time}>
 							<PepLifeIcon

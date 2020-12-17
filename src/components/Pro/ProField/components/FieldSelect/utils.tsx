@@ -1,5 +1,5 @@
 import React from "react"
-import { Badge, Space } from "antd"
+import { Badge, Space, Tag } from "antd"
 import { BaseProFieldProps } from "../../type"
 
 export function enumToOption(
@@ -11,7 +11,7 @@ export function enumToOption(
 		value: item.status,
 	}))
 }
-
+// 可以支持 Badge 和 Tag
 export function enumText(
 	value: string | number | Array<string | number>,
 	fieldEnum: BaseProFieldProps["fieldEnum"]
@@ -19,5 +19,7 @@ export function enumText(
 	if (Array.isArray(value))
 		return <Space>{value.map((item) => enumText(item, fieldEnum))}</Space>
 	if (!fieldEnum) return value
-	return <Badge key={value} {...(fieldEnum[`${value}`] ?? {})} />
+	const result = fieldEnum[`${value}`] ?? {}
+	if (result.tag) return <Tag key={value} color={result.color} icon={result.icon}>{result.text}</Tag>
+	return <Badge key={value} {...result} />
 }

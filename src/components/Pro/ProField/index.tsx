@@ -1,46 +1,24 @@
-import withDefaultProps from "@/hocs/withDefaultProps"
-import React, { forwardRef, memo, ReactNode, Ref, useMemo } from "react"
-import { FieldType, ProFieldType, ProFieldProps } from "./components/type"
-import { OmitUndefined, pickProFieldProps } from "./utils"
-import renderField from "./renderField"
-/**
- * 仿 antd 的 pro field
- * 根据 field 字段去FieldMap中匹配组件
- */
-
-export interface TProFieldProps extends ProFieldProps {
-	field: ProFieldType
-	value?: any
-	filedProps?: any
-	onChange?: (value: any) => void
-}
-function ProField(props: TProFieldProps, ref: Ref<any>) {
-	const { field, text, value, onChange, ...rest } = props
-	let type: FieldType
-	let fieldProps = useMemo(
-		() => OmitUndefined({ value, onChange, ...rest?.filedProps }),
-		[value, onChange, rest]
-	)
-	if (typeof field === "string") type = field
-	else {
-		const { type: fieldType, ...rest } = field
-		type = fieldType as FieldType
-		fieldProps = { ...fieldProps, ...rest }
-	}
-	return (
-		<>
-			{renderField(text ?? fieldProps?.value, type, {
-				...rest,
-				ref,
-				fieldProps: pickProFieldProps(fieldProps),
-			})}
-		</>
-	)
-}
-export default memo(
-	withDefaultProps(forwardRef(ProField), {
-		text: "",
-		field: "text",
-		mode: "read",
-	})
-)
+/* 重写 ProField
+   将其分开
+   为了更好的 ts 提示
+   同时也提供原始的ProField 组件支持
+*/
+export { default as FieldText } from "./components/FieldText"
+export { default as FieldAvatar } from "./components/FieldAvatar"
+export { default as FieldMoney } from "./components/FieldMoney"
+export { default as FieldDigit } from "./components/FieldDigit"
+export { default as FieldPercent } from "./components/FieldPercent"
+export { default as FieldRate } from "./components/FieldRate"
+export { default as FieldSelect } from "./components/FieldSelect"
+export { default as FieldCheckbox } from "./components/FieldCheckbox"
+export { default as FieldRadio } from "./components/FieldRadio"
+export { default as FieldProgress } from "./components/FieldProgress"
+export { default as FieldDate } from "./components/FieldDate"
+export { default as FieldDateTime } from "./components/FieldDate/FieldDateTime"
+export { default as FieldFromNow } from "./components/FieldDate/FieldFromNow"
+export { default as FieldTime } from "./components/FieldDate/FieldTime"
+export { default as FieldDateRange } from "./components/FieldDate/FieldDateRange"
+export { default as FieldDateTimeRange } from "./components/FieldDate/FieldDateTimeRange"
+export { default as FieldPassword } from "./components/FieldPassword"
+export { default as FieldCode } from "./components/FieldCode"
+export { default as FieldJson } from "./components/FieldJson"

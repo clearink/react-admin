@@ -12,8 +12,13 @@ interface FieldSelectProps
 	selectMode?: SelectProps<any[]>["mode"]
 }
 /**
- * 用 text 去匹配fieldEnum 对象的值   
-	transform?: (options?: any[]) => any // 转换options
+ * 用 text 去匹配fieldEnum 对象的值   	实现
+	transform?: (options?: any[]) => any // 转换options 实现
+
+
+	需求 1
+	如何在transform 中动态修改fieldEnum
+	enumText 能否自己实现
  */
 
 function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {

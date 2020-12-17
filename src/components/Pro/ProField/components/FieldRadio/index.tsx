@@ -38,7 +38,6 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 		return enumToOption(fieldEnum) // 转换 fieldEnum
 	}, [data, fieldEnum, rest.options, transform])
 
-  console.log(options);
 	if (mode === "read") {
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom

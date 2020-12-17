@@ -1,34 +1,38 @@
-import React, { forwardRef, memo, Ref, useMemo } from "react"
+import React, { forwardRef, memo, Ref } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { InputNumber, Progress } from "antd"
-import { ProFieldProps } from "./type"
-import { toNumber } from "./Percent/utils"
+import { toNumber } from "../utils"
+import { BaseProFieldProps } from "../type"
+import { InputNumberProps } from "antd/lib/input-number"
+import { ProgressProps } from "antd/lib/progress"
 
-interface IProps extends ProFieldProps {
-	text: number | string
-	fieldProps: any
-}
 // 进度条
-function FieldProgress(props: IProps, ref: Ref<any>) {
-	console.log("function FieldProgress(props: IProps, ref: Ref<any>) {", props)
-	const {
-		text,
-		mode,
-		render,
-		renderFormItem,
-		fieldProps,
-		fieldEnum,
-		...rest
-	} = props
+interface FieldProgressProps
+	extends Pick<BaseProFieldProps, "mode" | "render" | "renderFormItem">,
+		ProgressProps {
+	text?: number | string
+	formItemProps?: Omit<InputNumberProps, "min" | "max">
+}
+
+function FieldProgress(props: FieldProgressProps, ref: Ref<any>) {
+	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
 
 	const numberValue = toNumber(text)
-	const dom = <Progress percent={numberValue} />
+	const dom = <Progress percent={numberValue} {...rest} />
 	if (mode === "read") {
-		if (render) return render(text, { mode, ...rest, ...fieldProps }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	const formDom = <InputNumber placeholder="请输入" min={0} max={100} {...rest} {...fieldProps} />
-	if (renderFormItem) renderFormItem(text, { mode, ...rest }, formDom)
+	const formDom = (
+		<InputNumber
+			style={{ width: 140 }}
+			min={0}
+			max={100}
+			placeholder='请输入'
+			{...formItemProps}
+		/>
+	)
+	if (renderFormItem) renderFormItem(text, { mode, ...formItemProps }, formDom)
 	return formDom
 }
 
@@ -36,6 +40,5 @@ export default memo(
 	withDefaultProps(forwardRef(FieldProgress), {
 		text: "",
 		mode: "read",
-		fieldEnum: {},
 	})
 )
