@@ -1,6 +1,7 @@
+import { useEffect, useMemo, useReducer } from "react"
 import { isString, isUndefined } from "../utils/validate"
 import http from "@/http"
-import { Reducer, useEffect, useMemo, useReducer } from "react"
+import useTypedSelector from "@/hooks/useTypedSelector"
 import { createSlice } from "@reduxjs/toolkit"
 
 /* 基本的 获取数据 hook 
@@ -36,6 +37,7 @@ export default function useFetchData(
 	fetchUrl?: string | { url: string; params?: object }
 ) {
 	const [state, dispatch] = useReducer(reducer, initialState)
+	const kv = useTypedSelector((state) => state)
 	const [url, params] = useMemo(() => {
 		if (isString(fetchUrl)) return [fetchUrl, {}]
 		if (isUndefined(fetchUrl)) return [undefined, undefined]
@@ -44,6 +46,7 @@ export default function useFetchData(
 	useEffect(() => {
 		;(async () => {
 			if (isUndefined(url)) return
+
 			try {
 				dispatch(actions.startFetch()) // loading: true
 				const { data } = await http.get(url, params)
