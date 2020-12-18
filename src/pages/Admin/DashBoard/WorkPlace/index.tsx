@@ -24,18 +24,16 @@ function WorkPlace(props: IBaseProps) {
 			<main className='p-20 flex-auto m-10'>
 				<FieldSelect
 					fetchUrl='/sys/dict/getDictItems/MEMBER_TYPE'
-					fieldEnum={{
-						open: {
+					fieldEnum={[
+						{
 							status: "success",
-							text: "打开",
-							color: "red",
-							tag: true,
+							text: "open",
 						},
-						default: {
+						{
 							status: "success",
-							text: "关闭",
+							text: "default",
 						},
-					}}
+					]}
 					transform={(oo, fe) => {
 						console.log(oo, fe)
 						if (oo?.result && isArray(oo.result)) {
