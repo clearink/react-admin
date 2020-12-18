@@ -1,39 +1,37 @@
 import { isString, isUndefined } from "../utils/validate"
 import http from "@/http"
 import { Reducer, useEffect, useMemo, useReducer } from "react"
-import useDeepMemo from "./useDeepMemo"
+import { createSlice } from "@reduxjs/toolkit"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
   默认使用封装过的 axios
-  返回 loading data error
+	返回 loading data error
+	
+	需求 期望通过 url 当 key 将所有的数据存放到 store 检测到有数据后直接返回不用发请求
 */
 const initialState = {
 	data: null,
 	error: null,
 	loading: true,
 }
-const AT = {
-	START_FETCH: "START_FETCH",
-	SAVE_DATA: "SAVE_DATA",
-	SAVE_ERROR: "SAVE_ERROR",
-}
-const reducer: Reducer<any, { type: string; payload?: any }> = (
-	state,
-	action
-) => {
-	const { type } = action
-	switch (type) {
-		case AT.START_FETCH:
-			return { ...initialState }
-		case AT.SAVE_DATA:
-			return { ...state, loading: false, data: action.payload }
-		case AT.SAVE_ERROR:
-			return { ...state, loading: false, data: action.payload }
-		default:
-			return state
-	}
-}
+const { reducer, actions } = createSlice({
+	name: "userFetchData",
+	initialState,
+	reducers: {
+		startFetch() {
+			return initialState
+		},
+		setData(state, action) {
+			state.loading = false
+			state.data = action.payload
+		},
+		setError(state, action) {
+			state.loading = false
+			state.error = action.payload
+		},
+	},
+})
 export default function useFetchData(
 	fetchUrl?: string | { url: string; params?: object }
 ) {
@@ -47,11 +45,11 @@ export default function useFetchData(
 		;(async () => {
 			if (isUndefined(url)) return
 			try {
-				dispatch({ type: AT.START_FETCH }) // loading: true
+				dispatch(actions.startFetch()) // loading: true
 				const { data } = await http.get(url, params)
-				dispatch({ type: AT.SAVE_DATA, payload: data }) // save data
+				dispatch(actions.setData(data)) // save data
 			} catch (error) {
-				dispatch({ type: AT.SAVE_ERROR, payload: error }) // save error
+				dispatch(actions.setError(error)) // save error
 			}
 		})()
 	}, [url, params])

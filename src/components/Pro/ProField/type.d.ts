@@ -1,18 +1,18 @@
-import { BadgeProps } from "antd/lib/badge"
-import { TagProps } from "antd/lib/tag"
-
 type FieldMode = "read" | "edit" | "update" | "plain"
 export interface BaseFieldRenderProps {
 	render?: (value: any, props: {}, dom: React.ReactNode) => JSX.Element
-	renderFormItem?: (value: any, props: {}, dom: React.ReactNode) => JSX.Element
+	renderFormItem?: <T>(
+		value: any,
+		props: T & {},
+		dom: React.ReactNode
+	) => JSX.Element
 }
 
 export interface FieldEnumProps {
-	text?: string | number
 	status?: "success" | "processing" | "error" | "default" | "warning"
 	color?: string
-	badge?: boolean // 选用 Badge 渲染 文本
 }
+export type FieldOptionType = { label: string; value: any }
 export interface BaseProFieldProps extends BaseFieldRenderProps {
 	text?: any
 	mode: FieldMode // 模式

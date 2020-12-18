@@ -66,7 +66,7 @@ function Remind() {
 				dataSource={data}
 				columns={columns}
 				bordered
-				scroll={{ x: 1000 }}
+				// scroll={{ x: 1000 }}
 			/>
 		</div>
 	)

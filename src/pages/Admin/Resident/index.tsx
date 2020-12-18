@@ -91,11 +91,11 @@ const data = Array.from({ length: 50 }, (_, i) => {
 })
 function Resident() {
 	return (
-		<div className='p-8 h-full'>
+		<>
 			<div
 				className={classNames(
 					styles.filter_bar,
-					"bg-white pt-8 px-6 flex justify-between items-start flex-col lg:flex-row"
+					"bg-white pt-8 px-8 flex justify-between items-start flex-col lg:flex-row"
 				)}
 			>
 				<Form>
@@ -122,15 +122,13 @@ function Resident() {
 						<SearchOutlined />
 						查询
 					</Button>
-					<Button type='primary'>
+					<Button>
 						<RedoOutlined />
 						重置
 					</Button>
 				</Space>
 			</div>
-			<div
-				className={classNames(styles.table_wrap, "mt-6 bg-white px-6 py-10")}
-			>
+			<div className={classNames(styles.table_wrap, "mt-8 p-8 bg-white")}>
 				<Space className='mb-10'>
 					<Button type='primary'>
 						<PlusOutlined />
@@ -150,10 +148,10 @@ function Resident() {
 					bordered
 					columns={columns}
 					dataSource={data}
-					scroll={{ x: 1200 }}
+					// scroll={{ x: 1200 }}
 				/>
 			</div>
-		</div>
+		</>
 	)
 }
 export default memo(Resident)

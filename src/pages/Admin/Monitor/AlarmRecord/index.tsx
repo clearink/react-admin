@@ -9,7 +9,7 @@ export const alarmColumns = [
 	{
 		title: "标识",
 		dataIndex: "avatar",
-		width:80,
+		width: 80,
 		key: "avatar",
 		render: () => <Avatar icon={<UserOutlined />} />,
 	},
@@ -19,7 +19,7 @@ export const alarmColumns = [
 	},
 	{
 		title: "告警类型",
-		width:300,
+		width: 300,
 		dataIndex: "type",
 	},
 	{
@@ -55,7 +55,7 @@ export const alarmColumns = [
 ]
 const data = Array.from({ length: 40 }, (_, i) => {
 	return {
-		key:i,
+		key: i,
 		avatar: i,
 		user: "李小明",
 		type: "离床超时,心率异常,呼吸率异常,体动频繁,围栏越界,血氧含量低",
@@ -70,40 +70,42 @@ function AlarmRecord() {
 	return (
 		<div className='h-full flex flex-col'>
 			<div className={styles.search_bar}>
-				<Form layout='inline' form={form}>
-					<Form.Item name='name'>
-						<Input placeholder='姓名' />
-					</Form.Item>
-					<Form.Item name='floor'>
-						<Select
-							className={styles.select}
-							placeholder='选择楼层'
-							options={Array.from({ length: 10 }, (_, i) => ({
-								label: i,
-								value: i,
-							}))}
-						/>
-					</Form.Item>
-					<Form.Item name='room'>
-						<Select
-							className={styles.select}
-							placeholder='选择房间'
-							options={Array.from({ length: 10 }, (_, i) => ({
-								label: i,
-								value: i,
-							}))}
-						/>
-					</Form.Item>
-					<Form.Item name='alarm'>
-						<Select
-							placeholder='告警类型'
-							className={styles.select}
-							options={Array.from({ length: 10 }, (_, i) => ({
-								label: i,
-								value: i,
-							}))}
-						/>
-					</Form.Item>
+				<Form form={form}>
+					<Space>
+						<Form.Item name='name'>
+							<Input placeholder='姓名' />
+						</Form.Item>
+						<Form.Item name='floor'>
+							<Select
+								className={styles.select}
+								placeholder='选择楼层'
+								options={Array.from({ length: 10 }, (_, i) => ({
+									label: i,
+									value: i,
+								}))}
+							/>
+						</Form.Item>
+						<Form.Item name='room'>
+							<Select
+								className={styles.select}
+								placeholder='选择房间'
+								options={Array.from({ length: 10 }, (_, i) => ({
+									label: i,
+									value: i,
+								}))}
+							/>
+						</Form.Item>
+						<Form.Item name='alarm'>
+							<Select
+								placeholder='告警类型'
+								className={styles.select}
+								options={Array.from({ length: 10 }, (_, i) => ({
+									label: i,
+									value: i,
+								}))}
+							/>
+						</Form.Item>
+					</Space>
 				</Form>
 				<Space>
 					<Button type='primary' icon={<SearchOutlined />}>
@@ -123,7 +125,8 @@ function AlarmRecord() {
 					}}
 					columns={alarmColumns}
 					dataSource={data}
-					scroll={{ x: 1400 }}
+					// 贼耗性能
+					// scroll={{ x: 1400 }}
 				/>
 			</main>
 		</div>

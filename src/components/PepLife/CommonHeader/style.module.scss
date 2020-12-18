@@ -21,16 +21,25 @@
 			font-weight: 600;
 		}
 	}
-	.extra {
+	.children {
 		flex: auto;
 	}
+	.extra {
+		flex-shrink: 0;
+	}
 }
-.ghost{
+.ghost {
 	background-color: transparent !important;
 	box-shadow: none;
 }
-.fixed{
+.fixed {
+	transition: all 0.2s;
 	position: fixed !important;
-	width: 100%;
+	width: calc(100% - 20rem);
 	z-index: 100;
+	right: 0;
+	top: 0;
+}
+.collapsed {
+	width: calc(100% - 48px);
 }

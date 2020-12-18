@@ -2,13 +2,13 @@ import React, { useState } from "react"
 import { Button } from "antd"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
-import { FieldDate, FieldSelect } from "@/components/Pro/ProField"
-import "./style.scss"
+import { FieldSelect } from "@/components/Pro/ProField"
 import { FieldMode } from "@/components/Pro/ProField/type"
 import { isArray } from "@/utils/validate"
+import { colorArray, statusArray } from "@/components/Pro/ProField/utils/enumUtils"
 
 function WorkPlace(props: IBaseProps) {
-	const [mode, setMode] = useState<FieldMode>("edit")
+	const [mode, setMode] = useState<FieldMode>("read")
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
@@ -24,18 +24,8 @@ function WorkPlace(props: IBaseProps) {
 			<main className='p-20 flex-auto m-10'>
 				<FieldSelect
 					fetchUrl='/sys/dict/getDictItems/MEMBER_TYPE'
-					fieldEnum={[
-						{
-							status: "success",
-							text: "open",
-						},
-						{
-							status: "success",
-							text: "default",
-						},
-					]}
-					transform={(oo, fe) => {
-						console.log(oo, fe)
+					fieldEnum={statusArray}
+					transform={(oo) => {
 						if (oo?.result && isArray(oo.result)) {
 							return oo.result.map((item: any) => ({
 								label: item.text,
@@ -44,7 +34,7 @@ function WorkPlace(props: IBaseProps) {
 						}
 						return []
 					}}
-					text={["open", "default"]}
+					text={["DEFAULT", "CREATOR", "SUPERIP"]}
 					mode={mode}
 				/>
 			</main>

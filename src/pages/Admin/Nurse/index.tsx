@@ -112,7 +112,7 @@ function Nurse() {
 			</div>
 
 			<div
-				className={classNames(styles.table_wrap, "mt-8 bg-white p-8 flex-auto")}
+				className={classNames(styles.table_wrap, "mt-8 p-8 bg-white flex-auto")}
 			>
 				<Space className='mb-10'>
 					<Button type='primary'>
@@ -132,7 +132,7 @@ function Nurse() {
 					bordered
 					columns={columns}
 					dataSource={data}
-					scroll={{ x: 1300 }}
+					// scroll={{ x: 1300 }}
 				/>
 			</div>
 		</div>

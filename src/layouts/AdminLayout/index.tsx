@@ -1,7 +1,6 @@
 import React, { useEffect, memo, useLayoutEffect } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Layout } from "antd"
-import LayoutHeader from "@/components/LayoutHeader"
 import LoginUtil from "@/utils/LoginUtil"
 import SiderMenu from "@/components/SiderMenu"
 import useTypedSelector from "@/hooks/useTypedSelector"
@@ -70,7 +69,7 @@ function BaseLayout(props: IBaseProps) {
 		})()
 	}, [unwrap])
 	return (
-		<Layout className='app-base-layout'>
+		<Layout className={"app-base-layout"}>
 			<SiderMenu />
 			<Layout className='content__layout'>
 				{/* <LayoutHeader /> */}

@@ -28,7 +28,7 @@ function SleepAlarm() {
 				}}
 				columns={columns}
 				dataSource={data}
-				scroll={{ x: 1200 }}
+				// scroll={{ x: 1200 }}
 			/>
 		</div>
 	)

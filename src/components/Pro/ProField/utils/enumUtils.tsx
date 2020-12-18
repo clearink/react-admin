@@ -1,68 +1,92 @@
-import { isArray } from "@/utils/validate"
+import { isArray, isObject } from "@/utils/validate"
 import { Badge, Space, Tag } from "antd"
 import React from "react"
-import { FieldEnumProps } from "../type"
+import { FieldEnumProps, FieldOptionType } from "../type"
 // 主要用于将 select checkbox radio 等具有 enum 的组件 text 映射 成文字
 
 // status color array
-export const statusArray = [
+export const statusArray: FieldEnumProps[] = [
 	"success",
 	"processing",
 	"error",
 	"warning",
 	"default",
-]
-export const colorArray = [
-	"pink",
-	"red",
-	"yellow",
+].map((item) => ({ status: item as any }))
+export const colorArray: FieldEnumProps[] = [
 	"orange",
-	"cyan",
-	"green",
 	"blue",
+	"green",
+	"lime",
+	"red",
+	"cyan",
 	"purple",
 	"geekblue",
+	"yellow",
 	"magenta",
 	"volcano",
 	"gold",
-	"lime",
-]
-// enum is array
+	"pink",
+].map((item) => ({ color: item }))
+/* ************************************************************************* */
+
+/**
+ * 1. 从 options 中 拿到自己的 index
+ * 2. 匹配相同 index 中的 fieldEnum
+ * 3. 渲染组件
+ * 4. badge 切换成 badge 组件
+ */
 export function renderStatusFromOption(
-	text: string | number | Array<string | number>,
-	fieldEnum?: FieldEnumProps[]
+	value: string | number | Array<string | number>,
+	options: Array<{ label: string; value: any }>,
+	fieldEnum?: FieldEnumProps[],
+	textTag = false // tag 自带右边距
 ) {
-	if (!fieldEnum) return []
-	if (isArray(text))
+	// 递归
+	if (isArray(value))
 		return (
-			<Space>{text.map((item) => renderStatusFromOption(item, fieldEnum))}</Space>
+			<Space size={textTag ? 0 : 8}>
+				{value.map((item) =>
+					renderStatusFromOption(item, options, fieldEnum, textTag)
+				)}
+			</Space>
 		)
-	const enumValue = fieldEnum.find((item) => `${item.text}` === `${text}`)
-	console.log(`export function renderStatusFromEnum(`, text, fieldEnum)
-	if (enumValue) {
-		const { badge, ...rest } = enumValue
-		if (badge) return <Badge {...rest} key={text} />
+
+	const textIndex = options.findIndex((item) => `${item.value}` === `${value}`)
+	let enumValue = null
+	let optionValue = null
+	if (fieldEnum && textIndex !== -1) {
+		// 找到了 就去匹配
+		enumValue = fieldEnum[textIndex] ?? fieldEnum[fieldEnum.length - 1]
+		optionValue = options[textIndex]
+	}
+	if (textTag) {
 		return (
-			<Tag color={rest.color} key={text}>
-				{text}
+			<Tag color={enumValue?.color ?? enumValue?.status} key={value}>
+				{optionValue?.value}
 			</Tag>
 		)
 	}
-	return <Tag title={`${text}`} key={text} />
+	return (
+		<Badge
+			key={value}
+			text={optionValue?.label}
+			status={enumValue?.status}
+			color={enumValue?.color}
+		/>
+	)
 }
 
-// enum 可以当作最基本的 options
-// 仅仅当enum 是 statusArray 时,
-export function renderOptionFromEnum(fieldEnum?: FieldEnumProps[]) {
-	if (!isArray(fieldEnum)) return []
-	return fieldEnum.map((item) => ({
-		label: item.text,
-		value: item.status,
+/**
+ * 转换原始的options
+ * options : string[] | Array<{ label: string; value: string }>
+ */
+export function renderOriginOptions(
+	originOption: string[] | Array<FieldOptionType>
+) {
+	if (!isArray(originOption) || originOption.length === 0) return []
+	if (isObject(originOption[0])) return originOption
+	return (originOption as string[]).map((item) => ({
+		label: item,
+		value: item,
 	}))
 }
-/**
- * 	text?: string | number
-	status?: "success" | "processing" | "error" | "default" | "warning"
-	color?: string
-	badge?: boolean // 
- */

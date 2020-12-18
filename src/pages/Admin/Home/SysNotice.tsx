@@ -51,7 +51,7 @@ function SysNotice() {
 								type='icon-shijianzhou-shijian'
 								className={styles.icon}
 							/>
-							{item.time}
+							<span className='ml-4'>{item.time}</span>
 						</div>
 					</div>
 				))}

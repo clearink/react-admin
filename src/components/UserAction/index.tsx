@@ -2,11 +2,7 @@ import React, { memo } from "react"
 import { useSelector } from "react-redux"
 import { AppState } from "@/store"
 import { Menu, Dropdown, Spin, Avatar, Layout } from "antd"
-import {
-	UserOutlined,
-	SettingOutlined,
-	LogoutOutlined,
-} from "@ant-design/icons"
+import { LogoutOutlined } from "@ant-design/icons"
 import LoginUtil from "@/utils/LoginUtil"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { actions } from "@/store/reducers/user"
@@ -18,7 +14,7 @@ interface IProps {}
 const BoundLogout = GetBoundAction(actions.logout)
 
 // 基础头部
-function LayoutHeader(props: IProps) {
+function UserAction(props: IProps) {
 	const { user } = useSelector((state: AppState) => state.user)
 	const handleLogout = () => {
 		// 清除 token
@@ -28,7 +24,7 @@ function LayoutHeader(props: IProps) {
 	}
 	const menu = (
 		<Menu>
-			<Menu.Item key='1'>
+			{/* <Menu.Item key='1'>
 				<UserOutlined />
 				个人中心
 			</Menu.Item>
@@ -36,7 +32,7 @@ function LayoutHeader(props: IProps) {
 				<SettingOutlined />
 				个人设置
 			</Menu.Item>
-			<Menu.Divider />
+			<Menu.Divider /> */}
 			<Menu.Item key='3' onClick={handleLogout}>
 				<LogoutOutlined />
 				退出登录
@@ -44,15 +40,12 @@ function LayoutHeader(props: IProps) {
 		</Menu>
 	)
 	return (
-		<Layout.Header className='layout-header__content'>
-			<Dropdown overlay={menu}>
-				<span className='header_action px-3 flex items-center cursor-pointer'>
-					<Avatar className='mr-4' src={user?.avatar} alt='avatar' />
-					<span>{user?.username ?? <Spin />}</span>
-				</span>
-			</Dropdown>
-			<span className='cursor-pointer px-3'>语言</span>
-		</Layout.Header>
+		<Dropdown overlay={menu}>
+			<span className='header_action px-3 flex items-center cursor-pointer'>
+				<Avatar className='mr-4' src={user?.avatar} alt='avatar' />
+				<span>{user?.username ?? <Spin />}</span>
+			</span>
+		</Dropdown>
 	)
 }
-export default memo(LayoutHeader)
+export default memo(UserAction)

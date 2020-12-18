@@ -241,7 +241,7 @@ function BedAllot() {
 					columns={columns as any[]}
 					dataSource={data}
 					bordered
-					scroll={{ x: 1000 }}
+					// scroll={{ x: 1000 }}
 				/>
 			</div>
 		</div>

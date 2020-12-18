@@ -4,8 +4,11 @@ import { Provider } from "react-redux"
 import App from "./components/App"
 import store from "./store"
 import "@/styles/index.scss"
-import "@/styles/tailwind.output.css"
-// import "@/styles/tailwind.css"
+if (process.env.NODE_ENV === "production") {
+	require("@/styles/tailwind.css")
+} else {
+	require("@/styles/tailwind.output.css")
+}
 
 ReactDOM.render(
 	<Provider store={store}>

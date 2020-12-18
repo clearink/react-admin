@@ -1,13 +1,11 @@
 @import "@/styles/index.scss";
 .search_bar{
-	@apply bg-white px-8 py-12 flex items-center justify-between;
-
+	@apply bg-white px-8 pt-8 flex items-start justify-between;
 	.select{
 		min-width: 150px;
 	}
 }
 .content{
-	margin-top: 4rem;
-	@apply bg-white py-8 px-10;
+	@apply bg-white py-8 px-10 mt-8;
 	flex: auto;
 }

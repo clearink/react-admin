@@ -4,13 +4,11 @@ import { Radio } from "antd"
 import { BaseProFieldProps } from "../../type"
 import useFetchData from "@/hooks/useFetchData"
 import { RadioGroupProps } from "antd/lib/radio"
-import {
-	renderOptionFromEnum,
-	renderStatusFromOption,
-} from "../../utils/enumUtils"
+import { renderStatusFromOption } from "../../utils/enumUtils"
 
 interface FieldRadioProps extends BaseProFieldProps, RadioGroupProps {
 	text: string | number
+	textTag: boolean
 }
 
 function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
@@ -22,22 +20,24 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 		fieldEnum,
 		fetchUrl, // 请求
 		transform, // 转换
+		textTag,
 		...rest
 	} = props
 
-	const dom = useMemo(
-		() => <span>{renderStatusFromOption(text, fieldEnum)}</span>,
-		[text, fieldEnum]
-	)
-
 	const { data } = useFetchData(fetchUrl) // fetchUrl === undefined 不发送请求
-
 
 	const options = useMemo(() => {
 		if (rest.options) return rest.options // 直接设置的 options 优先级最高
 		if (transform) return transform(data, fieldEnum) // 远程请求的第二
-		return renderOptionFromEnum(fieldEnum)
+		return []
 	}, [data, fieldEnum, rest.options, transform])
+
+	const dom = useMemo(
+		() => (
+			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
+		),
+		[text, fieldEnum, options, textTag]
+	)
 
 	if (mode === "read") {
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
@@ -53,5 +53,6 @@ export default memo(
 	withDefaultProps(forwardRef(FieldRadio), {
 		text: "",
 		mode: "read",
+		textTag: true,
 	})
 )

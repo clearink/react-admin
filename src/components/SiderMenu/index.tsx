@@ -38,7 +38,9 @@ function SiderMenu() {
 	return (
 		<>
 			<div
-				className={"sider-menu__placeholder"}
+				className={classNames("sider-menu__placeholder", {
+					collapsed,
+				})}
 				style={{ flexBasis: collapsed ? "48px" : "20rem" }}
 			/>
 			<Layout.Sider

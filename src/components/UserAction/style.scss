@@ -1,0 +1,9 @@
+@import "@/styles/index";
+
+.header_action {
+	transition: all 0.3s;
+	min-width: 100px;
+	&:hover {
+		background-color: rgba($color-grey, $alpha: 0.3);
+	}
+}

@@ -92,7 +92,7 @@ function Device() {
 				bordered
 				dataSource={data}
 				columns={columns}
-				scroll={{ x: 1000 }}
+				// scroll={{ x: 1000 }}
 			/>
 		</div>
 	)

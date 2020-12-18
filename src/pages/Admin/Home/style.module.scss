@@ -8,16 +8,11 @@ $line: 1px solid rgba($color_grey-4, 0.3);
 }
 
 .content_wrap {
-	@apply box-border px-16 pt-10 py-24;
-	background-color: white;
-	width: 80%;
-	max-width: 1260px;
-	flex: auto;
 	margin: 8rem auto 4rem;
-	@include media(md, max) {
-		width: 100%;
+	@apply w-full px-8;
+	.content {
+		@apply bg-white p-8;
 	}
-	border: 1px solid rgba($color_grey-4, 0.4);
 }
 .user_info,
 .sys_info {
@@ -118,7 +113,7 @@ $line: 1px solid rgba($color_grey-4, 0.3);
 				}
 			}
 			.time {
-				flex-basis: 130px;
+				flex-basis: 150px;
 			}
 		}
 	}
