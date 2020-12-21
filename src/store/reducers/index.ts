@@ -4,12 +4,14 @@ import user from "./user"
 import menu from "./menu"
 import list from "./list"
 import test from "./test"
+import kv from "./kv"
 const rootReducer = combineReducers({
 	counter,
 	user,
 	menu,
 	list,
 	test,
+	kv,
 })
 
 export default rootReducer

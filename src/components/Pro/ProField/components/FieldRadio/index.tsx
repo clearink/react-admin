@@ -4,7 +4,7 @@ import { Radio } from "antd"
 import { BaseProFieldProps } from "../../type"
 import useFetchData from "@/hooks/useFetchData"
 import { RadioGroupProps } from "antd/lib/radio"
-import { renderStatusFromOption } from "../../utils/enumUtils"
+import { renderStatusFromOption } from "@/components/Pro/utils"
 
 interface FieldRadioProps extends BaseProFieldProps, RadioGroupProps {
 	text: string | number
@@ -32,14 +32,10 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 		return []
 	}, [data, fieldEnum, rest.options, transform])
 
-	const dom = useMemo(
-		() => (
-			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
-		),
-		[text, fieldEnum, options, textTag]
-	)
-
 	if (mode === "read") {
+		const dom = (
+			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
+		)
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}

@@ -1,7 +1,6 @@
 import React, { forwardRef, memo, Ref } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { InputNumber, Progress } from "antd"
-import { toNumber } from "../utils"
 import { BaseProFieldProps } from "../type"
 import { InputNumberProps } from "antd/lib/input-number"
 import { ProgressProps } from "antd/lib/progress"
@@ -17,7 +16,7 @@ interface FieldProgressProps
 function FieldProgress(props: FieldProgressProps, ref: Ref<any>) {
 	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
 
-	const numberValue = toNumber(text)
+	const numberValue = Number(text)
 	const dom = <Progress percent={numberValue} {...rest} />
 	if (mode === "read") {
 		if (render) return render(text, { mode, ...rest }, dom)

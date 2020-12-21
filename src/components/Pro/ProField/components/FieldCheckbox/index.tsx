@@ -4,7 +4,7 @@ import { Checkbox } from "antd"
 import { CheckboxGroupProps } from "antd/lib/checkbox"
 import { BaseProFieldProps, FieldOptionType } from "../../type"
 import useFetchData from "@/hooks/useFetchData"
-import { renderStatusFromOption } from "../../utils/enumUtils"
+import { renderStatusFromOption } from "../../../utils"
 
 interface FieldCheckboxProps extends BaseProFieldProps, CheckboxGroupProps {
 	options?: string[] | Array<FieldOptionType>
@@ -31,13 +31,11 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 		if (transform) return transform(data, fieldEnum) // 远程请求的第二
 		return []
 	}, [data, fieldEnum, rest.options, transform])
-	const dom = useMemo(
-		() => (
-			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
-		),
-		[text, fieldEnum, options, textTag]
-	)
+
 	if (mode === "read") {
+		const dom = (
+			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
+		)
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}

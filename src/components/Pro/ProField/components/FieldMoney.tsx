@@ -11,7 +11,7 @@ import { InputNumber } from "antd"
 import { formatMoney, removeSeparator } from "@/utils/regExp"
 import { BaseProFieldProps } from "../type"
 import { InputNumberProps } from "antd/lib/input-number"
-import { moneySign } from "../utils"
+import { moneySign } from "../../utils"
 
 interface FieldMoneyProps extends BaseProFieldProps, InputNumberProps {
 	locale?: keyof typeof moneySign

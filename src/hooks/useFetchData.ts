@@ -3,6 +3,8 @@ import { isString, isUndefined } from "../utils/validate"
 import http from "@/http"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { createSlice } from "@reduxjs/toolkit"
+import { actions as kvActions } from "@/store/reducers/kv"
+import GetBoundAction from "@/utils/GetBoundAction"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -33,28 +35,38 @@ const { reducer, actions } = createSlice({
 		},
 	},
 })
+const boundKvActions = GetBoundAction(kvActions)
 export default function useFetchData(
 	fetchUrl?: string | { url: string; params?: object }
 ) {
 	const [state, dispatch] = useReducer(reducer, initialState)
-	const kv = useTypedSelector((state) => state)
+	const kvEntities = useTypedSelector((state) => state.kv.entities)
+
 	const [url, params] = useMemo(() => {
 		if (isString(fetchUrl)) return [fetchUrl, {}]
 		if (isUndefined(fetchUrl)) return [undefined, undefined]
 		return [fetchUrl.url, fetchUrl.params]
 	}, [fetchUrl])
-	useEffect(() => {
-		;(async () => {
-			if (isUndefined(url)) return
 
+	useEffect(() => {
+		if (isUndefined(url)) return
+		const realUrl = `${url}?${JSON.stringify(params)}`
+		const preData = kvEntities[realUrl]
+		if (preData) {
+			dispatch(actions.setData(preData.value))
+			return
+		}
+		;(async () => {
 			try {
-				dispatch(actions.startFetch()) // loading: true
-				const { data } = await http.get(url, params)
+				// 存在 直接保存
+				dispatch(actions.startFetch()) // 发起请求
+				const data = (await http.get(url, params)).data
 				dispatch(actions.setData(data)) // save data
+				boundKvActions.add({ key: realUrl, value: data }) // save data to store
 			} catch (error) {
 				dispatch(actions.setError(error)) // save error
 			}
 		})()
-	}, [url, params])
+	}, [url, params, kvEntities])
 	return state
 }

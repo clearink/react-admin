@@ -4,7 +4,7 @@ import { InputProps } from "antd/lib/input"
 import { BaseProFieldProps } from "../type"
 import withDefaultProps from "@/hocs/withDefaultProps"
 
-interface FieldTextProps extends BaseProFieldProps, InputProps {}
+export interface FieldTextProps extends BaseProFieldProps, InputProps {}
 
 function FieldText(props: FieldTextProps) {
 	const { mode, render, renderFormItem, text, ...rest } = props

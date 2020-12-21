@@ -1,16 +1,13 @@
-import React, { forwardRef, memo, Ref, useMemo, useRef } from "react"
+import React, { forwardRef, memo, Ref, useRef } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Select } from "antd"
 import { BaseProFieldProps, FieldOptionType } from "../../type"
 import { SelectProps } from "antd/lib/select"
 import useFetchData from "@/hooks/useFetchData"
-import {
-	renderOriginOptions,
-	renderStatusFromOption,
-} from "../../utils/enumUtils"
+import { renderOriginOptions, renderStatusFromOption } from "../../../utils"
 import useDeepMemo from "@/hooks/useDeepMemo"
 
-interface FieldSelectProps
+export interface FieldSelectProps
 	extends BaseProFieldProps,
 		Omit<SelectProps<any[]>, "mode" | "options"> {
 	selectMode?: SelectProps<any[]>["mode"]
@@ -48,26 +45,22 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 	const memoTransform = useRef(transform)
 
 	const { loading, data } = useFetchData(fetchUrl) // fetchUrl === undefined 不发送请求
+
 	const options = useDeepMemo(() => {
 		if (rest.options) return renderOriginOptions(rest.options) // 直接设置的 options 优先级最高
 		if (memoTransform.current) return memoTransform.current(data, fieldEnum) // 远程请求的第二
 		return []
 	}, [data, fieldEnum, rest.options])
-
-	const dom = useMemo(
-		() => (
-			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
-		),
-		[text, fieldEnum, options, textTag]
-	)
-
 	if (mode === "read") {
+		const dom = (
+			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
+		)
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
 	const formItemDom = (
 		<Select
-			loading={loading}
+			loading={loading && options.length === 0}
 			mode={selectMode}
 			options={options as any} // any script
 			{...rest}

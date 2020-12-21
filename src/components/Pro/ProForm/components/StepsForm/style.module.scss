@@ -1,0 +1,15 @@
+.pro_steps_form {
+	.pro_steps_wrapper {
+		margin-bottom: 30px;
+	}
+	.form_container {
+		padding: 0 30px;
+
+		.step_form {
+			display: none;
+		}
+		.step_form_active {
+			display: block;
+		}
+	}
+}

@@ -24,10 +24,6 @@ const slice = createSlice({
 			})
 			.addCase(fetchMenu.fulfilled, (state, action) => {
 				state.loading = false
-				console.log(
-					"	.addCase(fetchMenu.fulfilled, (state, action) => {",
-					action
-				)
 				// state.menu = action.payload
 			})
 			.addCase(fetchMenu.rejected, (state, action) => {

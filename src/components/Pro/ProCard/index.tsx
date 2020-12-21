@@ -5,16 +5,15 @@ import React, {
 	cloneElement,
 	FunctionComponent,
 	isValidElement,
-	memo,
 	ReactNode,
 	useMemo,
 	useRef,
 } from "react"
 import classNames from "classnames"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import TitleTip from "../utils/TitleTip"
 import styles from "./style.module.scss"
 import { RowProps } from "antd/lib/row"
+import { TitleTip } from "./components"
 
 const { useBreakpoint } = Grid
 
@@ -81,7 +80,7 @@ function ProCard(props: IProCardProps) {
 			<div className={styles.card_head}>
 				<div className={styles.card_head_wrap}>
 					<div className={styles.head_title}>
-						{title && <TitleTip title={title} tip={tip} />}
+						{title && <TitleTip title={title} tooltip={tip} />}
 					</div>
 					<div className={styles.head_extra}>{extra}</div>
 				</div>

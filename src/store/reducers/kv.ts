@@ -8,7 +8,9 @@ type kvType = {
 	key: string
 	value: any
 }
-const kvAdapter = createEntityAdapter<kvType>()
+const kvAdapter = createEntityAdapter<kvType>({
+	selectId:(kv)=>kv.key
+})
 const slice = createSlice({
 	name: "kv",
 	initialState: kvAdapter.getInitialState(),

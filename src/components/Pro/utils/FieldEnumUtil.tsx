@@ -1,18 +1,10 @@
 import { isArray, isObject } from "@/utils/validate"
 import { Badge, Space, Tag } from "antd"
 import React from "react"
-import { FieldEnumProps, FieldOptionType } from "../type"
+import { FieldOptionType } from "../ProField/type"
 // 主要用于将 select checkbox radio 等具有 enum 的组件 text 映射 成文字
 
-// status color array
-export const statusArray: FieldEnumProps[] = [
-	"success",
-	"processing",
-	"error",
-	"warning",
-	"default",
-].map((item) => ({ status: item as any }))
-export const colorArray: FieldEnumProps[] = [
+export const colorArray = [
 	"orange",
 	"blue",
 	"green",
@@ -26,7 +18,7 @@ export const colorArray: FieldEnumProps[] = [
 	"volcano",
 	"gold",
 	"pink",
-].map((item) => ({ color: item }))
+]
 /* ************************************************************************* */
 
 /**
@@ -38,7 +30,7 @@ export const colorArray: FieldEnumProps[] = [
 export function renderStatusFromOption(
 	value: string | number | Array<string | number>,
 	options: Array<{ label: string; value: any }>,
-	fieldEnum?: FieldEnumProps[],
+	fieldEnum?: string[],
 	textTag = false // tag 自带右边距
 ) {
 	// 递归
@@ -52,28 +44,21 @@ export function renderStatusFromOption(
 		)
 
 	const textIndex = options.findIndex((item) => `${item.value}` === `${value}`)
-	let enumValue = null
-	let optionValue = null
+	let color
+	let optionValue = value
 	if (fieldEnum && textIndex !== -1) {
 		// 找到了 就去匹配
-		enumValue = fieldEnum[textIndex] ?? fieldEnum[fieldEnum.length - 1]
-		optionValue = options[textIndex]
+		color = fieldEnum[textIndex] ?? fieldEnum[fieldEnum.length - 1]
+		optionValue = options[textIndex].label
 	}
 	if (textTag) {
 		return (
-			<Tag color={enumValue?.color ?? enumValue?.status} key={value}>
-				{optionValue?.value}
+			<Tag color={color} key={value}>
+				{optionValue}
 			</Tag>
 		)
 	}
-	return (
-		<Badge
-			key={value}
-			text={optionValue?.label}
-			status={enumValue?.status}
-			color={enumValue?.color}
-		/>
-	)
+	return <Badge key={value} text={optionValue} color={color} />
 }
 
 /**

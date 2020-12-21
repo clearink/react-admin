@@ -1,16 +1,6 @@
-import { InputProps } from "antd/lib/input"
-import React, { forwardRef, Ref } from "react"
-import { FieldText } from "../../ProField"
-import createField, { ProFormItemProps } from "../createField"
+import withFormItem from "../../hocs/withFormItem"
+import FieldText, { FieldTextProps } from "../../ProField/components/FieldText"
 
-function ProFormText(props: ProFormItemProps<InputProps>, ref: Ref<any>) {
-	const { fieldProps, ...rest } = props
-	return <FieldText ref={ref} mode='edit' />
-}
-
-export default createField<ProFormItemProps<InputProps>>(
-	forwardRef(ProFormText),
-	{
-		field: "text",
-	}
-)
+export default withFormItem<FieldTextProps>(FieldText, {
+	allowClear: true,
+})

@@ -1,9 +1,9 @@
 import React, { forwardRef, memo, Ref } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { InputNumber } from "antd"
-import { formatNumber } from "../utils"
-import { BaseProFieldProps } from "../type"
 import { InputNumberProps } from "antd/lib/input-number"
+import { BaseProFieldProps } from "../type"
+import { formatNumber } from "../../utils"
 
 interface FieldDigitProps extends BaseProFieldProps, InputNumberProps {}
 function FieldDigit(props: FieldDigitProps, ref: Ref<any>) {

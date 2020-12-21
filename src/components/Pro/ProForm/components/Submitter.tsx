@@ -2,58 +2,57 @@ import withDefaultProps from "@/hocs/withDefaultProps"
 import { Button, Space } from "antd"
 import { FormInstance } from "antd/lib/form"
 import React, { memo } from "react"
-import { CommonFormProps } from "../../ProForm/components/BaseForm/type"
+import { SubmitConfigType } from "../type"
+
+/**
+ * Q: 	onReset, onSubmit, 这两个有什么用 暂时没有发现
+ *  先注释掉
+ *
+ * TODO
+ * 表单提交 loading 效果
+ */
 
 // 表单提交和重置按钮
-type SubmitterProps = CommonFormProps["submitConfig"] & {
+interface SubmitterProps extends SubmitConfigType {
 	form: FormInstance
-	onReset?: () => void
-	onSubmit?: () => void
 }
 function Submitter(props: SubmitterProps) {
-	const {
-		resetButtonProps: RP,
-		submitButtonProps: SP,
-		render,
-		form,
-		onReset,
-		onSubmit,
-	} = props
+	const { resetProps: RP, submitProps: SP, render, form } = props
 	const submitText = SP?.text ?? "提交"
 	const resetText = RP?.text ?? "重置"
 	// 默认是
 	const dom = [
 		<Button
-			{...RP}
 			key='rest'
+			{...RP}
 			onClick={(e) => {
 				form.resetFields()
-				onReset?.()
+				// onReset?.()
 				RP?.onClick?.(e)
 			}}
 		>
 			{resetText}
 		</Button>,
 		<Button
-			{...SP}
 			key='submit'
 			type='primary'
+			{...SP}
 			onClick={(e) => {
 				form.submit()
-				onSubmit?.()
+				// onSubmit?.()
 				SP?.onClick?.(e)
 			}}
 		>
 			{submitText}
 		</Button>,
 	]
-	if (render) return render(props, dom) as JSX.Element
+	if (render) return <>{render(dom, props)}</>
 	return <Space>{dom}</Space>
 }
 
 export default memo(
 	withDefaultProps(Submitter, {
-		resetButtonProps: {},
-		submitButtonProps: {},
+		resetProps: {},
+		submitProps: {},
 	})
 )

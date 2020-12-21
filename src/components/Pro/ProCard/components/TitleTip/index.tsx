@@ -7,17 +7,17 @@ import { isString } from "@/utils/validate"
 /**
  * title 属性后跟一个 tooltip 提示文案
  */
-interface ITitleTip {
+interface TitleTipProps {
 	title: ReactNode
-	tip?: string | TooltipProps
+	tooltip?: string | TooltipProps
 }
-function TitleTip(props: ITitleTip) {
-	const { tip, title } = props
+function TitleTip(props: TitleTipProps) {
+	const { tooltip, title } = props
 	const tooltipProps = useMemo(() => {
-		if (isString(tip)) return { title: tip }
-		return tip as TooltipProps
-	}, [tip])
-	if (!tip) return <>{title}</>
+		if (isString(tooltip)) return { title: tooltip }
+		return tooltip as TooltipProps
+	}, [tooltip])
+	if (!tooltip) return <>{title}</>
 	return (
 		<>
 			<span className={styles.title}>{title}</span>
