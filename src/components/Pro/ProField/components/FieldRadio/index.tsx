@@ -34,14 +34,25 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 
 	if (mode === "read") {
 		const dom = (
-			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
+			<span>
+				{renderStatusFromOption(
+					rest.value ?? text,
+					options,
+					fieldEnum,
+					textTag
+				)}
+			</span>
 		)
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
 	const formItemDom = <Radio.Group options={options} {...rest} />
 	if (renderFormItem)
-		renderFormItem(text, { mode, ...rest, fieldEnum, options }, formItemDom)
+		return renderFormItem(
+			text,
+			{ mode, ...rest, fieldEnum, options },
+			formItemDom
+		)
 	return formItemDom
 }
 

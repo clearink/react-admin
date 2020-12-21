@@ -24,9 +24,7 @@ function Login(props: IBaseProps) {
 	const { push } = useHistory()
 	const unwrap = useUnwrapAsyncThunk()
 	const handleSubmit = async (values: Store) => {
-		const resAction = await unwrap(actions.login(values))
-		console.log(resAction)
-		message.success("登录成功")
+		await unwrap(actions.login(values))
 		push("/")
 	}
 

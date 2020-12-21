@@ -6,7 +6,9 @@ import { BaseProFieldProps, FieldOptionType } from "../../type"
 import useFetchData from "@/hooks/useFetchData"
 import { renderStatusFromOption } from "../../../utils"
 
-interface FieldCheckboxProps extends BaseProFieldProps, CheckboxGroupProps {
+export interface FieldCheckboxProps
+	extends BaseProFieldProps,
+		CheckboxGroupProps {
 	options?: string[] | Array<FieldOptionType>
 	textTag: boolean
 }
@@ -34,14 +36,25 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 
 	if (mode === "read") {
 		const dom = (
-			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
+			<span>
+				{renderStatusFromOption(
+					rest?.value ?? text,
+					options,
+					fieldEnum,
+					textTag
+				)}
+			</span>
 		)
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
 	const formItemDom = <Checkbox.Group options={options} {...rest} />
 	if (renderFormItem)
-		renderFormItem(text, { mode, ...rest, fieldEnum, options }, formItemDom)
+		return renderFormItem(
+			text,
+			{ mode, ...rest, fieldEnum, options },
+			formItemDom
+		)
 	return formItemDom
 }
 

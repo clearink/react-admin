@@ -14,7 +14,7 @@ function FieldRate(props: FieldRateProps, ref: Ref<any>) {
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	if (renderFormItem) renderFormItem(text, { mode, ...rest }, dom)
+	if (renderFormItem) return renderFormItem(text, { mode, ...rest }, dom)
 	return dom
 }
 

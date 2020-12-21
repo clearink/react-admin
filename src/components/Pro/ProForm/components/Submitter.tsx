@@ -7,9 +7,6 @@ import { SubmitConfigType } from "../type"
 /**
  * Q: 	onReset, onSubmit, 这两个有什么用 暂时没有发现
  *  先注释掉
- *
- * TODO
- * 表单提交 loading 效果
  */
 
 // 表单提交和重置按钮

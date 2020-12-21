@@ -34,9 +34,7 @@ function FieldDate(props: FieldDateProps) {
 				{fromNow ? timeValue.fromNow() : timeValue.format(timeFormat)}
 			</span>
 		)
-		if (render) {
-			if (render) return render(text, { mode, ...rest }, dom)
-		}
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
 	// picker 属性有问题 只能先用any

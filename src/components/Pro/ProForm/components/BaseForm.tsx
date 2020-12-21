@@ -1,13 +1,14 @@
 import useBoolean from "@/hooks/useBoolean"
 import { Form } from "antd"
-import React, { memo, useCallback } from "react"
+import { ButtonProps } from "antd/lib/button"
+import React, { memo, useCallback, useState } from "react"
 import ProFormContext from "../../utils/ProFormContext"
 import { BaseFormProps } from "../type"
 import Submitter from "./Submitter"
 
 function BaseForm(props: BaseFormProps) {
 	const { children, form: propsForm, submitConfig, onFinish, ...rest } = props
-	const [loading, toggle] = useBoolean() // submit loading 效果
+	const [loading, setLoading] = useState<ButtonProps["loading"]>(false) // submit loading 效果
 	const [form] = Form.useForm(propsForm)
 
 	// 包装的 finish
@@ -15,13 +16,13 @@ function BaseForm(props: BaseFormProps) {
 		async (values: any) => {
 			if (typeof onFinish !== "function") return
 			try {
-				toggle()
+				setLoading({ delay: 100 })
 				await onFinish(values)
 			} finally {
-				toggle()
+				setLoading(false)
 			}
 		},
-		[onFinish, toggle]
+		[onFinish]
 	)
 	return (
 		<ProFormContext.Provider value={form}>

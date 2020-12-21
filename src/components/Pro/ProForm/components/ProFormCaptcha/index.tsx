@@ -7,7 +7,7 @@ import useBoolean from "@/hooks/useBoolean"
 import { Button, Space } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
-import React, { ReactNode, useContext } from "react"
+import React, { ReactNode, useContext, useState } from "react"
 import CountDown from "./CountDown"
 
 /* 验证码封装组件
@@ -26,20 +26,23 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 	const { onGetCaptcha, captchaProps, ...rest } = props
 	const { text, countDown, ...captchaPropsRest } = captchaProps ?? {}
 
-	const [loading, toggle] = useBoolean()
+	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
 	const form = useContext(ProFormContext)
 	const handleClick = async (start: Function) => {
 		if (typeof onGetCaptcha !== "function") return
-		toggle()
-		await onGetCaptcha(form)
-		toggle()
-		start()
+		try {
+			setLoading({ delay: 100 })
+			await onGetCaptcha(form)
+			start()
+		} finally {
+			setLoading(false)
+		}
 	}
 	return (
 		<div className='flex items-center'>
 			<FieldText {...rest} className='flex-auto' />
 			{/* 获取验证码的 */}
-			<CountDown num={countDown ?? 3}>
+			<CountDown num={countDown ?? 60}>
 				{({ active, count, start }) => (
 					<Button
 						size={rest.size}

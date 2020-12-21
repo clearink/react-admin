@@ -46,9 +46,10 @@ export function renderStatusFromOption(
 	const textIndex = options.findIndex((item) => `${item.value}` === `${value}`)
 	let color
 	let optionValue = value
-	if (fieldEnum && textIndex !== -1) {
+	if (textIndex !== -1) {
 		// 找到了 就去匹配
-		color = fieldEnum[textIndex] ?? fieldEnum[fieldEnum.length - 1]
+		if (fieldEnum)
+			color = fieldEnum[textIndex] ?? fieldEnum[fieldEnum.length - 1]
 		optionValue = options[textIndex].label
 	}
 	if (textTag) {

@@ -50,22 +50,20 @@ export default function useFetchData(
 
 	useEffect(() => {
 		if (isUndefined(url)) return
-		const realUrl = `${url}?${JSON.stringify(params)}`
-		const preData = kvEntities[realUrl]
-		if (preData) {
-			dispatch(actions.setData(preData.value))
-			return
-		}
 		;(async () => {
-			try {
-				// 存在 直接保存
-				dispatch(actions.startFetch()) // 发起请求
-				const data = (await http.get(url, params)).data
-				dispatch(actions.setData(data)) // save data
-				boundKvActions.add({ key: realUrl, value: data }) // save data to store
-			} catch (error) {
-				dispatch(actions.setError(error)) // save error
-			}
+			const realUrl = `${url}?${JSON.stringify(params)}`
+			const preData = kvEntities[realUrl]
+			if (preData) dispatch(actions.setData(preData.value))
+			else
+				try {
+					// 存在 直接保存
+					dispatch(actions.startFetch()) // 发起请求
+					const { data } = await http.get(url, params)
+					dispatch(actions.setData(data)) // save data
+					boundKvActions.add({ key: realUrl, value: data }) // save data to store
+				} catch (error) {
+					dispatch(actions.setError(error)) // save error
+				}
 		})()
 	}, [url, params, kvEntities])
 	return state

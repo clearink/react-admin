@@ -8,6 +8,10 @@ export default function useInterval(
 	const callback = useRef(fn)
 	const [reload, setReload] = useState(0)
 	const [active, setActive] = useState(false) // 是否在 倒计时
+
+	useEffect(() => {
+		callback.current = fn
+	}, [fn])
 	useEffect(() => {
 		if (!active) return
 		const id = setInterval(callback.current, interval)

@@ -53,7 +53,14 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 	}, [data, fieldEnum, rest.options])
 	if (mode === "read") {
 		const dom = (
-			<span>{renderStatusFromOption(text, options, fieldEnum, textTag)}</span>
+			<span>
+				{renderStatusFromOption(
+					rest?.value ?? text,
+					options,
+					fieldEnum,
+					textTag
+				)}
+			</span>
 		)
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
@@ -67,7 +74,11 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 		/>
 	)
 	if (renderFormItem)
-		renderFormItem(text, { mode, ...rest, fieldEnum, options }, formItemDom)
+		return renderFormItem(
+			text,
+			{ mode, ...rest, fieldEnum, options },
+			formItemDom
+		)
 	return formItemDom
 }
 

@@ -31,7 +31,8 @@ function FieldProgress(props: FieldProgressProps, ref: Ref<any>) {
 			{...formItemProps}
 		/>
 	)
-	if (renderFormItem) renderFormItem(text, { mode, ...formItemProps }, formDom)
+	if (renderFormItem)
+		return renderFormItem(text, { mode, ...formItemProps }, formDom)
 	return formDom
 }
 
