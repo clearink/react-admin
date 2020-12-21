@@ -53,7 +53,7 @@ function StepsForm(props: StepsFormProps) {
 				// 是 StepForm
 				const { stepProps } = child.props
 				stepsChildren.push(<Steps.Step key={nanoid(8)} {...stepProps} />)
-				formChildren.push(cloneElement(child, { key: nanoid(8) }))
+				formChildren.push(cloneElement(child, { key: nanoid(8) }))// 处理 submitter
 			}
 		)
 		return [formChildren, stepsChildren]
