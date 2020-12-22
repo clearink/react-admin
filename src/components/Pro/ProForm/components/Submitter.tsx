@@ -43,7 +43,7 @@ function Submitter(props: SubmitterProps) {
 			{submitText}
 		</Button>,
 	]
-	if (render) return <>{render(dom, props)}</>
+	if (render) return <>{render(dom, form)}</>
 	return <Space>{dom}</Space>
 }
 

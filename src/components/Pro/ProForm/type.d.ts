@@ -7,10 +7,7 @@ export type SubmitConfigType = {
 	resetProps?: ButtonProps & { text?: ReactNode }
 	onReset?: () => void
 	onSubmit?: () => void
-	render?: (
-		dom: JSX.Element[],
-		props: Omit<SubmitConfigType, "render">
-	) => ReactNode
+	render?: (dom: JSX.Element[], form: FormInstance) => ReactNode
 }
 export interface BaseFormProps extends FormProps {
 	submitConfig?: SubmitConfigType
