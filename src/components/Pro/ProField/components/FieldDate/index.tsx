@@ -51,6 +51,6 @@ export default memo(
 		timeFormat: "YYYY-MM-DD",
 		showTime: false,
 		placeholder: "请选择",
-		style: { width: 280 },
+		// style: { width: 280 },
 	})
 )

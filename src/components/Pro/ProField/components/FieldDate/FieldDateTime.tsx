@@ -10,6 +10,6 @@ function FieldDateTime(props: FieldDateTimeProps) {
 export default memo(
 	withDefaultProps(FieldDateTime, {
 		timeFormat: "YYYY-MM-DD HH:mm:ss",
-		style: { width: 450 },
+		// style: { width: 450 },
 	})
 )

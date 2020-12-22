@@ -45,7 +45,7 @@ export default memo(
 		placeholder: "请输入",
 		min: 0,
 		precision: 2,
-		style: { width: 150 },
+		// style: { width: 150 },
 		formatter: (value: string | number) => (value ? formatMoney(value) : ""),
 		parser: (value: string) =>
 			value ? removeSeparator(value, "\\s+|(,*)") : "",

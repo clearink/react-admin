@@ -54,6 +54,6 @@ export default memo(
 		picker: "date",
 		timeFormat: "YYYY-MM-DD",
 		showTime: false,
-		style: { width: 280 },
+		// style: { width: 280 },
 	})
 )

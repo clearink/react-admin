@@ -5,11 +5,9 @@ import { InputNumberProps } from "antd/lib/input-number"
 import { BaseProFieldProps } from "../type"
 import { formatNumber } from "../../utils"
 
-interface FieldDigitProps extends BaseProFieldProps, InputNumberProps {}
+export interface FieldDigitProps extends BaseProFieldProps, InputNumberProps {}
 function FieldDigit(props: FieldDigitProps, ref: Ref<any>) {
 	const { text, mode, render, renderFormItem, ...rest } = props
-	// const inputRef = useRef()
-	// useImperativeHandle(ref, () => inputRef.current ?? {}, [])
 
 	if (mode === "read") {
 		const dom = <span>{formatNumber(text)}</span>
@@ -28,6 +26,6 @@ export default memo(
 		mode: "read",
 		placeholder: "请输入",
 		min: 0,
-		style: { width: 200 },
+		// style: { width: 200 },
 	})
 )

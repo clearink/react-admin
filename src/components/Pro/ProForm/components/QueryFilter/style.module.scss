@@ -1,0 +1,28 @@
+@import "@/styles/index";
+.collapsed_trigger {
+	cursor: pointer;
+	color: $color_primary;
+	white-space: nowrap;
+	&:hover {
+		color: rgba($color_primary, 0.8);
+	}
+	&:active {
+		color: $color_primary;
+	}
+	.trigger_icon {
+		transition: transform 0.2s;
+		margin-left: 6px;
+		&.collapsed {
+			transform: rotate(180deg);
+		}
+	}
+}
+.item_wrap {
+	@apply px-4;
+	&.item_hidden {
+		overflow: hidden;
+		max-height: 0 !important;
+		max-width: 0 !important;
+		padding: 0 !important;
+	}
+}

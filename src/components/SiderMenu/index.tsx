@@ -41,14 +41,13 @@ function SiderMenu() {
 				className={classNames("sider-menu__placeholder", {
 					collapsed,
 				})}
-				style={{ flexBasis: collapsed ? "48px" : "20rem" }}
 			/>
 			<Layout.Sider
 				collapsible
 				collapsedWidth={48}
 				collapsed={collapsedMenu}
 				onCollapse={boundToggle}
-				breakpoint='md'
+				breakpoint='lg'
 				className='sider-menu__wrap'
 				theme={theme}
 			>
@@ -64,6 +63,7 @@ function SiderMenu() {
 					onOpenChange={setOpenKeys as any} // 点击事件
 					className='menu'
 					mode='inline'
+					inlineIndent={16}
 					theme={theme}
 					openKeys={openKeys}
 					selectedKeys={selectKeys}

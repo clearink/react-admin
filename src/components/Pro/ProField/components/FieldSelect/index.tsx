@@ -45,7 +45,6 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 	const memoTransform = useRef(transform)
 
 	const { loading, data } = useFetchData(fetchUrl) // fetchUrl === undefined 不发送请求
-
 	const options = useDeepMemo(() => {
 		if (rest.options) return renderOriginOptions(rest.options) // 直接设置的 options 优先级最高
 		if (memoTransform.current) return memoTransform.current(data, fieldEnum) // 远程请求的第二
@@ -88,6 +87,6 @@ export default memo(
 		mode: "read",
 		allowClear: true,
 		textTag: true,
-		style: { width: 300 },
+		// style: { width: 300 },
 	})
 )

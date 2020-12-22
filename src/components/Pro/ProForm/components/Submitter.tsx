@@ -17,7 +17,7 @@ function Submitter(props: SubmitterProps) {
 	const { resetProps: RP, submitProps: SP, render, form } = props
 	const submitText = SP?.text ?? "提交"
 	const resetText = RP?.text ?? "重置"
-	// 默认是
+	
 	const dom = [
 		<Button
 			key='rest'

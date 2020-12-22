@@ -63,28 +63,5 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 }
 
 export default withFormItem<ProFormCaptchaProps>(ProFormCaptcha, {
-	style: { width: 200 }, // 默认200px
+	style: { width: "100%" },
 })
-/**
- *  <ProFormCaptcha
-          fieldProps={{
-            size: 'large',
-            prefix: <MailTwoTone />,
-          }}
-          captchaProps={{
-            size: 'large',
-          }}
-          name="captcha"
-          rules={[
-            {
-              required: true,
-              message: '请输入验证码',
-            },
-          ]}
-          placeholder="请输入验证码"
-          onGetCaptcha={async () => {
-            await waitTime(1000);
-            message.success('验证码发送成功!');
-          }}
-        />
- */

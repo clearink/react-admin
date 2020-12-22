@@ -16,8 +16,8 @@ import {
 const columns = [
 	{
 		title: "头像",
-      dataIndex: "avatar",
-      width:80,
+		dataIndex: "avatar",
+		width: 80,
 		render: () => <Avatar icon={<UserOutlined />} />,
 	},
 	{
@@ -33,8 +33,8 @@ const columns = [
 		dataIndex: "age",
 	},
 	{
-      title: "身份证号",
-      width:200,
+		title: "身份证号",
+		width: 200,
 		dataIndex: "num",
 	},
 	{
@@ -68,8 +68,8 @@ const data = Array.from({ length: 50 }, (_, i) => {
 	return {
 		key: i,
 		avatar: i,
-      name: "黎明",
-      age:70,
+		name: "黎明",
+		age: 70,
 		sex: i % 2 ? "男" : "女",
 		num: "45002219820503****",
 		phone: "18088888888",
@@ -132,7 +132,7 @@ function Nurse() {
 					bordered
 					columns={columns}
 					dataSource={data}
-					// scroll={{ x: 1300 }}
+					scroll={{ x: 1300 }}
 				/>
 			</div>
 		</div>

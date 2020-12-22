@@ -51,7 +51,7 @@ const columns = [
 		),
 	},
 ]
-const data = Array.from({ length: 60 }, (_, i) => {
+const data = Array.from({ length: 30 }, (_, i) => {
 	return {
 		key: i,
 		num: "MAT2020080011",
@@ -65,7 +65,7 @@ const data = Array.from({ length: 60 }, (_, i) => {
 // 设备管理
 function Device() {
 	return (
-		<div className='bg-white h-full p-6 overflow-x-hidden'>
+		<div className='bg-white h-full p-6'>
 			<Form className='mr-4'>
 				<Space className='flex items-start'>
 					<Form.Item name='name'>
@@ -92,7 +92,7 @@ function Device() {
 				bordered
 				dataSource={data}
 				columns={columns}
-				// scroll={{ x: 1000 }}
+				 scroll={{ x: 1000 }}
 			/>
 		</div>
 	)
