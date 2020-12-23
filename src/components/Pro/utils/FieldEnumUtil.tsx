@@ -31,14 +31,14 @@ export function renderStatusFromOption(
 	value: string | number | Array<string | number>,
 	options: Array<{ label: string; value: any }>,
 	fieldEnum?: string[],
-	textTag = false // tag 自带右边距
+	showTag = false // tag 自带右边距
 ) {
 	// 递归
 	if (isArray(value))
 		return (
-			<Space size={textTag ? 0 : 8}>
+			<Space size={showTag ? 0 : 8}>
 				{value.map((item) =>
-					renderStatusFromOption(item, options, fieldEnum, textTag)
+					renderStatusFromOption(item, options, fieldEnum, showTag)
 				)}
 			</Space>
 		)
@@ -52,7 +52,7 @@ export function renderStatusFromOption(
 			color = fieldEnum[textIndex] ?? fieldEnum[fieldEnum.length - 1]
 		optionValue = options[textIndex].label
 	}
-	if (textTag) {
+	if (showTag) {
 		return (
 			<Tag color={color} key={value}>
 				{optionValue}

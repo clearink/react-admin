@@ -1,3 +1,5 @@
+import { TextProps } from "antd/lib/typography/Text"
+import { render } from "@testing-library/react"
 import { FormItemProps } from "antd/lib/form"
 import { ColumnType } from "antd/lib/table"
 import { ReactNode } from "react"
@@ -25,15 +27,27 @@ export type ProFieldType =
 	| "rate"
 	| "text"
 	| "orderNum"
-export interface ProTableColumns<T extends object = any> extends ColumnType<T> {
-	field?: ProFieldType
+export interface ProTableColumns<T extends object = any>
+	extends Omit<ColumnType<T>, "render"> {
+	field?: ProFieldType | 'option'
 	tooltip?: string
 	search?: boolean // 提取到 query filter
 	hideInTable?: boolean // 在table中隐藏
+	render?: (value: any, record: any, index: number, action: ProTableRef) => ReactNode // 扩展 table 原本的render函数
+
+	/** 注意 ellipsis 必须搭配 width  使用 */
 	fieldProps?: FormItemProps &
-		Partial<BaseProFieldProps> & {
+		Partial<BaseProFieldProps> &
+		TextProps & {
 			// Field Select checkbox radio
-			textTag?: boolean
+			showTag?: boolean
 			options?: FieldOptionType[]
 		}
+}
+
+
+export type ProTableRef = {
+	reset: () => void // 重置 table
+	reload: () => void // 重新加载数据
+	clearSelected: () => void // 清除选中
 }

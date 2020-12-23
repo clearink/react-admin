@@ -9,10 +9,15 @@ export interface BaseFieldRenderProps {
 }
 
 export type FieldOptionType = { label: string; value: any }
-export interface BaseProFieldProps extends BaseFieldRenderProps {
-	text?: any
-	mode: FieldMode // 模式
+
+export interface RequestProps {
+	fetch?: boolean
 	fieldEnum?: string[]
 	fetchUrl?: string | { url: string; params?: object } // 请求 enum 的 url
-	transform?: (originOptions?: any, fieldEnum?: any) => any[] // 转换options
+	fetchMethod?: "get" | "post" // 有些不规范的不使用 get 请求数据
+	transform?: (originOptions?: any, fieldEnum?: any) => any[] // 转换数据格式
+}
+export interface BaseProFieldProps extends BaseFieldRenderProps, RequestProps {
+	text?: any
+	mode: FieldMode // 模式
 }

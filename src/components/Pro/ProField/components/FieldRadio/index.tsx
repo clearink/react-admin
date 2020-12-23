@@ -8,7 +8,7 @@ import { renderStatusFromOption } from "@/components/Pro/utils"
 
 interface FieldRadioProps extends BaseProFieldProps, RadioGroupProps {
 	text: string | number
-	textTag: boolean
+	showTag: boolean
 }
 
 function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
@@ -19,12 +19,13 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 		renderFormItem,
 		fieldEnum,
 		fetchUrl, // 请求
+		fetchMethod,
 		transform, // 转换
-		textTag,
+		showTag,
 		...rest
 	} = props
 
-	const { data } = useFetchData(fetchUrl) // fetchUrl === undefined 不发送请求
+	const { data } = useFetchData(fetchMethod, fetchUrl) // fetchUrl === undefined 不发送请求
 
 	const options = useMemo(() => {
 		if (rest.options) return rest.options // 直接设置的 options 优先级最高
@@ -39,7 +40,7 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 					rest.value ?? text,
 					options,
 					fieldEnum,
-					textTag
+					showTag
 				)}
 			</span>
 		)
@@ -60,6 +61,6 @@ export default memo(
 	withDefaultProps(forwardRef(FieldRadio), {
 		text: "",
 		mode: "read",
-		textTag: true,
+		showTag: true,
 	})
 )

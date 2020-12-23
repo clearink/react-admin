@@ -3,7 +3,7 @@ import { FieldCheckbox } from "../../ProField"
 import { FieldCheckboxProps } from "../../ProField/components/FieldCheckbox"
 
 export default withFormItem<
-	Omit<FieldCheckboxProps, "textTag"> & { textTag?: boolean }
+	Omit<FieldCheckboxProps, "showTag"> & { showTag?: boolean }
 >(FieldCheckbox, {
 	style: { width: "100%" },
 })

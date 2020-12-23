@@ -10,7 +10,8 @@ export interface FieldCheckboxProps
 	extends BaseProFieldProps,
 		CheckboxGroupProps {
 	options?: string[] | Array<FieldOptionType>
-	textTag: boolean
+	/** 使用 tag 渲染文本 */
+	showTag: boolean
 }
 
 function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
@@ -22,11 +23,11 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 		fieldEnum,
 		fetchUrl, // 请求
 		transform, // 转换
-		textTag,
+		showTag,
 		...rest
 	} = props
 
-	const { data } = useFetchData(fetchUrl) // fetchUrl === undefined 不发送请求
+	const { data } = useFetchData("get",fetchUrl) // fetchUrl === undefined 不发送请求
 
 	const options = useMemo(() => {
 		if (rest.options) return rest.options // 直接设置的 options 优先级最高
@@ -41,7 +42,7 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 					rest?.value ?? text,
 					options,
 					fieldEnum,
-					textTag
+					showTag
 				)}
 			</span>
 		)
@@ -62,6 +63,6 @@ export default memo(
 	withDefaultProps(forwardRef(FieldCheckbox), {
 		text: "",
 		mode: "read",
-		textTag: true,
+		showTag: true,
 	})
 )

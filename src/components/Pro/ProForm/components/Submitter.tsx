@@ -17,7 +17,7 @@ function Submitter(props: SubmitterProps) {
 	const { resetProps: RP, submitProps: SP, render, form } = props
 	const submitText = SP?.text ?? "提交"
 	const resetText = RP?.text ?? "重置"
-	
+
 	const dom = [
 		<Button
 			key='rest'
@@ -43,7 +43,7 @@ function Submitter(props: SubmitterProps) {
 			{submitText}
 		</Button>,
 	]
-	if (render) return <>{render(dom, form)}</>
+	if (render) return <>{render(dom, form, props)}</>
 	return <Space>{dom}</Space>
 }
 

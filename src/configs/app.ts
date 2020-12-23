@@ -7,4 +7,5 @@ export default {
 	RETRY_COUNT: 4,
 	// TOKEN: "ACCESS_TOKEN",
 	TOKEN: "X-Access-Token",
+	ISDEV: process.env.NODE_ENV === "development",
 }

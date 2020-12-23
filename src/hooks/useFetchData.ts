@@ -16,14 +16,14 @@ import GetBoundAction from "@/utils/GetBoundAction"
 const initialState = {
 	data: null,
 	error: null,
-	loading: true,
+	loading: false,
 }
 const { reducer, actions } = createSlice({
 	name: "userFetchData",
 	initialState,
 	reducers: {
 		startFetch() {
-			return initialState
+			return { ...initialState, loading: true }
 		},
 		setData(state, action) {
 			state.loading = false
@@ -37,6 +37,7 @@ const { reducer, actions } = createSlice({
 })
 const boundKvActions = GetBoundAction(kvActions)
 export default function useFetchData(
+	method: "get" | "post" = "get",
 	fetchUrl?: string | { url: string; params?: object },
 	fetch: boolean = true
 ) {
@@ -60,13 +61,13 @@ export default function useFetchData(
 			try {
 				// 存在 直接保存
 				dispatch(actions.startFetch()) // 发起请求
-				const { data } = await http.get(url, params)
+				const { data } = await http[method as any]?.(url, params)
 				dispatch(actions.setData(data)) // save data
 				boundKvActions.add({ key: realUrl, value: data }) // save data to store
 			} catch (error) {
 				dispatch(actions.setError(error)) // save error
 			}
 		})()
-	}, [url, params, kvEntities, fetch])
+	}, [url, params, kvEntities, fetch, method])
 	return state
 }

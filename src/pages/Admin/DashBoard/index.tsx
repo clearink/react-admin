@@ -5,11 +5,9 @@ import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { sleep } from "@/utils/test"
-import { Space, Tag, Typography } from "antd"
-import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import { ProFormText } from "@/components/Pro/ProForm/components"
+import { Button, Space, Tag } from "antd"
 
-const data = [
+let data = [
 	{
 		id: 624748504,
 		number: 6689,
@@ -47,7 +45,7 @@ const data = [
 		number: 6685,
 		title: "🧐 [问题] build 后还存在 es6 的代码（Umi@2.13.13）",
 		labels: [{ name: "question", color: "success" }],
-		state: "open",
+		state: "closed",
 		locked: false,
 		comments: 0,
 		created_at: "2020-05-26T07:54:25Z",
@@ -63,7 +61,7 @@ const data = [
 		number: 6683,
 		title: "2.3.1版本如何在业务页面修改头部状态",
 		labels: [{ name: "question", color: "success" }],
-		state: "open",
+		state: "closed",
 		locked: false,
 		comments: 2,
 		created_at: "2020-05-26T05:58:24Z",
@@ -94,15 +92,17 @@ const data = [
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "id",
-		field: "text",
 		hideInTable: true,
 	},
 	{
 		title: "标题",
 		tooltip: "标题过长会自动收缩",
 		dataIndex: "title",
-		width: 200,
-		ellipsis: true,
+		width: 120,
+		fieldProps: {
+			ellipsis: true,
+			copyable: true,
+		},
 	},
 	{
 		title: "状态",
@@ -111,7 +111,10 @@ const columns: ProTableColumns<any>[] = [
 		field: "select",
 		fieldProps: {
 			fieldEnum: colorArray,
-			options: [{ label: "open", value: "open" }],
+			options: [
+				{ label: "open", value: "open" },
+				{ label: "closed", value: "closed" },
+			],
 		},
 	},
 	{
@@ -135,6 +138,28 @@ const columns: ProTableColumns<any>[] = [
 		search: true,
 		field: "date",
 	},
+	{
+		title: "操作",
+		key: "option",
+		field: "option",
+		render: (value, record, i, action) => {
+			return (
+				<Space>
+					<Button
+						onClick={() => {
+							action.clearSelected()
+						}}
+					>
+						清空选中
+					</Button>
+
+					<span>2</span>
+					<span>3</span>
+					<span>4</span>
+				</Space>
+			)
+		},
+	},
 ]
 function WorkPlace(props: IBaseProps) {
 	return (
@@ -143,6 +168,7 @@ function WorkPlace(props: IBaseProps) {
 			<main className='p-20 flex-auto m-10'>
 				<ProTable
 					bordered
+					fetchUrl='/task/taskDesign/list'
 					dataSource={data}
 					columns={columns}
 					rowKey='id'
@@ -151,7 +177,6 @@ function WorkPlace(props: IBaseProps) {
 						await sleep(1000)
 					}}
 				/>
-				<Typography.Text>1231221312</Typography.Text>
 			</main>
 		</div>
 	)

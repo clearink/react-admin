@@ -4,19 +4,33 @@ import { InputProps } from "antd/lib/input"
 import { BaseProFieldProps } from "../type"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { TextProps } from "antd/lib/typography/Text"
-
-export interface FieldTextProps extends BaseProFieldProps, TextProps {
-	formItemProps: InputProps
+import FilterValue from "@/utils/FilterValue"
+import GetValue from "@/utils/GetValue"
+/**
+ * 对于同时继承 两个 组件的情况
+ * 如何结局
+ */
+export interface FieldTextProps
+	extends BaseProFieldProps,
+		Omit<TextProps, "type">,
+		InputProps {
+	textType?: TextProps["type"]
 }
 
 function FieldText(props: FieldTextProps) {
-	const { mode, render, renderFormItem, text, formItemProps, ...rest } = props
+	const { mode, render, renderFormItem, text, ...rest } = props
+	const editProps = FilterValue(rest, ...TextPropsArray)
+	const readProps = GetValue(rest, ...TextPropsArray, "className", "style")
 	if (mode === "read") {
-		const dom = <Typography.Text {...rest}>{text}</Typography.Text>
-		if (render) return render(text, { mode, ...rest }, dom)
+		const dom = (
+			<Typography.Text {...readProps} type={readProps.textType}>
+				{text}
+			</Typography.Text>
+		)
+		if (render) return render(text, { mode, ...readProps }, dom)
 		return dom
 	}
-	const formItemDom = <Input placeholder='请输入' {...formItemProps} />
+	const formItemDom = <Input placeholder='请输入' {...editProps} />
 	if (renderFormItem)
 		return renderFormItem(text, { mode, ...rest }, formItemDom)
 	return formItemDom
@@ -27,3 +41,17 @@ export default memo(
 		text: "",
 	})
 )
+
+const TextPropsArray = [
+	"code",
+	"copyable",
+	"delete",
+	"disabled",
+	"editable",
+	"ellipsis",
+	"keyboard",
+	"mark",
+	"strong",
+	"textType",
+	"underline",
+]

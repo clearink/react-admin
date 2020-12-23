@@ -12,7 +12,7 @@ export interface FieldSelectProps
 		Omit<SelectProps<any[]>, "mode" | "options"> {
 	selectMode?: SelectProps<any[]>["mode"]
 	options?: string[] | Array<FieldOptionType>
-	textTag: boolean // 是否使用 tag 渲染 text
+	showTag: boolean // 是否使用 tag 渲染 text
 	fetch: boolean // 是否需要进行网络请求
 }
 /**
@@ -36,16 +36,17 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 		render,
 		renderFormItem,
 		fieldEnum,
-		fetchUrl, // 请求
 		transform, // 转换
 		selectMode, // select mode
-		textTag,
+		showTag,
 		fetch,
+		fetchUrl, // 请求
+		fetchMethod,
 		...rest
 	} = props
 
-	const { loading, data } = useFetchData(fetchUrl, fetch) // fetchUrl === undefined 不发送请求
-	
+	const { loading, data } = useFetchData(fetchMethod, fetchUrl, fetch) // fetchUrl === undefined 不发送请求
+
 	const memoTransform = useRef(transform)
 	useEffect(() => {
 		memoTransform.current = transform
@@ -66,7 +67,7 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 					rest?.value ?? text,
 					options,
 					fieldEnum,
-					textTag
+					showTag
 				)}
 			</span>
 		)
@@ -95,8 +96,9 @@ export default memo(
 		text: "",
 		mode: "read",
 		allowClear: true,
-		textTag: true,
+		showTag: true,
 		fetch: true,
 		style: { width: 300 },
+		fetchMethod: "get",
 	})
 )

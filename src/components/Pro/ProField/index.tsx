@@ -1,6 +1,20 @@
 import FieldAvatar from "./components/FieldAvatar"
+import FieldCheckbox from "./components/FieldCheckbox"
+import FieldCode from "./components/FieldCode"
 import FieldDate from "./components/FieldDate"
+import FieldDateRange from "./components/FieldDate/FieldDateRange"
+import FieldDateTime from "./components/FieldDate/FieldDateTime"
+import FieldDateTimeRange from "./components/FieldDate/FieldDateTimeRange"
+import FieldFromNow from "./components/FieldDate/FieldFromNow"
+import FieldTime from "./components/FieldDate/FieldTime"
 import FieldDigit from "./components/FieldDigit"
+import FieldJson from "./components/FieldJson"
+import FieldMoney from "./components/FieldMoney"
+import FieldPassword from "./components/FieldPassword"
+import FieldPercent from "./components/FieldPercent"
+import FieldProgress from "./components/FieldProgress"
+import FieldRadio from "./components/FieldRadio"
+import FieldRate from "./components/FieldRate"
 import FieldSelect from "./components/FieldSelect"
 import FieldText from "./components/FieldText"
 
@@ -9,31 +23,49 @@ import FieldText from "./components/FieldText"
    为了更好的 ts 提示
    同时也提供原始的ProField 组件支持
 */
-export { default as FieldText } from "./components/FieldText"
-export { default as FieldAvatar } from "./components/FieldAvatar"
-export { default as FieldMoney } from "./components/FieldMoney"
-export { default as FieldDigit } from "./components/FieldDigit"
-export { default as FieldPercent } from "./components/FieldPercent"
-export { default as FieldRate } from "./components/FieldRate"
-export { default as FieldSelect } from "./components/FieldSelect"
-export { default as FieldCheckbox } from "./components/FieldCheckbox"
-export { default as FieldRadio } from "./components/FieldRadio"
-export { default as FieldProgress } from "./components/FieldProgress"
-export { default as FieldDate } from "./components/FieldDate"
-export { default as FieldDateTime } from "./components/FieldDate/FieldDateTime"
-export { default as FieldFromNow } from "./components/FieldDate/FieldFromNow"
-export { default as FieldTime } from "./components/FieldDate/FieldTime"
-export { default as FieldDateRange } from "./components/FieldDate/FieldDateRange"
-export { default as FieldDateTimeRange } from "./components/FieldDate/FieldDateTimeRange"
-export { default as FieldPassword } from "./components/FieldPassword"
-export { default as FieldCode } from "./components/FieldCode"
-export { default as FieldJson } from "./components/FieldJson"
+export { FieldText }
+export { FieldAvatar }
+export { FieldMoney }
+export { FieldDigit }
+export { FieldPercent }
+export { FieldRate }
+export { FieldSelect }
+export { FieldCheckbox }
+export { FieldRadio }
+export { FieldProgress }
+export { FieldDate }
+export { FieldTime }
+export { FieldDateTime }
+export { FieldFromNow }
+export { FieldDateRange }
+export { FieldDateTimeRange }
+export { FieldPassword }
+export { FieldCode }
+export { FieldJson }
 
 export const ProFieldMap = {
 	text: FieldText,
 	orderNum: FieldText,
-	select: FieldSelect,
 	digit: FieldDigit,
-	date: FieldDate,
 	avatar: FieldAvatar,
+
+	password: FieldPassword,
+	code: FieldCode,
+	json: FieldJson,
+
+	select: FieldSelect,
+	checkbox: FieldCheckbox,
+	radio: FieldRadio,
+	progress: FieldProgress,
+
+	date: FieldDate,
+	time: FieldTime,
+	dateTime: FieldDateTime,
+	dateRange: FieldDateRange,
+	dateTimeRange: FieldDateTimeRange,
+	fromNow: FieldFromNow,
+
+	money: FieldMoney,
+	percent: FieldPercent,
+	rete: FieldRate,
 }

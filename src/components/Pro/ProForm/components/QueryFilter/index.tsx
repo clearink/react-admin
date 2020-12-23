@@ -15,6 +15,7 @@ import BaseForm from "../BaseForm"
 import { QFColSpan, QFColSpanArray } from "./QFColSpan"
 import styles from "./style.module.scss"
 import { ButtonProps } from "antd/lib/button"
+import { render } from "@testing-library/react"
 // 查询筛选表单
 // 未测试完全 可能有bug
 // <QueryFilter submitConfig={{render:()=>null}} />
@@ -78,9 +79,10 @@ function QueryFilter(props: QueryFilterProps) {
 			text: "查询",
 			icon: <SearchOutlined />,
 		},
-		render: (dom) => {
+		...submitConfig,
+		render: (dom, form) => {
 			if (!hasSubmitter) return null
-			return (
+			const renderDOM = (
 				<Col span={STColSpan} className='text-right px-4'>
 					<Form.Item label=' ' colon={false}>
 						<Space>
@@ -100,8 +102,10 @@ function QueryFilter(props: QueryFilterProps) {
 					</Form.Item>
 				</Col>
 			)
+			if (submitConfig?.render)
+				return submitConfig?.render([renderDOM], form, props)
+			return renderDOM
 		},
-		...submitConfig,
 	}
 
 	// 策略 默认 小屏幕 span = 12 中 span = 8 大 span = 6

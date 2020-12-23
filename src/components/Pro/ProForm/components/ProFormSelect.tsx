@@ -3,7 +3,7 @@ import { FieldSelect } from "../../ProField"
 import { FieldSelectProps } from "../../ProField/components/FieldSelect"
 
 export default withFormItem<
-	Omit<FieldSelectProps, "textTag"> & { textTag?: boolean }
+	Omit<FieldSelectProps, "showTag"> & { showTag?: boolean }
 >(FieldSelect, {
 	allowClear: true,
 	style: { width: "100%" },
