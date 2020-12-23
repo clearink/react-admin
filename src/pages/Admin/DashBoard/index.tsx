@@ -1,32 +1,108 @@
-import React, { useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { Button } from "antd"
-import { SearchOutlined } from "@ant-design/icons"
 import { sleep } from "@/utils/test"
+import { Space, Tag, Typography } from "antd"
+import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
+import { ProFormText } from "@/components/Pro/ProForm/components"
 
-const data = Array.from({ length: 20 }, (_, i) => {
-	return {
-		index: i,
-		title: `106.14.98.1${i}4`,
-		labels: 10,
-		state: colorArray[Math.floor(Math.random() * 10) % 4],
-		created_at: 30,
-	}
-})
+const data = [
+	{
+		id: 624748504,
+		number: 6689,
+		title: "🐛 [BUG]yarn install命令 antd2.4.5会报错",
+		labels: [{ name: "bug", color: "error" }],
+		state: "open",
+		locked: false,
+		comments: 1,
+		created_at: "2020-05-26T09:42:56Z",
+		updated_at: "2020-05-26T10:03:02Z",
+		closed_at: null,
+		author_association: "NONE",
+		user: "chenshuai2144",
+		avatar:
+			"https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+	},
+	{
+		id: 624691229,
+		number: 6688,
+		title: "🐛 [BUG]无法创建工程npm create umi",
+		labels: [{ name: "bug", color: "error" }],
+		state: "open",
+		locked: false,
+		comments: 0,
+		created_at: "2020-05-26T08:19:22Z",
+		updated_at: "2020-05-26T08:19:22Z",
+		closed_at: null,
+		author_association: "NONE",
+		user: "chenshuai2144",
+		avatar:
+			"https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+	},
+	{
+		id: 624674790,
+		number: 6685,
+		title: "🧐 [问题] build 后还存在 es6 的代码（Umi@2.13.13）",
+		labels: [{ name: "question", color: "success" }],
+		state: "open",
+		locked: false,
+		comments: 0,
+		created_at: "2020-05-26T07:54:25Z",
+		updated_at: "2020-05-26T07:54:25Z",
+		closed_at: null,
+		author_association: "NONE",
+		user: "chenshuai2144",
+		avatar:
+			"https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+	},
+	{
+		id: 624620220,
+		number: 6683,
+		title: "2.3.1版本如何在业务页面修改头部状态",
+		labels: [{ name: "question", color: "success" }],
+		state: "open",
+		locked: false,
+		comments: 2,
+		created_at: "2020-05-26T05:58:24Z",
+		updated_at: "2020-05-26T07:17:39Z",
+		closed_at: null,
+		author_association: "NONE",
+		user: "chenshuai2144",
+		avatar:
+			"https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+	},
+	{
+		id: 624592471,
+		number: 6682,
+		title: "hideChildrenInMenu设置后，子路由找不到了",
+		labels: [{ name: "bug", color: "error" }],
+		state: "open",
+		locked: false,
+		comments: 2,
+		created_at: "2020-05-26T04:25:59Z",
+		updated_at: "2020-05-26T08:00:51Z",
+		closed_at: null,
+		author_association: "NONE",
+		user: "chenshuai2144",
+		avatar:
+			"https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+	},
+]
 const columns: ProTableColumns<any>[] = [
 	{
-		dataIndex: "index",
-		field: "orderNum",
-		width: 48,
+		dataIndex: "id",
+		field: "text",
+		hideInTable: true,
 	},
 	{
 		title: "标题",
+		tooltip: "标题过长会自动收缩",
 		dataIndex: "title",
-		width: "30%",
+		width: 200,
+		ellipsis: true,
 	},
 	{
 		title: "状态",
@@ -34,24 +110,23 @@ const columns: ProTableColumns<any>[] = [
 		search: true,
 		field: "select",
 		fieldProps: {
-			tooltip: "1232121321312",
-			fetchUrl: "/sys/dict/getDictItems/MEMBER_TYPE",
-			fieldEnum:colorArray,
-			transform: (oo,fieldEnum) => {
-				console.log(fieldEnum);
-				if (!oo) return []
-				return oo.result.map((item: any) => ({
-					label: item.text,
-					value: item.value,
-				}))
-			},
+			fieldEnum: colorArray,
+			options: [{ label: "open", value: "open" }],
 		},
 	},
 	{
 		title: "标签",
 		dataIndex: "labels",
 		search: true,
-		field: "digit",
+		render: (_, record) => (
+			<Space>
+				{record.labels.map(({ name, color }: any) => (
+					<Tag color={color} key={name}>
+						{name}
+					</Tag>
+				))}
+			</Space>
+		),
 	},
 	{
 		title: "创建时间",
@@ -70,12 +145,13 @@ function WorkPlace(props: IBaseProps) {
 					bordered
 					dataSource={data}
 					columns={columns}
-					rowKey='index'
+					rowKey='id'
 					// 搜索请求
 					onSearch={async () => {
 						await sleep(1000)
 					}}
 				/>
+				<Typography.Text>1231221312</Typography.Text>
 			</main>
 		</div>
 	)

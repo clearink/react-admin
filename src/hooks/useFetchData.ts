@@ -37,34 +37,36 @@ const { reducer, actions } = createSlice({
 })
 const boundKvActions = GetBoundAction(kvActions)
 export default function useFetchData(
-	fetchUrl?: string | { url: string; params?: object }
+	fetchUrl?: string | { url: string; params?: object },
+	fetch: boolean = true
 ) {
 	const [state, dispatch] = useReducer(reducer, initialState)
 	const kvEntities = useTypedSelector((state) => state.kv.entities)
 
 	const [url, params] = useMemo(() => {
-		if (isString(fetchUrl)) return [fetchUrl, {}]
 		if (isUndefined(fetchUrl)) return [undefined, undefined]
+		if (isString(fetchUrl)) return [fetchUrl, {}]
 		return [fetchUrl.url, fetchUrl.params]
 	}, [fetchUrl])
 
 	useEffect(() => {
-		if (isUndefined(url)) return
+		const realUrl = `${url}?${JSON.stringify(params)}`
+		const preData = kvEntities[realUrl]
+		if (preData) {
+			return dispatch(actions.setData(preData.value))
+		}
+		if (isUndefined(url) || !fetch) return
 		;(async () => {
-			const realUrl = `${url}?${JSON.stringify(params)}`
-			const preData = kvEntities[realUrl]
-			if (preData) dispatch(actions.setData(preData.value))
-			else
-				try {
-					// 存在 直接保存
-					dispatch(actions.startFetch()) // 发起请求
-					const { data } = await http.get(url, params)
-					dispatch(actions.setData(data)) // save data
-					boundKvActions.add({ key: realUrl, value: data }) // save data to store
-				} catch (error) {
-					dispatch(actions.setError(error)) // save error
-				}
+			try {
+				// 存在 直接保存
+				dispatch(actions.startFetch()) // 发起请求
+				const { data } = await http.get(url, params)
+				dispatch(actions.setData(data)) // save data
+				boundKvActions.add({ key: realUrl, value: data }) // save data to store
+			} catch (error) {
+				dispatch(actions.setError(error)) // save error
+			}
 		})()
-	}, [url, params, kvEntities])
+	}, [url, params, kvEntities, fetch])
 	return state
 }

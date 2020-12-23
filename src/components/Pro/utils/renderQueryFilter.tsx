@@ -1,4 +1,3 @@
-import { nanoid } from "@reduxjs/toolkit"
 import React, { ComponentType } from "react"
 import {
 	ProFormDate,
@@ -9,6 +8,7 @@ import {
 import { ProFieldType } from "../ProTable/type"
 
 export const formItemMap: { [key: string]: ComponentType<any> } = {
+	text: ProFormText,
 	orderNum: ProFormText,
 	select: ProFormSelect,
 	digit: ProFormDight,
@@ -17,9 +17,8 @@ export const formItemMap: { [key: string]: ComponentType<any> } = {
 
 function renderQueryFilter(QFArray: Array<[ProFieldType, object]>) {
 	return QFArray.map(([type, props]) => {
-		const QueryComponent = formItemMap[type]
-		if (QueryComponent) return <QueryComponent {...props} />
-		return null
+		const QueryComponent = formItemMap[type] ?? ProFormText
+		return <QueryComponent {...props} />
 	})
 }
 export default renderQueryFilter

@@ -26,6 +26,6 @@ export default memo(
 		mode: "read",
 		placeholder: "请输入",
 		min: 0,
-		// style: { width: 200 },
+		style: { width: 200 },
 	})
 )

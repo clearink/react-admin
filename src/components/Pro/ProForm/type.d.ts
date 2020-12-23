@@ -11,4 +11,5 @@ export type SubmitConfigType = {
 }
 export interface BaseFormProps extends FormProps {
 	submitConfig?: SubmitConfigType
+	loading?: ButtonProps["loading"]
 }

@@ -5,18 +5,18 @@ import { FieldOptionType } from "../ProField/type"
 // 主要用于将 select checkbox radio 等具有 enum 的组件 text 映射 成文字
 
 export const colorArray = [
-	"orange",
 	"blue",
 	"green",
+	"orange",
+	"volcano",
+	"magenta",
 	"lime",
 	"red",
-	"cyan",
-	"purple",
 	"geekblue",
-	"yellow",
-	"magenta",
-	"volcano",
+	"cyan",
 	"gold",
+	"purple",
+	"yellow",
 	"pink",
 ]
 /* ************************************************************************* */

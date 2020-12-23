@@ -1,7 +1,7 @@
 import { FormItemProps } from "antd/lib/form"
 import { ColumnType } from "antd/lib/table"
 import { ReactNode } from "react"
-import { BaseProFieldProps } from "../ProField/type"
+import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
 
 // pro table column 类型
 export type ProFieldType =
@@ -27,7 +27,13 @@ export type ProFieldType =
 	| "orderNum"
 export interface ProTableColumns<T extends object = any> extends ColumnType<T> {
 	field?: ProFieldType
-	tooltip?: ReactNode
+	tooltip?: string
 	search?: boolean // 提取到 query filter
-	fieldProps?: FormItemProps & Partial<BaseProFieldProps>
+	hideInTable?: boolean // 在table中隐藏
+	fieldProps?: FormItemProps &
+		Partial<BaseProFieldProps> & {
+			// Field Select checkbox radio
+			textTag?: boolean
+			options?: FieldOptionType[]
+		}
 }

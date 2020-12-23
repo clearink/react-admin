@@ -18,21 +18,24 @@ const columns = [
 	},
 	{
 		title: "使用状态",
+		width: 200,
 		dataIndex: "status",
 	},
 	{
 		title: "使用人/房间",
+		width: 200,
 		dataIndex: "user",
 	},
 	{
 		title: "领出人",
+		width: 100,
 		dataIndex: "getter",
 	},
 	{
 		title: "操作",
 		key: "action",
 		fixed: "right" as "right",
-		width: 320,
+		width: 260,
 		render: () => (
 			<Space>
 				<span>
@@ -92,7 +95,7 @@ function Device() {
 				bordered
 				dataSource={data}
 				columns={columns}
-				 scroll={{ x: 1000 }}
+				// scroll={{ x: 1000 }}
 			/>
 		</div>
 	)

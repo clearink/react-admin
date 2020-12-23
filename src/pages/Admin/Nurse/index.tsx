@@ -132,7 +132,7 @@ function Nurse() {
 					bordered
 					columns={columns}
 					dataSource={data}
-					scroll={{ x: 1300 }}
+					// scroll={{ x: 1300 }}
 				/>
 			</div>
 		</div>

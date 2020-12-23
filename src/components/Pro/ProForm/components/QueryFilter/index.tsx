@@ -1,24 +1,37 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { SearchOutlined, UpOutlined } from "@ant-design/icons"
 import { Col, Form, Grid, Space } from "antd"
-import React, { Children, memo, useEffect, useMemo, useState } from "react"
+import React, {
+	Children,
+	CSSProperties,
+	memo,
+	useLayoutEffect,
+	useMemo,
+	useState,
+} from "react"
 import classNames from "classnames"
 import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
 import { QFColSpan, QFColSpanArray } from "./QFColSpan"
 import styles from "./style.module.scss"
+import { ButtonProps } from "antd/lib/button"
 // 查询筛选表单
 // 未测试完全 可能有bug
 // <QueryFilter submitConfig={{render:()=>null}} />
 // 是否需要一个变量 用来决定是否渲染 submitter ?
 // 暂时不需要x 不想起名√
 // hasSubmitter
+// 包裹一层div 以便处理样式
+// 自己维护一个loading
 export interface QueryFilterProps extends BaseFormProps {
 	collapsed: boolean
 	defaultCollapsed?: boolean
 	onCollapse?: (collapsed: boolean) => void
 	layout?: "horizontal" | "horizontal"
 	hasSubmitter: boolean
+	ghost: boolean
+	className?: string
+	style?: CSSProperties
 }
 function QueryFilter(props: QueryFilterProps) {
 	const {
@@ -29,12 +42,15 @@ function QueryFilter(props: QueryFilterProps) {
 		onCollapse,
 		submitConfig,
 		hasSubmitter,
+		ghost,
+		className,
+		style,
 		...rest
 	} = props
 	const [collapsed, setCollapsed] = useState(() => propsCollapsed)
 
 	// props controls collapsed
-	useEffect(() => setCollapsed(propsCollapsed), [propsCollapsed])
+	useLayoutEffect(() => setCollapsed(propsCollapsed), [propsCollapsed])
 
 	const childCount = useMemo(() => Children.count(children), [children])
 	const breakpoints = Grid.useBreakpoint()
@@ -56,6 +72,7 @@ function QueryFilter(props: QueryFilterProps) {
 		setCollapsed((p) => !p)
 		onCollapse?.(!collapsed)
 	}
+
 	const submitter: BaseFormProps["submitConfig"] = {
 		submitProps: {
 			text: "查询",
@@ -107,14 +124,21 @@ function QueryFilter(props: QueryFilterProps) {
 
 	if (childCount === 0) return null
 	return (
-		<BaseForm
-			submitConfig={submitter}
-			{...rest}
-			layout={breakpoints.lg ? "horizontal" : "vertical"}
-			className='flex flex-wrap'
+		<div
+			className={classNames(styles.query_filter_wrap, className, {
+				[styles.ghost]: ghost,
+			})}
+			style={style}
 		>
-			{renderChildren}
-		</BaseForm>
+			<BaseForm
+				submitConfig={submitter}
+				{...rest}
+				layout={breakpoints.lg ? "horizontal" : "vertical"}
+				className='flex flex-wrap'
+			>
+				{renderChildren}
+			</BaseForm>
+		</div>
 	)
 }
 
@@ -123,5 +147,6 @@ export default memo(
 		collapsed: true,
 		requiredMark: false,
 		hasSubmitter: true,
+		ghost: false,
 	})
 )

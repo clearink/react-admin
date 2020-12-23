@@ -52,8 +52,8 @@ $collapsed_width: 48px;
 	}
 	&__placeholder {
 		min-height: 100vh;
-		transition: width 0.2s;
 		width: 200px;
+		transition: width 0.4s;
 		&.collapsed {
 			width: 48px;
 		}

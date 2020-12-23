@@ -1,3 +1,9 @@
+import FieldAvatar from "./components/FieldAvatar"
+import FieldDate from "./components/FieldDate"
+import FieldDigit from "./components/FieldDigit"
+import FieldSelect from "./components/FieldSelect"
+import FieldText from "./components/FieldText"
+
 /* 重写 ProField
    将其分开
    为了更好的 ts 提示
@@ -22,3 +28,12 @@ export { default as FieldDateTimeRange } from "./components/FieldDate/FieldDateT
 export { default as FieldPassword } from "./components/FieldPassword"
 export { default as FieldCode } from "./components/FieldCode"
 export { default as FieldJson } from "./components/FieldJson"
+
+export const ProFieldMap = {
+	text: FieldText,
+	orderNum: FieldText,
+	select: FieldSelect,
+	digit: FieldDigit,
+	date: FieldDate,
+	avatar: FieldAvatar,
+}
