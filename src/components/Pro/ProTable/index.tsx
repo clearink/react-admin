@@ -18,8 +18,7 @@ import { ProTableColumns, ProTableRef } from "./type"
 import { QueryFilter } from "../ProForm/components"
 import styles from "./style.module.scss"
 import renderQueryFilter from "../utils/renderQueryFilter"
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit"
-import { ButtonProps } from "antd/lib/button"
+import { nanoid } from "@reduxjs/toolkit"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { TitleTip } from "../ProCard/components"
@@ -27,6 +26,7 @@ import { FieldText, ProFieldMap } from "../ProField"
 import { isFunction, isString } from "@/utils/validate"
 import useFetchData from "@/hooks/useFetchData"
 import { RequestProps } from "../ProField/type"
+import { actions, initialState, reducer } from "./reducer"
 
 // TODO queryFilter props
 /**
@@ -34,74 +34,18 @@ import { RequestProps } from "../ProField/type"
  *
  * Q1: 文本 or status 如何显示在 table 中呢
  * 更加 pro components 来看 是根据 field 字段决定 render时所用的组件
- *	Q2 propsLoading 如何在外部控制 query filter (base form) submitter 的 loading?
+ * Q2 propsLoading 如何在外部控制 query filter (base form) submitter 的 loading?
+ * Q3 处理分页逻辑
+
  */
-
-/**
-	* table 自己维护的字段有
-		1. 分页相关
-		current 
-		pageSize
-
-		2. loading 相关
-
-		table 的loading 可以传到 query filter 中
-
-		3. 选择项相关
-		
-		4. data
-			远程请求的数据
-		// current 与 value
-
-
-	*/
 export interface ProTableProps<T extends object>
-	extends Omit<TableProps<T>, "columns" | "rowSelection">,
-		RequestProps {
+	extends Omit<TableProps<T>, "columns" | "rowSelection"> {
 	columns?: ProTableColumns<T>[]
 	onSearch?: (values: any) => any
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
+	request?: RequestProps
 }
-const initialState = {
-	current: 1,
-	pageSize: 10,
-	loading: false as ButtonProps["loading"],
-	selectedRows: [] as any[],
-	data: [] as any[],
-}
-
-const { reducer, actions } = createSlice({
-	name: "proTable",
-	initialState: initialState,
-	reducers: {
-		// 下一页
-		nextCurrent(state) {
-			state.current += 1
-		},
-		preCurrent(state) {
-			state.current -= 1
-		},
-
-		// 改变 pageSize
-		changePageSize(state, action: PayloadAction<number>) {
-			state.pageSize = action.payload
-		},
-		// 改变 选中
-		changeSelectedRows(state, action: PayloadAction<any[]>) {
-			// 默认是使用id 如何能够让用户修改
-			state.selectedRows = action.payload
-		},
-		// loading
-		changeLoading(state, action: PayloadAction<ButtonProps["loading"]>) {
-			state.loading = action.payload
-		},
-		// 重置
-		reset() {
-			return initialState
-		},
-	},
-})
 
 function ProTable<T extends object>(
 	props: ProTableProps<T>,
@@ -112,30 +56,26 @@ function ProTable<T extends object>(
 		search,
 		columns: propsColumns,
 		loading: propsLoading,
-		fetchUrl,
-		fetchMethod,
-		fetch,
-		transform,
+		request,
+		dataSource: propsDataSource,
 		...rest
 	} = props
+
 	const [reducerState, dispatch] = useReducer(reducer, initialState)
-	const { data, loading: fetchLoading } = useFetchData(
-		fetchMethod,
-		fetchUrl,
-		fetch && !rest.dataSource
-	)
 
-	const memoTransform = useRef(transform)
+	const { data, loading: fetchLoading } = useFetchData({
+		...request,
+		cache: false,
+	})
 
 	useEffect(() => {
-		memoTransform.current = transform
-	}, [transform])
-
-	useEffect(() => {
-		console.log(fetchLoading, data)
-		// 转换 data
 		dispatch(actions.changeLoading(fetchLoading))
-	}, [data, fetchLoading])
+	}, [fetchLoading])
+
+	const dataSource = useMemo(() => {
+		if (propsDataSource) return propsDataSource
+		return data ?? []
+	}, [data, propsDataSource])
 
 	useLayoutEffect(() => {
 		dispatch(actions.changeLoading(propsLoading))
@@ -208,7 +148,7 @@ function ProTable<T extends object>(
 				field,
 				search,
 				hideInTable,
-				render: columnRender,
+				render: CR,
 				...columnProps
 			} = propsColumns[i]
 			const ProField = ProFieldMap[field ?? "text"] ?? FieldText
@@ -225,15 +165,18 @@ function ProTable<T extends object>(
 				])
 			}
 			// 处理 tooltip
-			const { ellipsis, copyable } = fieldProps ?? {}
-			const DOM = <ProField {...fieldProps} fetch={i === 0} /> // fetch 防止多次发送请求
+			const { ellipsis, copyable, request } = fieldProps ?? {}
+			let DOM = <ProField {...fieldProps} />
 			const columnElement: ProTableColumns = {
 				title: () => <TitleTip title={title} tooltip={tooltip} />,
 				render: (text, record, index) => {
-					if (columnRender) {
-						return columnRender(text, record, index, tableAction)
+					if (CR) {
+						return CR(text, record, index, tableAction)
 					}
-
+					if (request)
+						DOM = cloneElement(DOM, {
+							request: { ...request, fetch: index === 0 },
+						})
 					// 在省略时,应当防止copyable的tooltips 干扰
 					if (ellipsis) {
 						return (
@@ -258,6 +201,7 @@ function ProTable<T extends object>(
 		return [columns, QFArray]
 	}, [propsColumns, tableAction])
 
+	// 搜索方法
 	const handleSearch = async (values: any) => {
 		dispatch(actions.changeLoading({ delay: 100 }))
 		await onSearch?.(values)
@@ -279,6 +223,7 @@ function ProTable<T extends object>(
 
 			<Table
 				{...rest}
+				dataSource={dataSource}
 				loading={reducerState.loading}
 				columns={columns as ColumnsType<any>}
 				rowSelection={rowSelection}
@@ -289,8 +234,6 @@ function ProTable<T extends object>(
 export default memo(
 	withDefaultProps(forwardRef(ProTable), {
 		search: true,
-		fetch: true,
 		rowKey: "key",
-		fetchMethod: "post",
 	})
 )

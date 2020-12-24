@@ -1,14 +1,16 @@
 import React, { forwardRef, memo, Ref, useMemo } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Radio } from "antd"
-import { BaseProFieldProps } from "../../type"
+import { BaseProFieldProps, RequestProps } from "../../type"
 import useFetchData from "@/hooks/useFetchData"
 import { RadioGroupProps } from "antd/lib/radio"
 import { renderStatusFromOption } from "@/components/Pro/utils"
+import { isArray } from "@/utils/validate"
 
 interface FieldRadioProps extends BaseProFieldProps, RadioGroupProps {
 	text: string | number
 	showTag: boolean
+	request?: RequestProps
 }
 
 function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
@@ -18,20 +20,18 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 		render,
 		renderFormItem,
 		fieldEnum,
-		fetchUrl, // 请求
-		fetchMethod,
-		transform, // 转换
+		request,
 		showTag,
 		...rest
 	} = props
 
-	const { data } = useFetchData(fetchMethod, fetchUrl) // fetchUrl === undefined 不发送请求
+	const { data } = useFetchData(request) // fetchUrl === undefined 不发送请求
 
 	const options = useMemo(() => {
 		if (rest.options) return rest.options // 直接设置的 options 优先级最高
-		if (transform) return transform(data, fieldEnum) // 远程请求的第二
+		if (isArray(data)) return data as any
 		return []
-	}, [data, fieldEnum, rest.options, transform])
+	}, [data, rest.options])
 
 	if (mode === "read") {
 		const dom = (

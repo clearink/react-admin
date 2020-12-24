@@ -3,7 +3,11 @@ import { render } from "@testing-library/react"
 import { FormItemProps } from "antd/lib/form"
 import { ColumnType } from "antd/lib/table"
 import { ReactNode } from "react"
-import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
+import {
+	BaseProFieldProps,
+	FieldOptionType,
+	RequestProps,
+} from "../ProField/type"
 
 // pro table column 类型
 export type ProFieldType =
@@ -29,11 +33,16 @@ export type ProFieldType =
 	| "orderNum"
 export interface ProTableColumns<T extends object = any>
 	extends Omit<ColumnType<T>, "render"> {
-	field?: ProFieldType | 'option'
+	field?: ProFieldType | "option"
 	tooltip?: string
 	search?: boolean // 提取到 query filter
 	hideInTable?: boolean // 在table中隐藏
-	render?: (value: any, record: any, index: number, action: ProTableRef) => ReactNode // 扩展 table 原本的render函数
+	render?: (
+		value: any,
+		record: any,
+		index: number,
+		action: ProTableRef
+	) => ReactNode // 扩展 table 原本的render函数
 
 	/** 注意 ellipsis 必须搭配 width  使用 */
 	fieldProps?: FormItemProps &
@@ -42,9 +51,9 @@ export interface ProTableColumns<T extends object = any>
 			// Field Select checkbox radio
 			showTag?: boolean
 			options?: FieldOptionType[]
+			request?: RequestProps
 		}
 }
-
 
 export type ProTableRef = {
 	reset: () => void // 重置 table

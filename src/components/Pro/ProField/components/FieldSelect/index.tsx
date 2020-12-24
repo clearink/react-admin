@@ -1,11 +1,12 @@
-import React, { forwardRef, memo, Ref, useEffect, useRef } from "react"
+import React, { forwardRef, memo, Ref } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Select } from "antd"
-import { BaseProFieldProps, FieldOptionType } from "../../type"
+import { BaseProFieldProps, FieldOptionType, RequestProps } from "../../type"
 import { SelectProps } from "antd/lib/select"
 import useFetchData from "@/hooks/useFetchData"
 import { renderOriginOptions, renderStatusFromOption } from "../../../utils"
 import useDeepMemo from "@/hooks/useDeepMemo"
+import { isArray } from "@/utils/validate"
 
 export interface FieldSelectProps
 	extends BaseProFieldProps,
@@ -13,7 +14,7 @@ export interface FieldSelectProps
 	selectMode?: SelectProps<any[]>["mode"]
 	options?: string[] | Array<FieldOptionType>
 	showTag: boolean // 是否使用 tag 渲染 text
-	fetch: boolean // 是否需要进行网络请求
+	request?: RequestProps
 }
 /**
  * 1. fieldEnum 是 Array 
@@ -36,27 +37,18 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 		render,
 		renderFormItem,
 		fieldEnum,
-		transform, // 转换
 		selectMode, // select mode
 		showTag,
-		fetch,
-		fetchUrl, // 请求
-		fetchMethod,
+		request,
 		...rest
 	} = props
 
-	const { loading, data } = useFetchData(fetchMethod, fetchUrl, fetch) // fetchUrl === undefined 不发送请求
-
-	const memoTransform = useRef(transform)
-	useEffect(() => {
-		memoTransform.current = transform
-	}, [transform])
-
+	const { loading, data } = useFetchData(request)
 	// form.resetFields 会重新执行一次
 	// 这是 antd 的设计 no bug
 	const options = useDeepMemo(() => {
 		if (rest.options) return renderOriginOptions(rest.options) // 直接设置的 options 优先级最高
-		if (memoTransform.current) return memoTransform.current(data, fieldEnum) // 远程请求的第二
+		if (isArray(data)) return data as any
 		return []
 	}, [data, fieldEnum, rest.options])
 
@@ -97,8 +89,6 @@ export default memo(
 		mode: "read",
 		allowClear: true,
 		showTag: true,
-		fetch: true,
 		style: { width: 300 },
-		fetchMethod: "get",
 	})
 )

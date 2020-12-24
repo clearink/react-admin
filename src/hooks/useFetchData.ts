@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useReducer } from "react"
+import { useEffect, useMemo, useReducer, useRef } from "react"
 import { isString, isUndefined } from "../utils/validate"
 import http from "@/http"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { createSlice } from "@reduxjs/toolkit"
 import { actions as kvActions } from "@/store/reducers/kv"
 import GetBoundAction from "@/utils/GetBoundAction"
+import { RequestProps } from "@/components/Pro/ProField/type"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -35,39 +36,53 @@ const { reducer, actions } = createSlice({
 		},
 	},
 })
+
 const boundKvActions = GetBoundAction(kvActions)
-export default function useFetchData(
-	method: "get" | "post" = "get",
-	fetchUrl?: string | { url: string; params?: object },
-	fetch: boolean = true
-) {
+export default function useFetchData(props?: RequestProps) {
+	// 是否请求  请求方法 请求地址 是否缓存到store
+	const { fetch = true, method = "get", url, cache = true, transform } =
+		props ?? {}
 	const [state, dispatch] = useReducer(reducer, initialState)
 	const kvEntities = useTypedSelector((state) => state.kv.entities)
 
-	const [url, params] = useMemo(() => {
-		if (isUndefined(fetchUrl)) return [undefined, undefined]
-		if (isString(fetchUrl)) return [fetchUrl, {}]
-		return [fetchUrl.url, fetchUrl.params]
-	}, [fetchUrl])
+	const memoTransform = useRef(transform)
 
 	useEffect(() => {
-		const realUrl = `${url}?${JSON.stringify(params)}`
-		const preData = kvEntities[realUrl]
-		if (preData) {
-			return dispatch(actions.setData(preData.value))
-		}
-		if (isUndefined(url) || !fetch) return
+		memoTransform.current = transform
+	}, [transform])
+
+	// 提取 请求地址 与 参数
+	const [fetchUrl, params] = useMemo(() => {
+		if (isUndefined(url)) return [undefined, undefined]
+		if (isString(url)) return [url]
+		return [url.url, url.params]
+	}, [url])
+
+	const memoData = useRef(kvEntities[`${fetchUrl}?${JSON.stringify(params)}`])
+	useEffect(() => {
+		const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
+		const preData = kvEntities[realUrl]?.value
+		memoData.current = preData
+		if (preData) dispatch(actions.setData(memoData.current)) // 优先返回缓存
+	}, [fetchUrl, kvEntities, params])
+
+	useEffect(() => {
+		// 请求地址为空 或者 不允许请求 或者已经有数据了 直接 return
+		if (isUndefined(fetchUrl) || !fetch || memoData.current) return
 		;(async () => {
 			try {
 				// 存在 直接保存
+				const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
 				dispatch(actions.startFetch()) // 发起请求
-				const { data } = await http[method as any]?.(url, params)
-				dispatch(actions.setData(data)) // save data
-				boundKvActions.add({ key: realUrl, value: data }) // save data to store
+				const { data } = await http[method as any]?.(fetchUrl, params)
+				const result = memoTransform.current?.(data) ?? data
+				dispatch(actions.setData(result)) // save data
+				// save data to store
+				if (cache) boundKvActions.add({ key: realUrl, value: result })
 			} catch (error) {
 				dispatch(actions.setError(error)) // save error
 			}
 		})()
-	}, [url, params, kvEntities, fetch, method])
+	}, [fetchUrl, params, fetch, method, cache])
 	return state
 }

@@ -42,7 +42,7 @@ export function renderStatusFromOption(
 				)}
 			</Space>
 		)
-
+	if (!isArray(options)) return null
 	const textIndex = options.findIndex((item) => `${item.value}` === `${value}`)
 	let color
 	let optionValue = value
