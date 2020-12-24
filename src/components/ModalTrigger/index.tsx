@@ -11,6 +11,7 @@ import React, {
 import { Modal } from "antd"
 import { ModalProps } from "antd/lib/modal"
 import useBoolean from "@/hooks/useBoolean"
+import { isFunction } from "@/utils/validate"
 // antd 模态框封装
 interface IProps extends Omit<ModalProps, "visible"> {
 	trigger?: ReactNode
@@ -40,7 +41,7 @@ function ModalTrigger(props: IProps, ref: Ref<IModalTriggerRef | undefined>) {
 		<>
 			{wrappedTrigger}
 			<Modal visible={visible} onCancel={toggle as any} {...rest}>
-				{children}
+				{isFunction(children) ? children({ visible, toggle }) : children}
 			</Modal>
 		</>
 	)

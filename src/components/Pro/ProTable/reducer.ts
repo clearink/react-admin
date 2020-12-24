@@ -4,9 +4,10 @@ import { ButtonProps } from "antd/lib/button"
 export const initialState = {
 	current: 1,
 	pageSize: 10,
+	data: [] as any[],
+	total: 0,
 	loading: false as ButtonProps["loading"],
 	selectedRows: [] as any[],
-	data: [] as any[],
 }
 
 export const { reducer, actions } = createSlice({
@@ -20,11 +21,6 @@ export const { reducer, actions } = createSlice({
 		preCurrent(state) {
 			state.current -= 1
 		},
-
-		// 改变 pageSize
-		changePageSize(state, action: PayloadAction<number>) {
-			state.pageSize = action.payload
-		},
 		// 改变 选中
 		changeSelectedRows(state, action: PayloadAction<any[]>) {
 			// 默认是使用id 如何能够让用户修改
@@ -34,13 +30,26 @@ export const { reducer, actions } = createSlice({
 		changeLoading(state, action: PayloadAction<ButtonProps["loading"]>) {
 			state.loading = action.payload
 		},
+		// 改变 data
+		changeData(state, action: PayloadAction<any[]>) {
+			state.data = action.payload
+		},
+		// 改变 current
+		changeCurrent(state, action: PayloadAction<number>) {
+			state.current = action.payload
+		}, // 改变 pageSize
+		changePageSize(state, action: PayloadAction<number>) {
+			state.pageSize = action.payload
+		},
+		changeTotal(state, action: PayloadAction<number>) {
+			state.total = action.payload
+		},
 		// 重置
 		reset() {
 			return initialState
 		},
 	},
 })
-
 
 /**
 	* table 自己维护的字段有

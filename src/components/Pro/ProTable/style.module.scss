@@ -1,1 +1,61 @@
 @import "@/styles/index";
+.table_title_wrap {
+	.title_header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 10px;
+		.title {
+			font-size: 16px;
+		}
+		.extra {
+			flex: auto;
+			text-align: right;
+		}
+	}
+}
+.pro_table_wrap {
+	:global {
+		.ant-table-title {
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+		}
+		.ant-table-tbody > tr.ant-table-row-selected > td {
+			background: transparent;
+		}
+	}
+}
+.banner_title {
+	display: flex;
+	flex-direction: column;
+	@apply ml-4;
+	@include media(sm) {
+		@apply ml-0;
+		align-items: center;
+		flex-direction: row;
+	}
+	.number {
+		@apply mx-2;
+		color: $color_primary;
+		font-weight: bold;
+	}
+	.clear_select {
+		@apply cursor-pointer ml-4;
+		color: $color_light-3;
+		font-weight: bold;
+		transform: color 0.3s;
+		&:active {
+			color: rgba($color_light-3, 0.8);
+		}
+	}
+	.selected_info {
+		@include media(sm) {
+			@apply ml-4;
+		}
+	}
+	.extra {
+		flex: auto;
+		@include media(sm) {
+			text-align: right;
+		}
+	}
+}

@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useReducer, useRef } from "react"
+import {
+	useCallback,
+	useEffect,
+	useMemo,
+	useReducer,
+	useRef,
+	useState,
+} from "react"
 import { isString, isUndefined } from "../utils/validate"
 import http from "@/http"
 import useTypedSelector from "@/hooks/useTypedSelector"
@@ -42,6 +49,7 @@ export default function useFetchData(props?: RequestProps) {
 	// 是否请求  请求方法 请求地址 是否缓存到store
 	const { fetch = true, method = "get", url, cache = true, transform } =
 		props ?? {}
+	const [count, setCount] = useState(0)
 	const [state, dispatch] = useReducer(reducer, initialState)
 	const kvEntities = useTypedSelector((state) => state.kv.entities)
 
@@ -57,8 +65,7 @@ export default function useFetchData(props?: RequestProps) {
 		if (isString(url)) return [url]
 		return [url.url, url.params]
 	}, [url])
-
-	const memoData = useRef(kvEntities[`${fetchUrl}?${JSON.stringify(params)}`])
+	const memoData = useRef()
 	useEffect(() => {
 		const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
 		const preData = kvEntities[realUrl]?.value
@@ -67,7 +74,7 @@ export default function useFetchData(props?: RequestProps) {
 	}, [fetchUrl, kvEntities, params])
 
 	useEffect(() => {
-		// 请求地址为空 或者 不允许请求 或者已经有数据了 直接 return
+		// 请求地址为空 或者 不允许请求 或者已经在redux中有数据了 直接 return
 		if (isUndefined(fetchUrl) || !fetch || memoData.current) return
 		;(async () => {
 			try {
@@ -83,6 +90,9 @@ export default function useFetchData(props?: RequestProps) {
 				dispatch(actions.setError(error)) // save error
 			}
 		})()
-	}, [fetchUrl, params, fetch, method, cache])
-	return state
+	}, [fetchUrl, params, fetch, method, cache, count])
+	const reload = useCallback(() => {
+		setCount((p) => p + 1)
+	}, [])
+	return { ...state, reload }
 }

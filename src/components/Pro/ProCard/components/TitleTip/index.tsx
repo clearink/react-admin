@@ -19,12 +19,12 @@ function TitleTip(props: TitleTipProps) {
 	}, [tooltip])
 	if (!tooltip) return <>{title}</>
 	return (
-		<>
+		<span>
 			<span className={styles.title}>{title}</span>
 			<Tooltip {...tooltipProps}>
 				<InfoCircleOutlined className={styles.icon} />
 			</Tooltip>
-		</>
+		</span>
 	)
 }
 

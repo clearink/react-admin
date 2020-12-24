@@ -7,3 +7,31 @@
 		background-color: rgba($color-grey, $alpha: 0.3);
 	}
 }
+.item,
+.title {
+	border-bottom: 1px solid rgba(#000, 0.1);
+	width: 240px;
+}
+.item_wrap {
+	border: 1px solid rgba(#000, 0.1);
+	border-bottom: none;
+}
+.name {
+	font-size: 18px;
+	font-weight: bold;
+	margin-right: 40px;
+}
+.link {
+	color: #1890ff;
+}
+
+.user_name {
+	flex-basis: 140px;
+}
+.field_radio {
+	.ant-radio-wrapper {
+		display: block;
+		margin-bottom: 10px;
+		margin-left: 10px;
+	}
+}

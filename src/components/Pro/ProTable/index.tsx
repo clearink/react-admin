@@ -11,22 +11,28 @@ import React, {
 	useReducer,
 	useRef,
 } from "react"
-import { Table, Tooltip } from "antd"
+import { Alert, Button, Space, Table, Tooltip } from "antd"
 import classNames from "classnames"
 import { ColumnsType, TableProps } from "antd/lib/table"
 import { ProTableColumns, ProTableRef } from "./type"
 import { QueryFilter } from "../ProForm/components"
 import styles from "./style.module.scss"
 import renderQueryFilter from "../utils/renderQueryFilter"
-import { nanoid } from "@reduxjs/toolkit"
+import { AnyAction, nanoid } from "@reduxjs/toolkit"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { TitleTip } from "../ProCard/components"
 import { FieldText, ProFieldMap } from "../ProField"
-import { isFunction, isString } from "@/utils/validate"
+import { isFunction, isNumber, isString } from "@/utils/validate"
 import useFetchData from "@/hooks/useFetchData"
 import { RequestProps } from "../ProField/type"
 import { actions, initialState, reducer } from "./reducer"
+import {
+	DownloadOutlined,
+	PlusOutlined,
+	ReloadOutlined,
+	ToTopOutlined,
+} from "@ant-design/icons"
 
 // TODO queryFilter props
 /**
@@ -36,15 +42,31 @@ import { actions, initialState, reducer } from "./reducer"
  * 更加 pro components 来看 是根据 field 字段决定 render时所用的组件
  * Q2 propsLoading 如何在外部控制 query filter (base form) submitter 的 loading?
  * Q3 处理分页逻辑
-
+ * Q4 分页重新请求处理
  */
 export interface ProTableProps<T extends object>
-	extends Omit<TableProps<T>, "columns" | "rowSelection"> {
+	extends Omit<
+		TableProps<T>,
+		"columns" | "rowSelection" | "title" | "pagination"
+	> {
 	columns?: ProTableColumns<T>[]
 	onSearch?: (values: any) => any
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
 	request?: RequestProps
+	title?: string | { title: string; tooltip: string }
+	/** 渲染title */
+	renderTitle?: (
+		state: typeof initialState,
+		dispatch: React.Dispatch<AnyAction>,
+		Actions: typeof actions
+	) => JSX.Element
+	/** 转换数据 */
+	transform?: (
+		OD: any,
+		dispatch: React.Dispatch<AnyAction>,
+		Actions: typeof actions
+	) => any
 }
 
 function ProTable<T extends object>(
@@ -58,15 +80,27 @@ function ProTable<T extends object>(
 		loading: propsLoading,
 		request,
 		dataSource: propsDataSource,
+		title,
+		renderTitle,
+		transform,
 		...rest
 	} = props
 
 	const [reducerState, dispatch] = useReducer(reducer, initialState)
 
-	const { data, loading: fetchLoading } = useFetchData({
+	const { data, loading: fetchLoading, reload } = useFetchData({
 		...request,
 		cache: false,
 	})
+
+	const memoTransform = useRef(transform)
+	useEffect(() => {
+		memoTransform.current = transform
+	}, [transform])
+	useEffect(() => {
+		if (memoTransform.current && data)
+			memoTransform.current(data, dispatch, actions)
+	}, [data])
 
 	useEffect(() => {
 		dispatch(actions.changeLoading(fetchLoading))
@@ -74,8 +108,8 @@ function ProTable<T extends object>(
 
 	const dataSource = useMemo(() => {
 		if (propsDataSource) return propsDataSource
-		return data ?? []
-	}, [data, propsDataSource])
+		return reducerState.data
+	}, [propsDataSource, reducerState.data])
 
 	useLayoutEffect(() => {
 		dispatch(actions.changeLoading(propsLoading))
@@ -91,14 +125,6 @@ function ProTable<T extends object>(
 		// 重新请求数据
 	}, [])
 
-	const handleReload = useCallback(() => {
-		/**
-		 * table 重新加载
-		 * 仅仅是重新请求数据
-		 *
-		 */
-	}, [])
-
 	const handleClearSelected = useCallback(() => {
 		// 清除选中 的项
 		dispatch(actions.changeSelectedRows([]))
@@ -108,15 +134,15 @@ function ProTable<T extends object>(
 	// TODO: 添加 query filter 的 form
 	const tableAction = useMemo(
 		() => ({
-			reload: handleReload,
+			reload,
 			reset: handleReset,
 			clearSelected: handleClearSelected,
 		}),
-		[handleClearSelected, handleReload, handleReset]
+		[handleClearSelected, handleReset, reload]
 	)
 	useImperativeHandle(ref, () => tableAction, [tableAction])
 
-	const rowSelection = useMemo<TableProps<any>["rowSelection"]>(() => {
+	const rowSelection = useMemo<TableProps<T>["rowSelection"]>(() => {
 		const rowKey = rest.rowKey
 		let selectedRowKeys = reducerState.selectedRows
 		// 默认使用 key
@@ -173,9 +199,10 @@ function ProTable<T extends object>(
 					if (CR) {
 						return CR(text, record, index, tableAction)
 					}
+					// 如何下放到search时会自动请求的,也应该阻止掉
 					if (request)
 						DOM = cloneElement(DOM, {
-							request: { ...request, fetch: index === 0 },
+							request: { ...request, fetch: index === 0 && !search },
 						})
 					// 在省略时,应当防止copyable的tooltips 干扰
 					if (ellipsis) {
@@ -208,11 +235,85 @@ function ProTable<T extends object>(
 		dispatch(actions.changeLoading(false))
 	}
 
+	/* 渲染出 tableHeader
+	外部暴露出一个 renderTitle(dom, data, action)
+	*/
+	const TT = useMemo(() => {
+		console.log("title", title)
+		if (isString(title)) return <TitleTip title={title} />
+		return <TitleTip title={title?.title} tooltip={title?.tooltip} />
+	}, [title])
+
+	const BT = useMemo(() => {
+		const SL = reducerState.selectedRows.length
+		return (
+			<div className={styles.banner_title}>
+				<span>
+					共计
+					<span className={styles.number}>{reducerState.total}</span>
+					条数据
+				</span>
+				<span
+					className={classNames(styles.selected_info, {
+						hidden: SL === 0,
+					})}
+				>
+					已选择
+					<span className={styles.number}>{SL}</span>条
+					<span
+						className={styles.clear_select}
+						onClick={() => dispatch(actions.changeSelectedRows([]))}
+					>
+						清空选中
+					</span>
+				</span>
+				<span className={styles.extra}>
+					当前第
+					<span className={styles.number}>{reducerState.current}</span>页
+				</span>
+			</div>
+		)
+	}, [reducerState])
+
+	const memoRenderTitle = useRef(renderTitle)
+	useEffect(() => {
+		memoRenderTitle.current = renderTitle
+	}, [renderTitle])
+
+	const tableTitle = useCallback(() => {
+		const DOM = (
+			<div className={styles.table_title_wrap}>
+				<div className={styles.title_header}>
+					<div className={styles.title}>{TT}</div>
+					<div className={styles.extra}>
+						<Space>
+							<Button type='primary' icon={<PlusOutlined />}>
+								新增数据
+							</Button>
+							<Button icon={<DownloadOutlined />}>导入数据</Button>
+							<Button icon={<ToTopOutlined />}>导出数据</Button>
+							<ReloadOutlined onClick={reload} />
+						</Space>
+					</div>
+				</div>
+				<Alert showIcon banner message={BT} type='info' />
+			</div>
+		)
+		// 外部渲染
+		if (memoRenderTitle.current)
+			return memoRenderTitle.current(reducerState, dispatch, actions)
+		return DOM
+	}, [BT, TT, reducerState, reload])
+
+	const handlePaginationChange = (page: number, pageSize?: number) => {
+		dispatch(actions.changeCurrent(page))
+		if (isNumber(pageSize)) dispatch(actions.changePageSize(pageSize))
+		// onSearch?.()
+	}
 	return (
 		<div className={styles.pro_table_wrap}>
 			{/* proTable 暂时不提供对 query filter 的配置 后续会增强 search 字段的功能 */}
 			<QueryFilter
-				loading={reducerState.loading}
 				className={classNames("mb-10", {
 					hidden: !search,
 				})}
@@ -223,10 +324,19 @@ function ProTable<T extends object>(
 
 			<Table
 				{...rest}
+				className={classNames("px-10 bg-white", rest.className)}
 				dataSource={dataSource}
 				loading={reducerState.loading}
 				columns={columns as ColumnsType<any>}
 				rowSelection={rowSelection}
+				// 分页
+				pagination={{
+					current: reducerState.current,
+					total: reducerState.total,
+					pageSize: reducerState.pageSize,
+					onChange: handlePaginationChange,
+				}}
+				title={tableTitle}
 			/>
 		</div>
 	)

@@ -48,22 +48,22 @@ function Home(props: IBaseProps) {
 							<PepLifeIcon type='icon-user' className={styles.icon} />
 							<span className={styles.name}>监控分析</span>
 						</Link>
-						<div className={styles.card}>
+						<Link className={styles.card} to='/bedallot'>
 							<PepLifeIcon type='icon-user' className={styles.icon} />
 							<span className={styles.name}>床位分配</span>
-						</div>
-						<div className={styles.card}>
+						</Link>
+						<Link className={styles.card} to='/resident'>
 							<PepLifeIcon type='icon-user' className={styles.icon} />
 							<span className={styles.name}>住户管理</span>
-						</div>
-						<div className={styles.card}>
+						</Link>
+						<Link className={styles.card} to='/nurse'>
 							<PepLifeIcon type='icon-user' className={styles.icon} />
 							<span className={styles.name}>护管管理</span>
-						</div>
-						<div className={styles.card}>
+						</Link>
+						<Link className={styles.card} to='/device'>
 							<PepLifeIcon type='icon-user' className={styles.icon} />
 							<span className={styles.name}>设备管理</span>
-						</div>
+						</Link>
 						<div className={styles.card_placeholder}></div>
 					</div>
 					<SysNotice />

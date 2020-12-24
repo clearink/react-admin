@@ -20,7 +20,7 @@ const columns: ProTableColumns<any>[] = [
 		title: "会员类型",
 		dataIndex: "memberType",
 		field: "select",
-		search:true,
+		search: true,
 		fieldProps: {
 			fieldEnum: colorArray,
 			request: {
@@ -38,7 +38,7 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "账号",
 		dataIndex: "username",
-		search:true,
+		search: true,
 	},
 	{
 		title: "昵称",
@@ -53,29 +53,32 @@ function WorkPlace(props: IBaseProps) {
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
-			<main className='p-10 pb-0 flex-auto m-10 bg-white'>
+			<main className='p-10 pb-0 flex-auto m-10 '>
 				<ProTable
-					bordered
 					request={{
 						url: {
 							url: "/membermgt/member/list",
 							params: { parameter: { column: "createTime", order: "desc" } },
 						},
 						method: "post",
-						transform: (oo) => {
-							console.log(oo)
-							if (oo) return oo.result.records
-							return []
-						},
 					}}
 					// dataSource={data}
 					columns={columns}
 					rowKey='id'
 					// 搜索请求
 					onSearch={async (values) => {
-						console.log(values);
 						await sleep(1000)
 					}}
+					transform={(OD, dispatch, actions) => {
+						if (OD) {
+							dispatch(actions.changeData(OD.result.records))
+							dispatch(actions.changeCurrent(OD.result.current))
+							dispatch(actions.changePageSize(OD.result.size))
+							dispatch(actions.changeTotal(OD.result.total))
+						}
+						return []
+					}}
+					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/>
 			</main>
 		</div>

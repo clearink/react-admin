@@ -3,7 +3,6 @@ import classNames from "classnames"
 import styles from "./style.module.scss"
 import { Avatar, DatePicker, Form, Tabs, Typography } from "antd"
 import { UserOutlined } from "@ant-design/icons"
-import SleepDetail from "../../Monitor/components/Sleep/SleepDetail"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"
 
@@ -37,7 +36,7 @@ function ResidentDetail() {
 			</div>
 
 			<div className='mt-6 px-4 bg-white flex-auto'>
-				<Tabs defaultActiveKey='4'>
+				<Tabs>
 					<Tabs.TabPane tab='基本信息' key='1' className='mt-12 mx-8'>
 						{/* 基本信息 */}
 						<UserDetail />
