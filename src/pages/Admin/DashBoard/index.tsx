@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
@@ -6,7 +6,7 @@ import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { sleep } from "@/utils/test"
 import { FieldDateTimeProps } from "@/components/Pro/ProField/components/FieldDate/FieldDateTime"
-
+import { Button } from "antd"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "updateTime",
@@ -70,13 +70,11 @@ function WorkPlace(props: IBaseProps) {
 						await sleep(1000)
 					}}
 					transform={(OD, dispatch, actions) => {
-						if (OD) {
-							dispatch(actions.changeData(OD.result.records))
-							dispatch(actions.changeCurrent(OD.result.current))
-							dispatch(actions.changePageSize(OD.result.size))
-							dispatch(actions.changeTotal(OD.result.total))
-						}
-						return []
+						if (!OD) return
+						dispatch(actions.changeData(OD.result.records))
+						dispatch(actions.changeCurrent(OD.result.current))
+						dispatch(actions.changePageSize(OD.result.size))
+						dispatch(actions.changeTotal(OD.result.total))
 					}}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/>

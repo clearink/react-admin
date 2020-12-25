@@ -7,9 +7,9 @@ export default function useDeepMemo<T>(
 ): T {
 	const preDeps = useRef<any>(null) // pre deps
 	const preState = useRef<any>(null) // pre state
-	if (isEqual(preDeps.current, deps)) {
-		return preState.current
-	}
+
+	if (isEqual(preDeps.current, deps)) return preState.current
+	
 	preDeps.current = deps
 	preState.current = callback()
 	return preState.current

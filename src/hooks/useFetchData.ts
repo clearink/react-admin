@@ -13,6 +13,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import { actions as kvActions } from "@/store/reducers/kv"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { RequestProps } from "@/components/Pro/ProField/type"
+import useDeepMemo from "./useDeepMemo"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -60,11 +61,12 @@ export default function useFetchData(props?: RequestProps) {
 	}, [transform])
 
 	// 提取 请求地址 与 参数
-	const [fetchUrl, params] = useMemo(() => {
+	const [fetchUrl, params] = useDeepMemo(() => {
 		if (isUndefined(url)) return [undefined, undefined]
 		if (isString(url)) return [url]
 		return [url.url, url.params]
 	}, [url])
+	
 	const memoData = useRef()
 	useEffect(() => {
 		const realUrl = `${fetchUrl}?${JSON.stringify(params)}`

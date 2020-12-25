@@ -33,6 +33,9 @@ import {
 	ReloadOutlined,
 	ToTopOutlined,
 } from "@ant-design/icons"
+import useDeepMemo from "@/hooks/useDeepMemo"
+import isEqual from "lodash.isequal"
+import useMemoEffect from "@/hooks/useMemoEffect"
 
 // TODO queryFilter props
 /**
@@ -92,21 +95,32 @@ function ProTable<T extends object>(
 		...request,
 		cache: false,
 	})
-
-	const memoTransform = useRef(transform)
-	useEffect(() => {
-		memoTransform.current = transform
-	}, [transform])
-	useEffect(() => {
-		if (memoTransform.current && data)
-			memoTransform.current(data, dispatch, actions)
-	}, [data])
-
 	useEffect(() => {
 		dispatch(actions.changeLoading(fetchLoading))
 	}, [fetchLoading])
 
-	const dataSource = useMemo(() => {
+	// 问题 从props传入过来的函数应该怎么处理才好?
+	// 是否一定要去 memo 记忆化?
+	// const memoTransform = useRef(transform)
+	// useEffect(() => {
+	// 	memoTransform.current = transform
+	// }, [transform])
+
+	// useEffect(() => {
+	// 	if (data) memoTransform.current?.(data, dispatch, actions)
+	// }, [data])
+
+	useMemoEffect(
+		(transform) => {
+			if (data) {
+				transform(data, dispatch, actions)
+			}
+		},
+		[data],
+		transform
+	)
+
+	const dataSource = useDeepMemo(() => {
 		if (propsDataSource) return propsDataSource
 		return reducerState.data
 	}, [propsDataSource, reducerState.data])
@@ -162,7 +176,7 @@ function ProTable<T extends object>(
 	}, [reducerState.selectedRows, rest.rowKey])
 
 	// 提取 query filter
-	const [columns, QFArray] = useMemo(() => {
+	const [columns, QFArray] = useDeepMemo(() => {
 		const QFArray: any[] = []
 		if (!propsColumns) return [[], []]
 		const columns = []
@@ -196,9 +210,8 @@ function ProTable<T extends object>(
 			const columnElement: ProTableColumns = {
 				title: () => <TitleTip title={title} tooltip={tooltip} />,
 				render: (text, record, index) => {
-					if (CR) {
-						return CR(text, record, index, tableAction)
-					}
+					if (CR) return CR(text, record, index, tableAction)
+
 					// 如何下放到search时会自动请求的,也应该阻止掉
 					if (request)
 						DOM = cloneElement(DOM, {
@@ -238,13 +251,12 @@ function ProTable<T extends object>(
 	/* 渲染出 tableHeader
 	外部暴露出一个 renderTitle(dom, data, action)
 	*/
-	const TT = useMemo(() => {
-		console.log("title", title)
+	const TT = useDeepMemo(() => {
 		if (isString(title)) return <TitleTip title={title} />
 		return <TitleTip title={title?.title} tooltip={title?.tooltip} />
 	}, [title])
 
-	const BT = useMemo(() => {
+	const BT = (() => {
 		const SL = reducerState.selectedRows.length
 		return (
 			<div className={styles.banner_title}>
@@ -264,7 +276,7 @@ function ProTable<T extends object>(
 						className={styles.clear_select}
 						onClick={() => dispatch(actions.changeSelectedRows([]))}
 					>
-						清空选中
+						清空
 					</span>
 				</span>
 				<span className={styles.extra}>
@@ -273,14 +285,9 @@ function ProTable<T extends object>(
 				</span>
 			</div>
 		)
-	}, [reducerState])
+	})()
 
-	const memoRenderTitle = useRef(renderTitle)
-	useEffect(() => {
-		memoRenderTitle.current = renderTitle
-	}, [renderTitle])
-
-	const tableTitle = useCallback(() => {
+	const tableTitle = () => {
 		const DOM = (
 			<div className={styles.table_title_wrap}>
 				<div className={styles.title_header}>
@@ -300,10 +307,9 @@ function ProTable<T extends object>(
 			</div>
 		)
 		// 外部渲染
-		if (memoRenderTitle.current)
-			return memoRenderTitle.current(reducerState, dispatch, actions)
+		if (renderTitle) return renderTitle(reducerState, dispatch, actions)
 		return DOM
-	}, [BT, TT, reducerState, reload])
+	}
 
 	const handlePaginationChange = (page: number, pageSize?: number) => {
 		dispatch(actions.changeCurrent(page))
