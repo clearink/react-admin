@@ -4,11 +4,12 @@ import { Avatar, Upload } from "antd"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { AvatarProps } from "antd/lib/avatar"
 
-interface FieldAvatarProps extends BaseProFieldProps, AvatarProps {}
+export interface FieldAvatarProps extends BaseProFieldProps, AvatarProps {}
 
 function FieldAvatar(props: FieldAvatarProps) {
 	const { mode, render, renderFormItem, text, ...rest } = props
-	const dom = <Avatar src-={text} {...rest} />
+	console.log('propssssssssssssssssssssssssssssssssssss',props);
+	const dom = <Avatar src={text} {...rest} />
 	if (mode === "read") {
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom

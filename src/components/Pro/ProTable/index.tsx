@@ -9,23 +9,20 @@ import React, {
 	useLayoutEffect,
 	useMemo,
 	useReducer,
-	useRef,
 } from "react"
 import { Alert, Button, Space, Table, Tooltip } from "antd"
 import classNames from "classnames"
 import { ColumnsType, TableProps } from "antd/lib/table"
-import { ProTableColumns, ProTableRef } from "./type"
+import { ProTableColumns, ProTableProps, ProTableRef } from "./type"
 import { QueryFilter } from "../ProForm/components"
 import styles from "./style.module.scss"
 import renderQueryFilter from "../utils/renderQueryFilter"
-import { AnyAction, nanoid } from "@reduxjs/toolkit"
-import { QueryFilterProps } from "../ProForm/components/QueryFilter"
+import { nanoid } from "@reduxjs/toolkit"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { TitleTip } from "../ProCard/components"
 import { FieldText, ProFieldMap } from "../ProField"
 import { isFunction, isNumber, isString } from "@/utils/validate"
 import useFetchData from "@/hooks/useFetchData"
-import { RequestProps } from "../ProField/type"
 import { actions, initialState, reducer } from "./reducer"
 import {
 	DownloadOutlined,
@@ -34,7 +31,6 @@ import {
 	ToTopOutlined,
 } from "@ant-design/icons"
 import useDeepMemo from "@/hooks/useDeepMemo"
-import isEqual from "lodash.isequal"
 import useMemoEffect from "@/hooks/useMemoEffect"
 
 // TODO queryFilter props
@@ -46,31 +42,9 @@ import useMemoEffect from "@/hooks/useMemoEffect"
  * Q2 propsLoading 如何在外部控制 query filter (base form) submitter 的 loading?
  * Q3 处理分页逻辑
  * Q4 分页重新请求处理
+ *
+ *
  */
-export interface ProTableProps<T extends object>
-	extends Omit<
-		TableProps<T>,
-		"columns" | "rowSelection" | "title" | "pagination"
-	> {
-	columns?: ProTableColumns<T>[]
-	onSearch?: (values: any) => any
-	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
-	search: boolean
-	request?: RequestProps
-	title?: string | { title: string; tooltip: string }
-	/** 渲染title */
-	renderTitle?: (
-		state: typeof initialState,
-		dispatch: React.Dispatch<AnyAction>,
-		Actions: typeof actions
-	) => JSX.Element
-	/** 转换数据 */
-	transform?: (
-		OD: any,
-		dispatch: React.Dispatch<AnyAction>,
-		Actions: typeof actions
-	) => any
-}
 
 function ProTable<T extends object>(
 	props: ProTableProps<T>,
@@ -82,7 +56,7 @@ function ProTable<T extends object>(
 		columns: propsColumns,
 		loading: propsLoading,
 		request,
-		dataSource: propsDataSource,
+		dataSource: PD,
 		title,
 		renderTitle,
 		transform,
@@ -99,31 +73,18 @@ function ProTable<T extends object>(
 		dispatch(actions.changeLoading(fetchLoading))
 	}, [fetchLoading])
 
-	// 问题 从props传入过来的函数应该怎么处理才好?
-	// 是否一定要去 memo 记忆化?
-	// const memoTransform = useRef(transform)
-	// useEffect(() => {
-	// 	memoTransform.current = transform
-	// }, [transform])
-
-	// useEffect(() => {
-	// 	if (data) memoTransform.current?.(data, dispatch, actions)
-	// }, [data])
-
 	useMemoEffect(
 		(transform) => {
-			if (data) {
-				transform(data, dispatch, actions)
-			}
+			if (data) transform(data, dispatch, actions)
 		},
 		[data],
 		transform
 	)
-
-	const dataSource = useDeepMemo(() => {
-		if (propsDataSource) return propsDataSource
-		return reducerState.data
-	}, [propsDataSource, reducerState.data])
+	useEffect(() => {
+		if (!PD) return
+		dispatch(actions.changeData(PD))
+		dispatch(actions.changeTotal(PD.length))
+	}, [PD])
 
 	useLayoutEffect(() => {
 		dispatch(actions.changeLoading(propsLoading))
@@ -212,7 +173,7 @@ function ProTable<T extends object>(
 				render: (text, record, index) => {
 					if (CR) return CR(text, record, index, tableAction)
 
-					// 如何下放到search时会自动请求的,也应该阻止掉
+					// 如果下放到search时会自动请求的,也应该阻止掉
 					if (request)
 						DOM = cloneElement(DOM, {
 							request: { ...request, fetch: index === 0 && !search },
@@ -241,13 +202,6 @@ function ProTable<T extends object>(
 		return [columns, QFArray]
 	}, [propsColumns, tableAction])
 
-	// 搜索方法
-	const handleSearch = async (values: any) => {
-		dispatch(actions.changeLoading({ delay: 100 }))
-		await onSearch?.(values)
-		dispatch(actions.changeLoading(false))
-	}
-
 	/* 渲染出 tableHeader
 	外部暴露出一个 renderTitle(dom, data, action)
 	*/
@@ -260,11 +214,6 @@ function ProTable<T extends object>(
 		const SL = reducerState.selectedRows.length
 		return (
 			<div className={styles.banner_title}>
-				<span>
-					共计
-					<span className={styles.number}>{reducerState.total}</span>
-					条数据
-				</span>
 				<span
 					className={classNames(styles.selected_info, {
 						hidden: SL === 0,
@@ -279,17 +228,24 @@ function ProTable<T extends object>(
 						清空
 					</span>
 				</span>
-				<span className={styles.extra}>
-					当前第
-					<span className={styles.number}>{reducerState.current}</span>页
-				</span>
+				<div className={styles.extra}>
+					<span>
+						共计
+						<span className={styles.number}>{reducerState.total}</span>
+						条数据
+					</span>
+					<span className='ml-4'>
+						当前第
+						<span className={styles.number}>{reducerState.current}</span>页
+					</span>
+				</div>
 			</div>
 		)
 	})()
 
-	const tableTitle = () => {
+	const tableTitle = (() => {
 		const DOM = (
-			<div className={styles.table_title_wrap}>
+			<>
 				<div className={styles.title_header}>
 					<div className={styles.title}>{TT}</div>
 					<div className={styles.extra}>
@@ -303,12 +259,28 @@ function ProTable<T extends object>(
 						</Space>
 					</div>
 				</div>
-				<Alert showIcon banner message={BT} type='info' />
-			</div>
+				<Alert banner message={BT} showIcon type='info' />
+			</>
 		)
 		// 外部渲染
-		if (renderTitle) return renderTitle(reducerState, dispatch, actions)
-		return DOM
+
+		return (
+			<div className={styles.table_toolbar_wrap}>
+				{renderTitle?.(reducerState, dispatch, actions) ?? DOM}
+			</div>
+		)
+	})()
+
+	/** 搜索方法
+	 * 应该将请求体url params 都一并存到reducer中
+	 * 同时应该区分 默认值与查询值
+	 *
+	 */
+
+	const handleSearch = async (values: any) => {
+		dispatch(actions.changeLoading({ delay: 100 }))
+		await onSearch?.(values)
+		dispatch(actions.changeLoading(false))
 	}
 
 	const handlePaginationChange = (page: number, pageSize?: number) => {
@@ -327,23 +299,24 @@ function ProTable<T extends object>(
 			>
 				{renderQueryFilter(QFArray)}
 			</QueryFilter>
-
-			<Table
-				{...rest}
-				className={classNames("px-10 bg-white", rest.className)}
-				dataSource={dataSource}
-				loading={reducerState.loading}
-				columns={columns as ColumnsType<any>}
-				rowSelection={rowSelection}
-				// 分页
-				pagination={{
-					current: reducerState.current,
-					total: reducerState.total,
-					pageSize: reducerState.pageSize,
-					onChange: handlePaginationChange,
-				}}
-				title={tableTitle}
-			/>
+			<div className='bg-white'>
+				{tableTitle}
+				<Table
+					{...rest}
+					className={classNames("px-10 bg-white", rest.className)}
+					dataSource={reducerState.data}
+					loading={reducerState.loading}
+					columns={columns as ColumnsType<any>}
+					rowSelection={rowSelection}
+					// 分页
+					pagination={{
+						current: reducerState.current,
+						total: reducerState.total,
+						pageSize: reducerState.pageSize,
+						onChange: handlePaginationChange,
+					}}
+				/>
+			</div>
 		</div>
 	)
 }

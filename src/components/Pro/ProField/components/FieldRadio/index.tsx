@@ -7,8 +7,11 @@ import { RadioGroupProps } from "antd/lib/radio"
 import { renderStatusFromOption } from "@/components/Pro/utils"
 import { isArray } from "@/utils/validate"
 
-interface FieldRadioProps extends BaseProFieldProps, RadioGroupProps {
-	text: string | number
+export interface FieldRadioProps
+	extends BaseProFieldProps,
+		Omit<RadioGroupProps, "name"> {
+	radioName?: RadioGroupProps["name"]
+	text?: string | number
 	showTag: boolean
 	request?: RequestProps
 }
@@ -49,7 +52,7 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 	}
 	const formItemDom = <Radio.Group options={options} {...rest} />
 	if (renderFormItem)
-		return renderFormItem(
+		return renderFormItem<Partial<FieldRadioProps>>(
 			text,
 			{ mode, ...rest, fieldEnum, options },
 			formItemDom

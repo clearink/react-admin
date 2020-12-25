@@ -1,7 +1,8 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Button, Space } from "antd"
 import { FormInstance } from "antd/lib/form"
-import React, { memo } from "react"
+import React, { memo, useContext } from "react"
+import ProFormContext from "../../utils/ProFormContext"
 import { SubmitConfigType } from "../type"
 
 /**
@@ -10,20 +11,18 @@ import { SubmitConfigType } from "../type"
  */
 
 // 表单提交和重置按钮
-interface SubmitterProps extends SubmitConfigType {
-	form: FormInstance
-}
+interface SubmitterProps extends SubmitConfigType {}
 function Submitter(props: SubmitterProps) {
-	const { resetProps: RP, submitProps: SP, render, form } = props
+	const { resetProps: RP, submitProps: SP, render } = props
+	const form = useContext(ProFormContext)
 	const submitText = SP?.text ?? "提交"
 	const resetText = RP?.text ?? "重置"
-
 	const dom = [
 		<Button
 			key='rest'
 			{...RP}
 			onClick={(e) => {
-				form.resetFields()
+				form?.resetFields()
 				// onReset?.()
 				RP?.onClick?.(e)
 			}}
@@ -35,7 +34,7 @@ function Submitter(props: SubmitterProps) {
 			type='primary'
 			{...SP}
 			onClick={(e) => {
-				form.submit()
+				form?.submit()
 				// onSubmit?.()
 				SP?.onClick?.(e)
 			}}

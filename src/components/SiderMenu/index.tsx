@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from "react"
 import { Menu, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
 import classNames from "classnames"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
@@ -51,14 +51,15 @@ function SiderMenu() {
 				className='sider-menu__wrap'
 				theme={theme}
 			>
-				<div
+				<Link
 					className={classNames("logo", {
 						collapsed,
 					})}
+					to="/"
 				>
 					<img src={logo} alt='logo' />
-					<span>派博管理中心</span>
-				</div>
+					<span className='text-black'>智慧养老看护</span>
+				</Link>
 				<Menu
 					onOpenChange={setOpenKeys as any} // 点击事件
 					className='menu'

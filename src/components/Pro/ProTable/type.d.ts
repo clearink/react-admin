@@ -1,13 +1,15 @@
 import { TextProps } from "antd/lib/typography/Text"
-import { render } from "@testing-library/react"
 import { FormItemProps } from "antd/lib/form"
-import { ColumnType } from "antd/lib/table"
+import { ColumnType,TableProps } from "antd/lib/table"
 import { ReactNode } from "react"
 import {
 	BaseProFieldProps,
 	FieldOptionType,
 	RequestProps,
 } from "../ProField/type"
+import { AnyAction } from "@reduxjs/toolkit"
+import { QueryFilterProps } from "../ProForm/components/QueryFilter"
+import { actions, initialState } from "./reducer"
 
 // pro table column 类型
 export type ProFieldType =
@@ -50,7 +52,7 @@ export interface ProTableColumns<T extends object = any>
 		TextProps & {
 			// Field Select checkbox radio
 			showTag?: boolean
-			options?: FieldOptionType[]
+			options?: FieldOptionType[] | string[]
 			request?: RequestProps
 		}
 }
@@ -59,4 +61,29 @@ export type ProTableRef = {
 	reset: () => void // 重置 table
 	reload: () => void // 重新加载数据
 	clearSelected: () => void // 清除选中
+}
+
+export interface ProTableProps<T extends object>
+	extends Omit<
+		TableProps<T>,
+		"columns" | "rowSelection" | "title" | "pagination"
+	> {
+	columns?: ProTableColumns<T>[]
+	onSearch?: (values: any) => any
+	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
+	search: boolean
+	request?: RequestProps
+	title?: string | { title: string; tooltip: string }
+	/** 渲染title */
+	renderTitle?: (
+		state: typeof initialState,
+		dispatch: React.Dispatch<AnyAction>,
+		Actions: typeof actions
+	) => JSX.Element
+	/** 转换数据 */
+	transform?: (
+		OD: any,
+		dispatch: React.Dispatch<AnyAction>,
+		Actions: typeof actions
+	) => any
 }

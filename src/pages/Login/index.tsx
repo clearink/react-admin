@@ -6,10 +6,10 @@ import { useHistory } from "react-router-dom"
 import { actions } from "@/store/reducers/user"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
-import "./style.scss"
-import { PoweroffOutlined, TeamOutlined } from "@ant-design/icons"
+import Logo from "@/assets/images/login_logo.png"
 import { PepLifeIcon } from "@/components/IconFont"
 import Footer from "@/components/Footer"
+import "./style.scss"
 
 const { useForm } = Form
 
@@ -34,8 +34,8 @@ function Login(props: IBaseProps) {
 			<div className='login-page__wrap'>
 				<div className='login-box__wrap select-none'>
 					<div className='login-box__title'>
-						<h1>LOGO</h1>
-						<h1>派博健康管理中心</h1>
+						<img src={Logo} alt='LOGO' className='logo' />
+						<h1>智慧养老看护服务系统</h1>
 					</div>
 					<Form
 						form={form}

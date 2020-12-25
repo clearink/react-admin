@@ -1,4 +1,3 @@
-import isEqual from "lodash.isequal"
 import { DependencyList, useEffect, useRef } from "react"
 
 /**
@@ -8,9 +7,20 @@ import { DependencyList, useEffect, useRef } from "react"
  * useMemoEffect(()=>{
  * },[],transform)
  * 如何得到 transform的用法呢?
+ * 
+ * A:
+ * 	useMemoEffect(
+		(transform) => {
+			if (data) {
+				transform(data, dispatch, actions)
+			}
+		},
+		[data],
+		transform
+	)
  */
-export default function useMemoEffect<T>(
-	callback: (...args: any[]) => T,
+export default function useMemoEffect(
+	effect: (...args: any[]) => void,
 	deps?: DependencyList,
 	...memorizes: any[]
 ) {
@@ -19,7 +29,7 @@ export default function useMemoEffect<T>(
 		memorizeRef.current = memorizes
 	}, [memorizes])
 	useEffect(() => {
-		callback(...memorizeRef.current)
+		return effect(...memorizeRef.current)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, deps)
 }

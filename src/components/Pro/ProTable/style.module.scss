@@ -1,9 +1,8 @@
 @import "@/styles/index";
-.table_title_wrap {
+.table_toolbar_wrap {
+	@apply px-10 pt-10 pb-4;
 	.title_header {
-		display: flex;
-		align-items: center;
-		margin-bottom: 10px;
+		@apply flex items-center mb-4;
 		.title {
 			font-size: 16px;
 		}
@@ -15,12 +14,8 @@
 }
 .pro_table_wrap {
 	:global {
-		.ant-table-title {
-			padding-left: 0 !important;
-			padding-right: 0 !important;
-		}
 		.ant-table-tbody > tr.ant-table-row-selected > td {
-			background: transparent;
+			background-color: transparent;
 		}
 	}
 }
@@ -47,15 +42,13 @@
 			color: rgba($color_light-3, 0.8);
 		}
 	}
-	.selected_info {
-		@include media(sm) {
-			@apply ml-4;
-		}
-	}
+
 	.extra {
 		flex: auto;
+		display: flex;
+		justify-content: space-between;
 		@include media(sm) {
-			text-align: right;
+			justify-content: flex-end;
 		}
 	}
 }

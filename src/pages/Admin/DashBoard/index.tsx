@@ -6,7 +6,6 @@ import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { sleep } from "@/utils/test"
 import { FieldDateTimeProps } from "@/components/Pro/ProField/components/FieldDate/FieldDateTime"
-import { Button } from "antd"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "updateTime",
@@ -62,7 +61,6 @@ function WorkPlace(props: IBaseProps) {
 						},
 						method: "post",
 					}}
-					// dataSource={data}
 					columns={columns}
 					rowKey='id'
 					// 搜索请求
@@ -70,7 +68,7 @@ function WorkPlace(props: IBaseProps) {
 						await sleep(1000)
 					}}
 					transform={(OD, dispatch, actions) => {
-						if (!OD) return
+						if (!OD) return // 转换请求的数据
 						dispatch(actions.changeData(OD.result.records))
 						dispatch(actions.changeCurrent(OD.result.current))
 						dispatch(actions.changePageSize(OD.result.size))

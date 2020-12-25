@@ -5,6 +5,7 @@ import { Avatar, DatePicker, Form, Tabs, Typography } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"
+import NurseDetail from "../NurseDetail"
 
 // 住户详情
 function ResidentDetail() {
@@ -41,7 +42,9 @@ function ResidentDetail() {
 						{/* 基本信息 */}
 						<UserDetail />
 					</Tabs.TabPane>
-					<Tabs.TabPane tab='护理设置' key='2'></Tabs.TabPane>
+					<Tabs.TabPane tab='护理设置' key='2'>
+						<NurseDetail />
+					</Tabs.TabPane>
 					<Tabs.TabPane tab='预警设置' key='3'>
 						<WarnSetting />
 					</Tabs.TabPane>

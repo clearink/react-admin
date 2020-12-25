@@ -29,7 +29,7 @@ function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
 			visible={visible}
 			title={
 				<h3 className='flex'>
-					<span>心率呼吸BCG</span>
+					<span>心率/呼吸率</span>
 					<span className='flex-auto text-center text-blue-400'>
 						[五楼] [507] [02床] 张三丰（612044000000）
 					</span>

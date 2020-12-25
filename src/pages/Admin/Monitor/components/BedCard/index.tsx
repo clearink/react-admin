@@ -6,6 +6,7 @@ import { CardProps } from "antd/lib/card"
 import { PepLifeIcon } from "@/components/IconFont"
 import { BCGContext } from "../.."
 import { Link } from "react-router-dom"
+import { Random } from "mockjs"
 
 interface BedCardProps extends CardProps {}
 // 用户 Card
@@ -16,6 +17,9 @@ function BedCard(props: BedCardProps) {
 		toggle()
 		setBcgId?.(1)
 	}
+
+	const bedStatus = Random.integer(0, 2)
+	const albumStatus = Random.integer(0, 2)
 	return (
 		<Card
 			size='small'
@@ -24,7 +28,7 @@ function BedCard(props: BedCardProps) {
 			actions={[
 				<Space size={2} key='bcg' className='action_wrap'>
 					<PepLifeIcon type='icon-user' />
-					<span onClick={handleBcgDetail}>心率呼吸BCG</span>
+					<span onClick={handleBcgDetail}>心率/呼吸</span>
 				</Space>,
 				<Space size={2} key='sleep' className='action_wrap'>
 					<PepLifeIcon type='icon-user' />
@@ -34,12 +38,17 @@ function BedCard(props: BedCardProps) {
 			{...props}
 		>
 			<div className={styles.bed_info}>
-				<span className={classNames(styles.bed_status, styles.in_bed)}>
-					<PepLifeIcon type='icon-user' />
-					<span>在床</span>
+				<span
+					className={classNames(styles.bed_status, {
+						[styles.in_bed]: bedStatus === 0,
+						[styles.leave_bed]: bedStatus === 1,
+					})}
+				>
+					<PepLifeIcon type='icon-user' style={{ fontSize: "20px" }} />
+					<span>{["在床", "离床", "离线"][bedStatus]}</span>
 				</span>
 				<div className={styles.percent_name}>
-					<span className={styles.name}>张三丰</span>
+					<span className={styles.name}>{Random.cname()}</span>
 					<Progress
 						showInfo
 						strokeColor={{
@@ -47,15 +56,19 @@ function BedCard(props: BedCardProps) {
 							"100%": "#87d068",
 						}}
 						status='active'
-						percent={40}
+						percent={Random.integer(0, 100)}
 						width={70}
 						strokeWidth={12}
 						type='circle'
 						format={(v) => v}
 					/>
 				</div>
-				<span className={classNames(styles.bed_status, styles.leave_bed)}>
-					<PepLifeIcon type='icon-user' />
+				<span
+					className={classNames(styles.bed_status, {
+						[styles.leave_bed]: Random.boolean(),
+					})}
+				>
+					<PepLifeIcon type='icon-user' style={{ fontSize: "20px" }} />
 					<span>告警</span>
 				</span>
 			</div>

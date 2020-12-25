@@ -1,5 +1,5 @@
 import React from "react"
-import { BrowserRouter as Router, HashRouter } from "react-router-dom"
+import { BrowserRouter, HashRouter as Router } from "react-router-dom"
 import { ConfigProvider } from "antd"
 import RenderRoutes from "@/components/RenderRoutes"
 import routes from "@/routes"

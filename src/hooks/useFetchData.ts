@@ -1,11 +1,5 @@
-import {
-	useCallback,
-	useEffect,
-	useMemo,
-	useReducer,
-	useRef,
-	useState,
-} from "react"
+import useMemoEffect from "@/hooks/useMemoEffect"
+import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { isString, isUndefined } from "../utils/validate"
 import http from "@/http"
 import useTypedSelector from "@/hooks/useTypedSelector"
@@ -54,19 +48,13 @@ export default function useFetchData(props?: RequestProps) {
 	const [state, dispatch] = useReducer(reducer, initialState)
 	const kvEntities = useTypedSelector((state) => state.kv.entities)
 
-	const memoTransform = useRef(transform)
-
-	useEffect(() => {
-		memoTransform.current = transform
-	}, [transform])
-
 	// 提取 请求地址 与 参数
 	const [fetchUrl, params] = useDeepMemo(() => {
 		if (isUndefined(url)) return [undefined, undefined]
 		if (isString(url)) return [url]
 		return [url.url, url.params]
 	}, [url])
-	
+
 	const memoData = useRef()
 	useEffect(() => {
 		const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
@@ -75,24 +63,29 @@ export default function useFetchData(props?: RequestProps) {
 		if (preData) dispatch(actions.setData(memoData.current)) // 优先返回缓存
 	}, [fetchUrl, kvEntities, params])
 
-	useEffect(() => {
-		// 请求地址为空 或者 不允许请求 或者已经在redux中有数据了 直接 return
-		if (isUndefined(fetchUrl) || !fetch || memoData.current) return
-		;(async () => {
-			try {
-				// 存在 直接保存
-				const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
-				dispatch(actions.startFetch()) // 发起请求
-				const { data } = await http[method as any]?.(fetchUrl, params)
-				const result = memoTransform.current?.(data) ?? data
-				dispatch(actions.setData(result)) // save data
-				// save data to store
-				if (cache) boundKvActions.add({ key: realUrl, value: result })
-			} catch (error) {
-				dispatch(actions.setError(error)) // save error
-			}
-		})()
-	}, [fetchUrl, params, fetch, method, cache, count])
+	useMemoEffect(
+		(TF) => {
+			// 请求地址为空 或者 不允许请求 或者已经在redux中有数据了 直接 return
+			if (isUndefined(fetchUrl) || !fetch || memoData.current) return
+			;(async () => {
+				try {
+					// 存在 直接保存
+					const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
+					dispatch(actions.startFetch()) // 发起请求
+					const { data } = await http[method as any]?.(fetchUrl, params)
+					const result = TF?.(data) ?? data
+					dispatch(actions.setData(result)) // save data
+					// save data to store
+					if (cache) boundKvActions.add({ key: realUrl, value: result })
+				} catch (error) {
+					dispatch(actions.setError(error)) // save error
+				}
+			})()
+		},
+		[fetchUrl, params, fetch, method, cache, count],
+		transform
+	)
+
 	const reload = useCallback(() => {
 		setCount((p) => p + 1)
 	}, [])

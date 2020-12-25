@@ -1,6 +1,7 @@
 @import "@/styles/index.scss";
 .app-login-footer {
 	@include flex-center(column);
+	padding-bottom: 10px;
 	text-align: center;
 	color: $color_grey-4;
 	font-weight: 700;

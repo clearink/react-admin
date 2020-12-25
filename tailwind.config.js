@@ -7,7 +7,10 @@ function createGridLayoutWidth(colNum = 24) {
 	return result
 }
 module.exports = {
-	purge: ["./src/**/*.tsx", "./src/**/*.scss"],
+	purge: {
+		content: ["./src/**/*.tsx", "./src/**/*.scss"],
+		defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+	},
 	theme: {
 		extend: {
 			width: {

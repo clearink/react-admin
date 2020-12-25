@@ -27,6 +27,7 @@ import { actions } from "@/store/reducers/user"
 import "./style.scss"
 import ModalTrigger from "../ModalTrigger"
 import { FieldRadio, FieldText } from "../Pro/ProField"
+import { Random } from "mockjs"
 
 interface IProps {}
 
@@ -62,7 +63,7 @@ function UserAction(props: IProps) {
 		<div className='flex items-center'>
 			<Dropdown
 				placement='bottomCenter'
-				trigger={['click']}
+				trigger={["click"]}
 				overlay={
 					<div className='bg-white item_wrap'>
 						<div className='px-10 py-4 bg-grey-600 title'>异常告警</div>
@@ -70,8 +71,8 @@ function UserAction(props: IProps) {
 							return (
 								<div key={i} className={classNames("p-4 item")}>
 									<div>
-										<span className='name'>张三丰</span>
-										<span>五楼 507房 02床</span>
+										<span className='name'>{Random.cname()}</span>
+										<span>五楼 {Random.integer(100, 400)}房 02床</span>
 									</div>
 									<div className='flex items-center justify-between mt-4'>
 										<span>离床超时</span>
@@ -90,10 +91,11 @@ function UserAction(props: IProps) {
 														<Avatar icon={<UserOutlined />} size={90} />
 														<div className='user_name flex flex-col'>
 															<span className='block text-3xl font-bold mb-4 text-center'>
-																张三丰
+																{Random.cname()}
 															</span>
 															<span className='text-2xl text-center'>
-																男&nbsp;&nbsp;&nbsp;64岁
+																{Random.boolean() ? "男" : "女"}
+																&nbsp;&nbsp;&nbsp;{Random.integer(60, 80)}岁
 															</span>
 														</div>
 														<div
@@ -104,13 +106,13 @@ function UserAction(props: IProps) {
 															<span>
 																护管人员:
 																<Typography.Text copyable>
-																	王晓霞（17712345678）
+																	{Random.cname()}（17712345678）
 																</Typography.Text>
 															</span>
 															<span>
 																家属联系:
 																<Typography.Text copyable>
-																	张小柱（18012345678）
+																	{Random.cname()}（18012345678）
 																</Typography.Text>
 															</span>
 														</div>

@@ -30,6 +30,11 @@
 					font-weight: 700;
 					color: $color_primary;
 				}
+				.logo{
+					height: 140px;
+					object-fit: cover;
+					margin-bottom: 10px;
+				}
 			}
 			&__form {
 				flex-grow: 1;

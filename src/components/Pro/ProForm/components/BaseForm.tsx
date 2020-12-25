@@ -1,14 +1,23 @@
 import useBoolean from "@/hooks/useBoolean"
 import { Form } from "antd"
 import { ButtonProps } from "antd/lib/button"
-import React, { memo, useCallback, useEffect, useState } from "react"
+import { FormInstance } from "antd/lib/form"
+import React, {
+	forwardRef,
+	memo,
+	Ref,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useState,
+} from "react"
 import ProFormContext from "../../utils/ProFormContext"
 import { BaseFormProps } from "../type"
 import Submitter from "./Submitter"
 
 // 维护一个loading
 // 可以从外部控制
-function BaseForm(props: BaseFormProps) {
+function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 	const {
 		children,
 		form: propsForm,
@@ -17,11 +26,14 @@ function BaseForm(props: BaseFormProps) {
 		loading: propsLoading,
 		...rest
 	} = props
+
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false) // submit loading 效果
 	useEffect(() => {
 		setLoading(!!propsLoading)
 	}, [propsLoading])
 	const [form] = Form.useForm(propsForm)
+
+	useImperativeHandle(ref, () => form, [form])
 
 	// 包装的 finish
 	const handleFinish = useCallback(
@@ -41,7 +53,6 @@ function BaseForm(props: BaseFormProps) {
 			<Form form={form} {...rest} onFinish={handleFinish}>
 				{children}
 				<Submitter
-					form={form}
 					{...submitConfig}
 					submitProps={{ loading, ...submitConfig?.submitProps }}
 				/>
@@ -50,4 +61,4 @@ function BaseForm(props: BaseFormProps) {
 	)
 }
 
-export default memo(BaseForm)
+export default memo(forwardRef(BaseForm))

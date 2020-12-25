@@ -8,6 +8,9 @@ export const initialState = {
 	total: 0,
 	loading: false as ButtonProps["loading"],
 	selectedRows: [] as any[],
+	// params
+	defaultParams: {},
+	params: {},// querySearch表单值
 }
 
 export const { reducer, actions } = createSlice({

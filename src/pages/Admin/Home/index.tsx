@@ -7,8 +7,8 @@ import { Avatar } from "antd"
 import SysNotice from "./SysNotice"
 import { CommonHeader } from "@/components/PepLife"
 import { Link } from "react-router-dom"
+import MOCK from "mockjs"
 import { UserOutlined } from "@ant-design/icons"
-
 function Home(props: IBaseProps) {
 	return (
 		<div className={styles["home-page__wrap"]}>
@@ -24,7 +24,7 @@ function Home(props: IBaseProps) {
 								src={"12312321"}
 							/>
 							<div className={styles.info}>
-								<p>李小明, 欢迎进入XXX康养中心系统</p>
+								<p>{MOCK.Random.cname()}, 欢迎进入XXX康养中心系统</p>
 								<p>上次登录: 2020年8月10日 星期三 20:30:23</p>
 							</div>
 						</div>
