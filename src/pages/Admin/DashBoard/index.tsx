@@ -4,13 +4,18 @@ import PageHeaderWrap from "@/components/PageHeaderWrap"
 import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { sleep } from "@/utils/test"
 import { FieldDateTimeProps } from "@/components/Pro/ProField/components/FieldDate/FieldDateTime"
+import { sleep } from "@/utils/test"
+import http from "@/http"
+import removeEmpty from "@/utils/removeEmpty"
+import formatValues from "@/utils/formatValues"
+
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "updateTime",
 		title: "更新时间",
-		field: "dateTime",
+		field: "dateRange",
+		search: true,
 		fieldProps: {
 			timeFormat: "MM-DD hh:mm",
 		} as FieldDateTimeProps,
@@ -38,6 +43,10 @@ const columns: ProTableColumns<any>[] = [
 		title: "账号",
 		dataIndex: "username",
 		search: true,
+		fieldProps: {
+			copyable: true,
+			// copyable: { tooltips: false },
+		},
 	},
 	{
 		title: "昵称",
@@ -55,21 +64,32 @@ function WorkPlace(props: IBaseProps) {
 			<main className='p-10 pb-0 flex-auto m-10 '>
 				<ProTable
 					request={{
-						url: {
-							url: "/membermgt/member/list",
-							params: { parameter: { column: "createTime", order: "desc" } },
-						},
+						url: "/membermgt/member/list",
+						params: { parameter: { column: "createTime", order: "desc" } },
 						method: "post",
 					}}
 					columns={columns}
 					rowKey='id'
 					// 搜索请求
 					onSearch={async (values, dispatch, actions) => {
-						// 1. 过滤 undefined
-						// 2. dispatch 改变 params
-						console.log(values)
-						dispatch(actions.changeParams(values))
+						// 1. 过滤 undefined removeEmpty
+						// 2. 模糊查询 修改
+						// 3. dispatch 改变 params
+					
+						// dispatch(actions.changeParams(removeEmpty(values)))
 					}}
+					onCurrentChange={(data, dispatch, actions, page, pageSize) => {
+						dispatch(
+							actions.changeParams({ ...data.params, pageNo: page, pageSize })
+						)
+					}}
+					// 删除
+					onDelete={async (values) => {
+						await http.delete("/membermgt/member/deleteBatch", {
+							params: { ids: values.map((item: any) => item.id).join(",") },
+						})
+					}}
+					// transform 需要设置 当前页数,pageSize, 总数 数据
 					transform={(OD, dispatch, actions) => {
 						if (!OD) return // 转换请求的数据
 						dispatch(actions.changeData(OD.result.records))

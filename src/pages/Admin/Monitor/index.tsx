@@ -1,15 +1,11 @@
 import React, { createContext, useEffect, useRef, useState } from "react"
 import styles from "./style.module.scss"
-import { Radio, Space } from "antd"
+import { Radio } from "antd"
 import BedCard from "./components/BedCard"
 import BCGDetail from "./components/BCGDetail"
 import useBoolean from "@/hooks/useBoolean"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import {
-	ProFormRadio,
-	ProFormSelect,
-} from "@/components/Pro/ProForm/components"
-import { FieldRadio } from "@/components/Pro/ProField"
+import { ProFormRadio } from "@/components/Pro/ProForm"
 import { FormInstance } from "antd/lib/form"
 
 interface BCGContextProps {
@@ -221,7 +217,10 @@ function Monitor() {
 			<BCGContext.Provider value={{ visible, toggle, setBcgId }}>
 				<div className={styles.bed_card_list}>
 					{Array.from({ length: 30 }, (_, i) => (
-						<BedCard title={`507房 - ${i.toString().padStart(2,'0')}床`} key={i} />
+						<BedCard
+							title={`507房 - ${i.toString().padStart(2, "0")}床`}
+							key={i}
+						/>
 					))}
 					{Array.from({ length: 6 }, (_, i) => (
 						<div className={styles.bed_card_placeholder} key={i} />

@@ -7,18 +7,17 @@ import { AvatarProps } from "antd/lib/avatar"
 export interface FieldAvatarProps extends BaseProFieldProps, AvatarProps {}
 
 function FieldAvatar(props: FieldAvatarProps) {
-	const { mode, render, renderFormItem, text, ...rest } = props
-	console.log('propssssssssssssssssssssssssssssssssssss',props);
-	const dom = <Avatar src={text} {...rest} />
+	const { mode, render, renderFormItem, value, ...rest } = props
+	const dom = <Avatar src={value} {...rest} />
 	if (mode === "read") {
-		if (render) return render(text, { mode, ...rest }, dom)
+		if (render) return render(value, { mode, ...rest }, dom)
 		return dom
 	}
 	// TODO
 	// 将children 设置为 trigger
 	const formItemDom = <Upload />
 	if (renderFormItem)
-		return renderFormItem(text, { mode, ...rest }, formItemDom)
+		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom
 }
 export default memo(

@@ -1,19 +1,16 @@
 import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { Avatar, Button, Form, Input, Select, Space, Table } from "antd"
-import {
-	DownloadOutlined,
-	PlusOutlined,
-	RestOutlined,
-	SearchOutlined,
-	ToTopOutlined,
-	UserOutlined,
-} from "@ant-design/icons"
+import { Avatar, Space } from "antd"
+import { UserOutlined } from "@ant-design/icons"
+import ProTable from "@/components/Pro/ProTable"
+import { Random } from "mockjs"
+import { ProTableColumns } from "@/components/Pro/ProTable/type"
+import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
 
 // 护管管理
 
-const columns = [
+const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
 		dataIndex: "avatar",
@@ -23,6 +20,10 @@ const columns = [
 	{
 		title: "姓名",
 		dataIndex: "name",
+		search: true,
+		fieldProps: {
+			copyable: true,
+		},
 	},
 	{
 		title: "性别",
@@ -40,6 +41,9 @@ const columns = [
 	{
 		title: "联系电话",
 		dataIndex: "phone",
+		fieldProps: {
+			copyable: true,
+		},
 	},
 	{
 		title: "职务",
@@ -48,6 +52,12 @@ const columns = [
 	{
 		title: "账号状态",
 		dataIndex: "status",
+		search: true,
+		field: "select",
+		fieldProps: {
+			fieldEnum: colorArray,
+			options: ["正常", "离职"],
+		},
 	},
 	{
 		title: "操作",
@@ -68,73 +78,24 @@ const data = Array.from({ length: 50 }, (_, i) => {
 	return {
 		key: i,
 		avatar: i,
-		name: "黎明",
-		age: 70,
-		sex: i % 2 ? "男" : "女",
+		name: Random.cname(),
+		age: Random.integer(60, 80),
+		sex: Random.boolean() ? "男" : "女",
 		num: "45002219820503****",
-		phone: "18088888888",
-		job: "普通护工",
-		status: "正常",
+		phone: Random.integer(13088888888, 18088888888),
+		job: Random.integer(0, 2) === 1 ? "普通护工" : "高级护工",
+		status: Random.boolean() ? "正常" : "离职",
 	}
 })
 function Nurse() {
 	return (
 		<div className='h-full flex flex-col'>
-			<div
-				className={classNames(
-					styles.filter_bar,
-					"px-8 pt-8 bg-white flex justify-between items-start flex-col md:flex-row"
-				)}
-			>
-				<Form>
-					<Space>
-						<Form.Item>
-							<Input placeholder='姓名/手机' />
-						</Form.Item>
-						<Form.Item>
-							<Select placeholder='选择楼层' />
-						</Form.Item>
-						<Form.Item>
-							<Input placeholder='选择房间' />
-						</Form.Item>
-					</Space>
-				</Form>
-				<Space className='mb-8 md:mb-0'>
-					<Button type='primary'>
-						<SearchOutlined />
-						查询
-					</Button>
-					<Button>
-						<RestOutlined />
-						重置
-					</Button>
-				</Space>
-			</div>
-
-			<div
-				className={classNames(styles.table_wrap, "mt-8 p-8 bg-white flex-auto")}
-			>
-				<Space className='mb-10'>
-					<Button type='primary'>
-						<PlusOutlined />
-						新增护管
-					</Button>
-					<Button>
-						<DownloadOutlined />
-						导入
-					</Button>
-					<Button>
-						<ToTopOutlined />
-						导出
-					</Button>
-				</Space>
-				<Table
-					bordered
-					columns={columns}
-					dataSource={data}
-					// scroll={{ x: 1300 }}
-				/>
-			</div>
+			<ProTable
+				bordered
+				columns={columns}
+				dataSource={data}
+				// scroll={{ x: 1300 }}
+			/>
 		</div>
 	)
 }

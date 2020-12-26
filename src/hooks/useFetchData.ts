@@ -1,13 +1,11 @@
 import useMemoEffect from "@/hooks/useMemoEffect"
 import { useCallback, useEffect, useReducer, useRef, useState } from "react"
-import { isString, isUndefined } from "../utils/validate"
 import http from "@/http"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { createSlice } from "@reduxjs/toolkit"
 import { actions as kvActions } from "@/store/reducers/kv"
 import GetBoundAction from "@/utils/GetBoundAction"
 import { RequestProps } from "@/components/Pro/ProField/type"
-import useDeepMemo from "./useDeepMemo"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -42,18 +40,20 @@ const { reducer, actions } = createSlice({
 const boundKvActions = GetBoundAction(kvActions)
 export default function useFetchData(props?: RequestProps) {
 	// 是否请求  请求方法 请求地址 是否缓存到store
-	const { fetch = true, method = "get", url, cache = true, transform } =
-		props ?? {}
+	const {
+		fetch = true,
+		method = "get",
+		url: fetchUrl,
+		params,
+		cache = true,
+		transform,
+	} = props ?? {}
 	const [count, setCount] = useState(0)
 	const [state, dispatch] = useReducer(reducer, initialState)
 	const kvEntities = useTypedSelector((state) => state.kv.entities)
 
 	// 提取 请求地址 与 参数
-	const [fetchUrl, params] = useDeepMemo(() => {
-		if (isUndefined(url)) return [undefined, undefined]
-		if (isString(url)) return [url]
-		return [url.url, url.params]
-	}, [url])
+	// const [fetchUrl, params] = useDeepMemo(() => [url, PP], [url, PP])
 
 	const memoData = useRef()
 	useEffect(() => {
@@ -63,31 +63,26 @@ export default function useFetchData(props?: RequestProps) {
 		if (preData) dispatch(actions.setData(memoData.current)) // 优先返回缓存
 	}, [fetchUrl, kvEntities, params])
 
-	const fetchData = useCallback(
-		async (TF) => {
-			try {
-				// 存在 直接保存
-				const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
-				dispatch(actions.startFetch()) // 发起请求
-				const { data } = await http[method as any]?.(fetchUrl, params)
-				const result = TF?.(data) ?? data
-				dispatch(actions.setData(result)) // save data
-				// save data to store
-				if (cache) boundKvActions.add({ key: realUrl, value: result })
-			} catch (error) {
-				dispatch(actions.setError(error)) // save error
-			}
-		},
-		[cache, fetchUrl, method, params]
-	)
-
 	useMemoEffect(
 		(TF) => {
 			// 请求地址为空 或者 不允许请求 或者已经在redux中有数据了 直接 return
 			if (!fetchUrl || !fetch || memoData.current) return
-			fetchData(TF)
+			;(async () => {
+				try {
+					// 存在 直接保存
+					const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
+					dispatch(actions.startFetch()) // 发起请求
+					const { data } = await http[method as any]?.(fetchUrl, params)
+					const result = TF?.(data) ?? data
+					dispatch(actions.setData(result)) // save data
+					// save data to store
+					if (cache) boundKvActions.add({ key: realUrl, value: result })
+				} catch (error) {
+					dispatch(actions.setError(error)) // save error
+				}
+			})()
 		},
-		[fetch, fetchData, fetchUrl, count],
+		[fetch, fetchUrl, count, params, method, cache],
 		transform
 	)
 
@@ -96,3 +91,5 @@ export default function useFetchData(props?: RequestProps) {
 	}, [])
 	return { ...state, reload }
 }
+
+// 需要一个参数 是否让其自动 fetch 数据

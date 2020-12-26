@@ -1,4 +1,7 @@
+import { FieldMoney } from "@/components/Pro/ProField"
 import { FieldAvatarProps } from "@/components/Pro/ProField/components/FieldAvatar"
+import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
+import ProFormMoney from "@/components/Pro/ProForm/components/ProFormMoney"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
@@ -108,6 +111,8 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "持续时长",
+		// field: 'digit',
+		search: true,
 		dataIndex: "duration",
 	},
 	{
@@ -141,71 +146,13 @@ const columns: ProTableColumns<any>[] = [
 	},
 ]
 function AlarmRecord() {
-	const [form] = Form.useForm()
 	return (
 		<div className='h-full flex flex-col'>
-			<ProTable dataSource={data} columns={columns} />
-			{/* <div className={styles.search_bar}>
-				<Form form={form}>
-					<Space>
-						<Form.Item name='name'>
-							<Input placeholder='姓名' />
-						</Form.Item>
-						<Form.Item name='floor'>
-							<Select
-								className={styles.select}
-								placeholder='选择楼层'
-								options={Array.from({ length: 10 }, (_, i) => ({
-									label: i,
-									value: i,
-								}))}
-							/>
-						</Form.Item>
-						<Form.Item name='room'>
-							<Select
-								className={styles.select}
-								placeholder='选择房间'
-								options={Array.from({ length: 10 }, (_, i) => ({
-									label: i,
-									value: i,
-								}))}
-							/>
-						</Form.Item>
-						<Form.Item name='alarm'>
-							<Select
-								placeholder='告警类型'
-								className={styles.select}
-								options={Array.from({ length: 10 }, (_, i) => ({
-									label: i,
-									value: i,
-								}))}
-							/>
-						</Form.Item>
-					</Space>
-				</Form>
-				<Space>
-					<Button type='primary' icon={<SearchOutlined />}>
-						查询
-					</Button>
-					<Button icon={<ReloadOutlined />} onClick={() => form.resetFields()}>
-						重置
-					</Button>
-				</Space>
-			</div>
-			<main className={styles.content}>
-				<Table
-					bordered
-					rowSelection={{
-						selectedRowKeys: [],
-						onChange: () => {},
-					}}
-					columns={alarmColumns}
-					dataSource={data}
-					// 贼耗性能
-					// scroll={{ x: 1400 }}
-				/>
-			</main>
-	 */}
+			<ProTable
+				dataSource={data}
+				columns={columns}
+				title={{ title: "告警记录", tooltip: "用于告知管理员告警信息" }}
+			/>
 		</div>
 	)
 }

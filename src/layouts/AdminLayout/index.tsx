@@ -65,7 +65,7 @@ function BaseLayout(props: IBaseProps) {
 	useEffect(() => {
 		;(async () => {
 			const result = await unwrap(menuActions.fetchMenu())
-			console.log(result)
+			// console.log(result)
 		})()
 	}, [unwrap])
 	return (

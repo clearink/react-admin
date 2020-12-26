@@ -1,5 +1,6 @@
 import { isArray, isObject } from "@/utils/validate"
 import { Badge, Space, Tag } from "antd"
+import { CheckboxValueType } from "antd/lib/checkbox/Group"
 import React from "react"
 import { FieldOptionType } from "../ProField/type"
 // 主要用于将 select checkbox radio 等具有 enum 的组件 text 映射 成文字
@@ -28,7 +29,7 @@ export const colorArray = [
  * 4. badge 切换成 badge 组件
  */
 export function renderStatusFromOption(
-	value: string | number | Array<string | number>,
+	value: CheckboxValueType[] | CheckboxValueType | undefined,
 	options: Array<{ label: string; value: any }>,
 	fieldEnum?: string[],
 	showTag = false // tag 自带右边距
@@ -54,12 +55,12 @@ export function renderStatusFromOption(
 	}
 	if (showTag) {
 		return (
-			<Tag color={color} key={value}>
+			<Tag color={color} key={`${value}`}>
 				{optionValue}
 			</Tag>
 		)
 	}
-	return <Badge key={value} text={optionValue} color={color} />
+	return <Badge key={`${value}`} text={optionValue} color={color} />
 }
 
 /**
@@ -69,8 +70,8 @@ export function renderStatusFromOption(
 export function renderOriginOptions(
 	originOption: string[] | Array<FieldOptionType>
 ) {
-	if (!isArray(originOption) || originOption.length === 0) return []
 	if (isObject(originOption[0])) return originOption
+	if (!isArray(originOption)) return []
 	return (originOption as string[]).map((item) => ({
 		label: item,
 		value: item,

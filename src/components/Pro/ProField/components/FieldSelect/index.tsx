@@ -10,11 +10,12 @@ import { isArray } from "@/utils/validate"
 
 export interface FieldSelectProps
 	extends BaseProFieldProps,
-		Omit<SelectProps<any[]>, "mode" | "options"> {
+		Omit<SelectProps<any[]>, "mode" | "options" | "value"> {
 	selectMode?: SelectProps<any[]>["mode"]
 	options?: string[] | Array<FieldOptionType>
 	showTag: boolean // 是否使用 tag 渲染 text
 	request?: RequestProps
+	value: string | number | Array<string | number>
 }
 /**
  * 1. fieldEnum 是 Array 
@@ -32,7 +33,7 @@ export interface FieldSelectProps
 
 function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 	const {
-		text,
+		value,
 		mode,
 		render,
 		renderFormItem,
@@ -40,6 +41,7 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 		selectMode, // select mode
 		showTag,
 		request,
+		options: PO,
 		...rest
 	} = props
 
@@ -47,36 +49,30 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 	// form.resetFields 会重新执行一次
 	// 这是 antd 的设计 no bug
 	const options = useDeepMemo(() => {
-		if (rest.options) return renderOriginOptions(rest.options) // 直接设置的 options 优先级最高
+		if (PO) return renderOriginOptions(PO) // 直接设置的 options 优先级最高
 		if (isArray(data)) return data as any
 		return []
-	}, [data, fieldEnum, rest.options])
+	}, [data, fieldEnum, PO])
 
 	if (mode === "read") {
 		const dom = (
-			<span>
-				{renderStatusFromOption(
-					rest?.value ?? text,
-					options,
-					fieldEnum,
-					showTag
-				)}
-			</span>
+			<span>{renderStatusFromOption(value, options, fieldEnum, showTag)}</span>
 		)
-		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
+		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
+
 	const formItemDom = (
 		<Select
 			loading={loading && options.length === 0}
+			{...rest}
 			mode={selectMode}
 			options={options as any} // any script
-			{...rest}
 		/>
 	)
 	if (renderFormItem)
 		return renderFormItem(
-			text,
+			value,
 			{ mode, ...rest, fieldEnum, options },
 			formItemDom
 		)
@@ -85,7 +81,7 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 
 export default memo(
 	withDefaultProps(forwardRef(FieldSelect), {
-		text: "",
+		value: "",
 		mode: "read",
 		allowClear: true,
 		showTag: true,

@@ -20,6 +20,9 @@ import {
 	UserOutlined,
 } from "@ant-design/icons"
 import ModalTrigger from "@/components/ModalTrigger"
+import ProTable from "@/components/Pro/ProTable"
+import { ProTableColumns } from "@/components/Pro/ProTable/type"
+import { Random } from "mockjs"
 
 const TreeTitleWrapper = (props: { title: React.ReactNode }) => {
 	return (
@@ -140,11 +143,16 @@ const treeData = [
 		],
 	},
 ]
-const columns = [
+const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
 		width: 100,
 		dataIndex: "num",
+		search: true,
+		fieldProps: {
+			label: false,
+			placeholder: "房间编号",
+		},
 	},
 	{
 		title: "入住人数/床位数",
@@ -153,19 +161,21 @@ const columns = [
 	{
 		title: "护管人员",
 		dataIndex: "nurse",
+		fieldProps: {
+			copyable: true,
+		},
 	},
 	{
 		title: "开放状态",
 		dataIndex: "open",
-		render() {
-			return <Switch />
+		render(value) {
+			return <Switch defaultChecked={value} />
 		},
 	},
 	{
-		title: "床垫设备号",
+		title: "操作",
 		key: "action",
-		fixed: "right" as "right",
-		width: 250,
+		width: 300,
 		render: () => {
 			return (
 				<Space>
@@ -190,9 +200,9 @@ const data = Array.from({ length: 40 }, (_, i) => {
 	return {
 		key: i,
 		num: i,
-		user: "3/4",
-		nurse: "王晓霞",
-		open: false,
+		user: `${Random.integer(0, 10)}/10`,
+		nurse: Random.cname(),
+		open: Random.boolean(),
 	}
 })
 function RoomAllot() {
@@ -221,23 +231,7 @@ function RoomAllot() {
 				/>
 			</Card>
 			<div className={styles.right}>
-				<div className='mb-6 py-4'>
-					<Select placeholder='房间编号' style={{ width: 200 }} />
-					<Button className='ml-8' type='primary'>
-						<PlusOutlined />
-						新增房间
-					</Button>
-				</div>
-				<Table
-					rowSelection={{
-						selectedRowKeys: [],
-						onChange: () => {},
-					}}
-					columns={columns as any[]}
-					dataSource={data}
-					bordered
-					// scroll={{ x: 1000 }}
-				/>
+				<ProTable columns={columns} dataSource={data} bordered title='房间管理' />
 			</div>
 		</div>
 	)

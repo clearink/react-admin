@@ -11,13 +11,13 @@ import { momentToText } from "./utils"
 // 最基本的 date
 export type FieldDateRangeProps = Omit<RangePickerProps, "mode"> &
 	Pick<BaseProFieldProps, "mode" | "render" | "renderFormItem"> & {
-		text: [Moment, Moment] | [string | number, string | number]
+		value?: [Moment, Moment] | [string | number, string | number]
 		timeFormat?: string
 		fromNow?: boolean
 	}
 function FieldDateRange(props: FieldDateRangeProps) {
 	const {
-		text,
+		value,
 		mode,
 		render,
 		renderFormItem,
@@ -27,16 +27,12 @@ function FieldDateRange(props: FieldDateRangeProps) {
 		...rest
 	} = props
 	const timeValue = useMemo(() => {
-		if (!isArray(text)) return [moment.now(), moment.now()] // 不是数组 给过默认值
-		if (
-			(text as any[]).every((item) => isObject(item) && item instanceof moment)
-		)
-			return text
-		return (text as any[]).map((item) => moment(item))
-	}, [text])
+		if (!isArray(value)) return [moment(), moment()] // 不是数组 给默认值
+		return (value as any[]).map((item) => moment(item))
+	}, [value])
 	if (mode === "read") {
 		const dom = momentToText(timeValue, fromNow, timeFormat)
-		if (render) return render(text, { mode, ...rest }, dom)
+		if (render) return render(value, { mode, ...rest }, dom)
 		return dom
 	}
 	// picker 属性有问题 只能先用any
@@ -44,7 +40,7 @@ function FieldDateRange(props: FieldDateRangeProps) {
 		<DatePicker.RangePicker picker={picker as any} {...rest} />
 	)
 	if (renderFormItem)
-		return renderFormItem(text, { mode, ...rest }, formItemDom)
+		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom
 }
 export default memo(

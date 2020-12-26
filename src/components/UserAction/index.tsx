@@ -132,7 +132,7 @@ function UserAction(props: IProps) {
 															</Descriptions.Item>
 															<Descriptions.Item label='处理方式'>
 																<FieldRadio
-																	text='电话通知护管人员查看核实'
+																	value='电话通知护管人员查看核实'
 																	defaultValue='电话通知护管人员查看核实'
 																	className='field_radio'
 																	mode='edit'

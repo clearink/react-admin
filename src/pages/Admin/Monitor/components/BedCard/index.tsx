@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { memo, useContext, useEffect } from "react"
 import classNames from "classnames"
 import { Card, Progress, Space } from "antd"
 import styles from "./style.module.scss"
@@ -12,6 +12,7 @@ interface BedCardProps extends CardProps {}
 // 用户 Card
 function BedCard(props: BedCardProps) {
 	const { title } = props
+
 	const { toggle, setBcgId } = useContext(BCGContext)
 	const handleBcgDetail = () => {
 		toggle()
@@ -19,7 +20,6 @@ function BedCard(props: BedCardProps) {
 	}
 
 	const bedStatus = Random.integer(0, 2)
-	const albumStatus = Random.integer(0, 2)
 	return (
 		<Card
 			size='small'
@@ -76,4 +76,4 @@ function BedCard(props: BedCardProps) {
 	)
 }
 
-export default BedCard
+export default memo(BedCard)

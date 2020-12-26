@@ -1,16 +1,7 @@
 import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import {
-	Avatar,
-	Button,
-	DatePicker,
-	Form,
-	Input,
-	Select,
-	Space,
-	Table,
-} from "antd"
+import { Avatar, Button, DatePicker, Form, Input, Select, Space } from "antd"
 import {
 	DownloadOutlined,
 	PlusOutlined,
@@ -20,19 +11,32 @@ import {
 	UserOutlined,
 } from "@ant-design/icons"
 import { Link } from "react-router-dom"
+import { ProTableColumns } from "@/components/Pro/ProTable/type"
+import ProTable from "@/components/Pro/ProTable"
+import { FieldAvatarProps } from "@/components/Pro/ProField/components/FieldAvatar"
+import { Random } from "mockjs"
 
-const columns = [
+const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
 		dataIndex: "avatar",
-		render: () => <Avatar icon={<UserOutlined />} />,
+		field: "avatar",
+		fieldProps: {
+			icon: <UserOutlined />,
+		} as FieldAvatarProps,
 	},
 	{
 		title: "姓名",
 		dataIndex: "name",
+		search: true,
+		fieldProps: {
+			copyable: true,
+			placeholder: "性别/手机",
+			label: false,
+		},
 	},
 	{
-		title: "姓名",
+		title: "性别",
 		dataIndex: "sex",
 	},
 	{
@@ -42,18 +46,45 @@ const columns = [
 	{
 		title: "入住楼层",
 		dataIndex: "floor",
+		search: true,
+		field: "select",
+		fieldProps: {
+			placeholder: "选择楼层",
+			label: false,
+		},
 	},
 	{
 		title: "入住房间",
 		dataIndex: "room",
+		search: true,
+		fieldProps: {
+			placeholder: "选择房间",
+			label: false,
+		},
+	},
+	{
+		title: "时间",
+		dataIndex: "time",
+		search: true,
+		field: "date",
+		fieldProps: {
+			placeholder: "选择时间",
+			label: false,
+		},
 	},
 	{
 		title: "住户手机",
 		dataIndex: "phone",
+		fieldProps: {
+			copyable: true,
+		},
 	},
 	{
 		title: "紧急联系电话",
 		dataIndex: "sosPhone",
+		fieldProps: {
+			copyable: true,
+		},
 	},
 	{
 		title: "账号状态",
@@ -78,80 +109,25 @@ const columns = [
 const data = Array.from({ length: 50 }, (_, i) => {
 	return {
 		key: i,
-		avatar: 1,
-		name: "李小萌",
-		sex: "女",
-		age: 88,
-		floor: "主楼-一楼",
-		room: "101",
-		phone: "18088888888",
+		avatar: "21",
+		name: Random.cname(),
+		sex: Random.boolean() ? "男" : "女",
+		age: Random.integer(60, 80),
+		floor: `主楼-${Random.integer(1, 9)}楼`,
+		room: Random.integer(100, 500),
+		phone: Random.integer(13088888888, 18088888888),
 		sosPhone: "18088888888",
-		status: "离院",
+		status: Random.boolean() ? "在院" : "离院",
 	}
 })
 function Resident() {
 	return (
-		<>
-			<div
-				className={classNames(
-					styles.filter_bar,
-					"bg-white pt-8 px-8 flex justify-between items-start flex-col lg:flex-row"
-				)}
-			>
-				<Form>
-					<Space>
-						<Form.Item>
-							<Input placeholder='姓名/手机' />
-						</Form.Item>
-						<Form.Item>
-							<Select placeholder='选择楼层' />
-						</Form.Item>
-						<Form.Item>
-							<Select placeholder='选择房间' />
-						</Form.Item>
-						<Form.Item>
-							<Select placeholder='住户类型' />
-						</Form.Item>
-						<Form.Item>
-							<DatePicker />
-						</Form.Item>
-					</Space>
-				</Form>
-				<Space className='mb-6 lg:mb-0'>
-					<Button type='primary'>
-						<SearchOutlined />
-						查询
-					</Button>
-					<Button>
-						<RedoOutlined />
-						重置
-					</Button>
-				</Space>
-			</div>
-			<div className={classNames(styles.table_wrap, "mt-8 p-8 bg-white")}>
-				<Space className='mb-10'>
-					<Button type='primary'>
-						<PlusOutlined />
-						新增用户
-					</Button>
-					<Button>
-						<DownloadOutlined />
-						导入
-					</Button>
-					<Button>
-						<ToTopOutlined />
-						导出
-					</Button>
-				</Space>
-
-				<Table
-					bordered
-					columns={columns}
-					dataSource={data}
-					// scroll={{ x: 1200 }}
-				/>
-			</div>
-		</>
+		<ProTable
+			bordered
+			columns={columns}
+			dataSource={data}
+			// scroll={{ x: 1200 }}
+		/>
 	)
 }
 export default memo(Resident)

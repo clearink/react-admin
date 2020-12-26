@@ -4,6 +4,4 @@ import { FieldCheckboxProps } from "../../ProField/components/FieldCheckbox"
 
 export default withFormItem<
 	Omit<FieldCheckboxProps, "showTag"> & { showTag?: boolean }
->(FieldCheckbox, {
-	style: { width: "100%" },
-})
+>(FieldCheckbox)

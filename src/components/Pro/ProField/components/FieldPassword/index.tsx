@@ -14,13 +14,13 @@ import { PasswordProps } from "antd/lib/input"
 import { renderHiddenMark } from "./utils"
 
 interface FieldPasswordProps extends BaseProFieldProps, PasswordProps {
-	text: string
+	value: string
 	textVisible: boolean
 	hiddenMark: ReactNode
 }
 function FieldPassword(props: FieldPasswordProps, ref: Ref<any>) {
 	const {
-		text,
+		value,
 		mode,
 		render,
 		renderFormItem,
@@ -39,19 +39,19 @@ function FieldPassword(props: FieldPasswordProps, ref: Ref<any>) {
 	)
 
 	if (mode === "read") {
-		const dom = renderHiddenMark(text, hiddenMark, showPwd, setShowPwd)
+		const dom = renderHiddenMark(value, hiddenMark, showPwd, setShowPwd)
 		if (render)
-			return render(text, { mode, ...rest, textVisible, hiddenMark }, dom)
+			return render(value, { mode, ...rest, textVisible, hiddenMark }, dom)
 		return dom
 	}
 	const formDOM = <Input.Password ref={inputRef} {...rest} />
-	if (renderFormItem) return renderFormItem(text, { mode, ...rest }, formDOM)
+	if (renderFormItem) return renderFormItem(value, { mode, ...rest }, formDOM)
 	return formDOM
 }
 
 export default memo(
 	withDefaultProps(forwardRef(FieldPassword), {
-		text: "-",
+		value: "-",
 		hiddenMark: "*",
 		placeholder: "请输入",
 		textVisible: false,

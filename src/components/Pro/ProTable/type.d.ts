@@ -33,6 +33,7 @@ export type ProFieldType =
 	| "rate"
 	| "text"
 	| "orderNum"
+	| "option"
 export interface ProTableColumns<T extends object = any>
 	extends Omit<ColumnType<T>, "render"> {
 	field?: ProFieldType | "option"
@@ -54,6 +55,7 @@ export interface ProTableColumns<T extends object = any>
 			showTag?: boolean
 			options?: FieldOptionType[] | string[]
 			request?: RequestProps
+			placeholder?: ReactNode
 		}
 }
 
@@ -69,11 +71,23 @@ export interface ProTableProps<T extends object>
 		"columns" | "rowSelection" | "title" | "pagination"
 	> {
 	columns?: ProTableColumns<T>[]
+	/** 搜索改变 */
 	onSearch?: (
 		values: any,
 		dispatch: React.Dispatch<AnyAction>,
 		Actions: typeof actions
 	) => any
+	/** 页码改变 */
+	onCurrentChange?: (
+		data: typeof initialState,
+		dispatch: React.Dispatch<AnyAction>,
+		Actions: typeof actions,
+		page: number,
+		pageSize?: number
+	) => void
+	onDelete?: (
+		values: string[] // 需要删除的数据
+	) => void
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
 	request?: RequestProps
@@ -82,7 +96,8 @@ export interface ProTableProps<T extends object>
 	renderTitle?: (
 		state: typeof initialState,
 		dispatch: React.Dispatch<AnyAction>,
-		Actions: typeof actions
+		Actions: typeof actions,
+		dom: JSX.Element[]
 	) => JSX.Element
 	/** 转换数据 */
 	transform?: (

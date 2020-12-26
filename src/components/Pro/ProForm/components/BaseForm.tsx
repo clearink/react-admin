@@ -1,6 +1,6 @@
 import useBoolean from "@/hooks/useBoolean"
 import { Form } from "antd"
-import { ButtonProps } from "antd/lib/button"
+import Button, { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
 import React, {
 	forwardRef,
@@ -52,6 +52,7 @@ function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 		<ProFormContext.Provider value={form}>
 			<Form form={form} {...rest} onFinish={handleFinish}>
 				{children}
+				<Button hidden htmlType='submit' />
 				<Submitter
 					{...submitConfig}
 					submitProps={{ loading, ...submitConfig?.submitProps }}

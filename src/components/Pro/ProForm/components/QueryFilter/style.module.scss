@@ -13,7 +13,7 @@
 		transition: transform 0.2s;
 		margin-left: 6px;
 		&.collapsed {
-			transform: rotate(180deg);
+			transform: rotate(-180deg);
 		}
 	}
 }

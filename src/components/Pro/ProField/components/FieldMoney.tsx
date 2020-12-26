@@ -8,38 +8,41 @@ import React, {
 } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { InputNumber } from "antd"
-import { formatMoney, removeSeparator } from "@/utils/regExp"
+import { formatMoney, removeSeparator } from "@/utils/formatValues"
 import { BaseProFieldProps } from "../type"
 import { InputNumberProps } from "antd/lib/input-number"
 import { moneySign } from "../../utils"
 
-interface FieldMoneyProps extends BaseProFieldProps, InputNumberProps {
+export interface FieldMoneyProps
+	extends BaseProFieldProps,
+		Omit<InputNumberProps, "value"> {
 	locale?: keyof typeof moneySign
+	value: string | number
 }
 
 function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
-	const { text, mode, render, renderFormItem, locale, ...rest } = props
+	const { mode, render, renderFormItem, locale, value, ...rest } = props
 
 	const inputRef = useRef()
 	useImperativeHandle(ref, () => inputRef.current ?? {}, [])
 
-	const prefix = useMemo(() => moneySign[locale ?? ""], [locale]) // 前缀
+	const prefix = useMemo(() => moneySign[locale ?? ""] ?? "", [locale]) // 前缀
 
 	if (mode === "read") {
-		const money = formatMoney(text)
+		const money = formatMoney(value ?? 0)
 		const dom = <span>{`${prefix}${money}`}</span>
-		if (render) return render(text, { mode, ...rest }, dom)
+		if (render) return render(value, { mode, ...rest }, dom)
 		return dom
 	}
 	const formItemDom = <InputNumber ref={inputRef} {...rest} />
 	if (renderFormItem)
-		return renderFormItem(text, { mode, ...rest }, formItemDom)
+		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom
 }
 
 export default memo(
 	withDefaultProps(forwardRef(FieldMoney), {
-		text: "0",
+		value: "0",
 		mode: "read",
 		locale: "zh-cn",
 		placeholder: "请输入",

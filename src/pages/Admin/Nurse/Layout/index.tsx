@@ -20,7 +20,7 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 					onTabClick={(path) => push(path)}
 				>
 					<Tabs.TabPane tab='护管列表' key='/nurse'></Tabs.TabPane>
-					<Tabs.TabPane tab='护理设置' key='/nurse/setting'></Tabs.TabPane>
+					{/* <Tabs.TabPane tab='护理设置' key='/nurse/setting'></Tabs.TabPane> */}
 				</Tabs>
 			</CommonHeader>
 			<main className={styles.content_wrap}>{children}</main>

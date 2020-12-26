@@ -14,35 +14,21 @@ import { FieldDateTimeRangeProps } from "@/components/Pro/ProField/components/Fi
 import { FieldFormNowProps } from "@/components/Pro/ProField/components/FieldDate/FieldFromNow"
 import { FieldTimeProps } from "@/components/Pro/ProField/components/FieldDate/FieldTime"
 
-export const ProFormDate = withFormItem<FieldDateProps>(FieldDate, {
-	style: { width: "100%" },
-})
+export const ProFormDate = withFormItem<FieldDateProps>(FieldDate)
 
-export const ProFormDateTime = withFormItem<FieldDateTimeProps>(FieldDateTime, {
-	style: { width: "100%" },
-})
+export const ProFormDateTime = withFormItem<FieldDateTimeProps>(FieldDateTime)
 
 export const ProFormDateRange = withFormItem<FieldDateRangeProps>(
-	FieldDateRange,
-	{
-		style: { width: "100%" },
-	}
+	FieldDateRange
 )
 
 // time picker
-export const ProFormTime = withFormItem<FieldTimeProps>(FieldTime, {
-	style: { width: "100%" },
-})
+export const ProFormTime = withFormItem<FieldTimeProps>(FieldTime)
 
 // from now
-export const ProFormFromNow = withFormItem<FieldFormNowProps>(FieldFromNow, {
-	style: { width: "100%" },
-})
+export const ProFormFromNow = withFormItem<FieldFormNowProps>(FieldFromNow)
 
 // range picker
 export const ProFormDateTimeRange = withFormItem<FieldDateTimeRangeProps>(
-	FieldDateTimeRange,
-	{
-		style: { width: "100%" },
-	}
+	FieldDateTimeRange
 )

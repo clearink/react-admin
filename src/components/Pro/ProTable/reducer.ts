@@ -8,8 +8,6 @@ export const initialState = {
 	total: 0,
 	loading: false as ButtonProps["loading"],
 	selectedRows: [] as any[],
-	// params
-	defaultParams: {},
 	params: {}, // querySearch表单值
 }
 
@@ -17,13 +15,6 @@ export const { reducer, actions } = createSlice({
 	name: "proTable",
 	initialState: initialState,
 	reducers: {
-		// 下一页
-		nextCurrent(state) {
-			state.current += 1
-		},
-		preCurrent(state) {
-			state.current -= 1
-		},
 		// 改变 选中
 		changeSelectedRows(state, action: PayloadAction<any[]>) {
 			// 默认是使用id 如何能够让用户修改
@@ -47,15 +38,15 @@ export const { reducer, actions } = createSlice({
 		changeTotal(state, action: PayloadAction<number>) {
 			state.total = action.payload
 		},
-		changeDefaultParams(state, action: PayloadAction<object>) {
-			state.defaultParams = action.payload
-		},
 		changeParams(state, action: PayloadAction<object>) {
 			state.params = action.payload
 		},
 		// 重置
-		reset() {
-			return initialState
+		reset(state) {
+			// hack: params 修改指向 fetchData 重新请求数据
+			// hack: 保留 data ,个人习惯
+			state.params = {}
+			state.current = 1
 		},
 	},
 })

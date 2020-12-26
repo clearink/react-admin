@@ -20,7 +20,13 @@ function withFormItem<T extends BaseProFieldProps>(
 			</Form.Item>
 		)
 	}
-	return memo(withDefaultProps(FormItem, { mode: "edit", ...options }))
+	return memo(
+		withDefaultProps(FormItem, {
+			mode: "edit",
+			style: { width: "100%" },
+			...(options ?? {}),
+		})
+	)
 }
 
 export default withFormItem

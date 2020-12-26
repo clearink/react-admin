@@ -15,30 +15,31 @@ export interface FieldTextProps
 		Omit<TextProps, "type">,
 		InputProps {
 	textType?: TextProps["type"]
+	value: string
 }
 
 function FieldText(props: FieldTextProps) {
-	const { mode, render, renderFormItem, text, ...rest } = props
+	const { mode, render, renderFormItem, value, ...rest } = props
 	const editProps = FilterValue(rest, ...TextPropsArray)
 	const readProps = GetValue(rest, ...TextPropsArray, "className", "style")
 	if (mode === "read") {
 		const dom = (
 			<Typography.Text {...readProps} type={readProps.textType}>
-				{text}
+				{value}
 			</Typography.Text>
 		)
-		if (render) return render(text, { mode, ...readProps }, dom)
+		if (render) return render(value, { mode, ...readProps }, dom)
 		return dom
 	}
 	const formItemDom = <Input placeholder='请输入' {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(text, { mode, ...rest }, formItemDom)
+		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom
 }
 export default memo(
 	withDefaultProps(FieldText, {
 		mode: "read",
-		text: "",
+		value: "",
 	})
 )
 

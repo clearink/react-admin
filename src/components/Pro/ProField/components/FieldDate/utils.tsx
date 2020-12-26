@@ -1,10 +1,11 @@
 import React from "react"
 import { Space } from "antd"
+import { Moment } from "moment"
 import { isArray } from "@/utils/validate"
 
 // 将 timeValue转成字符
 export function momentToText(
-	timeValue: any,
+	timeValue: Moment | Moment[],
 	fromNow?: boolean,
 	timeFormat?: string
 ): JSX.Element {
@@ -15,7 +16,9 @@ export function momentToText(
 			</Space>
 		)
 	return (
-		<span>{fromNow ? timeValue.fromNow() : timeValue.format(timeFormat)}</span>
+		<span key={timeValue.unix()}>
+			{fromNow ? timeValue.fromNow() : timeValue.format(timeFormat)}
+		</span>
 	)
 }
 /*

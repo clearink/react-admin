@@ -11,49 +11,43 @@ export interface FieldRadioProps
 	extends BaseProFieldProps,
 		Omit<RadioGroupProps, "name"> {
 	radioName?: RadioGroupProps["name"]
-	text?: string | number
+	value?: string | number
 	showTag: boolean
 	request?: RequestProps
 }
 
 function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 	const {
-		text,
+		value,
 		mode,
 		render,
 		renderFormItem,
 		fieldEnum,
 		request,
 		showTag,
+		options: PO,
 		...rest
 	} = props
 
 	const { data } = useFetchData(request) // fetchUrl === undefined 不发送请求
 
 	const options = useMemo(() => {
-		if (rest.options) return rest.options // 直接设置的 options 优先级最高
+		if (PO) return PO // 直接设置的 options 优先级最高
 		if (isArray(data)) return data as any
 		return []
-	}, [data, rest.options])
+	}, [data, PO])
 
 	if (mode === "read") {
 		const dom = (
-			<span>
-				{renderStatusFromOption(
-					rest.value ?? text,
-					options,
-					fieldEnum,
-					showTag
-				)}
-			</span>
+			<span>{renderStatusFromOption(value, options, fieldEnum, showTag)}</span>
 		)
-		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
+		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
 	const formItemDom = <Radio.Group options={options} {...rest} />
 	if (renderFormItem)
 		return renderFormItem<Partial<FieldRadioProps>>(
-			text,
+			value,
 			{ mode, ...rest, fieldEnum, options },
 			formItemDom
 		)
@@ -62,7 +56,7 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 
 export default memo(
 	withDefaultProps(forwardRef(FieldRadio), {
-		text: "",
+		value: "",
 		mode: "read",
 		showTag: true,
 	})

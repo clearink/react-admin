@@ -6,23 +6,23 @@ import { FieldCodeProps } from "./FieldCode"
 // 自动将text json 格式化
 
 interface FieldJsonProps extends FieldCodeProps {
-	text: string
+	value: string
 	space: number
 }
 function FieldJson(props: FieldJsonProps) {
-	const { text, space, ...rest } = props
+	const { value, space, ...rest } = props
 	const jsonText = useMemo(() => {
 		try {
-			return JSON.stringify(JSON.parse(text), null, space)
+			return JSON.stringify(JSON.parse(value), null, space)
 		} catch (error) {
-			return text
+			return value
 		}
-	}, [space, text])
-	return <FieldCode text={jsonText} {...rest} />
+	}, [space, value])
+	return <FieldCode value={jsonText} {...rest} />
 }
 export default memo(
 	withDefaultProps(FieldJson, {
-		text: "",
+		value: "",
 		space: 2,
 		mode: "read",
 	})

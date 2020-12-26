@@ -4,10 +4,20 @@ import styles from "./style.module.scss"
 import { Button, Form, Input, Space, Switch, Table } from "antd"
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons"
 import ModalTrigger from "@/components/ModalTrigger"
-const columns = [
+import { Random } from "mockjs"
+import ProTable from "@/components/Pro/ProTable"
+import { ProTableColumns } from "@/components/Pro/ProTable/type"
+import { InputProps } from "antd/lib/input"
+const columns: ProTableColumns[] = [
 	{
 		title: "方案名称",
 		dataIndex: "name",
+		search: true,
+		fieldProps: {
+			label: false,
+			placeholder: "方案名称",
+			suffix: <SearchOutlined />,
+		} as any,
 	},
 	{
 		title: "提醒渠道",
@@ -34,40 +44,16 @@ const columns = [
 const data = Array.from({ length: 100 }, (_, i) => {
 	return {
 		key: i,
-		name: "提醒方案0",
-		type: "设备",
-		status: true,
+		name: `提醒方案${i}`,
+		type: Random.boolean() ? "设备" : "设备 / 公众号",
+		status: Random.boolean(),
 	}
 })
 // 提醒设置
 function Remind() {
 	return (
-		<div className='h-full bg-white p-6'>
-			<Form>
-				<Space>
-					<Form.Item>
-						<Input suffix={<SearchOutlined />} placeholder='方案名称' />
-					</Form.Item>
-					<Form.Item>
-						<ModalTrigger
-							trigger={
-								<Button type='primary'>
-									<PlusOutlined />
-									新增提醒
-								</Button>
-							}
-						>
-							新增提醒表单
-						</ModalTrigger>
-					</Form.Item>
-				</Space>
-			</Form>
-			<Table
-				dataSource={data}
-				columns={columns}
-				bordered
-				// scroll={{ x: 1000 }}
-			/>
+		<div className='h-full bg-white'>
+			<ProTable dataSource={data} columns={columns} bordered />
 		</div>
 	)
 }

@@ -1,23 +1,10 @@
-import React, { ComponentType } from "react"
-import {
-	ProFormDate,
-	ProFormDight,
-	ProFormSelect,
-	ProFormText,
-} from "../ProForm/components"
+import React from "react"
+import { formItemMap, ProFormText } from "../ProForm"
 import { ProFieldType } from "../ProTable/type"
 
-export const formItemMap: { [key: string]: ComponentType<any> } = {
-	text: ProFormText,
-	orderNum: ProFormText,
-	select: ProFormSelect,
-	digit: ProFormDight,
-	date: ProFormDate,
-}
-
-function renderQueryFilter(QFArray: Array<[ProFieldType, object]>) {
+function renderQueryFilter(QFArray: Array<[ProFieldType | undefined, object]>) {
 	return QFArray.map(([type, props]) => {
-		const QueryComponent = formItemMap[type] ?? ProFormText
+		const QueryComponent = formItemMap[type ?? "text"] ?? ProFormText
 		return <QueryComponent {...props} />
 	})
 }

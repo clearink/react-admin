@@ -9,51 +9,48 @@ import { isArray } from "@/utils/validate"
 
 export interface FieldCheckboxProps
 	extends BaseProFieldProps,
-		CheckboxGroupProps {
+		Omit<CheckboxGroupProps, "value"> {
 	options?: string[] | Array<FieldOptionType>
 	/** 使用 tag 渲染文本 */
 	showTag: boolean
 	request?: RequestProps
+	value: CheckboxGroupProps["value"]
 }
 
 function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 	const {
-		text,
 		mode,
 		render,
 		renderFormItem,
 		fieldEnum,
 		request, // 请求
 		showTag,
+		options: PO,
+		value,
 		...rest
 	} = props
 
 	const { data } = useFetchData(request) // fetchUrl === undefined 不发送请求
 
 	const options = useMemo(() => {
-		if (rest.options) return rest.options // 直接设置的 options 优先级最高
+		if (PO) return PO // 直接设置的 options 优先级最高
 		if (isArray(data)) return data as any
 		return []
-	}, [data, rest.options])
+	}, [data, PO])
 
 	if (mode === "read") {
 		const dom = (
 			<span>
-				{renderStatusFromOption(
-					rest?.value ?? text,
-					options,
-					fieldEnum,
-					showTag
-				)}
+				{renderStatusFromOption(value ?? "", options, fieldEnum, showTag)}
 			</span>
 		)
-		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
+		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
 	const formItemDom = <Checkbox.Group options={options} {...rest} />
 	if (renderFormItem)
 		return renderFormItem(
-			rest?.value ?? text,
+			value,
 			{ mode, ...rest, fieldEnum, options },
 			formItemDom
 		)

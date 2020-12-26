@@ -5,6 +5,4 @@ import FieldRadio, {
 
 export default withFormItem<
 	Omit<FieldRadioProps, "showTag"> & { showTag?: boolean }
->(FieldRadio, {
-	style: { width: "100%" },
-})
+>(FieldRadio)

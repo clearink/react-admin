@@ -61,6 +61,4 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 	)
 }
 
-export default withFormItem<ProFormCaptchaProps>(ProFormCaptcha, {
-	style: { width: "100%" },
-})
+export default withFormItem<ProFormCaptchaProps>(ProFormCaptcha)
