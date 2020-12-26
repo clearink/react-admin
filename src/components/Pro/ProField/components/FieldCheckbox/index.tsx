@@ -53,7 +53,7 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 	const formItemDom = <Checkbox.Group options={options} {...rest} />
 	if (renderFormItem)
 		return renderFormItem(
-			text,
+			rest?.value ?? text,
 			{ mode, ...rest, fieldEnum, options },
 			formItemDom
 		)

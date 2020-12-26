@@ -10,7 +10,7 @@ export const initialState = {
 	selectedRows: [] as any[],
 	// params
 	defaultParams: {},
-	params: {},// querySearch表单值
+	params: {}, // querySearch表单值
 }
 
 export const { reducer, actions } = createSlice({
@@ -46,6 +46,12 @@ export const { reducer, actions } = createSlice({
 		},
 		changeTotal(state, action: PayloadAction<number>) {
 			state.total = action.payload
+		},
+		changeDefaultParams(state, action: PayloadAction<object>) {
+			state.defaultParams = action.payload
+		},
+		changeParams(state, action: PayloadAction<object>) {
+			state.params = action.payload
 		},
 		// 重置
 		reset() {

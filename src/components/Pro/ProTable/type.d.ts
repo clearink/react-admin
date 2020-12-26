@@ -1,6 +1,6 @@
 import { TextProps } from "antd/lib/typography/Text"
 import { FormItemProps } from "antd/lib/form"
-import { ColumnType,TableProps } from "antd/lib/table"
+import { ColumnType, TableProps } from "antd/lib/table"
 import { ReactNode } from "react"
 import {
 	BaseProFieldProps,
@@ -69,7 +69,11 @@ export interface ProTableProps<T extends object>
 		"columns" | "rowSelection" | "title" | "pagination"
 	> {
 	columns?: ProTableColumns<T>[]
-	onSearch?: (values: any) => any
+	onSearch?: (
+		values: any,
+		dispatch: React.Dispatch<AnyAction>,
+		Actions: typeof actions
+	) => any
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
 	request?: RequestProps

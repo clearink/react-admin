@@ -64,8 +64,11 @@ function WorkPlace(props: IBaseProps) {
 					columns={columns}
 					rowKey='id'
 					// 搜索请求
-					onSearch={async (values) => {
-						await sleep(1000)
+					onSearch={async (values, dispatch, actions) => {
+						// 1. 过滤 undefined
+						// 2. dispatch 改变 params
+						console.log(values)
+						dispatch(actions.changeParams(values))
 					}}
 					transform={(OD, dispatch, actions) => {
 						if (!OD) return // 转换请求的数据

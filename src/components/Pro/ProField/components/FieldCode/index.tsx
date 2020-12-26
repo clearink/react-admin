@@ -28,6 +28,7 @@ function FieldCode(props: FieldCodeProps) {
 	)
 	if (renderFormItem)
 		return renderFormItem(
+			// rest?.value ?? text,
 			text,
 			{ mode, ...rest, ...formItemProps },
 			formItemDom

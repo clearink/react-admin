@@ -9,6 +9,7 @@ import React, {
 	useLayoutEffect,
 	useMemo,
 	useReducer,
+	useState,
 } from "react"
 import { Alert, Button, Space, Table, Tooltip } from "antd"
 import classNames from "classnames"
@@ -21,7 +22,13 @@ import { nanoid } from "@reduxjs/toolkit"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { TitleTip } from "../ProCard/components"
 import { FieldText, ProFieldMap } from "../ProField"
-import { isFunction, isNumber, isString } from "@/utils/validate"
+import {
+	isFunction,
+	isNumber,
+	isObject,
+	isString,
+	isUndefined,
+} from "@/utils/validate"
 import useFetchData from "@/hooks/useFetchData"
 import { actions, initialState, reducer } from "./reducer"
 import {
@@ -64,11 +71,26 @@ function ProTable<T extends object>(
 	} = props
 
 	const [reducerState, dispatch] = useReducer(reducer, initialState)
-
+	const [cc, setCC] = useState(0)
+	const [url, defaultParams] = useDeepMemo(() => {
+		if (isObject(request?.url))
+			return [request?.url.url ?? "", request?.url.params ?? {}]
+		return [request?.url ?? "", {}]
+	}, [request])
 	const { data, loading: fetchLoading, reload } = useFetchData({
 		...request,
+		url: {
+			url,
+			params: { ...defaultParams, ...reducerState.params },
+		},
 		cache: false,
 	})
+
+	useEffect(() => {
+		if (isObject(request?.url) && !!request?.url.params)
+			dispatch(actions.changeDefaultParams(request?.url.params))
+	}, [request])
+
 	useEffect(() => {
 		dispatch(actions.changeLoading(fetchLoading))
 	}, [fetchLoading])
@@ -242,7 +264,7 @@ function ProTable<T extends object>(
 			</div>
 		)
 	})()
-
+	console.log("cccc", cc)
 	const tableTitle = (() => {
 		const DOM = (
 			<>
@@ -250,7 +272,11 @@ function ProTable<T extends object>(
 					<div className={styles.title}>{TT}</div>
 					<div className={styles.extra}>
 						<Space>
-							<Button type='primary' icon={<PlusOutlined />}>
+							<Button
+								type='primary'
+								icon={<PlusOutlined />}
+								onClick={() => setCC((p) => p + 1)}
+							>
 								新增数据
 							</Button>
 							<Button icon={<DownloadOutlined />}>导入数据</Button>
@@ -279,7 +305,7 @@ function ProTable<T extends object>(
 
 	const handleSearch = async (values: any) => {
 		dispatch(actions.changeLoading({ delay: 100 }))
-		await onSearch?.(values)
+		await onSearch?.(values, dispatch, actions)
 		dispatch(actions.changeLoading(false))
 	}
 

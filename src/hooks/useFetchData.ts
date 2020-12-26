@@ -63,26 +63,31 @@ export default function useFetchData(props?: RequestProps) {
 		if (preData) dispatch(actions.setData(memoData.current)) // 优先返回缓存
 	}, [fetchUrl, kvEntities, params])
 
+	const fetchData = useCallback(
+		async (TF) => {
+			try {
+				// 存在 直接保存
+				const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
+				dispatch(actions.startFetch()) // 发起请求
+				const { data } = await http[method as any]?.(fetchUrl, params)
+				const result = TF?.(data) ?? data
+				dispatch(actions.setData(result)) // save data
+				// save data to store
+				if (cache) boundKvActions.add({ key: realUrl, value: result })
+			} catch (error) {
+				dispatch(actions.setError(error)) // save error
+			}
+		},
+		[cache, fetchUrl, method, params]
+	)
+
 	useMemoEffect(
 		(TF) => {
 			// 请求地址为空 或者 不允许请求 或者已经在redux中有数据了 直接 return
-			if (isUndefined(fetchUrl) || !fetch || memoData.current) return
-			;(async () => {
-				try {
-					// 存在 直接保存
-					const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
-					dispatch(actions.startFetch()) // 发起请求
-					const { data } = await http[method as any]?.(fetchUrl, params)
-					const result = TF?.(data) ?? data
-					dispatch(actions.setData(result)) // save data
-					// save data to store
-					if (cache) boundKvActions.add({ key: realUrl, value: result })
-				} catch (error) {
-					dispatch(actions.setError(error)) // save error
-				}
-			})()
+			if (!fetchUrl || !fetch || memoData.current) return
+			fetchData(TF)
 		},
-		[fetchUrl, params, fetch, method, cache, count],
+		[fetch, fetchData, fetchUrl, count],
 		transform
 	)
 
