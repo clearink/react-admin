@@ -18,7 +18,13 @@ export interface FieldCodeProps
 function FieldCode(props: FieldCodeProps) {
 	const { mode, render, renderFormItem, value, ...rest } = props
 	const editProps = FilterValue(rest, ...paragraphPropsArray)
-	const readProps = GetValue(rest, ...paragraphPropsArray, "className", "style")
+	const readProps = GetValue(
+		rest,
+		...paragraphPropsArray,
+		"className",
+		"style",
+		"disabled"
+	)
 	if (mode === "read") {
 		const dom = (
 			<Typography.Paragraph {...readProps}>
@@ -31,7 +37,12 @@ function FieldCode(props: FieldCodeProps) {
 		return dom
 	}
 	const formItemDom = (
-		<Input.TextArea placeholder='请输入' rows={10} {...editProps} />
+		<Input.TextArea
+			placeholder='请输入'
+			rows={10}
+			value={value}
+			{...editProps}
+		/>
 	)
 	if (renderFormItem)
 		return renderFormItem(
@@ -44,7 +55,6 @@ function FieldCode(props: FieldCodeProps) {
 }
 export default memo(
 	withDefaultProps(FieldCode, {
-		text: "",
 		mode: "read",
 	})
 )
@@ -52,7 +62,7 @@ const paragraphPropsArray = [
 	"code",
 	"copyable",
 	"delete",
-	"disabled",
+
 	"editable",
 	"ellipsis",
 	"keyboard",

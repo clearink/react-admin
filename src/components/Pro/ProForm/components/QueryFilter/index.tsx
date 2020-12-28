@@ -14,8 +14,6 @@ import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
 import { QFColSpan, QFColSpanArray } from "./QFColSpan"
 import styles from "./style.module.scss"
-import { ButtonProps } from "antd/lib/button"
-import { render } from "@testing-library/react"
 // 查询筛选表单
 // 未测试完全 可能有bug
 // <QueryFilter submitConfig={{render:()=>null}} />
@@ -136,9 +134,9 @@ function QueryFilter(props: QueryFilterProps) {
 		>
 			<BaseForm
 				submitConfig={submitter}
-				{...rest}
 				layout={breakpoints.lg ? "horizontal" : "vertical"}
-				className='flex flex-wrap'
+				{...rest}
+				className={"flex flex-wrap"}
 			>
 				{renderChildren}
 			</BaseForm>

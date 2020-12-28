@@ -15,7 +15,7 @@ export interface FieldSelectProps
 	options?: string[] | Array<FieldOptionType>
 	showTag: boolean // 是否使用 tag 渲染 text
 	request?: useFetchDataProps
-	value: string | number | Array<string | number>
+	value?: string | number | Array<string | number>
 }
 /**
  * 1. fieldEnum 是 Array 
@@ -66,6 +66,7 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 		<Select
 			loading={loading && options.length === 0}
 			{...rest}
+			value={value as any[]}
 			mode={selectMode}
 			options={options as any} // any script
 		/>

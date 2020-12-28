@@ -75,7 +75,9 @@ function FieldPercent(props: FieldPercentProps, ref: Ref<any>) {
 		return dom
 	}
 	// 渲染 form
-	const formDom = <InputNumber {...rest} ref={inputRef} placeholder='请输入' />
+	const formDom = (
+		<InputNumber {...rest} value={value} ref={inputRef} placeholder='请输入' />
+	)
 	if (renderFormItem) return renderFormItem(value, { mode }, formDom)
 	return formDom
 }

@@ -87,16 +87,17 @@ export function formatTableSearchParams(
 	const { filters, pagination, sorter, params, form } = values
 	const result: BigSiteQueryProps = { ...(params ?? {}) }
 
-	// 筛选相关当前公司无该选项
+	// 筛选相关  当前公司无该选项
 	if (filters) {
 	}
+
 	if (form) {
 		// 搜索字段
+		// 搜索时 默认返回第一页
+		result.pageNo = 1
 		Object.assign(result, removeEmpty(form))
 	}
-	// 搜索时 默认返回第一页
-	result.pageNo = 1
-	result.pageSize = 10
+
 	// 分页相关
 	if (pagination && Object.keys(pagination).length) {
 		result.pageNo = pagination.current

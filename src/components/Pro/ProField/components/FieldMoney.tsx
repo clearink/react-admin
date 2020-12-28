@@ -34,7 +34,7 @@ function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
 		if (render) return render(value, { mode, ...rest }, dom)
 		return dom
 	}
-	const formItemDom = <InputNumber ref={inputRef} {...rest} />
+	const formItemDom = <InputNumber ref={inputRef} value={Number(value)} {...rest} />
 	if (renderFormItem)
 		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom

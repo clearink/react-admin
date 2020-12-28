@@ -5,7 +5,7 @@ import { isArray } from "@/utils/validate"
 
 // 将 timeValue转成字符
 export function momentToText(
-	timeValue: Moment | Moment[],
+	timeValue: Moment | [Moment, Moment],
 	fromNow?: boolean,
 	timeFormat?: string
 ): JSX.Element {

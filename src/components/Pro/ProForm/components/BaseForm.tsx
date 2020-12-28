@@ -1,7 +1,5 @@
-import useBoolean from "@/hooks/useBoolean"
-import { sleep } from "@/utils/test"
 import { Form } from "antd"
-import Button, { ButtonProps } from "antd/lib/button"
+import { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
 import React, {
 	forwardRef,
@@ -30,7 +28,7 @@ function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false) // submit loading 效果
 	useEffect(() => {
-		setLoading(!!propsLoading)
+		setLoading(propsLoading)
 	}, [propsLoading])
 
 	const [form] = Form.useForm(propsForm)

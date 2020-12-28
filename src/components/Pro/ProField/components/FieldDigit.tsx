@@ -19,7 +19,7 @@ function FieldDigit(props: FieldDigitProps, ref: Ref<any>) {
 	// 渲染 form
 	if (renderFormItem)
 		return renderFormItem(value, { mode, ...rest }, <>{value}</>)
-	return <InputNumber {...rest} />
+	return <InputNumber value={value} {...rest} />
 }
 
 export default memo(

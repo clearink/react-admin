@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { IBaseProps } from "@/@types/fc"
-import { Form, Input, Button, message } from "antd"
+import { Form, Input, Button } from "antd"
 import { Store } from "antd/lib/form/interface"
 import { useHistory } from "react-router-dom"
 import { actions } from "@/store/reducers/user"

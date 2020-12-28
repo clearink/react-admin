@@ -80,7 +80,7 @@ function ProCard(props: IProCardProps) {
 			<div className={styles.card_head}>
 				<div className={styles.card_head_wrap}>
 					<div className={styles.head_title}>
-						{title && <TitleTip title={title} tooltip={tip} />}
+						{title && <TitleTip title={{ title, tooltip: tip }} />}
 					</div>
 					<div className={styles.head_extra}>{extra}</div>
 				</div>

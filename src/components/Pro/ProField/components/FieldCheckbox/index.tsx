@@ -47,7 +47,9 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
-	const formItemDom = <Checkbox.Group options={options} {...rest} />
+	const formItemDom = (
+		<Checkbox.Group options={options} value={value} {...rest} />
+	)
 	if (renderFormItem)
 		return renderFormItem(
 			value,
@@ -59,7 +61,6 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 
 export default memo(
 	withDefaultProps(forwardRef(FieldCheckbox), {
-		text: "",
 		mode: "read",
 		showTag: true,
 	})

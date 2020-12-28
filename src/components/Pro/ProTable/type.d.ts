@@ -1,3 +1,4 @@
+import { TitleTipProps } from "./../ProCard/components/TitleTip/index"
 import { TextProps } from "antd/lib/typography/Text"
 import { FormItemProps } from "antd/lib/form"
 import { ColumnType, TableProps } from "antd/lib/table"
@@ -76,7 +77,7 @@ export interface ProTableProps<T extends object>
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
 	request?: useFetchDataProps
-	title?: string | { title: string; tooltip: string }
+	title?: TitleTipProps["title"]
 	/** 渲染title */
 	renderTitle?: (
 		state: typeof initialState,

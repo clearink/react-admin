@@ -175,9 +175,9 @@ function ProTable<T extends object>(
 	const memoOnDelete = useRef(onDelete)
 	memoOnDelete.current = onDelete
 	const handleDelete = () => {
-		Modal.confirm({
+		Modal.warning({
 			title: "确定要删除该数据吗?",
-			icon: <ExclamationCircleOutlined />,
+			content: "操作后该数据将会移除 请注意!!",
 			async onOk() {
 				await memoOnDelete.current?.(reducerState.selectedRows)
 				// 没啥用
@@ -218,6 +218,7 @@ function ProTable<T extends object>(
 			<div className={styles.pro_table_wrap}>
 				{/* proTable 暂时不提供对 query filter 的配置 后续会增强 search 字段的功能 */}
 				<QueryFilter
+					loading={reducerState.loading}
 					className={classNames("mb-10", {
 						hidden: !search,
 					})}
@@ -270,6 +271,7 @@ function ProTable<T extends object>(
 export default memo(
 	withDefaultProps(forwardRef(ProTable), {
 		search: true,
+		size: "middle",
 		rowKey: "key",
 	}),
 	dequal // 深对比 减少re render

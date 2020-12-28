@@ -35,7 +35,7 @@ export default function renderTableColumn<T extends object>(
 		const ProField = ProFieldMap[field ?? "text"] ?? FieldText
 		let DOM = <ProField {...fieldProps} />
 		const colElement: ProTableColumns = {
-			title: () => <TitleTip title={title} tooltip={tooltip} />,
+			title: () => <TitleTip title={{ title, tooltip }} />,
 			render: (text, record, index) => {
 				if (CR) return CR(text, record, index, TableAction)
 

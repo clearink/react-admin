@@ -21,7 +21,14 @@ export interface FieldTextProps
 function FieldText(props: FieldTextProps) {
 	const { mode, render, renderFormItem, value, ...rest } = props
 	const editProps = FilterValue(rest, ...TextPropsArray)
-	const readProps = GetValue(rest, ...TextPropsArray, "className", "style")
+	const readProps = GetValue(
+		rest,
+		...TextPropsArray,
+		"className",
+		"style",
+		"disabled"
+	)
+	console.log("editProps", editProps)
 	if (mode === "read") {
 		const dom = (
 			<Typography.Text {...readProps} type={readProps.textType}>
@@ -31,7 +38,9 @@ function FieldText(props: FieldTextProps) {
 		if (render) return render(value, { mode, ...readProps }, dom)
 		return dom
 	}
-	const formItemDom = <Input placeholder='请输入' {...editProps} />
+	const formItemDom = (
+		<Input placeholder='请输入' value={value} {...editProps} />
+	)
 	if (renderFormItem)
 		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom
@@ -48,7 +57,6 @@ const TextPropsArray = [
 	"code",
 	"copyable",
 	"delete",
-	"disabled",
 	"editable",
 	"ellipsis",
 	"keyboard",

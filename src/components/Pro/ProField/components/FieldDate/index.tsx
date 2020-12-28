@@ -2,7 +2,6 @@ import React, { memo, useMemo } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { DatePicker } from "antd"
 import { DatePickerProps } from "antd/lib/date-picker"
-import { isObject } from "@/utils/validate"
 import moment, { Moment } from "moment"
 import { BaseProFieldProps } from "../../type"
 
@@ -40,7 +39,9 @@ function FieldDate(props: FieldDateProps) {
 		return dom
 	}
 	// picker 属性有问题 只能先用any
-	const formItemDom = <DatePicker {...rest} picker={rest.picker as any} />
+	const formItemDom = (
+		<DatePicker value={timeValue} {...rest} picker={rest.picker as any} />
+	)
 	if (renderFormItem)
 		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom

@@ -43,6 +43,7 @@ function FieldProgress(props: FieldProgressProps, ref: Ref<any>) {
 			min={0}
 			max={100}
 			placeholder='请输入'
+			value={numberValue}
 			{...editProps}
 		/>
 	)

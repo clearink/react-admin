@@ -15,7 +15,7 @@ function FieldAvatar(props: FieldAvatarProps) {
 	}
 	// TODO
 	// 将children 设置为 trigger
-	const formItemDom = <Upload />
+	const formItemDom = <Upload  />
 	if (renderFormItem)
 		return renderFormItem(value, { mode, ...rest }, formItemDom)
 	return formItemDom

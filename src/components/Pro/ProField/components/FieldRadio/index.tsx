@@ -44,7 +44,7 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
-	const formItemDom = <Radio.Group options={options} {...rest} />
+	const formItemDom = <Radio.Group options={options} value={value} {...rest} />
 	if (renderFormItem)
 		return renderFormItem<Partial<FieldRadioProps>>(
 			value,

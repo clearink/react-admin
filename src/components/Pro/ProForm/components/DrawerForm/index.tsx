@@ -1,22 +1,19 @@
 import { TitleTip } from "@/components/Pro/ProCard/components"
+import { TitleTipProps } from "@/components/Pro/ProCard/components/TitleTip"
 import useBoolean from "@/hooks/useBoolean"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { Drawer } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { DrawerProps } from "antd/lib/drawer"
-import { dequal } from "dequal"
 import React, {
 	cloneElement,
 	isValidElement,
 	memo,
 	ReactNode,
 	useMemo,
-	useReducer,
-	useRef,
 	useState,
 } from "react"
 import { createPortal } from "react-dom"
-import { isString } from "util"
 import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
 import Submitter from "../Submitter"
@@ -25,7 +22,7 @@ export interface DrawerFormProps extends Omit<BaseFormProps, "title"> {
 	children?: ReactNode
 	trigger: JSX.Element
 	drawerProps?: Omit<DrawerProps, "title">
-	title?: string | { title: string; tooltip?: string }
+	title?: TitleTipProps["title"]
 }
 
 function DrawerForm(props: DrawerFormProps) {
@@ -34,12 +31,6 @@ function DrawerForm(props: DrawerFormProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const [visible, toggle] = useBoolean()
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
-
-
-	const TT = useDeepMemo(() => {
-		if (typeof title === "string") return <TitleTip title={title} />
-		return <TitleTip title={title?.title} tooltip={title?.tooltip} />
-	}, [title])
 
 	const handleFinish = async (values: any) => {
 		setLoading({ delay: 100 })
@@ -76,7 +67,7 @@ function DrawerForm(props: DrawerFormProps) {
 		>
 			<Drawer
 				visible={visible}
-				title={TT}
+				title={<TitleTip title={title} />}
 				width={800}
 				getContainer={false}
 				onClose={toggle}

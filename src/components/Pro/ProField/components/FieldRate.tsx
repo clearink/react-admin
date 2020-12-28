@@ -11,7 +11,7 @@ interface FieldRateProps extends BaseProFieldProps, RateProps {
 function FieldRate(props: FieldRateProps, ref: Ref<any>) {
 	const { value, mode, render, renderFormItem, ...rest } = props
 	const allow = mode === "read" // 是否允许编辑
-	const dom = <Rate disabled={allow} defaultValue={value} {...rest} />
+	const dom = <Rate disabled={allow} value={value} {...rest} />
 	if (mode === "read") {
 		if (render) return render(value, { mode, ...rest }, dom)
 		return dom

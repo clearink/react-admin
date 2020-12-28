@@ -44,7 +44,7 @@ function FieldPassword(props: FieldPasswordProps, ref: Ref<any>) {
 			return render(value, { mode, ...rest, textVisible, hiddenMark }, dom)
 		return dom
 	}
-	const formDOM = <Input.Password ref={inputRef} {...rest} />
+	const formDOM = <Input.Password ref={inputRef} value={value} {...rest} />
 	if (renderFormItem) return renderFormItem(value, { mode, ...rest }, formDOM)
 	return formDOM
 }

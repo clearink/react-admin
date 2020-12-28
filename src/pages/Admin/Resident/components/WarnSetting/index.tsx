@@ -1,19 +1,11 @@
 import React from "react"
-import {
-	Button,
-	Card,
-	DatePicker,
-	Form,
-	InputNumber,
-	Space,
-	Switch,
-} from "antd"
+import { Card, DatePicker, Form, InputNumber, Switch } from "antd"
 import styles from "./style.module.scss"
 
 // 预警信息
 function WarnSetting() {
 	return (
-		<div >
+		<div>
 			<Card
 				bordered={false}
 				size='small'

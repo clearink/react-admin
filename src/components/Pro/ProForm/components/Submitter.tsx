@@ -1,6 +1,5 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Button, Space } from "antd"
-import { FormInstance } from "antd/lib/form"
 import React, { memo, useContext } from "react"
 import ProFormContext from "../../utils/ProFormContext"
 import { SubmitConfigType } from "../type"

@@ -1,5 +1,4 @@
 import { IRoute } from "@/@types/route"
-import CommonWrap from "@/components/PepLife/CommonWrap"
 import withLazyLoad from "@/hocs/withLazyLoad"
 import { lazy } from "react"
 

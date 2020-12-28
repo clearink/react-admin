@@ -1,8 +1,8 @@
 import { PepLifeIcon } from "@/components/IconFont"
 import { UserOutlined } from "@ant-design/icons"
-import { Button, Card, PageHeader, Space } from "antd"
+import { Space } from "antd"
 import Avatar from "antd/lib/avatar/avatar"
-import React, { memo, useMemo } from "react"
+import React, { memo } from "react"
 import styles from "./style.module.scss"
 import Mock from "mockjs"
 // 系统消息
