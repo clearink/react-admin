@@ -5,9 +5,9 @@ import React, {
 	useCallback,
 	useEffect,
 	useImperativeHandle,
-	useLayoutEffect,
 	useMemo,
 	useReducer,
+	useRef,
 } from "react"
 import { Button, Modal, Space, Table } from "antd"
 import classNames from "classnames"
@@ -17,11 +17,8 @@ import { QueryFilter } from "../ProForm"
 import styles from "./style.module.scss"
 import renderQueryFilter from "../utils/renderQueryFilter"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import { isFunction, isNumber, isString } from "@/utils/validate"
 import useFetchData from "@/hooks/useFetchData"
 import { actions, initialState, reducer } from "./reducer"
-import useDeepMemo from "@/hooks/useDeepMemo"
-import useMemoEffect from "@/hooks/useMemoEffect"
 import renderTableColumn from "../utils/renderTableColumn"
 import TableTitle from "./components/TableTitle"
 import ProTableContext from "./ProTableContext"
@@ -34,6 +31,8 @@ import {
 	ToTopOutlined,
 } from "@ant-design/icons"
 import { sleep } from "@/utils/test"
+import { dequal } from "dequal"
+import { isObject } from "@/utils/validate"
 
 // TODO queryFilter props
 /**
@@ -54,7 +53,6 @@ function ProTable<T extends object>(
 ) {
 	const {
 		onSearch,
-		onCurrentChange,
 		search,
 		columns: propsColumns,
 		loading: propsLoading,
@@ -66,31 +64,38 @@ function ProTable<T extends object>(
 		onDelete,
 		...rest
 	} = props
-
-	const [reducerState, dispatch] = useReducer(reducer, initialState)
+	const [reducerState, dispatch] = useReducer(reducer, {
+		...initialState,
+		params: request?.params ?? {},
+	})
 	// 是否需要将 defaultParams 存入 reducer ?
 	// defaultParams 是由外部控制 不需要存入
-	const params = useMemo(() => {
-		return { ...reducerState.params, ...(request?.params ?? {}) }
-	}, [reducerState.params, request])
 
-	const { data, loading: fetchLoading, reload } = useFetchData({
+	const { data, loading: fetchLoading, fetchData } = useFetchData({
 		...request,
-		params,
+		params: reducerState.params,
 		cache: false,
 	})
+	const memoFetchData = useRef(fetchData)
+	memoFetchData.current = fetchData
+	useEffect(() => {
+		memoFetchData.current() // 是reducerState.params 改变后 fetchData() 默认的params 对其无影响
+	}, [reducerState.params])
 
 	useEffect(() => {
 		dispatch(actions.changeLoading(fetchLoading))
 	}, [fetchLoading])
 
-	useMemoEffect(
-		(transform) => {
-			if (data) transform(data, dispatch, actions)
-		},
-		[data],
-		transform
-	)
+	useEffect(() => {
+		dispatch(actions.changeLoading(propsLoading))
+	}, [propsLoading])
+
+	const memoTransform = useRef(transform)
+	memoTransform.current = transform
+
+	useEffect(() => {
+		if (data) memoTransform.current?.(data, dispatch, actions)
+	}, [data])
 
 	// 外部传入的 dataSource
 	useEffect(() => {
@@ -99,87 +104,90 @@ function ProTable<T extends object>(
 		dispatch(actions.changeTotal(PD.length))
 	}, [PD])
 
-	useLayoutEffect(() => {
-		dispatch(actions.changeLoading(propsLoading))
-	}, [propsLoading])
-
 	const handleReload = useCallback(async () => {
 		try {
 			dispatch(actions.changeLoading({ delay: 100 }))
-			await reload()
+			await memoFetchData.current()
 		} finally {
 			dispatch(actions.changeLoading(false))
 		}
-	}, [reload])
+	}, [])
 	// 暴露的方法
 	// TODO: 添加 query filter 的 form
 	const tableAction = useMemo(
 		() => ({
 			reload: handleReload,
-			reset: () => dispatch(actions.reset()),
+			reset: () => dispatch(actions.reset(request?.params ?? {})),
 			clearSelected: () => dispatch(actions.changeSelectedRows([])),
 		}),
-		[handleReload]
+		[handleReload, request]
 	)
 	useImperativeHandle(ref, () => tableAction, [tableAction])
 
 	// 选择
 	const rowSelection = useMemo<TableProps<T>["rowSelection"]>(() => {
-		const rowKey = rest.rowKey
-		let selectedRowKeys = reducerState.selectedRows
-		// 默认使用 key
-		if (isString(rowKey))
-			selectedRowKeys = selectedRowKeys.map((item) => item[rowKey])
-		else if (isFunction(rowKey)) selectedRowKeys = selectedRowKeys.map(rowKey)
 		return {
-			selectedRowKeys,
-			onSelect: (_, __, selectedRows) => {
-				dispatch(actions.changeSelectedRows(selectedRows))
-			},
-			onSelectAll: (_, selectedRows) => {
-				dispatch(actions.changeSelectedRows(selectedRows))
-			},
-			// 暂时使用 rowKey作为字段
+			selectedRowKeys: reducerState.selectedRows,
+			preserveSelectedRowKeys: true,
+			onChange: (keys) => dispatch(actions.changeSelectedRows(keys)),
 		}
-	}, [reducerState.selectedRows, rest.rowKey])
+	}, [reducerState.selectedRows])
 
-	const [columns, QFArray] = useDeepMemo(
+	const [columns, QFArray] = useMemo(
 		() => renderTableColumn(propsColumns ?? [], tableAction),
 		[propsColumns, tableAction]
 	)
 
 	/** 搜索方法 	 */
-	const handleSearch = async (values: any) => {
+	const handleSearch = (values: any, type: "form" | "table" = "form") => {
+		const isSearch = type === "form"
+		const searchParams = isSearch
+			? { params: reducerState.params, form: values }
+			: values
 		try {
 			dispatch(actions.changeLoading({ delay: 100 }))
-			await onSearch?.(values, dispatch, actions)
+			if (onSearch) {
+				const params = onSearch(searchParams)
+				dispatch(actions.changeParams(params))
+			}
 		} finally {
 			dispatch(actions.changeLoading(false))
 		}
 	}
-
-	/** 页码改变 */
-	const handlePaginationChange = (page: number, pageSize?: number) => {
-		dispatch(actions.changeCurrent(page))
-		if (isNumber(pageSize)) dispatch(actions.changePageSize(pageSize))
-		onCurrentChange?.(reducerState, dispatch, actions, page, pageSize)
+	// 分页、排序、筛选变化时触发
+	const handleTableChange: TableProps<any>["onChange"] = (
+		pagination,
+		filters,
+		sorter
+	) => {
+		handleSearch(
+			{
+				pagination,
+				filters,
+				sorter,
+				params: reducerState.params,
+			},
+			"table"
+		)
 	}
 
 	// 删除比较重要, 规定二次弹窗
-	const handleDelete = useCallback(() => {
+	const memoOnDelete = useRef(onDelete)
+	memoOnDelete.current = onDelete
+	const handleDelete = () => {
 		Modal.confirm({
 			title: "确定要删除该数据吗?",
 			icon: <ExclamationCircleOutlined />,
 			async onOk() {
-				await onDelete?.(reducerState.selectedRows)
+				await memoOnDelete.current?.(reducerState.selectedRows)
 				// 没啥用
 				await sleep(100)
-				dispatch(actions.reset())
+				dispatch(actions.reset(request?.params ?? {}))
 			},
 		})
-	}, [onDelete, reducerState.selectedRows])
+	}
 
-	const tableTitleExtra = useMemo(() => {
+	const tableTitleExtra = (() => {
 		return [
 			<Button
 				type='primary'
@@ -202,7 +210,8 @@ function ProTable<T extends object>(
 			</Button>,
 			<ReloadOutlined key='reload' onClick={handleReload} />,
 		]
-	}, [handleDelete, reducerState.selectedRows.length, handleReload])
+	})()
+	// 列表数据改变
 
 	return (
 		<ProTableContext.Provider value={{ state: reducerState, dispatch }}>
@@ -214,7 +223,7 @@ function ProTable<T extends object>(
 					})}
 					submitConfig={{
 						resetProps: {
-							onClick: () => dispatch(actions.reset()),
+							onClick: () => dispatch(actions.reset(request?.params ?? {})),
 						},
 					}}
 					onFinish={handleSearch}
@@ -237,6 +246,7 @@ function ProTable<T extends object>(
 					</div>
 
 					<Table
+						showSorterTooltip={false}
 						{...rest}
 						className={classNames("px-10 bg-white", rest.className)}
 						dataSource={reducerState.data}
@@ -248,8 +258,9 @@ function ProTable<T extends object>(
 							current: reducerState.current,
 							total: reducerState.total,
 							pageSize: reducerState.pageSize,
-							onChange: handlePaginationChange,
 						}}
+						// 同样改变 params
+						onChange={handleTableChange}
 					/>
 				</div>
 			</div>
@@ -260,5 +271,6 @@ export default memo(
 	withDefaultProps(forwardRef(ProTable), {
 		search: true,
 		rowKey: "key",
-	})
+	}),
+	dequal // 深对比 减少re render
 )

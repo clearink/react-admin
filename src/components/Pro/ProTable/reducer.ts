@@ -42,10 +42,10 @@ export const { reducer, actions } = createSlice({
 			state.params = action.payload
 		},
 		// 重置
-		reset(state) {
+		reset(state, action: PayloadAction<object>) {
 			// hack: params 修改指向 fetchData 重新请求数据
 			// hack: 保留 data ,个人习惯
-			state.params = {}
+			state.params = { ...action.payload }
 			state.current = 1
 		},
 	},

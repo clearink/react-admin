@@ -1,8 +1,8 @@
 import React, { forwardRef, memo, Ref, useMemo } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Radio } from "antd"
-import { BaseProFieldProps, RequestProps } from "../../type"
-import useFetchData from "@/hooks/useFetchData"
+import { BaseProFieldProps } from "../../type"
+import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { RadioGroupProps } from "antd/lib/radio"
 import { renderStatusFromOption } from "@/components/Pro/utils"
 import { isArray } from "@/utils/validate"
@@ -13,7 +13,7 @@ export interface FieldRadioProps
 	radioName?: RadioGroupProps["name"]
 	value?: string | number
 	showTag: boolean
-	request?: RequestProps
+	request?: useFetchDataProps
 }
 
 function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {

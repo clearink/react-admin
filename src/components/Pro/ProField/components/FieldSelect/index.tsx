@@ -1,9 +1,9 @@
 import React, { forwardRef, memo, Ref } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Select } from "antd"
-import { BaseProFieldProps, FieldOptionType, RequestProps } from "../../type"
+import { BaseProFieldProps, FieldOptionType } from "../../type"
 import { SelectProps } from "antd/lib/select"
-import useFetchData from "@/hooks/useFetchData"
+import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { renderOriginOptions, renderStatusFromOption } from "../../../utils"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { isArray } from "@/utils/validate"
@@ -14,7 +14,7 @@ export interface FieldSelectProps
 	selectMode?: SelectProps<any[]>["mode"]
 	options?: string[] | Array<FieldOptionType>
 	showTag: boolean // 是否使用 tag 渲染 text
-	request?: RequestProps
+	request?: useFetchDataProps
 	value: string | number | Array<string | number>
 }
 /**
@@ -45,7 +45,7 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 		...rest
 	} = props
 
-	const { loading, data } = useFetchData(request)
+	const { loading, data } = useFetchData({ cache: true, ...request })
 	// form.resetFields 会重新执行一次
 	// 这是 antd 的设计 no bug
 	const options = useDeepMemo(() => {

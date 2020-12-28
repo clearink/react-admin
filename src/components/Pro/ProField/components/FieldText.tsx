@@ -15,7 +15,7 @@ export interface FieldTextProps
 		Omit<TextProps, "type">,
 		InputProps {
 	textType?: TextProps["type"]
-	value: string
+	value?: string
 }
 
 function FieldText(props: FieldTextProps) {
@@ -39,6 +39,7 @@ function FieldText(props: FieldTextProps) {
 export default memo(
 	withDefaultProps(FieldText, {
 		mode: "read",
+		allowClear: true,
 		value: "",
 	})
 )

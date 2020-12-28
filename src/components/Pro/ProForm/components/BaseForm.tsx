@@ -1,4 +1,5 @@
 import useBoolean from "@/hooks/useBoolean"
+import { sleep } from "@/utils/test"
 import { Form } from "antd"
 import Button, { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
@@ -31,6 +32,7 @@ function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 	useEffect(() => {
 		setLoading(!!propsLoading)
 	}, [propsLoading])
+
 	const [form] = Form.useForm(propsForm)
 
 	useImperativeHandle(ref, () => form, [form])
@@ -52,11 +54,11 @@ function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 		<ProFormContext.Provider value={form}>
 			<Form form={form} {...rest} onFinish={handleFinish}>
 				{children}
-				<Button hidden htmlType='submit' />
 				<Submitter
 					{...submitConfig}
 					submitProps={{ loading, ...submitConfig?.submitProps }}
 				/>
+				<button type='submit' hidden></button>
 			</Form>
 		</ProFormContext.Provider>
 	)

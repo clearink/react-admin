@@ -1,4 +1,3 @@
-import { nanoid } from "@reduxjs/toolkit"
 import { Tooltip } from "antd"
 import React, { cloneElement } from "react"
 import { TitleTip } from "../ProCard/components"
@@ -12,7 +11,6 @@ export default function renderTableColumn<T extends object>(
 ): [ProTableColumns<T>[], Array<[ProFieldType | undefined, object]>] {
 	const columns: ProTableColumns<T>[] = []
 	const QFA: Array<[ProFieldType | undefined, object]> = []
-
 	for (let i = 0; i < data.length; i++) {
 		const {
 			title,
@@ -27,7 +25,7 @@ export default function renderTableColumn<T extends object>(
 		// 处理query filter
 		if (search) {
 			const requiredProps = {
-				key: nanoid(8),
+				key: props.dataIndex,
 				label: title,
 				name: props.dataIndex,
 			}
@@ -44,7 +42,8 @@ export default function renderTableColumn<T extends object>(
 				// request 属性
 				if (request) {
 					DOM = cloneElement(DOM, {
-						request: Object.assign({ fetch: !index && !search }, request),
+						// 什么是否自动请求? index === 0 并且 search = true
+						request: Object.assign(request, { auto: !index && search }),
 					})
 				}
 				// 有省略时,应当防止copyable的tooltips 干扰

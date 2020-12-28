@@ -12,7 +12,6 @@ import { StepsProps } from "antd/lib/steps"
 import { BaseFormProps } from "../../type"
 import StepForm, { StepFormComponentType } from "./StepForm"
 import styles from "./style.module.scss"
-import { nanoid } from "@reduxjs/toolkit"
 import { FormProviderProps } from "antd/lib/form/context"
 
 export const StepsFormContext = React.createContext<() => void>(() => {})
@@ -37,8 +36,8 @@ function StepsForm(props: StepsFormProps) {
 		// const submitterChildren: React.ReactNode[] = []
 		Children.forEach(children as StepFormComponentType[], (child, index) => {
 			if (!child.type.StepForm) return null
-			const { stepProps } = child.props
-			stepsChildren.push(<Steps.Step key={nanoid(8)} {...stepProps} />)
+			const { stepProps, name } = child.props
+			stepsChildren.push(<Steps.Step key={name ?? index} {...stepProps} />)
 			const isFirst = index === 0
 			const isLast = index === childCount - 1
 
@@ -57,7 +56,7 @@ function StepsForm(props: StepsFormProps) {
 			// submitterChildren.push(submitter)
 			formChildren.push(
 				cloneElement(child, {
-					key: nanoid(8),
+					key: name ?? index,
 					submitConfig: submitter,
 				})
 			) // 处理 submitter

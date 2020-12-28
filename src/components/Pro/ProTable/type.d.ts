@@ -2,14 +2,11 @@ import { TextProps } from "antd/lib/typography/Text"
 import { FormItemProps } from "antd/lib/form"
 import { ColumnType, TableProps } from "antd/lib/table"
 import { ReactNode } from "react"
-import {
-	BaseProFieldProps,
-	FieldOptionType,
-	RequestProps,
-} from "../ProField/type"
+import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
 import { AnyAction } from "@reduxjs/toolkit"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
 import { actions, initialState } from "./reducer"
+import { useFetchDataProps } from "@/hooks/useFetchData"
 
 // pro table column 类型
 export type ProFieldType =
@@ -54,7 +51,7 @@ export interface ProTableColumns<T extends object = any>
 			// Field Select checkbox radio
 			showTag?: boolean
 			options?: FieldOptionType[] | string[]
-			request?: RequestProps
+			request?: useFetchDataProps
 			placeholder?: ReactNode
 		}
 }
@@ -72,25 +69,13 @@ export interface ProTableProps<T extends object>
 	> {
 	columns?: ProTableColumns<T>[]
 	/** 搜索改变 */
-	onSearch?: (
-		values: any,
-		dispatch: React.Dispatch<AnyAction>,
-		Actions: typeof actions
-	) => any
-	/** 页码改变 */
-	onCurrentChange?: (
-		data: typeof initialState,
-		dispatch: React.Dispatch<AnyAction>,
-		Actions: typeof actions,
-		page: number,
-		pageSize?: number
-	) => void
+	onSearch?: (values: any) => object
 	onDelete?: (
 		values: string[] // 需要删除的数据
 	) => void
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
-	request?: RequestProps
+	request?: useFetchDataProps
 	title?: string | { title: string; tooltip: string }
 	/** 渲染title */
 	renderTitle?: (

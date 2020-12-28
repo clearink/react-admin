@@ -2,8 +2,8 @@ import React, { forwardRef, memo, Ref, useMemo } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { Checkbox } from "antd"
 import { CheckboxGroupProps } from "antd/lib/checkbox"
-import { BaseProFieldProps, FieldOptionType, RequestProps } from "../../type"
-import useFetchData from "@/hooks/useFetchData"
+import { BaseProFieldProps, FieldOptionType } from "../../type"
+import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { renderStatusFromOption } from "../../../utils"
 import { isArray } from "@/utils/validate"
 
@@ -13,7 +13,7 @@ export interface FieldCheckboxProps
 	options?: string[] | Array<FieldOptionType>
 	/** 使用 tag 渲染文本 */
 	showTag: boolean
-	request?: RequestProps
+	request?: useFetchDataProps
 	value: CheckboxGroupProps["value"]
 }
 

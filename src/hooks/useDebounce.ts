@@ -17,6 +17,7 @@ export default function useDebounce<T extends F>(
 		timer: undefined,
 		first: true,
 	})
+	memoried.current.fn = fn
 
 	return useCallback(
 		function (this: void, ...args) {

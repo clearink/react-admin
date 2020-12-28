@@ -1,4 +1,6 @@
+import { SorterResult } from "antd/lib/table/interface"
 import moment, { Moment } from "moment"
+import removeEmpty from "./removeEmpty"
 import { isArray, isObject } from "./validate"
 // 金钱格式化
 export const formatMoney = (
@@ -53,5 +55,75 @@ export default function formatValues(
 	// 		return pre
 	// 	}, {})
 	// }
+	return result
+}
+export interface TableSearchParamsProps {
+	filters?: {}
+	pagination?: {
+		current?: number
+		pageSize?: number
+		total?: number
+		pageNo?: number
+	}
+	params?: any
+	sorter: SorterResult<any>
+	parameter?:
+		| { column: string; order: "asc" | "desc" }
+		| Array<{ column: string; order: "asc" | "desc" }>
+	form: object
+}
+
+// 不同的公司有不同的search方式
+export interface BigSiteQueryProps {
+	pageNo?: number
+	pageSize?: number
+	parameter?:
+		| { column: string; order: "asc" | "desc" }
+		| Array<{ column: string; order: "asc" | "desc" }>
+}
+export function formatTableSearchParams(
+	values: TableSearchParamsProps
+): BigSiteQueryProps {
+	const { filters, pagination, sorter, params, form } = values
+	const result: BigSiteQueryProps = { ...(params ?? {}) }
+
+	// 筛选相关当前公司无该选项
+	if (filters) {
+	}
+	if (form) {
+		// 搜索字段
+		Object.assign(result, removeEmpty(form))
+	}
+	// 搜索时 默认返回第一页
+	result.pageNo = 1
+	result.pageSize = 10
+	// 分页相关
+	if (pagination && Object.keys(pagination).length) {
+		result.pageNo = pagination.current
+		result.pageSize = pagination.pageSize
+	}
+
+	// console.log('values',values);
+	// 排序相关
+	if (sorter && Object.keys(sorter).length) {
+		// 排序也默认返回第一页
+		// 如何判断当前是否该变了排序的方式呢?
+
+		// result.pageNo = 1
+		// 加到 parameter
+		const render = (item: any) => ({
+			column: [].concat(item.field).join("."),
+			order: item.order.replace("end", "") as "asc" | "desc",
+		})
+
+		const sortParams = [].concat(sorter as any).map(render)
+		console.log("adsssssss", sortParams, params?.parameter)
+		if (params?.parameter) {
+			// 如果 sortParams 中不含有 params?.parameter
+			// sortParams.map(item=>{
+			// })
+		}
+	}
+
 	return result
 }

@@ -1,11 +1,9 @@
-import useMemoEffect from "@/hooks/useMemoEffect"
-import { useCallback, useEffect, useReducer, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useReducer, useRef } from "react"
 import http from "@/http"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { createSlice } from "@reduxjs/toolkit"
 import { actions as kvActions } from "@/store/reducers/kv"
 import GetBoundAction from "@/utils/GetBoundAction"
-import { RequestProps } from "@/components/Pro/ProField/type"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -13,6 +11,8 @@ import { RequestProps } from "@/components/Pro/ProField/type"
 	返回 loading data error
 	
 	需求 期望通过 url 当 key 将所有的数据存放到 store 检测到有数据后直接返回不用发请求
+
+	// 默认不会自动发送请求
 */
 const initialState = {
 	data: null,
@@ -38,58 +38,80 @@ const { reducer, actions } = createSlice({
 })
 
 const boundKvActions = GetBoundAction(kvActions)
-export default function useFetchData(props?: RequestProps) {
+export interface useFetchDataProps {
+	/** 请求地址 地址为空不请求 */
+	url?: string
+	/**  请求参数 */
+	params?: object
+	/** 请求方式 */
+	method?: "get" | "post" | "delete" | "put"
+	/** 是否自动请求 */
+	auto?: boolean
+	/** 是否需要缓存 */
+	cache?: boolean
+	/** 数据转换方法 */
+	transform?: (value: any) => any
+}
+/**
+ * 暴露的方法
+ * 1. reload or fetchData
+ * 2. cancel
+ */
+export default function useFetchData(props?: useFetchDataProps) {
 	// 是否请求  请求方法 请求地址 是否缓存到store
-	const {
-		fetch = true,
-		method = "get",
-		url: fetchUrl,
-		params,
-		cache = true,
-		transform,
-	} = props ?? {}
-	const [count, setCount] = useState(0)
+	const { url: fetchUrl, params, method = "get", auto, cache, transform } =
+		props ?? {}
+
 	const [state, dispatch] = useReducer(reducer, initialState)
 	const kvEntities = useTypedSelector((state) => state.kv.entities)
 
-	// 提取 请求地址 与 参数
-	// const [fetchUrl, params] = useDeepMemo(() => [url, PP], [url, PP])
+	const isMountRef = useRef(false) // 是否挂载
+
+	useEffect(() => {
+		isMountRef.current = true
+		return () => {
+			isMountRef.current = false
+		}
+	}, [])
 
 	const memoData = useRef()
+
+	// realUrl改变的话,检查是否有缓存
 	useEffect(() => {
-		const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
-		const preData = kvEntities[realUrl]?.value
+		const preData = kvEntities[`${fetchUrl}?${JSON.stringify(params)}`]?.value
 		memoData.current = preData
-		if (preData) dispatch(actions.setData(memoData.current)) // 优先返回缓存
+		if (memoData.current) dispatch(actions.setData(memoData.current)) // 优先返回缓存
 	}, [fetchUrl, kvEntities, params])
 
-	useMemoEffect(
-		(TF) => {
-			// 请求地址为空 或者 不允许请求 或者已经在redux中有数据了 直接 return
-			if (!fetchUrl || !fetch || memoData.current) return
-			;(async () => {
-				try {
-					// 存在 直接保存
-					const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
-					dispatch(actions.startFetch()) // 发起请求
-					const { data } = await http[method as any]?.(fetchUrl, params)
-					const result = TF?.(data) ?? data
-					dispatch(actions.setData(result)) // save data
-					// save data to store
-					if (cache) boundKvActions.add({ key: realUrl, value: result })
-				} catch (error) {
-					dispatch(actions.setError(error)) // save error
-				}
-			})()
-		},
-		[fetch, fetchUrl, count, params, method, cache],
-		transform
-	)
+	const memoTransform = useRef(transform)
+	memoTransform.current = transform
+	const fetchData = useCallback(async () => {
+		// 请求地址为空 或者 有缓存 不用请求
+		if (!fetchUrl || state.loading || memoData.current) return
+		const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
+		try {
+			dispatch(actions.startFetch())
+			const { data } = await http[method as any]?.(fetchUrl, params)
+			if (!isMountRef.current) return // 没有挂载直接 return
+			const result = memoTransform.current?.(data) ?? data
+			dispatch(actions.setData(result)) // save data
+			if (cache) boundKvActions.add({ key: realUrl, value: result }) // save redux store
+		} catch (error) {
+			dispatch(actions.setError(error)) // save error
+		}
+	}, [cache, fetchUrl, method, params, state.loading])
 
-	const reload = useCallback(() => {
-		setCount((p) => p + 1)
+	const cancel = useCallback(() => {
+		isMountRef.current = false
 	}, [])
-	return { ...state, reload }
+
+	const fetchDataRef = useRef(fetchData)
+	fetchDataRef.current = fetchData
+	/** auto目前是只请求一次的 是否仅仅请求一次呢? 暂定为只请求一次 */
+	useEffect(() => {
+		if (auto) fetchDataRef.current()
+	}, [auto])
+	return { ...state, fetchData, cancel }
 }
 
 // 需要一个参数 是否让其自动 fetch 数据
