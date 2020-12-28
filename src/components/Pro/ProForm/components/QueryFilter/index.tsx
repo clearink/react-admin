@@ -82,7 +82,7 @@ function QueryFilter(props: QueryFilterProps) {
 			if (!hasSubmitter) return null
 			const renderDOM = (
 				<Col span={STColSpan} className='text-right px-4'>
-					<Form.Item label=' ' colon={false}>
+					<Form.Item label={STColSpan === 24 ? null : " "} colon={false}>
 						<Space>
 							{dom}
 							<span
