@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from "react"
 import { Menu } from "antd"
-import { NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 import IconFont from "@/components/IconFont"
 import { TMenu } from "@/@types/menu"
 
@@ -56,7 +56,7 @@ export default function RenderMenu(config?: TMenu[]): ReactNode {
 					key={item?.key ?? item.path}
 					icon={item?.icon && <IconFont type={item.icon} />}
 				>
-					{item.path && <NavLink to={item.path}>{item.title}</NavLink>}
+					{item.path && <Link to={item.path}>{item.title}</Link>}
 				</Item>
 			)
 	})

@@ -10,7 +10,6 @@ import {
 	Select,
 	Space,
 	Switch,
-	Table,
 	Tree,
 } from "antd"
 import {
@@ -208,31 +207,7 @@ const data = Array.from({ length: 40 }, (_, i) => {
 function RoomAllot() {
 	return (
 		<div className={styles.page_wrap}>
-			<Card
-				title={
-					<Space>
-						<UserOutlined />
-						楼层分布
-					</Space>
-				}
-				className={styles.left}
-			>
-				<Tree.DirectoryTree
-					expandedKeys={treeData.map((item) => item.key)}
-					titleRender={(node) => {
-						const { title, ...rest } = node
-						// 这里可以添加wrapper逻辑
-						return <TreeTitleWrapper {...rest} title={title} />
-					}}
-					selectable={false}
-					multiple
-					defaultExpandAll
-					treeData={treeData}
-				/>
-			</Card>
-			<div className={styles.right}>
-				<ProTable columns={columns} dataSource={data} bordered title='房间管理' />
-			</div>
+			<ProTable columns={columns} bordered title='房间管理' />
 		</div>
 	)
 }

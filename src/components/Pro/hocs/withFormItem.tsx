@@ -5,6 +5,7 @@ import { Form } from "antd"
 import { FormItemProps } from "antd/lib/form"
 import React, { ComponentType, memo } from "react"
 import { BaseProFieldProps } from "../ProField/type"
+import { antdFormItemProps } from "../utils/constant"
 // 将各种 ProField 包装一下
 function withFormItem<T extends BaseProFieldProps>(
 	Field: ComponentType<T>,
@@ -12,11 +13,11 @@ function withFormItem<T extends BaseProFieldProps>(
 ) {
 	// 找出所有的 属于 FormItem Props
 	function FormItem(props: T & FormItemProps) {
-		const formItemProps = GetValue(props, ...formItemPropsArray)
-		const fieldProps = FilterValue(props, ...formItemPropsArray)
+		const formItemProps = GetValue(props, antdFormItemProps)
+		const fieldProps = FilterValue(props, antdFormItemProps)
 		return (
 			<Form.Item {...formItemProps}>
-				<Field {...fieldProps} />
+				<Field {...(fieldProps as T)} />
 			</Form.Item>
 		)
 	}
@@ -30,33 +31,3 @@ function withFormItem<T extends BaseProFieldProps>(
 }
 
 export default withFormItem
-const formItemPropsArray = [
-	"colon",
-	"dependencies",
-	"extra",
-	"getValueFromEvent",
-	"getValueProps",
-	"hasFeedback",
-	"help",
-	"hidden",
-	"htmlFor",
-	"initialValue",
-	"label",
-	"labelAlign",
-	"labelCol",
-	"messageVariables",
-	"name",
-	"normalize",
-	"noStyle",
-	"preserve",
-	"required",
-	"rules",
-	"shouldUpdate",
-	"tooltip",
-	"trigger",
-	"validateFirst",
-	"validateStatus",
-	"validateTrigger",
-	"valuePropName",
-	"wrapperCol",
-]

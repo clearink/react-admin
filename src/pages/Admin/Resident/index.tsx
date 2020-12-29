@@ -1,15 +1,8 @@
 import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { Avatar, Button, DatePicker, Form, Input, Select, Space } from "antd"
-import {
-	DownloadOutlined,
-	PlusOutlined,
-	RedoOutlined,
-	SearchOutlined,
-	ToTopOutlined,
-	UserOutlined,
-} from "@ant-design/icons"
+import { Space } from "antd"
+import { UserOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
@@ -106,7 +99,7 @@ const columns: ProTableColumns<any>[] = [
 		),
 	},
 ]
-const data = Array.from({ length: 50 }, (_, i) => {
+const data = Array.from({ length: 10 }, (_, i) => {
 	return {
 		key: i,
 		avatar: "21",

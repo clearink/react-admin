@@ -1,0 +1,21 @@
+.tree_title_wrap {
+	display: flex;
+	flex: auto;
+	justify-content: space-between;
+
+	.action {
+		opacity: 0;
+	}
+	&:hover .action {
+		opacity: 1;
+	}
+}
+:global {
+	.ant-tree-node-content-wrapper,
+	.ant-tree-node-content-wrapper-open {
+		display: flex;
+		.ant-tree-title {
+			flex: auto;
+		}
+	}
+}

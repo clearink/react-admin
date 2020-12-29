@@ -1,4 +1,4 @@
-import React from "react"
+import React  from "react"
 import { BrowserRouter, HashRouter as Router } from "react-router-dom"
 import { ConfigProvider } from "antd"
 import RenderRoutes from "@/components/RenderRoutes"

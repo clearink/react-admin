@@ -271,6 +271,6 @@ export default memo(
 	withDefaultProps(forwardRef(ProTable), {
 		search: true,
 		rowKey: "key",
-	}),
-	dequal // 深对比 减少re render
+		size:'middle'
+	})
 )

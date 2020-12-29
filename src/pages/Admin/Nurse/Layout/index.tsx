@@ -1,4 +1,4 @@
-import React, { memo, PropsWithChildren } from "react"
+import React, { memo, Profiler, PropsWithChildren } from "react"
 import { Tabs } from "antd"
 import { CommonHeader } from "@/components/PepLife"
 import { BankOutlined } from "@ant-design/icons"

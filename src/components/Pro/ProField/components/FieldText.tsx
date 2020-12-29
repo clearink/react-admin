@@ -13,21 +13,22 @@ import GetValue from "@/utils/GetValue"
 export interface FieldTextProps
 	extends BaseProFieldProps,
 		Omit<TextProps, "type">,
-		InputProps {
-	textType?: TextProps["type"]
+		Omit<InputProps, "type"> {
+	type?: TextProps["type"] & InputProps["type"]
 	value?: string
 }
 
 function FieldText(props: FieldTextProps) {
 	const { mode, render, renderFormItem, value, ...rest } = props
-	const editProps = FilterValue(rest, ...TextPropsArray)
-	const readProps = GetValue(rest, ...TextPropsArray, "className", "style")
+	const editProps = FilterValue(rest, TextPropsArray)
+	const readProps = GetValue(rest, [
+		...TextPropsArray,
+		"className",
+		"style",
+		"type",
+	])
 	if (mode === "read") {
-		const dom = (
-			<Typography.Text {...readProps} type={readProps.textType}>
-				{value}
-			</Typography.Text>
-		)
+		const dom = <Typography.Text {...readProps}>{value}</Typography.Text>
 		if (render) return render(value, { mode, ...readProps }, dom)
 		return dom
 	}
@@ -44,7 +45,7 @@ export default memo(
 	})
 )
 
-const TextPropsArray = [
+const TextPropsArray: Array<keyof TextProps> = [
 	"code",
 	"copyable",
 	"delete",
@@ -54,6 +55,5 @@ const TextPropsArray = [
 	"keyboard",
 	"mark",
 	"strong",
-	"textType",
 	"underline",
 ]

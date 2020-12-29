@@ -81,6 +81,7 @@ const columns: ProTableColumns<any>[] = [
 		),
 	},
 ]
+console.time("object")
 const data = Array.from({ length: 30 }, (_, i) => {
 	return {
 		key: i,

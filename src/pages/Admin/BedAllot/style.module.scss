@@ -1,36 +1,6 @@
 .page_wrap {
-	@apply flex-auto h-full;
-	@apply flex;
-	.left {
-		@apply h-full bg-white;
-		flex-basis: 240px;
-		flex-shrink: 0;
-		.tree_title_wrap {
-			display: flex;
-			flex: auto;
-			justify-content: space-between;
-
-			.action {
-				opacity: 0;
-			}
-			&:hover .action {
-				opacity: 1;
-			}
-		}
-	}
-	.right {
-		@apply h-full bg-white;
-		margin-left: 20px;
-		flex: auto;
-		overflow-x: hidden;
-	}
-}
-:global {
-	.ant-tree-node-content-wrapper,
-	.ant-tree-node-content-wrapper-open {
-		display: flex;
-		.ant-tree-title {
-			flex: auto;
-		}
-	}
+	@apply h-full bg-white;
+	margin-left: 20px;
+	flex: auto;
+	overflow-x: hidden;
 }

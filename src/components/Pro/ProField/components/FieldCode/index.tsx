@@ -17,8 +17,12 @@ export interface FieldCodeProps
 
 function FieldCode(props: FieldCodeProps) {
 	const { mode, render, renderFormItem, value, ...rest } = props
-	const editProps = FilterValue(rest, ...paragraphPropsArray)
-	const readProps = GetValue(rest, ...paragraphPropsArray, "className", "style")
+	const editProps = FilterValue(rest, paragraphPropsArray)
+	const readProps = GetValue(rest, [
+		...paragraphPropsArray,
+		"className",
+		"style",
+	])
 	if (mode === "read") {
 		const dom = (
 			<Typography.Paragraph {...readProps}>
@@ -48,7 +52,7 @@ export default memo(
 		mode: "read",
 	})
 )
-const paragraphPropsArray = [
+const paragraphPropsArray: Array<keyof ParagraphProps> = [
 	"code",
 	"copyable",
 	"delete",
@@ -58,6 +62,5 @@ const paragraphPropsArray = [
 	"keyboard",
 	"mark",
 	"strong",
-	"textType",
 	"underline",
 ]

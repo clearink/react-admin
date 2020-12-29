@@ -80,14 +80,11 @@ function WorkPlace(props: IBaseProps) {
 		dispatch(actions.changePageSize(OD.result.size))
 		dispatch(actions.changeTotal(OD.result.total))
 	}, [])
-	const [loading, toggle] = useBoolean()
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
-				<Button onClick={toggle}>aasadss</Button>
-				{/* <ProTable
-					loading={loading}
+				<ProTable
 					request={{
 						url: "/membermgt/member/list",
 						params: { parameter: { column: "createTime", order: "desc" } },
@@ -106,9 +103,9 @@ function WorkPlace(props: IBaseProps) {
 					// transform 需要设置 当前页数,pageSize, 总数 数据
 					transform={handleTransform}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
-				/> */}
+				/>
 				<DrawerForm
-				 title={{title:"新建表单",tooltip:"色开发商的地方是"}}
+					title={{ title: "新建表单", tooltip: "色开发商的地方是" }}
 					trigger={<Button>DrawerForm</Button>}
 					onFinish={async (v) => {
 						await sleep(1000)

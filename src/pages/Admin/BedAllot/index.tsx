@@ -23,41 +23,7 @@ import ModalTrigger from "@/components/ModalTrigger"
 import ProTable from "@/components/Pro/ProTable"
 import { Random } from "mockjs"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { InputProps } from "antd/lib/input"
 
-const TreeTitleWrapper = (props: { title: React.ReactNode }) => {
-	return (
-		<div className={styles.tree_title_wrap}>
-			<span className={styles.tree_title}>{props.title}</span>
-
-			<Space className={styles.action}>
-				<ModalTrigger trigger={<PlusOutlined />} title='新增子集分类'>
-					<Form.Item label='上级产品分类' labelCol={{ span: 6 }}>
-						<Select
-							options={[
-								{
-									label: "分类名称",
-									value: "123",
-								},
-							]}
-						></Select>
-					</Form.Item>
-					<Form.Item label='产品分类名称' required labelCol={{ span: 6 }}>
-						<Input />
-					</Form.Item>
-				</ModalTrigger>
-				<ModalTrigger trigger={<EditOutlined />} title='编辑分类'>
-					<Form.Item label='产品分类名称' required labelCol={{ span: 6 }}>
-						<Input />
-					</Form.Item>
-				</ModalTrigger>
-				<Popconfirm title='确定删除?'>
-					<DeleteOutlined />
-				</Popconfirm>
-			</Space>
-		</div>
-	)
-}
 const treeData = [
 	{
 		title: "主楼",
@@ -208,7 +174,7 @@ const columns: ProTableColumns<any>[] = [
 		},
 	},
 ]
-const data = Array.from({ length: 40 }, (_, i) => {
+const data = Array.from({ length: 10 }, (_, i) => {
 	return {
 		key: i,
 		num: i,
@@ -221,36 +187,7 @@ const data = Array.from({ length: 40 }, (_, i) => {
 function BedAllot() {
 	return (
 		<div className={styles.page_wrap}>
-			<Card
-				title={
-					<Space>
-						<UserOutlined />
-						楼层分布
-					</Space>
-				}
-				className={styles.left}
-			>
-				<Tree.DirectoryTree
-					expandedKeys={treeData.map((item) => item.key)}
-					titleRender={(node) => {
-						const { title, ...rest } = node
-						// 这里可以添加wrapper逻辑
-						return <TreeTitleWrapper {...rest} title={title} />
-					}}
-					selectable={false}
-					multiple
-					defaultExpandAll
-					treeData={treeData}
-				/>
-			</Card>
-			<div className={styles.right}>
-				<ProTable
-					columns={columns}
-					title='床位管理'
-					dataSource={data}
-					bordered
-				/>
-			</div>
+			<ProTable columns={columns} title='床位管理' bordered />
 		</div>
 	)
 }

@@ -1,0 +1,10 @@
+@import "@/styles/index";
+.form_group_wrapper {
+	.form_group_title {
+		margin-bottom: $base_spacing;
+		padding-bottom: $base_spacing;
+		font-size: 16px;
+		font-weight: 500;
+		color: $color_text_black;
+	}
+}

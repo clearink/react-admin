@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, Ref } from "react"
+import React, { forwardRef, memo } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { InputNumber, Progress } from "antd"
 import { BaseProFieldProps } from "../type"
@@ -11,30 +11,29 @@ import GetValue from "@/utils/GetValue"
 export interface FieldProgressProps
 	extends Pick<BaseProFieldProps, "mode" | "render" | "renderFormItem">,
 		ProgressProps,
-		Omit<InputNumberProps, "min" | "max" | "value"> {
-	value?: number | string
+		InputNumberProps {
+	text?: number | string
 	size?: ProgressProps["size"] & InputNumberProps["size"]
 	type?: ProgressProps["type"] & InputNumberProps["type"]
 	width?: ProgressProps["width"] & InputNumberProps["width"]
 }
 
-function FieldProgress(props: FieldProgressProps, ref: Ref<any>) {
-	const { value, mode, render, renderFormItem, ...rest } = props
-	const readProps = FilterValue(rest, ...inputNumberPropsArray)
-	const editProps = GetValue(
-		rest,
+function FieldProgress(props: FieldProgressProps) {
+	const { text, mode, render, renderFormItem, ...rest } = props
+	const readProps = FilterValue(rest, inputNumberPropsArray)
+	const editProps = GetValue(rest, [
 		...inputNumberPropsArray,
 		"size",
 		"width",
 		"type",
 		"className",
-		"style"
-	)
+		"style",
+	])
 
-	const numberValue = Number(value)
+	const numberValue = Number(text)
 	const dom = <Progress percent={numberValue} {...readProps} />
 	if (mode === "read") {
-		if (render) return render(value, { mode, ...readProps }, dom)
+		if (render) return render(text, { mode, ...readProps }, dom)
 		return dom
 	}
 	const formDom = (
@@ -47,7 +46,7 @@ function FieldProgress(props: FieldProgressProps, ref: Ref<any>) {
 		/>
 	)
 	if (renderFormItem)
-		return renderFormItem(value, { mode, ...editProps }, formDom)
+		return renderFormItem(text, { mode, ...editProps }, formDom)
 	return formDom
 }
 
@@ -58,7 +57,7 @@ export default memo(
 	})
 )
 
-const inputNumberPropsArray = [
+const inputNumberPropsArray: Array<keyof InputNumberProps> = [
 	"autoFocus",
 	"decimalSeparator",
 	"defaultValue",
