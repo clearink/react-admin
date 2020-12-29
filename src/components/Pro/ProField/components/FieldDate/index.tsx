@@ -4,30 +4,38 @@ import { DatePicker } from "antd"
 import { DatePickerProps } from "antd/lib/date-picker"
 import moment, { Moment } from "moment"
 import { BaseProFieldProps } from "../../type"
+import withProField from "@/components/Pro/hocs/withProField"
 
 // 日期相关
 // 最基本的 date
-export type FieldDateProps = Omit<DatePickerProps, "mode"> &
-	Pick<BaseProFieldProps, "mode" | "render" | "renderFormItem"> & {
-		value?: Moment | string | number
-		timeFormat?: string
-		fromNow?: boolean
-	}
+export type FieldDateProps = BaseProFieldProps & {
+	text?: Moment | string | number
+	formItemProps?: DatePickerProps
+	timeFormat?: string
+	fromNow?: boolean
+}
+const defaultFormItemProps: DatePickerProps = {
+	picker: "date",
+	showTime: false,
+	placeholder: "请选择",
+	style: { width: 280 },
+}
 function FieldDate(props: FieldDateProps) {
 	const {
-		value,
+		text,
 		mode,
 		render,
 		renderFormItem,
 		timeFormat,
 		fromNow, // 是否是根据当前时间算的
+		formItemProps,
 		...rest
 	} = props
 
 	const timeValue = useMemo(() => {
-		if (moment.isMoment(value)) return value
-		return moment(value)
-	}, [value])
+		if (moment.isMoment(text)) return text
+		return moment(text)
+	}, [text])
 
 	if (mode === "read") {
 		const dom = (
@@ -35,25 +43,23 @@ function FieldDate(props: FieldDateProps) {
 				{fromNow ? timeValue.fromNow() : timeValue.format(timeFormat)}
 			</span>
 		)
-		if (render) return render(value, { mode, ...rest }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
 	// picker 属性有问题 只能先用any
 	const formItemDom = (
-		<DatePicker value={timeValue} {...rest} picker={rest.picker as any} />
+		<DatePicker {...defaultFormItemProps} {...rest} {...formItemProps} />
 	)
 	if (renderFormItem)
-		return renderFormItem(value, { mode, ...rest }, formItemDom)
+		return renderFormItem(
+			text,
+			{ mode, ...rest, ...formItemProps },
+			formItemDom
+		)
 	return formItemDom
 }
-export default memo(
-	withDefaultProps(FieldDate, {
-		mode: "read",
-		fromNow: false,
-		picker: "date",
-		timeFormat: "YYYY-MM-DD",
-		showTime: false,
-		placeholder: "请选择",
-		style: { width: 280 },
-	})
-)
+export default withProField(FieldDate, {
+	fromNow: false,
+	timeFormat: "YYYY-MM-DD",
+	formItemProps: defaultFormItemProps,
+})

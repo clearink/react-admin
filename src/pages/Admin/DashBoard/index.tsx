@@ -18,6 +18,7 @@ import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { sleep } from "@/utils/test"
 import useBoolean from "@/hooks/useBoolean"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
+import { FieldText } from "@/components/Pro/ProField"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -71,7 +72,6 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: ["memberAsset", "experience"],
 	},
 ]
-
 function WorkPlace(props: IBaseProps) {
 	const handleOnSearch = useCallback((values) => {
 		// 1. 过滤 undefined removeEmpty
@@ -90,6 +90,7 @@ function WorkPlace(props: IBaseProps) {
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
+				<FieldText />
 				<ProTable
 					request={{
 						url: "/membermgt/member/list",

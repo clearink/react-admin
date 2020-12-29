@@ -29,7 +29,7 @@ export const colorArray = [
  * 4. badge 切换成 badge 组件
  */
 export function renderStatusFromOption(
-	value: CheckboxValueType[] | CheckboxValueType | undefined,
+	value: CheckboxValueType[] | string | number | boolean | undefined,
 	options: Array<{ label: string; value: any }>,
 	fieldEnum?: string[],
 	showTag = false // tag 自带右边距

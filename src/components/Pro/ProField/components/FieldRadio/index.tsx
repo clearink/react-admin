@@ -1,24 +1,23 @@
-import React, { forwardRef, memo, Ref, useMemo } from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React, { useMemo } from "react"
 import { Radio } from "antd"
 import { BaseProFieldProps } from "../../type"
 import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { RadioGroupProps } from "antd/lib/radio"
 import { renderStatusFromOption } from "@/components/Pro/utils"
 import { isArray } from "@/utils/validate"
+import { CheckboxValueType } from "antd/lib/checkbox/Group"
+import withProField from "@/components/Pro/hocs/withProField"
 
-export interface FieldRadioProps
-	extends BaseProFieldProps,
-		Omit<RadioGroupProps, "name"> {
-	radioName?: RadioGroupProps["name"]
-	value?: string | number
+export interface FieldRadioProps extends BaseProFieldProps {
+	formItemProps?: Omit<RadioGroupProps, "options">
+	text?: string | CheckboxValueType[]
 	showTag: boolean
 	request?: useFetchDataProps
+	options?: RadioGroupProps["options"]
 }
-
-function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
+function FieldRadio(props: FieldRadioProps) {
 	const {
-		value,
+		text,
 		mode,
 		render,
 		renderFormItem,
@@ -26,6 +25,7 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 		request,
 		showTag,
 		options: PO,
+		formItemProps,
 		...rest
 	} = props
 
@@ -39,25 +39,24 @@ function FieldRadio(props: FieldRadioProps, ref: Ref<any>) {
 
 	if (mode === "read") {
 		const dom = (
-			<span>{renderStatusFromOption(value, options, fieldEnum, showTag)}</span>
+			<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
 		)
-		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
+		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
-	const formItemDom = <Radio.Group options={options} value={value} {...rest} />
+	const formItemDom = (
+		<Radio.Group options={options} {...rest} {...formItemProps} />
+	)
 	if (renderFormItem)
 		return renderFormItem<Partial<FieldRadioProps>>(
-			value,
-			{ mode, ...rest, fieldEnum, options },
+			text,
+			{ mode, ...rest, ...formItemProps, fieldEnum, options },
 			formItemDom
 		)
 	return formItemDom
 }
 
-export default memo(
-	withDefaultProps(forwardRef(FieldRadio), {
-		value: "",
-		mode: "read",
-		showTag: true,
-	})
-)
+export default withProField(FieldRadio, {
+	text: "",
+	showTag: true,
+})

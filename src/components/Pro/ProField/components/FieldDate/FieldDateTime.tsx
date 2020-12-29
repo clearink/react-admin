@@ -1,15 +1,19 @@
-import withDefaultProps from "@/hocs/withDefaultProps"
-import React, { memo } from "react"
+import React from "react"
+import withProField from "@/components/Pro/hocs/withProField"
+import { DatePickerProps } from "antd/lib/date-picker"
 import FieldDate, { FieldDateProps } from "."
 // 仅仅是向 FieldDat 添加了一个默认值 showTime = true
-export type FieldDateTimeProps = Omit<FieldDateProps, "showTime" | "fromNow">
-function FieldDateTime(props: FieldDateTimeProps) {
-	return <FieldDate {...props} showTime />
+export type FieldDateTimeProps = FieldDateProps
+const defaultFormItemProps: DatePickerProps = {
+	style: { width: 450 },
+	picker: "date",
+	showTime: true,
 }
 
-export default memo(
-	withDefaultProps(FieldDateTime, {
-		timeFormat: "YYYY-MM-DD HH:mm:ss",
-		style: { width: 450 },
-	})
-)
+function FieldDateTime(props: FieldDateTimeProps) {
+	return <FieldDate {...props} />
+}
+
+export default withProField(FieldDateTime, {
+	formItemProps: defaultFormItemProps,
+})

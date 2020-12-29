@@ -1,24 +1,22 @@
-import React, { forwardRef, memo, Ref, useMemo } from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React, { Ref, useMemo } from "react"
 import { Checkbox } from "antd"
 import { CheckboxGroupProps } from "antd/lib/checkbox"
 import { BaseProFieldProps, FieldOptionType } from "../../type"
 import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { renderStatusFromOption } from "../../../utils"
 import { isArray } from "@/utils/validate"
+import withProField from "@/components/Pro/hocs/withProField"
 
-export interface FieldCheckboxProps
-	extends BaseProFieldProps,
-		Omit<CheckboxGroupProps, "value"> {
-	options?: string[] | Array<FieldOptionType>
-	/** 使用 tag 渲染文本 */
+export interface FieldCheckboxProps extends BaseProFieldProps {
+	formItemProps?: Omit<CheckboxGroupProps, "options">
+	text: CheckboxGroupProps["value"]
 	showTag: boolean
 	request?: useFetchDataProps
-	value: CheckboxGroupProps["value"]
+	options?: string[] | Array<FieldOptionType>
 }
-
 function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 	const {
+		text,
 		mode,
 		render,
 		renderFormItem,
@@ -26,7 +24,7 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 		request, // 请求
 		showTag,
 		options: PO,
-		value,
+		formItemProps,
 		...rest
 	} = props
 
@@ -40,28 +38,23 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 
 	if (mode === "read") {
 		const dom = (
-			<span>
-				{renderStatusFromOption(value ?? "", options, fieldEnum, showTag)}
-			</span>
+			<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
 		)
-		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
+		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
 	const formItemDom = (
-		<Checkbox.Group options={options} value={value} {...rest} />
+		<Checkbox.Group {...rest} {...formItemProps} options={options} />
 	)
 	if (renderFormItem)
 		return renderFormItem(
-			value,
-			{ mode, ...rest, fieldEnum, options },
+			text,
+			{ mode, ...rest, ...formItemProps, fieldEnum, options },
 			formItemDom
 		)
 	return formItemDom
 }
 
-export default memo(
-	withDefaultProps(forwardRef(FieldCheckbox), {
-		mode: "read",
-		showTag: true,
-	})
-)
+export default withProField(FieldCheckbox, {
+	showTag: true,
+})

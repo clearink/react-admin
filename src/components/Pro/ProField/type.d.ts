@@ -11,8 +11,9 @@ export interface BaseFieldRenderProps {
 export type FieldOptionType = { label: string; value: any }
 
 export interface BaseProFieldProps extends BaseFieldRenderProps {
-	value?: any
-	mode: FieldMode // 模式
+	text?: any
+	/** 模式 */
+	mode: FieldMode 
 	fieldEnum?: string[] // tag badge的 color
 	/** 转换数据格式  不属于数据请求的范畴  */
 	transform?: (data?: any) => any

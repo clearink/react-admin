@@ -1,73 +1,45 @@
-import React, { memo } from "react"
+import React from "react"
 import { Input, Typography } from "antd"
-import withDefaultProps from "@/hocs/withDefaultProps"
 import { TextAreaProps } from "antd/lib/input"
 import { ParagraphProps } from "antd/lib/typography/Paragraph"
 import { BaseProFieldProps } from "../../type"
+import withProField from "@/components/Pro/hocs/withProField"
 import "./style.scss"
-import FilterValue from "@/utils/FilterValue"
-import GetValue from "@/utils/GetValue"
 
-export interface FieldCodeProps
-	extends BaseProFieldProps,
-		ParagraphProps,
-		Omit<TextAreaProps, "code"> {
-	value: any
+export interface FieldCodeProps extends BaseProFieldProps, ParagraphProps {
+	formItemProps?: TextAreaProps
+	text: string
+}
+const defaultFormItemProps = {
+	placeholder: "请输入",
+	rows: 10,
 }
 
 function FieldCode(props: FieldCodeProps) {
-	const { mode, render, renderFormItem, value, ...rest } = props
-	const editProps = FilterValue(rest, ...paragraphPropsArray)
-	const readProps = GetValue(
-		rest,
-		...paragraphPropsArray,
-		"className",
-		"style",
-		"disabled"
-	)
+	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
+
 	if (mode === "read") {
 		const dom = (
-			<Typography.Paragraph {...readProps}>
+			<Typography.Paragraph {...rest}>
 				<pre className={"field_code_container"}>
-					<code>{value}</code>
+					<code>{text}</code>
 				</pre>
 			</Typography.Paragraph>
 		)
-		if (render) return render(value, { mode, ...readProps }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
 	const formItemDom = (
-		<Input.TextArea
-			placeholder='请输入'
-			rows={10}
-			value={value}
-			{...editProps}
-		/>
+		<Input.TextArea {...defaultFormItemProps} {...rest} {...formItemProps} />
 	)
 	if (renderFormItem)
 		return renderFormItem(
-			// rest?.value ?? text,
-			value,
-			{ mode, ...editProps },
+			text,
+			{ mode, ...formItemProps, ...rest },
 			formItemDom
 		)
 	return formItemDom
 }
-export default memo(
-	withDefaultProps(FieldCode, {
-		mode: "read",
-	})
-)
-const paragraphPropsArray = [
-	"code",
-	"copyable",
-	"delete",
-
-	"editable",
-	"ellipsis",
-	"keyboard",
-	"mark",
-	"strong",
-	"textType",
-	"underline",
-]
+export default withProField(FieldCode, {
+	formItemProps: defaultFormItemProps,
+})

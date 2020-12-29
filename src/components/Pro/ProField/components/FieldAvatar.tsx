@@ -1,27 +1,33 @@
-import React, { memo } from "react"
+import React from "react"
 import { BaseProFieldProps } from "../type"
 import { Avatar, Upload } from "antd"
-import withDefaultProps from "@/hocs/withDefaultProps"
 import { AvatarProps } from "antd/lib/avatar"
+import withProField from "../../hocs/withProField"
+import { UploadProps } from "antd/lib/upload"
 
-export interface FieldAvatarProps extends BaseProFieldProps, AvatarProps {}
+export interface FieldAvatarProps extends BaseProFieldProps, AvatarProps {
+	formItemProps?: UploadProps
+	text: string
+}
 
 function FieldAvatar(props: FieldAvatarProps) {
-	const { mode, render, renderFormItem, value, ...rest } = props
-	const dom = <Avatar src={value} {...rest} />
+	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
+	const dom = <Avatar src={text} {...rest} />
 	if (mode === "read") {
-		if (render) return render(value, { mode, ...rest }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
 	// TODO
 	// 将children 设置为 trigger
-	const formItemDom = <Upload  />
+	const formItemDom = <Upload {...rest} {...formItemProps} />
 	if (renderFormItem)
-		return renderFormItem(value, { mode, ...rest }, formItemDom)
+		return renderFormItem(
+			text,
+			{ mode, ...rest, ...formItemProps },
+			formItemDom
+		)
 	return formItemDom
 }
-export default memo(
-	withDefaultProps(FieldAvatar, {
-		mode: "read",
-	})
-)
+export default withProField(FieldAvatar, {
+	text: "",
+})

@@ -1,27 +1,35 @@
-import React, {
-	forwardRef,
-	memo,
-	Ref,
-	useImperativeHandle,
-	useMemo,
-	useRef,
-} from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React, { Ref, useImperativeHandle, useMemo, useRef } from "react"
 import { InputNumber } from "antd"
 import { formatMoney, removeSeparator } from "@/utils/formatValues"
 import { BaseProFieldProps } from "../type"
 import { InputNumberProps } from "antd/lib/input-number"
 import { moneySign } from "../../utils"
+import withProField from "../../hocs/withProField"
 
-export interface FieldMoneyProps
-	extends BaseProFieldProps,
-		Omit<InputNumberProps, "value"> {
+const defaultForItemProps: Partial<InputNumberProps> = {
+	placeholder: "请输入",
+	min: 0,
+	precision: 2,
+	style: { width: 150 },
+	formatter: (value) => (value ? formatMoney(value) : ""),
+	parser: (value) => (value ? removeSeparator(value, "\\s+|(,*)") : ""),
+}
+export interface FieldMoneyProps extends BaseProFieldProps {
+	forItemProps?: InputNumberProps
 	locale?: keyof typeof moneySign
-	value: string | number
+	text: string | number
 }
 
 function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
-	const { mode, render, renderFormItem, locale, value, ...rest } = props
+	const {
+		text,
+		mode,
+		render,
+		renderFormItem,
+		locale,
+		forItemProps,
+		...rest
+	} = props
 
 	const inputRef = useRef()
 	useImperativeHandle(ref, () => inputRef.current ?? {}, [])
@@ -29,28 +37,21 @@ function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
 	const prefix = useMemo(() => moneySign[locale ?? ""] ?? "", [locale]) // 前缀
 
 	if (mode === "read") {
-		const money = formatMoney(value ?? 0)
+		const money = formatMoney(text ?? 0)
 		const dom = <span>{`${prefix}${money}`}</span>
-		if (render) return render(value, { mode, ...rest }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	const formItemDom = <InputNumber ref={inputRef} value={Number(value)} {...rest} />
+	const formItemDom = (
+		<InputNumber ref={inputRef} {...defaultForItemProps} {...forItemProps} />
+	)
 	if (renderFormItem)
-		return renderFormItem(value, { mode, ...rest }, formItemDom)
+		return renderFormItem(text, { mode, ...forItemProps }, formItemDom)
 	return formItemDom
 }
 
-export default memo(
-	withDefaultProps(forwardRef(FieldMoney), {
-		value: "0",
-		mode: "read",
-		locale: "zh-cn",
-		placeholder: "请输入",
-		min: 0,
-		precision: 2,
-		style: { width: 150 },
-		formatter: (value: string | number) => (value ? formatMoney(value) : ""),
-		parser: (value: string) =>
-			value ? removeSeparator(value, "\\s+|(,*)") : "",
-	})
-)
+export default withProField(FieldMoney, {
+	text: 0,
+	locale: "zh-cn",
+	forItemProps: defaultForItemProps,
+})

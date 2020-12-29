@@ -3,6 +3,7 @@ import React, {
 	memo,
 	ReactNode,
 	Ref,
+	useEffect,
 	useImperativeHandle,
 	useRef,
 	useState,
@@ -12,25 +13,35 @@ import { Input } from "antd"
 import { BaseProFieldProps } from "../../type"
 import { PasswordProps } from "antd/lib/input"
 import { renderHiddenMark } from "./utils"
+import withProField from "@/components/Pro/hocs/withProField"
 
-interface FieldPasswordProps extends BaseProFieldProps, PasswordProps {
-	value: string
-	textVisible: boolean
+interface FieldPasswordProps extends BaseProFieldProps {
+	formItemProps?: PasswordProps
+	text: string
+	visible?: boolean
 	hiddenMark: ReactNode
+}
+const defaultFormItemProps = {
+	placeholder: "请输入",
+	allowClear: true,
 }
 function FieldPassword(props: FieldPasswordProps, ref: Ref<any>) {
 	const {
-		value,
+		text,
 		mode,
 		render,
 		renderFormItem,
-		textVisible,
 		hiddenMark,
+		visible,
+		formItemProps,
 		...rest
 	} = props
 
 	const inputRef = useRef<any>()
-	const [showPwd, setShowPwd] = useState(() => textVisible)
+	const [showPwd, setShowPwd] = useState(() => !!visible)
+	useEffect(() => {
+		setShowPwd(!!visible)
+	}, [visible])
 
 	useImperativeHandle(
 		ref,
@@ -39,22 +50,21 @@ function FieldPassword(props: FieldPasswordProps, ref: Ref<any>) {
 	)
 
 	if (mode === "read") {
-		const dom = renderHiddenMark(value, hiddenMark, showPwd, setShowPwd)
-		if (render)
-			return render(value, { mode, ...rest, textVisible, hiddenMark }, dom)
+		const dom = renderHiddenMark(text, hiddenMark, showPwd, setShowPwd)
+		if (render) return render(text, { mode, ...rest, visible, hiddenMark }, dom)
 		return dom
 	}
-	const formDOM = <Input.Password ref={inputRef} value={value} {...rest} />
-	if (renderFormItem) return renderFormItem(value, { mode, ...rest }, formDOM)
-	return formDOM
+	const formItemDom = (
+		<Input.Password {...defaultFormItemProps} {...rest} {...formItemProps} />
+	)
+	if (renderFormItem)
+		return renderFormItem(text, { mode,...rest. ...formItemProps }, formItemDom)
+	return formItemDom
 }
 
-export default memo(
-	withDefaultProps(forwardRef(FieldPassword), {
-		value: "-",
-		hiddenMark: "*",
-		placeholder: "请输入",
-		textVisible: false,
-		allowClear: true,
-	})
-)
+export default withProField(FieldPassword, {
+	text: "-",
+	hiddenMark: "*",
+	visible: false,
+	formItemProps: defaultFormItemProps,
+})

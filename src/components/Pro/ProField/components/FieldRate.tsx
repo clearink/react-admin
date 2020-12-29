@@ -3,12 +3,13 @@ import withDefaultProps from "@/hocs/withDefaultProps"
 import { Rate } from "antd"
 import { BaseProFieldProps } from "../type"
 import { RateProps } from "antd/lib/rate"
+import withProField from "../../hocs/withProField"
 
 interface FieldRateProps extends BaseProFieldProps, RateProps {
-	value: number
+	text?: number
 }
 // 评分
-function FieldRate(props: FieldRateProps, ref: Ref<any>) {
+function FieldRate(props: FieldRateProps) {
 	const { value, mode, render, renderFormItem, ...rest } = props
 	const allow = mode === "read" // 是否允许编辑
 	const dom = <Rate disabled={allow} value={value} {...rest} />
@@ -20,11 +21,11 @@ function FieldRate(props: FieldRateProps, ref: Ref<any>) {
 	return dom
 }
 
-export default memo(
-	withDefaultProps(forwardRef(FieldRate), {
-		value: 0,
-		mode: "read",
-		allowHalf: true,
-		allowClear: true,
-	})
-)
+export default withProField(FieldRate, {
+	text: 0,
+	allowHalf: true,
+})
+
+/**
+ *
+ */

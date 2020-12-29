@@ -1,12 +1,4 @@
-import React, {
-	forwardRef,
-	memo,
-	ReactNode,
-	Ref,
-	useImperativeHandle,
-	useMemo,
-	useRef,
-} from "react"
+import React, { forwardRef, memo, useMemo } from "react"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { BaseProFieldProps } from "../../type"
 import classNames from "classnames"
@@ -15,38 +7,44 @@ import { InputNumber } from "antd"
 import { getPrecisionNumber, getSymbol, toNumber } from "./utils"
 import { removeSeparator } from "@/utils/formatValues"
 import "./style.scss"
+import withProField from "@/components/Pro/hocs/withProField"
 
 // 去除 min 和 max
-interface FieldPercentProps
-	extends BaseProFieldProps,
-		Omit<InputNumberProps, "max" | "min"> {
+interface FieldPercentProps extends BaseProFieldProps {
+	precision: number
+	formItemProps?: InputNumberProps
 	suffix?: React.ReactNode
-	prefix?: React.ReactNode | any
+	prefix?: React.ReactNode
 	hasSymbol?: boolean // 是否有符号
 	hasColor?: boolean
-	value: number
+	text: number
+}
+const defaultFormItemProps: InputNumberProps = {
+	precision: 2,
+	min: 0,
+	max: 100,
+	width: 120,
+	placeholder: "请输入",
 }
 
-function FieldPercent(props: FieldPercentProps, ref: Ref<any>) {
+function FieldPercent(props: FieldPercentProps) {
 	const {
-		value,
+		text,
 		mode,
 		render,
 		renderFormItem,
 		suffix,
 		prefix,
 		hasSymbol,
-		precision,
 		hasColor,
+		precision,
+		formItemProps,
 		...rest
 	} = props
-	const inputRef = useRef()
 
-	useImperativeHandle(ref, () => inputRef.current ?? {}, [])
-
-	const numberValue = useMemo(() => toNumber(removeSeparator(value, "%")), [
-		value,
-	])
+	const numberValue = useMemo(() => {
+		return toNumber(removeSeparator(text, "%"))
+	}, [text])
 
 	if (mode === "read") {
 		// 格式化成百分比
@@ -71,26 +69,26 @@ function FieldPercent(props: FieldPercentProps, ref: Ref<any>) {
 				{suffix && <span>{suffix}</span>}
 			</span>
 		)
-		if (render) return render(value, { mode, ...rest }, dom)
+		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
 	// 渲染 form
-	const formDom = (
-		<InputNumber {...rest} value={value} ref={inputRef} placeholder='请输入' />
+	const formItemDom = (
+		<InputNumber {...defaultFormItemProps} {...rest} {...formItemProps} />
 	)
-	if (renderFormItem) return renderFormItem(value, { mode }, formDom)
-	return formDom
+	if (renderFormItem)
+		return renderFormItem(
+			text,
+			{ mode, ...rest, ...formItemProps },
+			formItemDom
+		)
+	return formItemDom
 }
 
-export default memo(
-	withDefaultProps(forwardRef(FieldPercent), {
-		hasColor: true,
-		mode: "read",
-		hasSymbol: true,
-		suffix: "%",
-		precision: 2,
-		min: 0,
-		max: 100,
-		width: 120,
-	})
-)
+export default withProField(FieldPercent, {
+	hasColor: true,
+	hasSymbol: true,
+	suffix: "%",
+	precision: 2,
+	formItemProps: defaultFormItemProps,
+})

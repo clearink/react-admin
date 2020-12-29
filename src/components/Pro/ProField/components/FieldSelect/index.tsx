@@ -7,16 +7,17 @@ import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { renderOriginOptions, renderStatusFromOption } from "../../../utils"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { isArray } from "@/utils/validate"
+import withProField from "@/components/Pro/hocs/withProField"
+import FilterValue from "@/utils/FilterValue"
 
-export interface FieldSelectProps
-	extends BaseProFieldProps,
-		Omit<SelectProps<any[]>, "mode" | "options" | "value"> {
-	selectMode?: SelectProps<any[]>["mode"]
+export interface FieldSelectProps extends BaseProFieldProps {
+	formItemProps?: Omit<SelectProps<any[]>, "options">
 	options?: string[] | Array<FieldOptionType>
 	showTag: boolean // 是否使用 tag 渲染 text
 	request?: useFetchDataProps
 	value?: string | number | Array<string | number>
 }
+
 /**
  * 1. fieldEnum 是 Array 
  * 
@@ -30,18 +31,22 @@ export interface FieldSelectProps
 	期望 期望 transform只在 data 变化时调用一次
 	暂时先缓存下来
  */
-
-function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
+const defaultFormItemProps = {
+	allowClear: true,
+	showTag: true,
+	style: { width: 300 },
+}
+function FieldSelect(props: FieldSelectProps) {
 	const {
-		value,
+		text,
 		mode,
 		render,
 		renderFormItem,
 		fieldEnum,
-		selectMode, // select mode
 		showTag,
 		request,
 		options: PO,
+		formItemProps,
 		...rest
 	} = props
 
@@ -56,36 +61,31 @@ function FieldSelect(props: FieldSelectProps, ref: Ref<any>) {
 
 	if (mode === "read") {
 		const dom = (
-			<span>{renderStatusFromOption(value, options, fieldEnum, showTag)}</span>
+			<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
 		)
-		if (render) return render(value, { mode, ...rest, fieldEnum, options }, dom)
+		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
 
 	const formItemDom = (
 		<Select
 			loading={loading && options.length === 0}
-			{...rest}
-			value={value as any[]}
-			mode={selectMode}
+			{...defaultFormItemProps}
+			{...FilterValue(rest, ["value"])}
+			{...formItemProps}
 			options={options as any} // any script
 		/>
 	)
 	if (renderFormItem)
 		return renderFormItem(
-			value,
-			{ mode, ...rest, fieldEnum, options },
+			text,
+			{ mode, ...rest, ...formItemProps, fieldEnum, options },
 			formItemDom
 		)
 	return formItemDom
 }
 
-export default memo(
-	withDefaultProps(forwardRef(FieldSelect), {
-		value: "",
-		mode: "read",
-		allowClear: true,
-		showTag: true,
-		style: { width: 300 },
-	})
-)
+export default withProField(FieldSelect, {
+	text: "",
+	formItemProps: defaultFormItemProps,
+})
