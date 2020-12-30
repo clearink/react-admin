@@ -1,6 +1,7 @@
 import React from "react"
 import classNames from "classnames"
 import { getPrecisionNumber, getSymbol } from "./utils"
+import "./style.scss"
 interface PercentStringProps {
 	text: number
 	precision: number
