@@ -1,28 +1,15 @@
-import React from "react"
-import { Input, Typography } from "antd"
-import { InputProps } from "antd/lib/input"
+import React, { memo } from "react"
+import { Typography } from "antd"
 import { TextProps } from "antd/lib/typography/Text"
 import { BaseProFieldProps } from "../type"
-import withProField from "@/components/Pro/hocs/withProField"
-export interface FieldTextProps extends BaseProFieldProps, TextProps {
-	text?: string
-	formItemProps?: InputProps
-}
-const defaultFormItemProps = {
-	placeholder: "请输入",
-	allowClear: true,
+
+interface FieldTextProps extends TextProps, BaseProFieldProps<FieldTextProps> {
+	text: TextProps["children"]
 }
 function FieldText(props: FieldTextProps) {
-	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
-	if (mode === "read") {
-		const dom = <Typography.Text {...rest}>{text}</Typography.Text>
-		if (render) return render(text, { mode, ...rest }, dom)
-		return dom
-	}
-	const editProps = { ...defaultFormItemProps, ...formItemProps }
-	const formItemDom = <Input {...editProps} />
-	if (renderFormItem)
-		return renderFormItem(text, { mode, ...formItemProps }, formItemDom)
-	return formItemDom
+	const { text, render, ...rest } = props
+	const DOM = <Typography.Text children={text} {...rest} />
+	if (render) return render({ text, ...rest }, DOM)
+	return DOM
 }
-export default withProField(FieldText, { text: "" })
+export default memo(FieldText)

@@ -1,21 +1,15 @@
-type FieldMode = "read" | "edit" | "update" | "plain"
 export interface BaseFieldRenderProps {
-	render?: (value: any, props: {}, dom: React.ReactNode) => JSX.Element
+	render?: (props: {}, dom: React.ReactNode) => JSX.Element
 	/** value 可以不要吧 */
-	renderFormItem?: (value: any, props: {}, dom: React.ReactNode) => JSX.Element
 }
 
 export type FieldOptionType = { label: string; value: any }
 
-export interface BaseProFieldProps extends BaseFieldRenderProps {
-	/** mode = read 时的文本属性 */
+export interface BaseProFieldProps<T> {
 	text?: any
-	/** 模式 默认是 read */
-	mode?: FieldMode
+	render?: (props: Omit<T, "render">, dom: JSX.Element) => JSX.Element
 }
 export interface BaseFieldSelectProps {
 	/**  color array */
 	fieldEnum?: string[]
-	/** 转换数据格式  不属于数据请求的范畴  */
-	transform?: (data?: any) => any
 }

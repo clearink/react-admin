@@ -54,13 +54,13 @@ export default function renderTableColumn<T extends object>(
 								{cloneElement(DOM, {
 									copyable: copyable ? { tooltips: false } : null,
 									style: { width: props.width },
-									value: text,
+									text,
 								})}
 							</span>
 						</Tooltip>
 					)
 				}
-				return cloneElement(DOM, { value: text })
+				return cloneElement(DOM, { text })
 			},
 			...props,
 		}

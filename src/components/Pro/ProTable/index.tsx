@@ -2,12 +2,10 @@ import React, {
 	forwardRef,
 	memo,
 	Ref,
-	useCallback,
 	useEffect,
 	useImperativeHandle,
 	useMemo,
 	useReducer,
-	useRef,
 } from "react"
 import { Button, Modal, Space, Table } from "antd"
 import classNames from "classnames"
@@ -25,15 +23,12 @@ import ProTableContext from "./ProTableContext"
 import {
 	DeleteOutlined,
 	DownloadOutlined,
-	ExclamationCircleOutlined,
 	PlusOutlined,
 	ReloadOutlined,
 	ToTopOutlined,
 } from "@ant-design/icons"
 import { sleep } from "@/utils/test"
-import { dequal } from "dequal"
-import { isObject } from "@/utils/validate"
-
+import useEventEffect from "@/hooks/useEventEffect"
 // TODO queryFilter props
 /**
  * search 属性 在 query filter中显示
@@ -76,10 +71,9 @@ function ProTable<T extends object>(
 		params: reducerState.params,
 		cache: false,
 	})
-	const memoFetchData = useRef(fetchData)
-	memoFetchData.current = fetchData
-	useEffect(() => {
-		memoFetchData.current() // 是reducerState.params 改变后 fetchData() 默认的params 对其无影响
+
+	useEventEffect(() => {
+		fetchData()
 	}, [reducerState.params])
 
 	useEffect(() => {
@@ -90,11 +84,8 @@ function ProTable<T extends object>(
 		dispatch(actions.changeLoading(propsLoading))
 	}, [propsLoading])
 
-	const memoTransform = useRef(transform)
-	memoTransform.current = transform
-
-	useEffect(() => {
-		if (data) memoTransform.current?.(data, dispatch, actions)
+	useEventEffect(() => {
+		if (data) transform?.(data, dispatch, actions)
 	}, [data])
 
 	// 外部传入的 dataSource
@@ -104,31 +95,23 @@ function ProTable<T extends object>(
 		dispatch(actions.changeTotal(PD.length))
 	}, [PD])
 
-	const handleReload = useCallback(async () => {
-		try {
-			dispatch(actions.changeLoading({ delay: 100 }))
-			await memoFetchData.current()
-		} finally {
-			dispatch(actions.changeLoading(false))
-		}
-	}, [])
 	// 暴露的方法
 	// TODO: 添加 query filter 的 form
 	const tableAction = useMemo(
 		() => ({
-			reload: handleReload,
+			reload: fetchData,
 			reset: () => dispatch(actions.reset(request?.params ?? {})),
 			clearSelected: () => dispatch(actions.changeSelectedRows([])),
 		}),
-		[handleReload, request]
+		[fetchData, request]
 	)
 	useImperativeHandle(ref, () => tableAction, [tableAction])
 
 	// 选择
 	const rowSelection = useMemo<TableProps<T>["rowSelection"]>(() => {
 		return {
-			selectedRowKeys: reducerState.selectedRows,
 			preserveSelectedRowKeys: true,
+			selectedRowKeys: reducerState.selectedRows,
 			onChange: (keys) => dispatch(actions.changeSelectedRows(keys)),
 		}
 	}, [reducerState.selectedRows])
@@ -145,7 +128,7 @@ function ProTable<T extends object>(
 			? { params: reducerState.params, form: values }
 			: values
 		try {
-			dispatch(actions.changeLoading({ delay: 100 }))
+			dispatch(actions.changeLoading({ delay: 50 }))
 			if (onSearch) {
 				const params = onSearch(searchParams)
 				dispatch(actions.changeParams(params))
@@ -172,14 +155,12 @@ function ProTable<T extends object>(
 	}
 
 	// 删除比较重要, 规定二次弹窗
-	const memoOnDelete = useRef(onDelete)
-	memoOnDelete.current = onDelete
 	const handleDelete = () => {
 		Modal.warning({
 			title: "确定要删除该数据吗?",
 			content: "操作后该数据将会移除 请注意!!",
 			async onOk() {
-				await memoOnDelete.current?.(reducerState.selectedRows)
+				await onDelete?.(reducerState.selectedRows)
 				// 没啥用
 				await sleep(100)
 				dispatch(actions.reset(request?.params ?? {}))
@@ -208,7 +189,7 @@ function ProTable<T extends object>(
 			<Button key='export' icon={<ToTopOutlined />}>
 				导出数据
 			</Button>,
-			<ReloadOutlined key='reload' onClick={handleReload} />,
+			<ReloadOutlined key='reload' onClick={fetchData} />,
 		]
 	})()
 	// 列表数据改变

@@ -1,63 +1,27 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback } from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { FieldDateTimeProps } from "@/components/Pro/ProField/components/FieldDate/FieldDateTime"
 import { formatTableSearchParams } from "@/utils/formatValues"
-import { Button, Space, Table } from "antd"
 import http from "@/http"
-import DrawerForm from "@/components/Pro/ProForm/components/DrawerForm"
-import {
-	ProFormDateRange,
-	ProFormSelect,
-	ProFormText,
-} from "@/components/Pro/ProForm"
-import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import { sleep } from "@/utils/test"
-import useBoolean from "@/hooks/useBoolean"
-import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
-import { FieldText } from "@/components/Pro/ProField"
+import { FieldDateProps } from "@/components/Pro/ProField/components/FieldDate"
 
 const columns: ProTableColumns<any>[] = [
 	{
-		dataIndex: "updateTime",
-		title: "更新时间",
-		field: "date",
-		sorter: {
-			multiple: 1,
-		},
-		fieldProps: {
-			timeFormat: "YYYY-MM-DD hh:mm",
-		} as FieldDateTimeProps,
+		dataIndex: "avatar",
+		title: "头像",
+		field: "avatar",
 	},
 	{
-		title: "会员类型",
-		dataIndex: "memberType",
+		title: "性别",
+		dataIndex: "gender",
 		field: "select",
 		search: true,
 		fieldProps: {
 			fieldEnum: colorArray,
-			request: {
-				url: "/sys/dict/getDictItems/MEMBER_TYPE",
-				transform: (oo) => {
-					if (!oo) return []
-					return oo.result.map((item: any) => ({
-						label: item.text,
-						value: item.value,
-					}))
-				},
-			},
-		},
-	},
-	{
-		title: "账号",
-		dataIndex: "username",
-		search: true,
-		fieldProps: {
-			copyable: true,
-			// copyable: { tooltips: false },
+			options: ["男", "女"],
 		},
 	},
 	{
@@ -65,11 +29,12 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: "nickName",
 	},
 	{
-		title: "经验",
-		sorter: {
-			multiple: 2,
-		},
-		dataIndex: ["memberAsset", "experience"],
+		title: "生日",
+		dataIndex: "birthday",
+		field: "date",
+		fieldProps: {
+			timeFormat: "YYYY-MM-DD",
+		} as FieldDateProps,
 	},
 ]
 function WorkPlace(props: IBaseProps) {
@@ -110,19 +75,6 @@ function WorkPlace(props: IBaseProps) {
 					transform={handleTransform}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/>
-				<DrawerForm
-					title={{ title: "新建表单", tooltip: "色开发商的地方是" }}
-					trigger={<Button>DrawerForm</Button>}
-					onFinish={async (v) => {
-						await sleep(1000)
-						console.log(v)
-					}}
-				>
-					<ProFormText name='a123' label='a123' tooltip='12312' />
-					<ProFormText name='a123' label='a123' />
-					<ProFormText name='a123' label='a123' />
-					<ProFormText name='a123' label='a123' />
-				</DrawerForm>
 			</main>
 		</div>
 	)

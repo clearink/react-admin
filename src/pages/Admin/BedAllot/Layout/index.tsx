@@ -12,6 +12,7 @@ import TreeTitleWrapper from "../components/TreeTitleWrapper"
 import { convertTreeNode } from "../utils"
 import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
 import { ProFormText } from "@/components/Pro/ProForm"
+import withDefaultProps from "@/hocs/withDefaultProps"
 
 // 监控分析 layout
 function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
@@ -63,11 +64,14 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 							titleRender={(node) => <TreeTitleWrapper {...node} />}
 						/>
 					</Spin>
-					<ModalForm title={{title:"12312", tooltip:'123123123'}} trigger={<Button type='primary'>1231213</Button>}>
-						<ProFormText name="a" label='2131231' />
+					<ModalForm
+						title={{ title: "12312", tooltip: "123123123" }}
+						trigger={<Button type='primary'>1231213</Button>}
+					>
+						<ProFormText />
 					</ModalForm>
 				</Card>
-				<div className='flex-auto overflow-x-hidden'>{children}</div>
+				<div className='flex-auto'>{children}</div>
 			</main>
 		</div>
 	)

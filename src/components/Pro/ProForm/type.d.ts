@@ -11,7 +11,7 @@ export type SubmitConfigType = {
 	render?: (dom: JSX.Element[], form: FormInstance, props: any) => ReactNode
 }
 export interface BaseFormProps extends FormProps {
-	submitConfig?: SubmitConfigType
+	submitConfig?: SubmitConfigType | false
 	loading?: ButtonProps["loading"]
 }
 
@@ -30,5 +30,4 @@ export interface BaseFormItemProps<T = {}> extends FormItemProps {
 	width?: number | "s" | "sm" | "m" | "md" | "l" | "lg" | "xl"
 	/** 切换模式 默认=edit */
 	read?: boolean
-
 }

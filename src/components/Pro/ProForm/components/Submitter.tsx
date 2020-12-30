@@ -13,7 +13,7 @@ import { SubmitConfigType } from "../type"
 interface SubmitterProps extends SubmitConfigType {}
 function Submitter(props: SubmitterProps) {
 	const { resetProps: RP, submitProps: SP, render } = props
-	const form = useContext(ProFormContext)
+	const { form, loading } = useContext(ProFormContext)
 	const submitText = SP?.text ?? "提交"
 	const resetText = RP?.text ?? "重置"
 	const dom = [
@@ -22,7 +22,6 @@ function Submitter(props: SubmitterProps) {
 			{...RP}
 			onClick={(e) => {
 				form?.resetFields()
-				// onReset?.()
 				RP?.onClick?.(e)
 			}}
 		>
@@ -31,10 +30,10 @@ function Submitter(props: SubmitterProps) {
 		<Button
 			key='submit'
 			type='primary'
+			loading={loading}
 			{...SP}
 			onClick={(e) => {
 				form?.submit()
-				// onSubmit?.()
 				SP?.onClick?.(e)
 			}}
 		>
@@ -45,9 +44,4 @@ function Submitter(props: SubmitterProps) {
 	return <Space>{dom}</Space>
 }
 
-export default memo(
-	withDefaultProps(Submitter, {
-		resetProps: {},
-		submitProps: {},
-	})
-)
+export default memo(Submitter)

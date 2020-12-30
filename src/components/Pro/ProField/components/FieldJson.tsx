@@ -1,16 +1,19 @@
-import React, { useMemo } from "react"
+import React, { memo, useMemo } from "react"
 import FieldCode from "./FieldCode"
 import { FieldCodeProps } from "./FieldCode"
-import withProField from "../../hocs/withProField"
+import withDefaultProps from "@/hocs/withDefaultProps"
+import { BaseProFieldProps } from "../type"
 
 // 自动将text json 格式化
 
-interface FieldJsonProps extends FieldCodeProps {
+interface FieldJsonProps
+	extends Omit<FieldCodeProps, "render">,
+		BaseProFieldProps<FieldJsonProps> {
 	text: string
 	space: number
 }
 function FieldJson(props: FieldJsonProps) {
-	const { text, space, ...rest } = props
+	const { text, space, render, ...rest } = props
 	const jsonText = useMemo(() => {
 		try {
 			return JSON.stringify(JSON.parse(text), null, space)
@@ -18,9 +21,13 @@ function FieldJson(props: FieldJsonProps) {
 			return text
 		}
 	}, [space, text])
-	return <FieldCode text={jsonText} {...rest} />
+	const DOM = <FieldCode text={jsonText} {...rest} />
+	if (render) return render({ text, space, ...rest }, DOM)
+	return DOM
 }
-export default withProField(FieldJson, {
-	text: "",
-	space: 2,
-})
+export default memo(
+	withDefaultProps(FieldJson, {
+		text: "",
+		space: 2,
+	})
+)

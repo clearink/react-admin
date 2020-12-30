@@ -1,3 +1,4 @@
+import useEventCallback from "@/hooks/useEventCallback"
 import { Form } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
@@ -5,7 +6,6 @@ import React, {
 	forwardRef,
 	memo,
 	Ref,
-	useCallback,
 	useEffect,
 	useImperativeHandle,
 	useState,
@@ -36,26 +36,20 @@ function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 	useImperativeHandle(ref, () => form, [form])
 
 	// 包装的 finish
-	const handleFinish = useCallback(
-		async (values: any) => {
-			if (typeof onFinish !== "function") return
-			try {
-				setLoading({ delay: 100 })
-				await onFinish(values)
-			} finally {
-				setLoading(false)
-			}
-		},
-		[onFinish]
-	)
+	const handleFinish = useEventCallback(async (values: any) => {
+		if (typeof onFinish !== "function") return
+		try {
+			setLoading({ delay: 50 })
+			await onFinish(values)
+		} finally {
+			setLoading(false)
+		}
+	}, [])
 	return (
-		<ProFormContext.Provider value={form}>
+		<ProFormContext.Provider value={{ form, loading }}>
 			<Form form={form} {...rest} onFinish={handleFinish}>
 				{children}
-				<Submitter
-					{...submitConfig}
-					submitProps={{ loading, ...submitConfig?.submitProps }}
-				/>
+				{submitConfig === false ? null : <Submitter {...submitConfig} />}
 				<button type='submit' hidden></button>
 			</Form>
 		</ProFormContext.Provider>

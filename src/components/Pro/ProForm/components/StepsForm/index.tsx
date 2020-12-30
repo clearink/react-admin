@@ -13,6 +13,8 @@ import { BaseFormProps } from "../../type"
 import StepForm, { StepFormComponentType } from "./StepForm"
 import styles from "./style.module.scss"
 import { FormProviderProps } from "antd/lib/form/context"
+import useEventEffect from "@/hooks/useEventEffect"
+import useEventCallback from "@/hooks/useEventCallback"
 
 export const StepsFormContext = React.createContext<() => void>(() => {})
 
@@ -20,11 +22,11 @@ export const StepsFormContext = React.createContext<() => void>(() => {})
 interface StepsFormProps extends Omit<StepsProps, "current"> {
 	children?: ReactNode
 	onFinish?: (values: any) => void // 目前仅提供一个 onFinish 函数
-	containFormName?: boolean // 最后的值是否包含form name
+	withFormName?: boolean // 最后的值是否包含form name
 	render?: (dom: JSX.Element) => JSX.Element
 }
 function StepsForm(props: StepsFormProps) {
-	const { children, onFinish, containFormName, render, ...rest } = props
+	const { children, onFinish, withFormName, render, ...rest } = props
 
 	// 不能被外界控制 除非 ref
 	const [current, setCurrent] = useState(0)
@@ -71,27 +73,25 @@ function StepsForm(props: StepsFormProps) {
 		}
 	}, [childCount, current])
 
-	const handleFormFinish: FormProviderProps["onFormFinish"] = (
-		name,
-		{ forms }
-	) => {
-		// 如果时最后一个form 调用onFinish
-		// 如何判断是否是最后一个 form呢?
-		const formNames = Object.keys(forms)
-		if (
-			name === formNames[formNames.length - 1] &&
-			typeof onFinish === "function"
-		) {
-			let allValues = {}
-			for (const k of formNames) {
-				const v = forms[k]
-				if (containFormName)
-					allValues[k] = Object.assign(allValues[k] ?? {}, v.getFieldsValue())
-				else allValues = Object.assign(allValues, v.getFieldsValue())
+	const handleFinish: FormProviderProps["onFormFinish"] = useEventCallback(
+		(name, { forms }) => {
+			// 如果时最后一个form 调用onFinish
+			// 如何判断是否是最后一个 form呢?
+			const nameList = Object.keys(forms)
+			const lastFormName = nameList[nameList.length - 1]
+			const isLastForm = lastFormName === name && typeof onFinish === "function"
+			if (isLastForm) {
+				const values = nameList.reduce((pre, name) => {
+					const formValue = forms[name].getFieldsValue()
+					return withFormName
+						? { ...pre, [name]: formValue }
+						: { ...pre, ...formValue }
+				}, {})
+				onFinish?.(values)
 			}
-			onFinish(allValues)
-		}
-	}
+		},
+		[]
+	)
 	const dom = (
 		<div className={styles.pro_steps_form}>
 			<div className={styles.pro_steps_wrapper}>
@@ -99,7 +99,7 @@ function StepsForm(props: StepsFormProps) {
 					{stepsChildren}
 				</Steps>
 			</div>
-			<Form.Provider onFormFinish={handleFormFinish}>
+			<Form.Provider onFormFinish={handleFinish}>
 				<StepsFormContext.Provider value={handleNextStep}>
 					<div className={styles.form_container}>
 						{formChildren.map((child, index) => {

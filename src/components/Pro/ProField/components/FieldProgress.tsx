@@ -1,30 +1,21 @@
-import React from "react"
-import { InputNumber, Progress } from "antd"
-import { BaseProFieldProps } from "../type"
-import { InputNumberProps } from "antd/lib/input-number"
+import React, { memo } from "react"
+import { Progress } from "antd"
 import { ProgressProps } from "antd/lib/progress"
-import withProField from "../../hocs/withProField"
-import { toNumber } from "../../utils"
+import { BaseProFieldProps } from "../type"
 
 // 进度条
-export interface FieldProgressProps extends BaseProFieldProps, ProgressProps {
-	text?: number | string
-	formItemProps?: InputNumberProps
+export interface FieldProgressProps
+	extends ProgressProps,
+		BaseProFieldProps<FieldProgressProps> {
+	text?: ProgressProps["percent"]
 }
 
 function FieldProgress(props: FieldProgressProps) {
-	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
+	const { text, render, ...rest } = props
 
-	const numberValue = toNumber(text)
-	const dom = <Progress percent={numberValue} {...rest} />
-	if (mode === "read") {
-		if (render) return render(text, { mode, ...rest }, dom)
-		return dom
-	}
-	const formDom = <InputNumber {...formItemProps} />
-	if (renderFormItem)
-		return renderFormItem(text, { mode, ...formItemProps }, formDom)
-	return formDom
+	const DOM = <Progress percent={text} {...rest} />
+	if (render) return render(rest, DOM)
+	return DOM
 }
 
-export default withProField(FieldProgress, { text: "" })
+export default memo(FieldProgress)

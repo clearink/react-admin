@@ -12,27 +12,22 @@ import { isArray } from "@/utils/validate"
 import withProField from "@/components/Pro/hocs/withProField"
 
 export interface FieldCheckboxProps
-	extends BaseProFieldProps,
+	extends BaseProFieldProps<FieldCheckboxProps>,
 		BaseFieldSelectProps {
-	formItemProps?: Omit<CheckboxGroupProps, "options">
 	text: CheckboxGroupProps["value"]
 	showTag: boolean
 	request?: useFetchDataProps
 	options?: string[] | Array<FieldOptionType>
 }
-const defaultFormItemProps: CheckboxGroupProps = {}
 
 function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 	const {
 		text,
-		mode,
 		render,
-		renderFormItem,
 		fieldEnum,
 		request, // 请求
 		showTag,
 		options: PO,
-		formItemProps,
 		...rest
 	} = props
 
@@ -44,19 +39,10 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 		return []
 	}, [data, PO])
 
-	if (mode === "read") {
-		const dom = (
-			<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
-		)
-		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
-		return dom
-	}
+	const DOM = <>{renderStatusFromOption(text, options, fieldEnum, showTag)}</>
 
-	const editProps = { ...defaultFormItemProps, ...formItemProps, options }
-	const formItemDom = <Checkbox.Group {...editProps} />
-	if (renderFormItem)
-		return renderFormItem(text, { mode, ...editProps, fieldEnum }, formItemDom)
-	return formItemDom
+	if (render) return render({ text, showTag, ...rest, fieldEnum, options }, DOM)
+	return DOM
 }
 
 export default withProField(FieldCheckbox, {

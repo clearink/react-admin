@@ -26,7 +26,7 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 	const { text, countDown, ...captchaPropsRest } = captchaProps ?? {}
 
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
-	const form = useContext(ProFormContext)
+	const { form } = useContext(ProFormContext)
 	const handleClick = async (start: Function) => {
 		if (typeof onGetCaptcha !== "function") return
 		try {

@@ -1,29 +1,18 @@
-import React from "react"
+import React, { memo } from "react"
 import { BaseProFieldProps } from "../type"
-import { Avatar, Upload } from "antd"
+import { Avatar } from "antd"
 import { AvatarProps } from "antd/lib/avatar"
-import withProField from "../../hocs/withProField"
-import { UploadProps } from "antd/lib/upload"
+import withDefaultProps from "@/hocs/withDefaultProps"
 
-export interface FieldAvatarProps extends BaseProFieldProps, AvatarProps {
-	formItemProps?: UploadProps
-	text: string
+export interface FieldAvatarProps
+	extends AvatarProps,
+		BaseProFieldProps<FieldAvatarProps> {
+	text?: AvatarProps["src"]
 }
-const defaultForItemProps: UploadProps = {}
 function FieldAvatar(props: FieldAvatarProps) {
-	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
-	const dom = <Avatar src={text} {...rest} />
-	if (mode === "read") {
-		if (render) return render(text, { mode, ...rest }, dom)
-		return dom
-	}
-
-	const editProps = { ...defaultForItemProps, ...formItemProps }
-	const formItemDom = <Upload {...editProps} />
-	if (renderFormItem)
-		return renderFormItem(text, { mode, ...formItemProps }, formItemDom)
-	return formItemDom
+	const { text, render, ...rest } = props
+	const DOM = <Avatar {...rest} />
+	if (render) return render({ text, ...rest }, DOM)
+	return DOM
 }
-export default withProField(FieldAvatar, {
-	text: "",
-})
+export default memo(withDefaultProps(FieldAvatar, { text: "" }))

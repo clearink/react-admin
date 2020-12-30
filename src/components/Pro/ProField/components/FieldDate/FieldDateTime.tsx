@@ -1,17 +1,14 @@
-import React from "react"
-import withProField from "@/components/Pro/hocs/withProField"
+import React, { memo } from "react"
 import FieldDate, { FieldDateProps } from "."
+import withDefaultProps from "@/hocs/withDefaultProps"
 // 仅仅是向 FieldDat 添加了一个默认值 showTime = true
-export type FieldDateTimeProps = FieldDateProps
-const defaultFormItemProps = {
-	style: { width: 450 },
-	picker: "date" as any,
-	showTime: true,
+
+function FieldDateTime(props: FieldDateProps) {
+	return <FieldDate {...props} />
 }
 
-function FieldDateTime(props: FieldDateTimeProps) {
-	const formItemProps = { ...props.formItemProps, ...defaultFormItemProps }
-	return <FieldDate {...props} formItemProps={formItemProps} />
-}
-
-export default withProField(FieldDateTime)
+export default memo(
+	withDefaultProps(FieldDateTime, {
+		timeFormat: "YYYY-DD-MM HH:mm:ss",
+	})
+)

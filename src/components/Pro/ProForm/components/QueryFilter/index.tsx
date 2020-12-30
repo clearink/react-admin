@@ -14,6 +14,7 @@ import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
 import { QFColSpan, QFColSpanArray } from "./QFColSpan"
 import styles from "./style.module.scss"
+import Submitter from "../Submitter"
 // 查询筛选表单
 // 未测试完全 可能有bug
 // <QueryFilter submitConfig={{render:()=>null}} />
@@ -27,7 +28,6 @@ export interface QueryFilterProps extends BaseFormProps {
 	defaultCollapsed?: boolean
 	onCollapse?: (collapsed: boolean) => void
 	layout?: "horizontal" | "horizontal"
-	hasSubmitter: boolean
 	ghost: boolean
 	className?: string
 	style?: CSSProperties
@@ -40,7 +40,6 @@ function QueryFilter(props: QueryFilterProps) {
 		layout,
 		onCollapse,
 		submitConfig,
-		hasSubmitter,
 		ghost,
 		className,
 		style,
@@ -56,7 +55,7 @@ function QueryFilter(props: QueryFilterProps) {
 	const point = QFColSpanArray.find(([k]) => breakpoints[k] === true)
 
 	// submitter col span
-	const STColSpan = (() => {
+	const STColSpan = useMemo(() => {
 		if (!point) return 24
 		const maxCol = 24 / point[1]
 		if (collapsed) {
@@ -65,46 +64,11 @@ function QueryFilter(props: QueryFilterProps) {
 		}
 		const residue = Math.floor(childCount % maxCol)
 		return 24 - point[1] * residue
-	})()
+	}, [childCount, collapsed, point])
 
 	const handleCollapsed = () => {
 		setCollapsed((p) => !p)
 		onCollapse?.(!collapsed)
-	}
-
-	const submitter: BaseFormProps["submitConfig"] = {
-		submitProps: {
-			text: "查询",
-			icon: <SearchOutlined />,
-		},
-		...submitConfig,
-		render: (dom, form) => {
-			if (!hasSubmitter) return null
-			const renderDOM = (
-				<Col span={STColSpan} className='text-right px-4'>
-					{/* TODO: 24 可能 是会变化的 */}
-					<Form.Item label={STColSpan === 24 ? null : " "} colon={false}>
-						<Space>
-							{dom}
-							<span
-								className={styles.collapsed_trigger}
-								onClick={handleCollapsed}
-							>
-								{collapsed ? "展开" : "收起"}
-								<UpOutlined
-									className={classNames(styles.trigger_icon, {
-										[styles.collapsed]: collapsed,
-									})}
-								/>
-							</span>
-						</Space>
-					</Form.Item>
-				</Col>
-			)
-			if (submitConfig?.render)
-				return submitConfig?.render([renderDOM], form, props)
-			return renderDOM
-		},
 	}
 
 	// 策略 默认 小屏幕 span = 12 中 span = 8 大 span = 6
@@ -134,12 +98,45 @@ function QueryFilter(props: QueryFilterProps) {
 			style={style}
 		>
 			<BaseForm
-				submitConfig={submitter}
+				submitConfig={false}
 				layout={breakpoints.lg ? "horizontal" : "vertical"}
 				{...rest}
 				className={"flex flex-wrap"}
 			>
 				{renderChildren}
+				{submitConfig && (
+					<Submitter
+						submitProps={{ text: "查询", icon: <SearchOutlined /> }}
+						render={(dom, f) => {
+							const DOM = (
+								<Col span={STColSpan} className='text-right px-4'>
+									<Form.Item
+										label={STColSpan === 24 ? null : " "}
+										colon={false}
+									>
+										<Space>
+											{dom}
+											<span
+												className={styles.collapsed_trigger}
+												onClick={handleCollapsed}
+											>
+												{collapsed ? "展开" : "收起"}
+												<UpOutlined
+													className={classNames(styles.trigger_icon, {
+														[styles.collapsed]: collapsed,
+													})}
+												/>
+											</span>
+										</Space>
+									</Form.Item>
+								</Col>
+							)
+							if (submitConfig?.render)
+								return submitConfig?.render([DOM], f, props)
+							return DOM
+						}}
+					/>
+				)}
 			</BaseForm>
 		</div>
 	)

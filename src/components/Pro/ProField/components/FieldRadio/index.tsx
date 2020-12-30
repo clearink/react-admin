@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { memo, useMemo } from "react"
 import { Radio } from "antd"
 import { BaseFieldSelectProps, BaseProFieldProps } from "../../type"
 import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
@@ -7,11 +7,11 @@ import { renderStatusFromOption } from "@/components/Pro/utils"
 import { isArray } from "@/utils/validate"
 import { CheckboxValueType } from "antd/lib/checkbox/Group"
 import withProField from "@/components/Pro/hocs/withProField"
+import withDefaultProps from "@/hocs/withDefaultProps"
 
 export interface FieldRadioProps
-	extends BaseProFieldProps,
+	extends BaseProFieldProps<FieldRadioProps>,
 		BaseFieldSelectProps {
-	formItemProps?: Omit<RadioGroupProps, "options">
 	text?: string | CheckboxValueType[]
 	showTag: boolean
 	request?: useFetchDataProps
@@ -21,14 +21,11 @@ const defaultFormItemProps: RadioGroupProps = {}
 function FieldRadio(props: FieldRadioProps) {
 	const {
 		text,
-		mode,
 		render,
-		renderFormItem,
 		fieldEnum,
 		request,
 		showTag,
 		options: PO,
-		formItemProps,
 		...rest
 	} = props
 
@@ -40,22 +37,12 @@ function FieldRadio(props: FieldRadioProps) {
 		return []
 	}, [data, PO])
 
-	if (mode === "read") {
-		const dom = (
-			<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
-		)
-		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
-		return dom
-	}
+	const DOM = (
+		<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
+	)
 
-	const editProps = { ...defaultFormItemProps, ...formItemProps, options }
-	const formItemDom = <Radio.Group {...editProps} />
-	if (renderFormItem)
-		return renderFormItem(text, { mode, fieldEnum, ...editProps }, formItemDom)
-	return formItemDom
+	if (render) return render({ text, ...rest, showTag, fieldEnum, options }, DOM)
+	return DOM
 }
 
-export default withProField(FieldRadio, {
-	text: "",
-	showTag: true,
-})
+export default memo(withDefaultProps(FieldRadio, { text: "", showTag: true }))

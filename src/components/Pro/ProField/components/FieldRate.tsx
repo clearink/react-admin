@@ -1,30 +1,15 @@
-import React from "react"
-import { Rate } from "antd"
+import React, { memo } from "react"
+import Rate, { RateProps } from "antd/lib/rate"
 import { BaseProFieldProps } from "../type"
-import { RateProps } from "antd/lib/rate"
-import withProField from "../../hocs/withProField"
+import withDefaultProps from "@/hocs/withDefaultProps"
 
-interface FieldRateProps extends BaseProFieldProps, RateProps {
-	text?: number
+interface FieldRateProps extends RateProps, BaseProFieldProps<FieldRateProps> {
+	text?: RateProps["value"]
 }
-// 评分 比较特殊
 function FieldRate(props: FieldRateProps) {
-	const { value, mode, render, renderFormItem, ...rest } = props
-	const allow = mode === "read" // 是否允许编辑
-	const dom = <Rate disabled={allow} value={value} {...rest} />
-	if (mode === "read") {
-		if (render) return render(value, { mode, ...rest }, dom)
-		return dom
-	}
-	if (renderFormItem) return renderFormItem(value, { mode, ...rest }, dom)
-	return dom
+	const { text, render, ...rest } = props
+	const DOM = <Rate value={text} {...rest} />
+	if (render) return render({ text, ...rest }, DOM)
+	return DOM
 }
-
-export default withProField(FieldRate, {
-	text: 0,
-	allowHalf: true,
-})
-
-/**
- *
- */
+export default memo(withDefaultProps(FieldRate, { allowHalf: true }))

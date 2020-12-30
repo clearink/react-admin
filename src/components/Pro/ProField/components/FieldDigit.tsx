@@ -1,34 +1,17 @@
-import React from "react"
-import { InputNumber } from "antd"
-import { InputNumberProps } from "antd/lib/input-number"
-import { BaseProFieldProps } from "../type"
+import React, { memo } from "react"
 import { formatNumber } from "../../utils"
-import withProField from "../../hocs/withProField"
+import withDefaultProps from "@/hocs/withDefaultProps"
+import { BaseProFieldProps } from "../type"
 
-export interface FieldDigitProps extends BaseProFieldProps {
-	text: number
-	formItemProps?: InputNumberProps
-}
-const defaultFormItemProps: InputNumberProps = {
-	placeholder: "请输入",
-	min: 0,
-	style: { width: 200 },
+export interface FieldDigitProps extends BaseProFieldProps<FieldDigitProps> {
+	text?: number
 }
 function FieldDigit(props: FieldDigitProps) {
-	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
+	const { text, render } = props
 
-	if (mode === "read") {
-		const dom = <span>{formatNumber(text)}</span>
-		if (render) return render(text, { mode, ...rest }, dom)
-		return dom
-	}
-	const editProps = { ...defaultFormItemProps, ...formItemProps }
-	const formItemDom = <InputNumber {...editProps} />
-	if (renderFormItem)
-		return renderFormItem(text, { mode, ...formItemProps }, formItemDom)
-	return formItemDom
+	const DOM = <span>{formatNumber(text ?? 0)}</span>
+	if (render) return render({ text }, DOM)
+	return DOM
 }
 
-export default withProField(FieldDigit, {
-	text: 0,
-})
+export default memo(withDefaultProps(FieldDigit, { text: 0 }))

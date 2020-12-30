@@ -8,26 +8,45 @@ export const antdFormItemProps: Array<keyof FormItemProps> = [
 	"getValueProps",
 	"hasFeedback",
 	"help",
+	"hidden",
 	"htmlFor",
 	"initialValue",
-	"noStyle",
 	"label",
 	"labelAlign",
 	"labelCol",
+	"messageVariables",
 	"name",
-	"preserve",
 	"normalize",
+	"noStyle",
+	"preserve",
 	"required",
 	"rules",
 	"shouldUpdate",
+	"tooltip",
 	"trigger",
 	"validateFirst",
 	"validateStatus",
 	"validateTrigger",
 	"valuePropName",
 	"wrapperCol",
-	"hidden",
 ]
+
+/**
+ * prefixCls?: string;
+    noStyle?: boolean;
+    style?: React.CSSProperties;
+    className?: string;
+    children?: ChildrenType<Values>;
+    id?: string;
+    hasFeedback?: boolean;
+    validateStatus?: ValidateStatus;
+    required?: boolean;
+    hidden?: boolean;
+    initialValue?: any;
+    messageVariables?: Record<string, string>;
+    tooltip?: LabelTooltipType; 
+    fieldKey?: React.Key | React.Key[];
+ */
 
 export const WIDTH_SIZE_ENUM = {
 	// 适用于短数字，短文本或者选项

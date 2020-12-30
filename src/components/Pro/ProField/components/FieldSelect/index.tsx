@@ -13,10 +13,9 @@ import { isArray } from "@/utils/validate"
 import withProField from "@/components/Pro/hocs/withProField"
 
 export interface FieldSelectProps
-	extends BaseProFieldProps,
+	extends BaseProFieldProps<FieldSelectProps>,
 		BaseFieldSelectProps {
 	text?: string | number | Array<string | number>
-	formItemProps?: Omit<SelectProps<any[]>, "options">
 	options?: string[] | Array<FieldOptionType>
 	/** 是否使用 tag 渲染 text 默认=true */
 	showTag?: boolean
@@ -24,38 +23,27 @@ export interface FieldSelectProps
 }
 
 /**
- * 1. fieldEnum 是 Array 
- * 
- * 
-	需求 1
-	如何在transform 中动态修改fieldEnum
-	enumText 能否自己实现
-
 
 	问题1 transform 每次都会改变 需要缓存它吗?
 	期望 期望 transform只在 data 变化时调用一次
 	暂时先缓存下来
  */
-const defaultFormItemProps = {
-	allowClear: true,
-	showTag: true,
-	style: { width: 300 },
-}
 function FieldSelect(props: FieldSelectProps) {
 	const {
 		text,
-		mode,
-		render,
-		renderFormItem,
 		fieldEnum,
 		showTag,
 		request,
 		options: PO,
-		formItemProps,
+		render,
 		...rest
 	} = props
 
-	const { loading, data } = useFetchData({ cache: true, ...request })
+	const { data } = useFetchData({
+		cache: true,
+		auto: true,
+		...request,
+	})
 	// form.resetFields 会重新执行一次
 	// 这是 antd 的设计 no bug
 	const options = useDeepMemo(() => {
@@ -63,21 +51,11 @@ function FieldSelect(props: FieldSelectProps) {
 		if (isArray(data)) return data as any
 		return []
 	}, [data, fieldEnum, PO])
-
-	if (mode === "read") {
-		const dom = (
-			<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
-		)
-		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
-		return dom
-	}
-
-	const editProps = { ...defaultFormItemProps, ...formItemProps, options }
-	const isLoading = loading && !options.length
-	const formItemDom = <Select loading={isLoading} {...editProps} />
-	if (renderFormItem)
-		return renderFormItem(text, { mode, ...editProps, fieldEnum }, formItemDom)
-	return formItemDom
+	const DOM = (
+		<span>{renderStatusFromOption(text, options, fieldEnum, showTag)}</span>
+	)
+	if (render) return render({ text, ...rest, showTag, fieldEnum, options }, DOM)
+	return DOM
 }
 
 export default withProField(FieldSelect, {

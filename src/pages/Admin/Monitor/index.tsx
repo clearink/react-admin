@@ -88,23 +88,20 @@ function Monitor() {
 				>
 					<div className={styles.filter_item}>
 						<ProFormRadio
-							showTag
 							label='楼层'
 							name='floor'
 							initialValue={1}
-							formItemProps={{
-								onChange: (e) => {
-									const floor = formRef.current?.getFieldValue("floor")
-									if (!floor) return
-									const SF = roomData.find((item) => item.id === floor)
-									if (SF)
-										setSelectRoomData(
-											SF.children.map((item) => ({
-												label: item.title,
-												value: item.id,
-											})) ?? []
-										)
-								},
+							onChange={(e: any) => {
+								const floor = formRef.current?.getFieldValue("floor")
+								if (!floor) return
+								const SF = roomData.find((item) => item.id === floor)
+								if (SF)
+									setSelectRoomData(
+										SF.children.map((item) => ({
+											label: item.title,
+											value: item.id,
+										})) ?? []
+									)
 							}}
 							options={roomData.map((item) => ({
 								label: item.title,
@@ -151,7 +148,6 @@ function Monitor() {
 							</Space>
 						</Radio.Group> */}
 						<ProFormRadio
-							showTag
 							label='房间'
 							name='room'
 							options={selectRoomData}
@@ -177,7 +173,6 @@ function Monitor() {
 					</div>
 					<div className={styles.filter_item}>
 						<ProFormRadio
-							showTag
 							name='status'
 							label='状态'
 							options={statusData}
@@ -200,21 +195,6 @@ function Monitor() {
 								)
 							}}
 						/>
-						{/* <div className={styles.filter_title}>状态</div>
-						<Radio.Group optionType='button' buttonStyle='solid' value={3}>
-							<Space size={14} className={styles.value_list}>
-								{statusData.map((item) => (
-									<Radio.Button
-										value={item}
-										className={styles.list_item}
-										key={item}
-									>
-										{item}
-									</Radio.Button>
-								))}
-							</Space>
-						</Radio.Group>
-									 */}
 					</div>
 				</BaseForm>
 			</div>
