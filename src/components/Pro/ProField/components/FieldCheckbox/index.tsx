@@ -1,19 +1,27 @@
 import React, { Ref, useMemo } from "react"
 import { Checkbox } from "antd"
 import { CheckboxGroupProps } from "antd/lib/checkbox"
-import { BaseProFieldProps, FieldOptionType } from "../../type"
+import {
+	BaseFieldSelectProps,
+	BaseProFieldProps,
+	FieldOptionType,
+} from "../../type"
 import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { renderStatusFromOption } from "../../../utils"
 import { isArray } from "@/utils/validate"
 import withProField from "@/components/Pro/hocs/withProField"
 
-export interface FieldCheckboxProps extends BaseProFieldProps {
+export interface FieldCheckboxProps
+	extends BaseProFieldProps,
+		BaseFieldSelectProps {
 	formItemProps?: Omit<CheckboxGroupProps, "options">
 	text: CheckboxGroupProps["value"]
 	showTag: boolean
 	request?: useFetchDataProps
 	options?: string[] | Array<FieldOptionType>
 }
+const defaultFormItemProps: CheckboxGroupProps = {}
+
 function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 	const {
 		text,
@@ -43,15 +51,11 @@ function FieldCheckbox(props: FieldCheckboxProps, ref: Ref<any>) {
 		if (render) return render(text, { mode, ...rest, fieldEnum, options }, dom)
 		return dom
 	}
-	const formItemDom = (
-		<Checkbox.Group {...rest} {...formItemProps} options={options} />
-	)
+
+	const editProps = { ...defaultFormItemProps, ...formItemProps, options }
+	const formItemDom = <Checkbox.Group {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps, fieldEnum, options },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...editProps, fieldEnum }, formItemDom)
 	return formItemDom
 }
 

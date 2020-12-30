@@ -273,6 +273,5 @@ export default memo(
 		search: true,
 		size: "middle",
 		rowKey: "key",
-	}),
-	dequal // 深对比 减少re render
+	})
 )

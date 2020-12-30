@@ -1,5 +1,4 @@
-import React, { forwardRef, memo, Ref, useMemo } from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React from "react"
 import { Rate } from "antd"
 import { BaseProFieldProps } from "../type"
 import { RateProps } from "antd/lib/rate"
@@ -8,7 +7,7 @@ import withProField from "../../hocs/withProField"
 interface FieldRateProps extends BaseProFieldProps, RateProps {
 	text?: number
 }
-// 评分
+// 评分 比较特殊
 function FieldRate(props: FieldRateProps) {
 	const { value, mode, render, renderFormItem, ...rest } = props
 	const allow = mode === "read" // 是否允许编辑

@@ -17,5 +17,14 @@
 	flex: auto;
 	width: 100%;
 	margin: 8rem auto 4rem;
-	@apply px-8;
+	@apply px-8 flex flex-shrink-0;
+}
+:global {
+	.ant-tree-node-content-wrapper,
+	.ant-tree-node-content-wrapper-open {
+		display: flex;
+		.ant-tree-title {
+			flex: auto;
+		}
+	}
 }

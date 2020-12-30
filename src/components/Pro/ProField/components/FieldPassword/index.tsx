@@ -1,14 +1,4 @@
-import React, {
-	forwardRef,
-	memo,
-	ReactNode,
-	Ref,
-	useEffect,
-	useImperativeHandle,
-	useRef,
-	useState,
-} from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React, { ReactNode, useEffect, useState } from "react"
 import { Input } from "antd"
 import { BaseProFieldProps } from "../../type"
 import { PasswordProps } from "antd/lib/input"
@@ -21,11 +11,11 @@ interface FieldPasswordProps extends BaseProFieldProps {
 	visible?: boolean
 	hiddenMark: ReactNode
 }
-const defaultFormItemProps = {
-	placeholder: "请输入",
+const defaultFormItemProps: PasswordProps = {
+	placeholder: "请输入密码",
 	allowClear: true,
 }
-function FieldPassword(props: FieldPasswordProps, ref: Ref<any>) {
+function FieldPassword(props: FieldPasswordProps) {
 	const {
 		text,
 		mode,
@@ -37,28 +27,20 @@ function FieldPassword(props: FieldPasswordProps, ref: Ref<any>) {
 		...rest
 	} = props
 
-	const inputRef = useRef<any>()
 	const [showPwd, setShowPwd] = useState(() => !!visible)
 	useEffect(() => {
 		setShowPwd(!!visible)
 	}, [visible])
-
-	useImperativeHandle(
-		ref,
-		() => ({ ...inputRef.current, showPwd, setShowPwd } ?? {}),
-		[showPwd]
-	)
 
 	if (mode === "read") {
 		const dom = renderHiddenMark(text, hiddenMark, showPwd, setShowPwd)
 		if (render) return render(text, { mode, ...rest, visible, hiddenMark }, dom)
 		return dom
 	}
-	const formItemDom = (
-		<Input.Password {...defaultFormItemProps} {...rest} {...formItemProps} />
-	)
+	const editProps = { ...defaultFormItemProps, ...formItemProps }
+	const formItemDom = <Input.Password {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(text, { mode,...rest. ...formItemProps }, formItemDom)
+		return renderFormItem(text, { mode, ...editProps }, formItemDom)
 	return formItemDom
 }
 
@@ -66,5 +48,4 @@ export default withProField(FieldPassword, {
 	text: "-",
 	hiddenMark: "*",
 	visible: false,
-	formItemProps: defaultFormItemProps,
 })

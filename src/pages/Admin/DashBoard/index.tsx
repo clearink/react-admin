@@ -90,7 +90,6 @@ function WorkPlace(props: IBaseProps) {
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
-				<FieldText />
 				<ProTable
 					request={{
 						url: "/membermgt/member/list",
@@ -111,6 +110,19 @@ function WorkPlace(props: IBaseProps) {
 					transform={handleTransform}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/>
+				<DrawerForm
+					title={{ title: "新建表单", tooltip: "色开发商的地方是" }}
+					trigger={<Button>DrawerForm</Button>}
+					onFinish={async (v) => {
+						await sleep(1000)
+						console.log(v)
+					}}
+				>
+					<ProFormText name='a123' label='a123' tooltip='12312' />
+					<ProFormText name='a123' label='a123' />
+					<ProFormText name='a123' label='a123' />
+					<ProFormText name='a123' label='a123' />
+				</DrawerForm>
 			</main>
 		</div>
 	)

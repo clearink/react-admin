@@ -1,21 +1,26 @@
-import React, { forwardRef, memo, Ref } from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React from "react"
 import { Select } from "antd"
-import { BaseProFieldProps, FieldOptionType } from "../../type"
+import {
+	BaseFieldSelectProps,
+	BaseProFieldProps,
+	FieldOptionType,
+} from "../../type"
 import { SelectProps } from "antd/lib/select"
 import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import { renderOriginOptions, renderStatusFromOption } from "../../../utils"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { isArray } from "@/utils/validate"
 import withProField from "@/components/Pro/hocs/withProField"
-import FilterValue from "@/utils/FilterValue"
 
-export interface FieldSelectProps extends BaseProFieldProps {
+export interface FieldSelectProps
+	extends BaseProFieldProps,
+		BaseFieldSelectProps {
+	text?: string | number | Array<string | number>
 	formItemProps?: Omit<SelectProps<any[]>, "options">
 	options?: string[] | Array<FieldOptionType>
-	showTag: boolean // 是否使用 tag 渲染 text
+	/** 是否使用 tag 渲染 text 默认=true */
+	showTag?: boolean
 	request?: useFetchDataProps
-	value?: string | number | Array<string | number>
 }
 
 /**
@@ -67,25 +72,14 @@ function FieldSelect(props: FieldSelectProps) {
 		return dom
 	}
 
-	const formItemDom = (
-		<Select
-			loading={loading && options.length === 0}
-			{...defaultFormItemProps}
-			{...FilterValue(rest, ["value"])}
-			{...formItemProps}
-			options={options as any} // any script
-		/>
-	)
+	const editProps = { ...defaultFormItemProps, ...formItemProps, options }
+	const isLoading = loading && !options.length
+	const formItemDom = <Select loading={isLoading} {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps, fieldEnum, options },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...editProps, fieldEnum }, formItemDom)
 	return formItemDom
 }
 
 export default withProField(FieldSelect, {
 	text: "",
-	formItemProps: defaultFormItemProps,
 })

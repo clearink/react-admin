@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons"
 import styles from "./style.module.scss"
 import { IBaseProps } from "@/@types/fc"
-import { useHistory } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import ModalTrigger from "@/components/ModalTrigger"
 function TreeTitleWrapper(props: { title: React.ReactNode }) {
 	return (
@@ -184,7 +184,7 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 						selectable={false}
 						multiple
 						defaultExpandAll
-						treeData={treeData}
+						treeData={[]}
 					/>
 				</Card>
 				<div className='flex-auto overflow-x-hidden'>{children}</div>

@@ -47,13 +47,14 @@ export interface ProTableColumns<T extends object = any>
 
 	/** 注意 ellipsis 必须搭配 width  使用 */
 	fieldProps?: FormItemProps &
-		Partial<BaseProFieldProps> &
+		BaseProFieldProps &
 		TextProps & {
 			// Field Select checkbox radio
 			showTag?: boolean
 			options?: FieldOptionType[] | string[]
 			request?: useFetchDataProps
 			placeholder?: ReactNode
+			fieldEnum?: Any[]
 		}
 }
 

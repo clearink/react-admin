@@ -80,7 +80,8 @@ const columns: ProTableColumns<any>[] = [
 		),
 	},
 ]
-const data = Array.from({ length: 30 }, (_, i) => {
+console.time("object")
+const data = Array.from({ length: 10 }, (_, i) => {
 	return {
 		key: i,
 		num: `MAT20200${Random.integer(10000, 80000)}`,
@@ -97,7 +98,7 @@ function Device() {
 		<div className='bg-white h-full'>
 			<ProTable
 				bordered
-				dataSource={data}
+				dataSource={[]}
 				columns={columns}
 				// scroll={{ x: 1000 }}
 			/>

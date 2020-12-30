@@ -1,5 +1,4 @@
-import React, { forwardRef, memo, Ref } from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React from "react"
 import { InputNumber } from "antd"
 import { InputNumberProps } from "antd/lib/input-number"
 import { BaseProFieldProps } from "../type"
@@ -15,7 +14,7 @@ const defaultFormItemProps: InputNumberProps = {
 	min: 0,
 	style: { width: 200 },
 }
-function FieldDigit(props: FieldDigitProps, ref: Ref<any>) {
+function FieldDigit(props: FieldDigitProps) {
 	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
 
 	if (mode === "read") {
@@ -23,20 +22,13 @@ function FieldDigit(props: FieldDigitProps, ref: Ref<any>) {
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	// 渲染 form
-	const formItemDom = (
-		<InputNumber {...defaultFormItemProps} {...rest} {...formItemProps} />
-	)
+	const editProps = { ...defaultFormItemProps, ...formItemProps }
+	const formItemDom = <InputNumber {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...formItemProps }, formItemDom)
 	return formItemDom
 }
 
 export default withProField(FieldDigit, {
 	text: 0,
-	formItemProps: defaultFormItemProps,
 })

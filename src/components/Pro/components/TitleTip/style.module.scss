@@ -1,0 +1,11 @@
+@import "~@/styles/index.scss";
+
+.title {
+	margin-right: 6px;
+	@include ellipsis;
+	width: 100%;
+	position: relative;
+}
+.icon {
+	cursor: pointer;
+}

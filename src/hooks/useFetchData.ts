@@ -15,7 +15,7 @@ import GetBoundAction from "@/utils/GetBoundAction"
 	// 默认不会自动发送请求
 */
 const initialState = {
-	data: null,
+	data: null as any,
 	error: null,
 	loading: false,
 }

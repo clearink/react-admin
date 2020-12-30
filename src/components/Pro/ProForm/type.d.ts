@@ -1,6 +1,7 @@
 import { ButtonProps } from "antd/lib/button"
-import { FormProps } from "antd/lib/form"
+import { FormItemProps, FormProps } from "antd/lib/form"
 import { ReactNode } from "react"
+import { BaseProFieldProps, FieldMode } from "../ProField/type"
 
 export type SubmitConfigType = {
 	submitProps?: ButtonProps & { text?: ReactNode }
@@ -12,4 +13,22 @@ export type SubmitConfigType = {
 export interface BaseFormProps extends FormProps {
 	submitConfig?: SubmitConfigType
 	loading?: ButtonProps["loading"]
+}
+
+interface FieldStyleProps {
+	style?: React.CSSProperties
+	className?: string
+}
+
+// 表单组件基本的属性  是否要继承 BaseFieldProps ?
+// fieldProps 是直接传递给 formItemProps的
+// 会再继承一个ProFormItem 属性 通过 withFormItem 传递给 Field
+export interface BaseFormItemProps<T = {}> extends FormItemProps {
+	/** Field = 'read' 的属性 */
+	fieldProps?: T & FieldStyleProps
+	/** 预设的宽度 */
+	width?: number | "s" | "sm" | "m" | "md" | "l" | "lg" | "xl"
+	/** 切换模式 默认=edit */
+	read?: boolean
+
 }

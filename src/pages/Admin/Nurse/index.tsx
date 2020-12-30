@@ -74,7 +74,7 @@ const columns: ProTableColumns<any>[] = [
 		),
 	},
 ]
-const data = Array.from({ length: 50 }, (_, i) => {
+const data = Array.from({ length: 10 }, (_, i) => {
 	return {
 		key: i,
 		avatar: i,

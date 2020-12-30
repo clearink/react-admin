@@ -2,13 +2,10 @@ import React from "react"
 import { Input, Typography } from "antd"
 import { InputProps } from "antd/lib/input"
 import { TextProps } from "antd/lib/typography/Text"
-import { BaseProFieldProps } from "../../type"
+import { BaseProFieldProps } from "../type"
 import withProField from "@/components/Pro/hocs/withProField"
-/**
- * 对于同时继承 两个 组件的情况
- * 如何结局
- */
 export interface FieldTextProps extends BaseProFieldProps, TextProps {
+	text?: string
 	formItemProps?: InputProps
 }
 const defaultFormItemProps = {
@@ -22,15 +19,10 @@ function FieldText(props: FieldTextProps) {
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	const formItemDom = (
-		<Input {...defaultFormItemProps} {...rest} {...formItemProps} />
-	)
+	const editProps = { ...defaultFormItemProps, ...formItemProps }
+	const formItemDom = <Input {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...formItemProps }, formItemDom)
 	return formItemDom
 }
 export default withProField(FieldText, { text: "" })

@@ -15,8 +15,8 @@ export type FieldDateRangeProps = BaseProFieldProps & {
 	fromNow?: boolean
 	formItemProps?: RangePickerProps
 }
-const defaultFormItemProps: RangePickerProps = {
-	picker: "date",
+const defaultFormItemProps = {
+	picker: "date" as any,
 	format: "YYYY-MM-DD",
 	showTime: false,
 	style: { width: 280 },
@@ -32,33 +32,24 @@ function FieldDateRange(props: FieldDateRangeProps) {
 		formItemProps,
 		...rest
 	} = props
+
 	const timeValue = useMemo(() => {
 		if (!isArray(text)) return [undefined, undefined] // 不是数组 给默认值
 		return text.map((item) => moment(item))
 	}, [text])
+
 	if (mode === "read") {
 		const dom = momentToText(timeValue as any, fromNow, timeFormat)
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-
-	const formItemDom = (
-		<DatePicker.RangePicker
-			{...defaultFormItemProps}
-			{...rest}
-			{...formItemProps}
-		/>
-	)
+	const editProps = { ...defaultFormItemProps, ...formItemProps }
+	const formItemDom = <DatePicker.RangePicker {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...editProps }, formItemDom)
 	return formItemDom
 }
 export default withProField(FieldDateRange, {
 	fromNow: false,
 	timeFormat: "YYYY-MM-DD",
-	formItemProps: defaultFormItemProps,
 })

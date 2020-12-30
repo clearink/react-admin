@@ -82,6 +82,7 @@ function QueryFilter(props: QueryFilterProps) {
 			if (!hasSubmitter) return null
 			const renderDOM = (
 				<Col span={STColSpan} className='text-right px-4'>
+					{/* TODO: 24 可能 是会变化的 */}
 					<Form.Item label={STColSpan === 24 ? null : " "} colon={false}>
 						<Space>
 							{dom}

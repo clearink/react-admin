@@ -41,7 +41,7 @@ const columns: ProTableColumns[] = [
 		),
 	},
 ]
-const data = Array.from({ length: 100 }, (_, i) => {
+const data = Array.from({ length: 10 }, (_, i) => {
 	return {
 		key: i,
 		name: `提醒方案${i}`,

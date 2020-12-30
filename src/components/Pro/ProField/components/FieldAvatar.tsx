@@ -9,7 +9,7 @@ export interface FieldAvatarProps extends BaseProFieldProps, AvatarProps {
 	formItemProps?: UploadProps
 	text: string
 }
-
+const defaultForItemProps: UploadProps = {}
 function FieldAvatar(props: FieldAvatarProps) {
 	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
 	const dom = <Avatar src={text} {...rest} />
@@ -17,15 +17,11 @@ function FieldAvatar(props: FieldAvatarProps) {
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	// TODO
-	// 将children 设置为 trigger
-	const formItemDom = <Upload {...rest} {...formItemProps} />
+
+	const editProps = { ...defaultForItemProps, ...formItemProps }
+	const formItemDom = <Upload {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...formItemProps }, formItemDom)
 	return formItemDom
 }
 export default withProField(FieldAvatar, {

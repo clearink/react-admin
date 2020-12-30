@@ -1,14 +1,10 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { ComponentType, memo } from "react"
+import { BaseProFieldProps } from "../ProField/type"
 
-export default function withProField<T extends object, D extends T>(
+export default function withProField<T extends BaseProFieldProps>(
 	Field: ComponentType<T>,
-	options?: Partial<T>
+	config?: Partial<T>
 ) {
-	return memo(
-		withDefaultProps(Field, {
-			mode: "read",
-			...options,
-		})
-	)
+	return memo(withDefaultProps(Field, { mode: "read", ...config }))
 }

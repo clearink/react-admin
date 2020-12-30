@@ -1,19 +1,17 @@
 import withProField from "@/components/Pro/hocs/withProField"
-import { DatePickerProps } from "antd/lib/date-picker"
 import React from "react"
 import FieldDate, { FieldDateProps } from "."
 // 仅仅是向 FieldDat 添加了一个默认值 picker='time'
-const defaultFormItemProps: DatePickerProps = {
+const defaultFormItemProps  = {
 	style: { width: 170 },
-	picker: "date",
+	picker: "date" as any,
 	showTime: true,
 }
 
 export type FieldTimeProps = FieldDateProps & {}
 function FieldTime(props: FieldTimeProps) {
-	return <FieldDate {...props} />
+	const formItemProps = { ...props.formItemProps, ...defaultFormItemProps }
+	return <FieldDate {...props} formItemProps={formItemProps} />
 }
 
-export default withProField(FieldTime, {
-	formItemProps: defaultFormItemProps,
-})
+export default withProField(FieldTime)

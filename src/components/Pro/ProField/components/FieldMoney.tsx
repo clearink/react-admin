@@ -31,9 +31,6 @@ function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
 		...rest
 	} = props
 
-	const inputRef = useRef()
-	useImperativeHandle(ref, () => inputRef.current ?? {}, [])
-
 	const prefix = useMemo(() => moneySign[locale ?? ""] ?? "", [locale]) // 前缀
 
 	if (mode === "read") {
@@ -42,9 +39,8 @@ function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	const formItemDom = (
-		<InputNumber ref={inputRef} {...defaultForItemProps} {...forItemProps} />
-	)
+	const editProps = { ...defaultForItemProps, ...forItemProps }
+	const formItemDom = <InputNumber {...editProps} />
 	if (renderFormItem)
 		return renderFormItem(text, { mode, ...forItemProps }, formItemDom)
 	return formItemDom
@@ -53,5 +49,4 @@ function FieldMoney(props: FieldMoneyProps, ref: Ref<any>) {
 export default withProField(FieldMoney, {
 	text: 0,
 	locale: "zh-cn",
-	forItemProps: defaultForItemProps,
 })

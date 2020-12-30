@@ -1,8 +1,8 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, Profiler, useEffect, useMemo, useState } from "react"
 import { Menu, Layout } from "antd"
 import logo from "@/assets/images/logo.png"
 import classNames from "classnames"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useHistory, useLocation } from "react-router-dom"
 import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
@@ -35,6 +35,9 @@ function SiderMenu() {
 	useEffect(() => {
 		setCollapsedMenu(collapsed)
 	}, [collapsed])
+
+	const menuItemList = useMemo(() => RenderMenu(menu), [menu])
+
 	return (
 		<>
 			<div
@@ -55,7 +58,7 @@ function SiderMenu() {
 					className={classNames("logo", {
 						collapsed,
 					})}
-					to="/"
+					to='/'
 				>
 					<img src={logo} alt='logo' />
 					<span className='text-black'>智慧养老看护</span>
@@ -69,7 +72,7 @@ function SiderMenu() {
 					openKeys={openKeys}
 					selectedKeys={selectKeys}
 				>
-					{RenderMenu(menu)}
+					{menuItemList}
 				</Menu>
 			</Layout.Sider>
 		</>

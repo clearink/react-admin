@@ -1,5 +1,4 @@
-import React, { forwardRef, memo, useMemo } from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React, { useMemo } from "react"
 import { BaseProFieldProps } from "../../type"
 import classNames from "classnames"
 import { InputNumberProps } from "antd/lib/input-number"
@@ -8,6 +7,8 @@ import { getPrecisionNumber, getSymbol, toNumber } from "./utils"
 import { removeSeparator } from "@/utils/formatValues"
 import "./style.scss"
 import withProField from "@/components/Pro/hocs/withProField"
+import PercentString from "./PercentString"
+import GetValue from "@/utils/GetValue"
 
 // 去除 min 和 max
 interface FieldPercentProps extends BaseProFieldProps {
@@ -28,19 +29,7 @@ const defaultFormItemProps: InputNumberProps = {
 }
 
 function FieldPercent(props: FieldPercentProps) {
-	const {
-		text,
-		mode,
-		render,
-		renderFormItem,
-		suffix,
-		prefix,
-		hasSymbol,
-		hasColor,
-		precision,
-		formItemProps,
-		...rest
-	} = props
+	const { text, mode, render, renderFormItem, formItemProps, ...rest } = props
 
 	const numberValue = useMemo(() => {
 		return toNumber(removeSeparator(text, "%"))
@@ -49,39 +38,25 @@ function FieldPercent(props: FieldPercentProps) {
 	if (mode === "read") {
 		// 格式化成百分比
 		const dom = (
-			<span
-				className={classNames({
-					"pro_filed__percent--default": !hasColor,
-					"pro_filed__percent--color1": numberValue > 0,
-					"pro_filed__percent--color2": numberValue < 0,
-				})}
-			>
-				{prefix && <span>{prefix}</span>}
-				{hasSymbol && (
-					<span className='pro_field__percent--symbol	'>
-						{getSymbol(numberValue)}
-					</span>
-				)}
-				{getPrecisionNumber(
-					hasSymbol ? Math.abs(numberValue) : numberValue,
-					precision
-				)}
-				{suffix && <span>{suffix}</span>}
-			</span>
+			<PercentString
+				text={numberValue}
+				{...GetValue(rest, [
+					"suffix",
+					"prefix",
+					"hasSymbol",
+					"hasColor",
+					"precision",
+				])}
+			/>
 		)
 		if (render) return render(text, { mode, ...rest }, dom)
 		return dom
 	}
-	// 渲染 form
-	const formItemDom = (
-		<InputNumber {...defaultFormItemProps} {...rest} {...formItemProps} />
-	)
+
+	const editProps = { ...defaultFormItemProps, ...formItemProps }
+	const formItemDom = <InputNumber {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...editProps }, formItemDom)
 	return formItemDom
 }
 
@@ -90,5 +65,4 @@ export default withProField(FieldPercent, {
 	hasSymbol: true,
 	suffix: "%",
 	precision: 2,
-	formItemProps: defaultFormItemProps,
 })

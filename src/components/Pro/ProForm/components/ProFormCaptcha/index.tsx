@@ -44,7 +44,7 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 			<CountDown num={countDown ?? 60}>
 				{({ active, count, start }) => (
 					<Button
-						size={rest.size}
+						size={rest.formItemProps?.size}
 						loading={loading}
 						disabled={active}
 						onClick={() => handleClick(start)}

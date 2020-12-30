@@ -3,6 +3,4 @@ import FieldRadio, {
 	FieldRadioProps,
 } from "../../ProField/components/FieldRadio"
 
-export default withFormItem<
-	Omit<FieldRadioProps, "showTag"> & { showTag?: boolean }
->(FieldRadio)
+export default withFormItem<FieldRadioProps>(FieldRadio)

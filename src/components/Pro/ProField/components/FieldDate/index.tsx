@@ -1,8 +1,7 @@
-import React, { memo, useMemo } from "react"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import React, { useMemo } from "react"
 import { DatePicker } from "antd"
 import { DatePickerProps } from "antd/lib/date-picker"
-import moment, { Moment } from "moment"
+import moment, { Moment, isMoment } from "moment"
 import { BaseProFieldProps } from "../../type"
 import withProField from "@/components/Pro/hocs/withProField"
 
@@ -14,8 +13,8 @@ export type FieldDateProps = BaseProFieldProps & {
 	timeFormat?: string
 	fromNow?: boolean
 }
-const defaultFormItemProps: DatePickerProps = {
-	picker: "date",
+const defaultFormItemProps = {
+	picker: "date" as any,
 	showTime: false,
 	placeholder: "请选择",
 	style: { width: 280 },
@@ -32,10 +31,9 @@ function FieldDate(props: FieldDateProps) {
 		...rest
 	} = props
 
-	const timeValue = useMemo(() => {
-		if (moment.isMoment(text)) return text
-		return moment(text)
-	}, [text])
+	const timeValue = useMemo(() => (isMoment(text) ? text : moment(text)), [
+		text,
+	])
 
 	if (mode === "read") {
 		const dom = (
@@ -43,23 +41,17 @@ function FieldDate(props: FieldDateProps) {
 				{fromNow ? timeValue.fromNow() : timeValue.format(timeFormat)}
 			</span>
 		)
-		if (render) return render(text, { mode, ...rest }, dom)
+		if (render) return render(text, { mode, ...rest, timeFormat, fromNow }, dom)
 		return dom
 	}
-	// picker 属性有问题 只能先用any
-	const formItemDom = (
-		<DatePicker {...defaultFormItemProps} {...rest} {...formItemProps} />
-	)
+
+	const editProps = { ...defaultFormItemProps, ...formItemProps }
+	const formItemDom = <DatePicker {...editProps} />
 	if (renderFormItem)
-		return renderFormItem(
-			text,
-			{ mode, ...rest, ...formItemProps },
-			formItemDom
-		)
+		return renderFormItem(text, { mode, ...editProps }, formItemDom)
 	return formItemDom
 }
 export default withProField(FieldDate, {
 	fromNow: false,
 	timeFormat: "YYYY-MM-DD",
-	formItemProps: defaultFormItemProps,
 })

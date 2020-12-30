@@ -1,9 +1,7 @@
 import React, { memo, ReactNode, useMemo } from "react"
-import classNames from "classnames"
 import styles from "./style.module.scss"
-import TitleTip, {
-	TitleTipProps,
-} from "@/components/Pro/ProCard/components/TitleTip"
+import TitleTip, { TitleTipProps } from "@/components/Pro/components/TitleTip"
+
 import { Space } from "antd"
 import { SpaceProps } from "antd/lib/space"
 import GetValue from "@/utils/GetValue"
@@ -15,7 +13,7 @@ export interface ProFormGroupProps extends SpaceProps {
 }
 function ProFormGroup(props: ProFormGroupProps) {
 	const { title, renderTitle, children } = props
-	const spaceProps = GetValue(props, ...spacePropsArray)
+	const spaceProps = GetValue(props, spacePropsArray)
 
 	const groupTitle = useMemo(() => {
 		if (renderTitle) return renderTitle(title)
@@ -33,4 +31,10 @@ function ProFormGroup(props: ProFormGroupProps) {
 }
 export default memo(ProFormGroup)
 
-const spacePropsArray = ["align", "direction", "size", "split", "wrap"]
+const spacePropsArray: Array<keyof SpaceProps> = [
+	"align",
+	"direction",
+	"size",
+	"split",
+	"wrap",
+]
