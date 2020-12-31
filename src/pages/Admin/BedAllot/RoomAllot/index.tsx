@@ -1,147 +1,18 @@
-import React, { memo } from "react"
+import React, { memo, useContext, useRef } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import {
-	Button,
-	Card,
-	Form,
-	Input,
-	Popconfirm,
-	Select,
-	Space,
-	Switch,
-	Tree,
-} from "antd"
-import {
-	DeleteOutlined,
-	EditOutlined,
-	PlusOutlined,
-	UserOutlined,
-} from "@ant-design/icons"
-import ModalTrigger from "@/components/ModalTrigger"
+import { Space, Switch } from "antd"
+import { DeleteOutlined, UserOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
-import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { Random } from "mockjs"
+import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
+import BedAllotContext from "../BedAllotContext"
+import useEventEffect from "@/hooks/useEventEffect"
+import { isUndefined } from "@/utils/validate"
+import {
+	commonTransformServerData,
+	formatTableSearchParams,
+} from "@/utils/formatValues"
 
-const TreeTitleWrapper = (props: { title: React.ReactNode }) => {
-	return (
-		<div className={styles.tree_title_wrap}>
-			<span className={styles.tree_title}>{props.title}</span>
-
-			<Space className={styles.action}>
-				<ModalTrigger trigger={<PlusOutlined />} title='新增子集分类'>
-					<Form.Item label='上级产品分类' labelCol={{ span: 6 }}>
-						<Select
-							options={[
-								{
-									label: "分类名称",
-									value: "123",
-								},
-							]}
-						></Select>
-					</Form.Item>
-					<Form.Item label='产品分类名称' required labelCol={{ span: 6 }}>
-						<Input />
-					</Form.Item>
-				</ModalTrigger>
-				<ModalTrigger trigger={<EditOutlined />} title='编辑分类'>
-					<Form.Item label='产品分类名称' required labelCol={{ span: 6 }}>
-						<Input />
-					</Form.Item>
-				</ModalTrigger>
-				<Popconfirm title='确定删除?'>
-					<DeleteOutlined />
-				</Popconfirm>
-			</Space>
-		</div>
-	)
-}
-const treeData = [
-	{
-		title: "主楼",
-		key: "0-0",
-		children: [
-			{
-				title: "一楼",
-				key: "0-0-0",
-				isLeaf: true,
-			},
-			{
-				title: "二楼",
-				key: "0-0-1",
-				isLeaf: true,
-			},
-			{
-				title: "三楼",
-				key: "0-0-2",
-				isLeaf: true,
-			},
-		],
-	},
-	{
-		title: "东翼副楼",
-		key: "0-1",
-		children: [
-			{
-				title: "一楼",
-				key: "0-1-0",
-				isLeaf: true,
-			},
-			{
-				title: "二楼",
-				key: "0-1-1",
-				isLeaf: true,
-			},
-			{
-				title: "三楼",
-				key: "0-1-2",
-				isLeaf: true,
-			},
-		],
-	},
-	{
-		title: "西翼副楼",
-		key: "0-2",
-		children: [
-			{
-				title: "一楼",
-				key: "0-2-0",
-				isLeaf: true,
-			},
-			{
-				title: "二楼",
-				key: "0-2-1",
-				isLeaf: true,
-			},
-			{
-				title: "三楼",
-				key: "0-2-2",
-				isLeaf: true,
-			},
-		],
-	},
-	{
-		title: "康复中心",
-		key: "0-3",
-		children: [
-			{
-				title: "一楼",
-				key: "0-3-0",
-				isLeaf: true,
-			},
-			{
-				title: "二楼",
-				key: "0-3-1",
-				isLeaf: true,
-			},
-			{
-				title: "三楼",
-				key: "0-3-2",
-				isLeaf: true,
-			},
-		],
-	},
-]
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
@@ -155,18 +26,22 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "入住人数/床位数",
-		dataIndex: "user",
+		dataIndex: "livingNum",
+		render: (value, record) => {
+			console.log(value, record)
+			return `${value}/${record.bedNum}`
+		},
 	},
 	{
 		title: "护管人员",
-		dataIndex: "nurse",
+		dataIndex: "careWorkerName",
 		fieldProps: {
 			copyable: true,
 		},
 	},
 	{
 		title: "开放状态",
-		dataIndex: "open",
+		dataIndex: "enabled",
 		render(value) {
 			return <Switch defaultChecked={value} />
 		},
@@ -195,19 +70,30 @@ const columns: ProTableColumns<any>[] = [
 		},
 	},
 ]
-const data = Array.from({ length: 40 }, (_, i) => {
-	return {
-		key: i,
-		num: i,
-		user: `${Random.integer(0, 10)}/10`,
-		nurse: Random.cname(),
-		open: Random.boolean(),
-	}
-})
 function RoomAllot() {
+	const buildingId = useContext(BedAllotContext)
+	const ref = useRef<ProTableRef>()
+	useEventEffect(() => {
+		if (isUndefined(buildingId) || !ref.current) return
+		const { dispatch, params, actions } = ref.current.changeParams
+		dispatch(actions.changeParams({ ...params, buildingId }))
+	}, [buildingId])
 	return (
 		<div className={styles.page_wrap}>
-			<ProTable columns={columns} bordered title='房间管理' />
+			<ProTable
+				bordered
+				rowKey='id'
+				ref={ref as any}
+				columns={columns}
+				title='床位管理'
+				request={{
+					url: "/orgmgt/room/list",
+					method: "post",
+					params: { buildingId, pageNo: 1, pageSize: 10 },
+				}}
+				onSearch={formatTableSearchParams}
+				transform={commonTransformServerData}
+			/>
 		</div>
 	)
 }

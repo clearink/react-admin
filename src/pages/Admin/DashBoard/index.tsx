@@ -1,11 +1,16 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { formatTableSearchParams } from "@/utils/formatValues"
+import {
+	commonTransformServerData,
+	formatTableSearchParams,
+} from "@/utils/formatValues"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import http from "@/http"
+import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
+import { ProFormInput } from "@/components/Pro/ProForm"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -36,24 +41,13 @@ const columns: ProTableColumns<any>[] = [
 		} as any,
 	},
 ]
+
 function WorkPlace(props: IBaseProps) {
-	const handleOnSearch = useCallback((values) => {
-		// 1. 过滤 undefined removeEmpty
-		// 2. 模糊查询 修改
-		// 3. dispatch 改变 params
-		return formatTableSearchParams(values)
-	}, [])
-	const handleTransform = useCallback((OD, dispatch, actions) => {
-		if (!OD) return // 转换请求的数据
-		dispatch(actions.changeData(OD.result.records))
-		dispatch(actions.changeCurrent(OD.result.current))
-		dispatch(actions.changePageSize(OD.result.size))
-		dispatch(actions.changeTotal(OD.result.total))
-	}, [])
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
+				{/* <Button onClick={}>is pending{`${pending}`}</Button> */}
 				<ProTable
 					request={{
 						url: "/membermgt/member/list",
@@ -63,7 +57,7 @@ function WorkPlace(props: IBaseProps) {
 					columns={columns as any}
 					rowKey='id'
 					// 搜索请求
-					onSearch={handleOnSearch}
+					onSearch={formatTableSearchParams}
 					// 删除
 					onDelete={async (values) => {
 						await http.delete("/membermgt/member/deleteBatch", {
@@ -71,9 +65,13 @@ function WorkPlace(props: IBaseProps) {
 						})
 					}}
 					// transform 需要设置 当前页数,pageSize, 总数 数据
-					transform={handleTransform}
+					transform={commonTransformServerData}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/>
+				<ProFormGroup>
+					<ProFormInput label='1dssd23' />
+					<ProFormInput label='3123' />
+				</ProFormGroup>
 			</main>
 		</div>
 	)

@@ -7,6 +7,7 @@ export default function useEventEffect(
 	const ref = useRef<any>(() => {
 		throw new Error("is rendering")
 	})
+
 	useEffect(() => {
 		ref.current = fn
 		// eslint-disable-next-line react-hooks/exhaustive-deps

@@ -128,3 +128,29 @@ export function formatTableSearchParams(
 
 	return result
 }
+
+type commonServerData = {
+	result: {
+		records: any[]
+		current: number
+		size: number
+		total: number
+	}
+}
+
+/**
+ *  返回四个数据
+ *  data 数据
+ *  current 页码
+ *  pageSize 每页数量
+ *  total 总数
+ */
+export function commonTransformServerData(data: commonServerData) {
+	const { result } = data
+	return {
+		data: result.records,
+		current: result.current,
+		pageSize: result.size,
+		total: result.total,
+	}
+}

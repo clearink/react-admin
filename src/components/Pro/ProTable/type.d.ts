@@ -62,6 +62,11 @@ export type ProTableRef = {
 	reset: () => void // 重置 table
 	reload: () => void // 重新加载数据
 	clearSelected: () => void // 清除选中
+	changeParams: {
+		dispatch: React.Dispatch<AnyAction>
+		params: object
+		actions: typeof actions
+	}
 }
 
 export interface ProTableProps<T extends object>
@@ -88,8 +93,11 @@ export interface ProTableProps<T extends object>
 	) => JSX.Element
 	/** 转换数据 */
 	transform?: (
-		OD: any,
-		dispatch: React.Dispatch<AnyAction>,
-		Actions: typeof actions
-	) => any
+		OD: any
+	) => {
+		data: any[]
+		current: number
+		pageSize: number
+		total: number
+	}
 }

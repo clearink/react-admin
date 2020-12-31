@@ -13,17 +13,15 @@ import FilterValue from "@/utils/FilterValue"
 import Footer from "@/components/Footer"
 import "./style.scss"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
+import { useHistory } from "react-router-dom"
 
 const { Content } = Layout
 const SaveMenu = GetBoundAction(menuActions.saveMenu)
 
 function BaseLayout(props: IBaseProps) {
-	const {
-		children,
-		routes,
-		history: { push },
-	} = props
+	const { children, routes } = props
 	const isLogin = LoginUtil.isLogin()
+	const { push } = useHistory()
 	const unwrap = useUnwrapAsyncThunk()
 	const { user } = useTypedSelector((state) => state.user)
 	const { menu } = useTypedSelector((state) => state.menu)

@@ -1,9 +1,5 @@
 import React, { memo } from "react"
-import {
-	BaseFieldSelectProps,
-	BaseProFieldProps,
-	FieldOptionType,
-} from "../../type"
+import { BaseProFieldProps, FieldOptionType } from "../../type"
 import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { isArray } from "@/utils/validate"

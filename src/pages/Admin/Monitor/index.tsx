@@ -107,29 +107,19 @@ function Monitor() {
 								label: item.title,
 								value: item.id,
 							}))}
-							render={(_, dom) => {
-								return <Space wrap>{dom}</Space>
-							}}
+							optionType='button'
+							buttonStyle='solid'
+							formItemClassName='mb-4'
 						/>
 					</div>
 					<div className={styles.filter_item}>
-						{/* <div className={styles.filter_title}>房间</div>
-						<Radio.Group optionType='button' buttonStyle='solid' value={3}>
-							<Space size={14} className={styles.value_list}>
-								{Array.from({ length: 36 }, (_, i) => (
-									<Radio.Button value={i} className={styles.list_item} key={i}>
-										{i + 500}
-									</Radio.Button>
-								))}
-							</Space>
-						</Radio.Group> */}
 						<ProFormRadio
 							label='房间'
 							name='room'
 							options={selectRoomData}
-							render={(_, dom) => {
-								return <Space wrap>{dom}</Space>
-							}}
+							optionType='button'
+							buttonStyle='solid'
+							formItemClassName='mb-4'
 						/>
 					</div>
 					<div className={styles.filter_item}>
@@ -137,9 +127,9 @@ function Monitor() {
 							name='status'
 							label='状态'
 							options={statusData}
-							render={(_, dom) => {
-								return <Space wrap>{dom}</Space>
-							}}
+							optionType='button'
+							buttonStyle='solid'
+							formItemClassName='mb-4'
 						/>
 					</div>
 				</BaseForm>

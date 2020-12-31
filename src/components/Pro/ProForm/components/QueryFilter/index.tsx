@@ -106,6 +106,7 @@ function QueryFilter(props: QueryFilterProps) {
 				{submitConfig && (
 					<Submitter
 						submitProps={{ text: "查询", icon: <SearchOutlined /> }}
+						{...submitConfig}
 						render={(dom, f) => {
 							const DOM = (
 								<Col span={STColSpan} className='text-right px-4'>

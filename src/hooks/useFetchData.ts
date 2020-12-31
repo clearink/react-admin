@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef } from "react"
+import { useCallback, useEffect, useReducer, useRef } from "react"
 import http from "@/http"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { createSlice } from "@reduxjs/toolkit"
 import { actions as kvActions } from "@/store/reducers/kv"
 import GetBoundAction from "@/utils/GetBoundAction"
+import useEventCallback from "./useEventCallback"
+import useEventEffect from "./useEventEffect"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -83,9 +85,7 @@ export default function useFetchData(props?: useFetchDataProps) {
 		if (memoData.current) dispatch(actions.setData(memoData.current)) // 优先返回缓存
 	}, [fetchUrl, kvEntities, params])
 
-	const memoTransform = useRef(transform)
-	memoTransform.current = transform
-	const fetchData = useCallback(async () => {
+	const fetchData = useEventCallback(async () => {
 		// 请求地址为空 或者 有缓存 不用请求
 		if (!fetchUrl || state.loading || memoData.current) return
 		const realUrl = `${fetchUrl}?${JSON.stringify(params)}`
@@ -93,7 +93,7 @@ export default function useFetchData(props?: useFetchDataProps) {
 			dispatch(actions.startFetch())
 			const { data } = await http[method as any]?.(fetchUrl, params)
 			if (!isMountRef.current) return // 没有挂载直接 return
-			const result = memoTransform.current?.(data) ?? data
+			const result = transform?.(data) ?? data
 			dispatch(actions.setData(result)) // save data
 			if (cache) boundKvActions.add({ key: realUrl, value: result }) // save redux store
 		} catch (error) {
@@ -105,11 +105,9 @@ export default function useFetchData(props?: useFetchDataProps) {
 		isMountRef.current = false
 	}, [])
 
-	const fetchDataRef = useRef(fetchData)
-	fetchDataRef.current = fetchData
 	/** auto目前是只请求一次的 是否仅仅请求一次呢? 暂定为只请求一次 */
-	useEffect(() => {
-		if (auto) fetchDataRef.current()
+	useEventEffect(() => {
+		if (auto) fetchData()
 	}, [auto])
 	return { ...state, fetchData, cancel }
 }

@@ -15,7 +15,6 @@ import { QueryFilter } from "../ProForm"
 import styles from "./style.module.scss"
 import renderQueryFilter from "../utils/renderQueryFilter"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import useFetchData from "@/hooks/useFetchData"
 import { actions, initialState, reducer } from "./reducer"
 import renderTableColumn from "../utils/renderTableColumn"
 import TableTitle from "./components/TableTitle"
@@ -29,6 +28,8 @@ import {
 } from "@ant-design/icons"
 import { sleep } from "@/utils/test"
 import useEventEffect from "@/hooks/useEventEffect"
+import useTableFetch from "@/hooks/commonHooks/useTableFetch"
+import { request } from "https"
 // TODO queryFilter props
 /**
  * search 属性 在 query filter中显示
@@ -38,7 +39,7 @@ import useEventEffect from "@/hooks/useEventEffect"
  * Q2 propsLoading 如何在外部控制 query filter (base form) submitter 的 loading?
  * Q3 处理分页逻辑
  * Q4 分页重新请求处理
- *
+ * Q5 外部params 改变如何映射到内部 ref
  *
  */
 
@@ -63,19 +64,12 @@ function ProTable<T extends object>(
 		...initialState,
 		params: request?.params ?? {},
 	})
-	// 是否需要将 defaultParams 存入 reducer ?
-	// defaultParams 是由外部控制 不需要存入
 
-	const { data, loading: fetchLoading, fetchData } = useFetchData({
-		...request,
-		params: reducerState.params,
-		cache: false,
-	})
-
-	useEventEffect(() => {
-		fetchData()
-	}, [reducerState.params])
-
+	const [data, fetchLoading, fetchData] = useTableFetch(
+		request?.url,
+		reducerState.params,
+		request?.method ?? "post"
+	)
 	useEffect(() => {
 		dispatch(actions.changeLoading(fetchLoading))
 	}, [fetchLoading])
@@ -85,7 +79,12 @@ function ProTable<T extends object>(
 	}, [propsLoading])
 
 	useEventEffect(() => {
-		if (data) transform?.(data, dispatch, actions)
+		if (!data || !transform) return
+		const { data: D, pageSize: P, current: C, total: T } = transform(data)
+		dispatch(actions.changeCurrent(C))
+		dispatch(actions.changeData(D))
+		dispatch(actions.changePageSize(P))
+		dispatch(actions.changeTotal(T))
 	}, [data])
 
 	// 外部传入的 dataSource
@@ -99,11 +98,12 @@ function ProTable<T extends object>(
 	// TODO: 添加 query filter 的 form
 	const tableAction = useMemo(
 		() => ({
+			changeParams: { dispatch, params: reducerState.params, actions },
 			reload: fetchData,
 			reset: () => dispatch(actions.reset(request?.params ?? {})),
 			clearSelected: () => dispatch(actions.changeSelectedRows([])),
 		}),
-		[fetchData, request]
+		[fetchData, reducerState.params, request]
 	)
 	useImperativeHandle(ref, () => tableAction, [tableAction])
 
@@ -205,7 +205,9 @@ function ProTable<T extends object>(
 					})}
 					submitConfig={{
 						resetProps: {
-							onClick: () => dispatch(actions.reset(request?.params ?? {})),
+							onClick: () => {
+								dispatch(actions.reset(request?.params ?? {}))
+							},
 						},
 					}}
 					onFinish={handleSearch}

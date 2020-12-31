@@ -7,7 +7,10 @@ import { Link } from "react-router-dom"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
 import { FieldAvatarProps } from "@/components/Pro/ProField/components/FieldAvatar"
-import { Random } from "mockjs"
+import {
+	commonTransformServerData,
+	formatTableSearchParams,
+} from "@/utils/formatValues"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -30,7 +33,7 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "性别",
-		dataIndex: "sex",
+		dataIndex: "gender",
 	},
 	{
 		title: "年龄",
@@ -48,7 +51,7 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "入住房间",
-		dataIndex: "room",
+		dataIndex: "roomName",
 		search: true,
 		fieldProps: {
 			placeholder: "选择房间",
@@ -67,59 +70,57 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "住户手机",
-		dataIndex: "phone",
+		dataIndex: "mobile",
 		fieldProps: {
 			copyable: true,
 		},
 	},
 	{
 		title: "紧急联系电话",
-		dataIndex: "sosPhone",
+		dataIndex: "contactNumber",
 		fieldProps: {
 			copyable: true,
 		},
 	},
 	{
 		title: "账号状态",
-		dataIndex: "status",
+		dataIndex: "enabled",
+		render:(value)=>{
+			return value ? "正常" :'离院'
+		}
 	},
 	{
 		title: "操作",
-		key: "action",
-		fixed: "right" as "right",
+		dataIndex: "id",
 		width: 300,
-		render: () => (
-			<Space>
-				<Link to='/resident/1'>住户详情</Link>
-				<span>处理设置</span>
-				<span>设备详情</span>
-				<span>编辑</span>
-				<span>停护</span>
-			</Space>
-		),
+		render: (value) => {
+			return (
+				<Space>
+					<Link to={`/resident/${value}`}>住户详情</Link>
+					<span>处理设置</span>
+					<span>设备详情</span>
+					<span>编辑</span>
+					<span>停护</span>
+				</Space>
+			)
+		},
 	},
 ]
-const data = Array.from({ length: 10 }, (_, i) => {
-	return {
-		key: i,
-		avatar: "21",
-		name: Random.cname(),
-		sex: Random.boolean() ? "男" : "女",
-		age: Random.integer(60, 80),
-		floor: `主楼-${Random.integer(1, 9)}楼`,
-		room: Random.integer(100, 500),
-		phone: Random.integer(13088888888, 18088888888),
-		sosPhone: "18088888888",
-		status: Random.boolean() ? "在院" : "离院",
-	}
-})
+
 function Resident() {
 	return (
 		<ProTable
 			bordered
+			rowKey='id'
 			columns={columns}
-			dataSource={data}
-			// scroll={{ x: 1200 }}
+			title='床位管理'
+			request={{
+				url: "/orgmgt/member/list",
+				method: "post",
+				params: { pageNo: 1, pageSize: 10 },
+			}}
+			onSearch={formatTableSearchParams}
+			transform={commonTransformServerData}
 		/>
 	)
 }

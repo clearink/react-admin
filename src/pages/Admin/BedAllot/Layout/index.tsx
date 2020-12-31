@@ -1,24 +1,26 @@
-import React, { PropsWithChildren, useMemo } from "react"
+import React, { PropsWithChildren, useMemo, useState } from "react"
 import { Button, Card, Space, Spin, Tabs, Tree } from "antd"
 import { CommonHeader } from "@/components/PepLife"
 import { BankOutlined, UserOutlined } from "@ant-design/icons"
 import styles from "./style.module.scss"
 import { IBaseProps } from "@/@types/fc"
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import useFetchData from "@/hooks/useFetchData"
 import TreeTitleWrapper from "../components/TreeTitleWrapper"
 import { convertTreeNode } from "../utils"
-import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
-import { ProFormInput } from "@/components/Pro/ProForm"
+import BedAllotContext from "../BedAllotContext"
+import { TreeProps } from "antd/lib/tree"
 
-// 监控分析 layout
+// 床位分配 layout
 function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
-	const { children, location } = props
+	const { children } = props
 	const { push } = useHistory()
-
+	const location = useLocation()
+	const [buildingId, setBuildingId] = useState<string | number | undefined>(
+		undefined
+	)
 	const { data, loading, error } = useFetchData({
 		url: "/orgmgt/building/treeList",
-		params: {},
 		method: "post",
 		auto: true,
 	})
@@ -26,6 +28,10 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 		if (!data) return []
 		return convertTreeNode(data?.result, "orgBuildings")
 	}, [data])
+
+	const handleSelectTree: TreeProps["onSelect"] = (keys) => {
+		setBuildingId(keys[0])
+	}
 	return (
 		<div className={styles.page_wrap}>
 			<CommonHeader icon={<BankOutlined />} title='床位分配' fixed>
@@ -55,20 +61,16 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 					<Spin spinning={loading}>
 						<Tree.DirectoryTree
 							blockNode
-							onSelect={console.log}
+							onSelect={handleSelectTree}
 							treeData={treeData}
 							defaultExpandAll
 							titleRender={(node) => <TreeTitleWrapper {...node} />}
 						/>
 					</Spin>
-					<ModalForm
-						title={{ title: "12312", tooltip: "123123123" }}
-						trigger={<Button type='primary'>1231213</Button>}
-					>
-						<ProFormInput />
-					</ModalForm>
 				</Card>
-				<div className='flex-auto'>{children}</div>
+				<BedAllotContext.Provider value={buildingId}>
+					<div className='flex-auto'>{children}</div>
+				</BedAllotContext.Provider>
 			</main>
 		</div>
 	)

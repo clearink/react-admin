@@ -4,7 +4,6 @@ import TitleTip, { TitleTipProps } from "@/components/Pro/components/TitleTip"
 
 import { Space } from "antd"
 import { SpaceProps } from "antd/lib/space"
-import GetValue from "@/utils/GetValue"
 
 export interface ProFormGroupProps extends SpaceProps {
 	title?: TitleTipProps["title"]
@@ -12,8 +11,7 @@ export interface ProFormGroupProps extends SpaceProps {
 	children?: ReactNode
 }
 function ProFormGroup(props: ProFormGroupProps) {
-	const { title, renderTitle, children } = props
-	const spaceProps = GetValue(props, spacePropsArray)
+	const { title, renderTitle, children, ...rest } = props
 
 	const groupTitle = useMemo(() => {
 		if (renderTitle) return renderTitle(title)
@@ -22,19 +20,11 @@ function ProFormGroup(props: ProFormGroupProps) {
 
 	return (
 		<div className={styles.form_group_wrapper}>
-			<div className={styles.form_group_title}>{groupTitle}</div>
-			<Space size={[32, 0]} wrap {...spaceProps}>
+			{title && <div className={styles.form_group_title}>{groupTitle}</div>}
+			<Space size={[32, 0]} wrap {...rest}>
 				{children}
 			</Space>
 		</div>
 	)
 }
 export default memo(ProFormGroup)
-
-const spacePropsArray: Array<keyof SpaceProps> = [
-	"align",
-	"direction",
-	"size",
-	"split",
-	"wrap",
-]
