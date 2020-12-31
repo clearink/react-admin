@@ -1,12 +1,11 @@
-import React, { memo, useState } from "react"
+import React, { memo } from "react"
 import classNames from "classnames"
-import styles from "./style.module.scss"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { FieldSelectProps } from "@/components/Pro/ProField/components/FieldSelect"
 import { Button } from "antd"
 import { PlusOutlined, UsergroupAddOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
-import Mock from "mockjs"
+import { FieldStatusProps } from "@/components/Pro/ProField/components/FieldStatus"
+import styles from "./style.module.scss"
 
 // 护理设置
 const columns: ProTableColumns<any>[] = [
@@ -26,8 +25,8 @@ const columns: ProTableColumns<any>[] = [
 		fieldProps: {
 			showTag: false, // badge 渲染
 			options: ["停护", "启用"],
-			fieldEnum: ["#666", "green"],
-		} as FieldSelectProps,
+			statusList: ["#666", "green"],
+		} as FieldStatusProps,
 	},
 	{
 		title: "护理内容",

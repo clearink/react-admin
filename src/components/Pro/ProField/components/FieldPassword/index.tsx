@@ -1,9 +1,6 @@
 import React, { memo, ReactNode, useEffect, useState } from "react"
-import { Input } from "antd"
 import { BaseProFieldProps } from "../../type"
-import { PasswordProps } from "antd/lib/input"
 import { renderHiddenMark } from "./utils"
-import withProField from "@/components/Pro/hocs/withProField"
 import withDefaultProps from "@/hocs/withDefaultProps"
 
 interface FieldPasswordProps extends BaseProFieldProps<FieldPasswordProps> {

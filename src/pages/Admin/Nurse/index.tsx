@@ -1,12 +1,12 @@
 import React, { memo } from "react"
 import classNames from "classnames"
-import styles from "./style.module.scss"
 import { Avatar, Space } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { Random } from "mockjs"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
+import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
+import styles from "./style.module.scss"
 
 // 护管管理
 
@@ -55,7 +55,7 @@ const columns: ProTableColumns<any>[] = [
 		search: true,
 		field: "select",
 		fieldProps: {
-			fieldEnum: colorArray,
+			statusList: colorArray,
 			options: ["正常", "离职"],
 		},
 	},

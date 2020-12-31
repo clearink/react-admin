@@ -1,10 +1,10 @@
 import React from "react"
-import { formItemMap, ProFormText } from "../ProForm"
+import { formItemMap, ProFormInput } from "../ProForm"
 import { ProFieldType } from "../ProTable/type"
 
 function renderQueryFilter(QFArray: Array<[ProFieldType | undefined, object]>) {
 	return QFArray.map(([type, props]) => {
-		const QueryComponent = formItemMap[type ?? "text"] ?? ProFormText
+		const QueryComponent = formItemMap[type ?? "text"] ?? ProFormInput
 		return <QueryComponent {...props} />
 	})
 }

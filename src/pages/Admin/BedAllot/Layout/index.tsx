@@ -6,13 +6,10 @@ import styles from "./style.module.scss"
 import { IBaseProps } from "@/@types/fc"
 import { useHistory } from "react-router-dom"
 import useFetchData from "@/hooks/useFetchData"
-import { isArray } from "@/utils/validate"
-import { DataNode } from "antd/lib/tree"
 import TreeTitleWrapper from "../components/TreeTitleWrapper"
 import { convertTreeNode } from "../utils"
 import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
-import { ProFormText } from "@/components/Pro/ProForm"
-import withDefaultProps from "@/hocs/withDefaultProps"
+import { ProFormInput } from "@/components/Pro/ProForm"
 
 // 监控分析 layout
 function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
@@ -68,7 +65,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 						title={{ title: "12312", tooltip: "123123123" }}
 						trigger={<Button type='primary'>1231213</Button>}
 					>
-						<ProFormText />
+						<ProFormInput />
 					</ModalForm>
 				</Card>
 				<div className='flex-auto'>{children}</div>

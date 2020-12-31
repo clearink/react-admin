@@ -1,9 +1,10 @@
-import { FieldDate, FieldDigit, FieldSelect, FieldText } from "../ProField"
+import { FieldDate, FieldDigit, FieldText } from "../ProField"
+import FieldStatus from "../ProField/components/FieldStatus"
 
 export default {
 	text: FieldText,
 	orderNum: FieldText,
-	select: FieldSelect,
+	select: FieldStatus,
 	digit: FieldDigit,
 	date: FieldDate,
 }

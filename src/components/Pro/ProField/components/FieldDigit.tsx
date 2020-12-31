@@ -1,16 +1,19 @@
 import React, { memo } from "react"
-import { formatNumber } from "../../utils"
+import { formatNumber, formatSecond } from "../../utils"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { BaseProFieldProps } from "../type"
 
 export interface FieldDigitProps extends BaseProFieldProps<FieldDigitProps> {
 	text?: number
+	/** 是否是时间 */
+	second?: boolean
 }
 function FieldDigit(props: FieldDigitProps) {
-	const { text, render } = props
-
-	const DOM = <span>{formatNumber(text ?? 0)}</span>
-	if (render) return render({ text }, DOM)
+	const { text, render, second } = props
+	const DOM = (
+		<span>{second ? formatSecond(text ?? 0) : formatNumber(text ?? 0)}</span>
+	)
+	if (render) return render({ text, second }, DOM)
 	return DOM
 }
 

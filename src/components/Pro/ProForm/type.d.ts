@@ -1,7 +1,6 @@
+import { ReactNode } from "react"
 import { ButtonProps } from "antd/lib/button"
 import { FormItemProps, FormProps } from "antd/lib/form"
-import { ReactNode } from "react"
-import { BaseProFieldProps, FieldMode } from "../ProField/type"
 
 export type SubmitConfigType = {
 	submitProps?: ButtonProps & { text?: ReactNode }

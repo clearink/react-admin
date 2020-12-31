@@ -6,18 +6,18 @@ import { BaseProFieldProps } from "@/components/Pro/ProField/type"
 import { DatePickerProps } from "antd/lib/date-picker"
 import { PickerPanelDateProps } from "antd/lib/calendar/generateCalendar"
 
-export type ProFormDateProps = DatePickerProps &
+export type ProFormTimeProps = DatePickerProps &
 	PickerPanelDateProps<Moment> & {
-		render?: BaseProFieldProps<ProFormDateProps>["render"]
+		render?: BaseProFieldProps<ProFormTimeProps>["render"]
 		value?: DatePickerProps["value"]
 	}
-function ProFormDate(props: ProFormDateProps) {
+function ProFormDate(props: ProFormTimeProps) {
 	const { render, ...rest } = props
-	const DOM = <DatePicker {...rest} />
+	const DOM = <DatePicker.TimePicker {...rest} />
 	if (render) return render(rest, DOM)
 	return DOM
 }
-export default withFormItem<ProFormDateProps>(ProFormDate, {
+export default withFormItem<ProFormTimeProps>(ProFormDate, {
 	allowClear: true,
 	placeholder: "请输入",
 })

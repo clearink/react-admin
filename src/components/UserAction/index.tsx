@@ -1,4 +1,4 @@
-import React, { Children, memo } from "react"
+import React, { memo } from "react"
 import { useSelector } from "react-redux"
 import { AppState } from "@/store"
 import {
@@ -26,8 +26,8 @@ import { actions } from "@/store/reducers/user"
 
 import "./style.scss"
 import ModalTrigger from "../ModalTrigger"
-import { FieldRadio, FieldText } from "../Pro/ProField"
 import { Random } from "mockjs"
+import { ProFormRadio } from "../Pro/ProForm"
 
 interface IProps {}
 
@@ -131,14 +131,9 @@ function UserAction(props: IProps) {
 																离床超时
 															</Descriptions.Item>
 															<Descriptions.Item label='处理方式'>
-																<FieldRadio
-																	text='电话通知护管人员查看核实'
-																	showTag
-																	formItemProps={{
-																		defaultValue: "电话通知护管人员查看核实",
-																		className: "field_radio",
-																	}}
-																	mode='edit'
+																<ProFormRadio
+																	value={["电话通知护管人员查看核实"]}
+																	className='field_radio'
 																	options={[
 																		"电话通知护管人员查看核实",
 																		" 短信通知护管人员查看核实",

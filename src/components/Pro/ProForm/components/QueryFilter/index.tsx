@@ -20,7 +20,6 @@ import Submitter from "../Submitter"
 // <QueryFilter submitConfig={{render:()=>null}} />
 // 是否需要一个变量 用来决定是否渲染 submitter ?
 // 暂时不需要x 不想起名√
-// hasSubmitter
 // 包裹一层div 以便处理样式
 // 自己维护一个loading
 export interface QueryFilterProps extends BaseFormProps {
@@ -146,7 +145,6 @@ export default memo(
 	withDefaultProps(QueryFilter, {
 		collapsed: true,
 		requiredMark: false,
-		hasSubmitter: true,
 		ghost: false,
 	})
 )

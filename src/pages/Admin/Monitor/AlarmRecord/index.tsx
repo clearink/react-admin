@@ -1,15 +1,10 @@
-import { FieldMoney } from "@/components/Pro/ProField"
-import { FieldAvatarProps } from "@/components/Pro/ProField/components/FieldAvatar"
-import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import ProFormMoney from "@/components/Pro/ProForm/components/ProFormMoney"
+import React, { memo } from "react"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
-import { ReloadOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons"
-import { Avatar, Button, Form, Input, Select, Space, Table } from "antd"
+import { UserOutlined } from "@ant-design/icons"
+import { Avatar, Space } from "antd"
 import MOCK, { Random } from "mockjs"
-import React, { memo } from "react"
-import styles from "./style.module.scss"
+import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 
 // 告警记录
 export const alarmColumns = [
@@ -84,7 +79,7 @@ const columns: ProTableColumns<any>[] = [
 		fieldProps: {
 			size: 30,
 			icon: <UserOutlined />,
-		} as FieldAvatarProps,
+		} as any,
 	},
 	{
 		title: "告警用户",
@@ -100,7 +95,7 @@ const columns: ProTableColumns<any>[] = [
 		field: "select",
 		search: true,
 		fieldProps: {
-			fieldEnum: colorArray,
+			statusList: colorArray,
 			options: alarmArray,
 		},
 	},
@@ -127,7 +122,7 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: "status",
 		field: "select",
 		fieldProps: {
-			fieldEnum: colorArray,
+			statusList: colorArray,
 			options: ["已处理", "未处理"],
 		},
 	},

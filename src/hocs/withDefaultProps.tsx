@@ -6,9 +6,9 @@ type UnionProp<P, D> = {
 }
 // P 中都是必须
 // D 是P中的默认值
-export default function withDefaultProps<P = {}, D = {}>(
+export default function withDefaultProps<P extends object, D = object>(
 	WrappedComponent: ComponentType<P>,
-	defaultProps: D = {} as D
+	defaultProps = {} as D
 ) {
 	WrappedComponent.defaultProps = defaultProps
 	type Props = Omit<P, keyof D> // P中没有包含D的参数 则为必须的参数

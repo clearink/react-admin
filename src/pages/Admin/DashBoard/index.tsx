@@ -1,12 +1,11 @@
 import React, { useCallback } from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
-import { colorArray } from "@/components/Pro/utils/FieldEnumUtil"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { formatTableSearchParams } from "@/utils/formatValues"
+import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import http from "@/http"
-import { FieldDateProps } from "@/components/Pro/ProField/components/FieldDate"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -20,7 +19,7 @@ const columns: ProTableColumns<any>[] = [
 		field: "select",
 		search: true,
 		fieldProps: {
-			fieldEnum: colorArray,
+			statusList: colorArray,
 			options: ["男", "女"],
 		},
 	},
@@ -34,7 +33,7 @@ const columns: ProTableColumns<any>[] = [
 		field: "date",
 		fieldProps: {
 			timeFormat: "YYYY-MM-DD",
-		} as FieldDateProps,
+		} as any,
 	},
 ]
 function WorkPlace(props: IBaseProps) {

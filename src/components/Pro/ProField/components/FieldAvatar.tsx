@@ -11,7 +11,7 @@ export interface FieldAvatarProps
 }
 function FieldAvatar(props: FieldAvatarProps) {
 	const { text, render, ...rest } = props
-	const DOM = <Avatar {...rest} />
+	const DOM = <Avatar {...rest} src={text} />
 	if (render) return render({ text, ...rest }, DOM)
 	return DOM
 }

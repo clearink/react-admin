@@ -1,6 +1,6 @@
+import React, { useCallback,  useState } from "react"
 import useInterval from "@/hooks/useInterval"
 import { isFunction } from "@/utils/validate"
-import React, { useCallback, useEffect, useState } from "react"
 
 // 倒计时组件 默认 60s
 interface CountDownProps {

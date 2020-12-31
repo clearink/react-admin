@@ -54,7 +54,7 @@ export interface ProTableColumns<T extends object = any>
 			options?: FieldOptionType[] | string[]
 			request?: useFetchDataProps
 			placeholder?: ReactNode
-			fieldEnum?: Any[]
+			statusList?: string[]
 		}
 }
 

@@ -1,19 +1,25 @@
-import React, { memo, useMemo } from "react"
-import { DatePicker } from "antd"
-import moment, { Moment, isMoment } from "moment"
+import { memo, useMemo } from "react"
+import { RangePickerProps } from "antd/lib/date-picker"
+import { isArray, isString } from "@/utils/validate"
+import moment, { Moment } from "moment"
 import { BaseProFieldProps } from "../../type"
-import withProField from "@/components/Pro/hocs/withProField"
+import { momentToText } from "./utils"
 import withDefaultProps from "@/hocs/withDefaultProps"
 
 // 日期相关
 // 最基本的 date
-export interface FieldDateProps extends BaseProFieldProps<FieldDateProps> {
-	text?: Moment | string | number
+export interface FieldDateRangeProps
+	extends BaseProFieldProps<FieldDateRangeProps> {
+	text?:
+		| RangePickerProps["value"]
+		| [string | number, string | number]
+		| string
+		| number
 	timeFormat?: string
 	fromNow?: boolean
 }
 
-function FieldDate(props: FieldDateProps) {
+function FieldDateRange(props: FieldDateRangeProps) {
 	const {
 		text,
 		render,
@@ -22,18 +28,19 @@ function FieldDate(props: FieldDateProps) {
 		...rest
 	} = props
 
-	const timeValue = useMemo(() => (isMoment(text) ? text : moment(text)), [
-		text,
-	])
-	const DOM = (
-		<span>{fromNow ? timeValue.fromNow() : timeValue.format(timeFormat)}</span>
-	)
+	const timeValue = useMemo(() => {
+		if (moment.isMoment(text)) return [text]
+		if (!isArray(text)) return [moment(text)]
+		return (text as Array<Moment | string | number>).map((item) => moment(item))
+	}, [text])
 
-	if (render) return render({ text, timeFormat, fromNow, ...rest }, DOM)
+	console.log("timeValue", timeValue, text)
+	const DOM = momentToText(timeValue, fromNow, timeFormat)
+	if (render) return render({ text, fromNow, timeFormat, ...rest }, DOM)
 	return DOM
 }
 export default memo(
-	withDefaultProps(FieldDate, {
+	withDefaultProps(FieldDateRange, {
 		fromNow: false,
 		timeFormat: "YYYY-MM-DD",
 	})

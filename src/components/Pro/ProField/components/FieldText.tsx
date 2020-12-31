@@ -3,7 +3,9 @@ import { Typography } from "antd"
 import { TextProps } from "antd/lib/typography/Text"
 import { BaseProFieldProps } from "../type"
 
-interface FieldTextProps extends TextProps, BaseProFieldProps<FieldTextProps> {
+export interface FieldTextProps
+	extends TextProps,
+		BaseProFieldProps<FieldTextProps> {
 	text: TextProps["children"]
 }
 function FieldText(props: FieldTextProps) {

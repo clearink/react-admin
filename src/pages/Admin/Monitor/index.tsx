@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useRef, useState } from "react"
 import styles from "./style.module.scss"
-import { Radio } from "antd"
+import { Space } from "antd"
 import BedCard from "./components/BedCard"
 import BCGDetail from "./components/BCGDetail"
 import useBoolean from "@/hooks/useBoolean"
@@ -107,34 +107,10 @@ function Monitor() {
 								label: item.title,
 								value: item.id,
 							}))}
-							renderFormItem={(value, props) => {
-								const { options, ...rest } = props as any
-								return (
-									<Radio.Group {...rest} buttonStyle='solid'>
-										{options.map((item: any) => {
-											return (
-												<Radio.Button
-													key={item.value}
-													value={item.value}
-													className='mr-4 px-6 mb-4'
-												>
-													{item.label}
-												</Radio.Button>
-											)
-										})}
-									</Radio.Group>
-								)
+							render={(_, dom) => {
+								return <Space wrap>{dom}</Space>
 							}}
 						/>
-						{/* <Radio.Group optionType='button' buttonStyle='solid' value={3}>
-							<Space size={14} className={styles.value_list}>
-								{Array.from({ length: 6 }, (_, i) => (
-									<Radio.Button value={i} className={styles.list_item} key={i}>
-										{i}楼
-									</Radio.Button>
-								))}
-							</Space>
-						</Radio.Group> */}
 					</div>
 					<div className={styles.filter_item}>
 						{/* <div className={styles.filter_title}>房间</div>
@@ -151,23 +127,8 @@ function Monitor() {
 							label='房间'
 							name='room'
 							options={selectRoomData}
-							renderFormItem={(value, props) => {
-								const { options, ...rest } = props as any
-								return (
-									<Radio.Group {...rest} buttonStyle='solid'>
-										{options.map((item: any) => {
-											return (
-												<Radio.Button
-													key={item.value}
-													value={item.value}
-													className='mr-4 px-6 mb-4'
-												>
-													{item.label}
-												</Radio.Button>
-											)
-										})}
-									</Radio.Group>
-								)
+							render={(_, dom) => {
+								return <Space wrap>{dom}</Space>
 							}}
 						/>
 					</div>
@@ -176,23 +137,8 @@ function Monitor() {
 							name='status'
 							label='状态'
 							options={statusData}
-							renderFormItem={(value, props) => {
-								const { options, ...rest } = props as any
-								return (
-									<Radio.Group {...rest} buttonStyle='solid'>
-										{options.map((item: any) => {
-											return (
-												<Radio.Button
-													key={item}
-													value={item}
-													className='mr-4 px-6 mb-4'
-												>
-													{item}
-												</Radio.Button>
-											)
-										})}
-									</Radio.Group>
-								)
+							render={(_, dom) => {
+								return <Space wrap>{dom}</Space>
 							}}
 						/>
 					</div>

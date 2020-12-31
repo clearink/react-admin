@@ -2,7 +2,7 @@ import { isArray, isObject } from "@/utils/validate"
 import { Badge, Space, Tag } from "antd"
 import { CheckboxValueType } from "antd/lib/checkbox/Group"
 import React from "react"
-import { FieldOptionType } from "../ProField/type"
+import { FieldOptionType } from "../../type"
 // 主要用于将 select checkbox radio 等具有 enum 的组件 text 映射 成文字
 
 export const colorArray = [
@@ -24,23 +24,22 @@ export const colorArray = [
 
 /**
  * 1. 从 options 中 拿到自己的 index
- * 2. 匹配相同 index 中的 fieldEnum
+ * 2. 匹配相同 index 中的 statusList
  * 3. 渲染组件
  * 4. badge 切换成 badge 组件
  */
-export function renderStatusFromOption(
+export function renderStatus(
 	value: CheckboxValueType[] | string | number | boolean | undefined,
 	options: Array<{ label: string; value: any }>,
-	fieldEnum?: string[],
-	showTag = false // tag 自带右边距
+	statusList?: string[],
+	type: "tag" | "badge" = "tag" // tag 自带右边距
 ) {
 	// 递归
+	const isTag = type === "tag"
 	if (isArray(value))
 		return (
-			<Space size={showTag ? 0 : 8}>
-				{value.map((item) =>
-					renderStatusFromOption(item, options, fieldEnum, showTag)
-				)}
+			<Space size={isTag ? 0 : 8}>
+				{value.map((item) => renderStatus(item, options, statusList, type))}
 			</Space>
 		)
 	if (!isArray(options)) return null
@@ -49,11 +48,11 @@ export function renderStatusFromOption(
 	let optionValue = value
 	if (textIndex !== -1) {
 		// 找到了 就去匹配
-		if (fieldEnum)
-			color = fieldEnum[textIndex] ?? fieldEnum[fieldEnum.length - 1]
+		if (statusList)
+			color = statusList[textIndex] ?? statusList[statusList.length - 1]
 		optionValue = options[textIndex].label
 	}
-	if (showTag) {
+	if (isTag) {
 		return (
 			<Tag color={color} key={`${value}`}>
 				{optionValue}
@@ -67,12 +66,10 @@ export function renderStatusFromOption(
  * 转换原始的options
  * options : string[] | Array<{ label: string; value: string }>
  */
-export function renderOriginOptions(
-	originOption: string[] | Array<FieldOptionType>
-) {
-	if (isObject(originOption[0])) return originOption
-	if (!isArray(originOption)) return []
-	return (originOption as string[]).map((item) => ({
+export function transformOptions(options: string[] | Array<FieldOptionType>) {
+	if (isObject(options[0])) return options
+	if (!isArray(options)) return []
+	return (options as string[]).map((item) => ({
 		label: item,
 		value: item,
 	}))
