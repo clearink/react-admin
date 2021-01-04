@@ -9,7 +9,9 @@ import { CommonHeader } from "@/components/PepLife"
 import { Link } from "react-router-dom"
 import MOCK from "mockjs"
 import { UserOutlined } from "@ant-design/icons"
+import useTypedSelector from "@/hooks/useTypedSelector"
 function Home(props: IBaseProps) {
+	const { user } = useTypedSelector((state) => state.user)
 	return (
 		<div className={styles["home-page__wrap"]}>
 			<CommonHeader icon='icon-chilun' title='管理首页' fixed />
@@ -21,10 +23,10 @@ function Home(props: IBaseProps) {
 								className='flex-shrink-0'
 								icon={<UserOutlined />}
 								size={70}
-								src={"12312321"}
+								src={user?.avatar}
 							/>
 							<div className={styles.info}>
-								<p>{MOCK.Random.cname()}, 欢迎进入XXX康养中心系统</p>
+								<p>{user?.username}, 欢迎进入XXX康养中心系统</p>
 								<p>上次登录: 2020年8月10日 星期三 20:30:23</p>
 							</div>
 						</div>

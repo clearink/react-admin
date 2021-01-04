@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { BaseProFieldProps, FieldOptionType } from "../../type"
-import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
+import useMemoFetch, { useFetchDataProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { isArray } from "@/utils/validate"
 import withDefaultProps from "@/hocs/withDefaultProps"
@@ -32,7 +32,7 @@ function FieldStatus(props: FieldStatusProps) {
 		...rest
 	} = props
 
-	const { data } = useFetchData({ cache: true, auto: true, ...request })
+	const [data] = useMemoFetch(request ?? {})
 	// form.resetFields 会重新执行一次
 	// 这是 antd 的设计 no bug
 	const options = useDeepMemo(() => {

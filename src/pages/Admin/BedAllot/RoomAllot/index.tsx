@@ -1,12 +1,10 @@
-import React, { memo, useContext, useRef } from "react"
-import classNames from "classnames"
+import React, { memo, useContext, useEffect, useRef } from "react"
 import styles from "./style.module.scss"
 import { Space, Switch } from "antd"
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "../BedAllotContext"
-import useEventEffect from "@/hooks/useEventEffect"
 import { isUndefined } from "@/utils/validate"
 import {
 	commonTransformServerData,
@@ -73,10 +71,10 @@ const columns: ProTableColumns<any>[] = [
 function RoomAllot() {
 	const buildingId = useContext(BedAllotContext)
 	const ref = useRef<ProTableRef>()
-	useEventEffect(() => {
-		if (isUndefined(buildingId) || !ref.current) return
-		const { dispatch, params, actions } = ref.current.changeParams
-		dispatch(actions.changeParams({ ...params, buildingId }))
+	useEffect(() => {
+		const tableMethods = ref.current
+		if (isUndefined(buildingId) || !tableMethods) return
+		tableMethods.setParams({ buildingId })
 	}, [buildingId])
 	return (
 		<div className={styles.page_wrap}>

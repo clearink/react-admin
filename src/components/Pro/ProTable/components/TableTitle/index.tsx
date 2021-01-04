@@ -6,18 +6,16 @@ import { ProTableProps } from "../../type"
 import ProTableContext from "../../ProTableContext"
 import { Alert } from "antd"
 
-import { actions } from "../../reducer"
-
 interface TableTitleProps {
 	title?: ProTableProps<any>["title"]
 	extra: React.ReactNode
 }
 function TableTitle(props: TableTitleProps) {
 	const { title, extra } = props
-	const { state, dispatch } = useContext(ProTableContext)
+	const { state, methods } = useContext(ProTableContext)
 
 	const BT = (() => {
-		const SL = state.selectedRows.length
+		const SL = state.rows.length
 		return (
 			<div className={styles.banner_title}>
 				<span
@@ -29,7 +27,7 @@ function TableTitle(props: TableTitleProps) {
 					<span className={styles.number}>{SL}</span>条
 					<span
 						className={styles.clear_select}
-						onClick={() => dispatch?.(actions.changeSelectedRows([]))}
+						onClick={() => methods?.setRows([])}
 					>
 						清空
 					</span>

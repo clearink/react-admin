@@ -5,7 +5,6 @@ import React, {
 	useEffect,
 	useImperativeHandle,
 	useMemo,
-	useReducer,
 } from "react"
 import { Button, Modal, Space, Table } from "antd"
 import classNames from "classnames"
@@ -15,7 +14,6 @@ import { QueryFilter } from "../ProForm"
 import styles from "./style.module.scss"
 import renderQueryFilter from "../utils/renderQueryFilter"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import { actions, initialState, reducer } from "./reducer"
 import renderTableColumn from "../utils/renderTableColumn"
 import TableTitle from "./components/TableTitle"
 import ProTableContext from "./ProTableContext"
@@ -27,10 +25,9 @@ import {
 	ToTopOutlined,
 } from "@ant-design/icons"
 import { sleep } from "@/utils/test"
-import useEventEffect from "@/hooks/useEventEffect"
-import useTableFetch from "@/hooks/commonHooks/useTableFetch"
-import { request } from "https"
-// TODO queryFilter props
+import useTableFetch from "./useTableFetch"
+import http from "@/http"
+import useMountedRef from "../hooks/mounted-ref"
 /**
  * search 属性 在 query filter中显示
  *
@@ -50,60 +47,54 @@ function ProTable<T extends object>(
 	const {
 		onSearch,
 		search,
-		columns: propsColumns,
-		loading: propsLoading,
+		columns: PCol,
+		loading: PLoading,
 		request,
-		dataSource: PD,
+		dataSource: PDataSource,
 		title,
 		renderTitle,
 		transform,
 		onDelete,
 		...rest
 	} = props
-	const [reducerState, dispatch] = useReducer(reducer, {
-		...initialState,
-		params: request?.params ?? {},
-	})
 
-	const [data, fetchLoading, fetchData] = useTableFetch(
-		request?.url,
-		reducerState.params,
-		request?.method ?? "post"
-	)
+	// 处理 table 请求
+	const mountedRef = useMountedRef()
+	const [state, methods, fetchData] = useTableFetch(async () => {
+		const url = request?.url
+		if (!url) return
+		const method = request?.method ?? "post"
+		try {
+			methods.setLoading(true)
+			const { data } = await http[method as any](url, state.params)
+			if (!mountedRef.current) return // 如果 已经销毁了
+			if (!data || !transform) return
+			methods.setServerData(transform(data))
+		} catch (error) {
+			methods.setLoading(false)
+		}
+	}, request?.params)
+
 	useEffect(() => {
-		dispatch(actions.changeLoading(fetchLoading))
-	}, [fetchLoading])
-
-	useEffect(() => {
-		dispatch(actions.changeLoading(propsLoading))
-	}, [propsLoading])
-
-	useEventEffect(() => {
-		if (!data || !transform) return
-		const { data: D, pageSize: P, current: C, total: T } = transform(data)
-		dispatch(actions.changeCurrent(C))
-		dispatch(actions.changeData(D))
-		dispatch(actions.changePageSize(P))
-		dispatch(actions.changeTotal(T))
-	}, [data])
+		fetchData()
+	}, [fetchData, state.params])
 
 	// 外部传入的 dataSource
 	useEffect(() => {
-		if (!PD) return
-		dispatch(actions.changeData(PD))
-		dispatch(actions.changeTotal(PD.length))
-	}, [PD])
+		if (!PDataSource) return
+		methods.setParentData(PDataSource)
+	}, [PDataSource, methods])
 
 	// 暴露的方法
 	// TODO: 添加 query filter 的 form
 	const tableAction = useMemo(
 		() => ({
-			changeParams: { dispatch, params: reducerState.params, actions },
+			setParams: methods.setParams, // 外部如何能够该变table内部的params呢?
 			reload: fetchData,
-			reset: () => dispatch(actions.reset(request?.params ?? {})),
-			clearSelected: () => dispatch(actions.changeSelectedRows([])),
+			reset: () => methods.reset(request?.params ?? {}),
+			clearRows: () => methods.setRows([]),
 		}),
-		[fetchData, reducerState.params, request]
+		[fetchData, methods, request]
 	)
 	useImperativeHandle(ref, () => tableAction, [tableAction])
 
@@ -111,30 +102,30 @@ function ProTable<T extends object>(
 	const rowSelection = useMemo<TableProps<T>["rowSelection"]>(() => {
 		return {
 			preserveSelectedRowKeys: true,
-			selectedRowKeys: reducerState.selectedRows,
-			onChange: (keys) => dispatch(actions.changeSelectedRows(keys)),
+			selectedRowKeys: state.rows,
+			onChange: methods.setParams,
 		}
-	}, [reducerState.selectedRows])
+	}, [methods.setParams, state.rows])
 
 	const [columns, QFArray] = useMemo(
-		() => renderTableColumn(propsColumns ?? [], tableAction),
-		[propsColumns, tableAction]
+		() => renderTableColumn(PCol ?? [], tableAction),
+		[PCol, tableAction]
 	)
 
 	/** 搜索方法 	 */
 	const handleSearch = (values: any, type: "form" | "table" = "form") => {
 		const isSearch = type === "form"
 		const searchParams = isSearch
-			? { params: reducerState.params, form: values }
+			? { params: state.params, form: values }
 			: values
 		try {
-			dispatch(actions.changeLoading({ delay: 50 }))
+			methods.setLoading({ delay: 50 })
 			if (onSearch) {
 				const params = onSearch(searchParams)
-				dispatch(actions.changeParams(params))
+				methods.setParams(params)
 			}
 		} finally {
-			dispatch(actions.changeLoading(false))
+			methods.setLoading(false)
 		}
 	}
 	// 分页、排序、筛选变化时触发
@@ -148,7 +139,7 @@ function ProTable<T extends object>(
 				pagination,
 				filters,
 				sorter,
-				params: reducerState.params,
+				params: state.params,
 			},
 			"table"
 		)
@@ -160,10 +151,10 @@ function ProTable<T extends object>(
 			title: "确定要删除该数据吗?",
 			content: "操作后该数据将会移除 请注意!!",
 			async onOk() {
-				await onDelete?.(reducerState.selectedRows)
+				await onDelete?.(state.rows)
 				// 没啥用
 				await sleep(100)
-				dispatch(actions.reset(request?.params ?? {}))
+				methods.reset(request?.params ?? {})
 			},
 		})
 	}
@@ -173,7 +164,7 @@ function ProTable<T extends object>(
 			<Button
 				type='primary'
 				danger
-				className={classNames({ hidden: !reducerState.selectedRows.length })}
+				className={classNames({ hidden: !state.rows.length })}
 				onClick={handleDelete}
 				icon={<DeleteOutlined />}
 				key='delete'
@@ -195,18 +186,18 @@ function ProTable<T extends object>(
 	// 列表数据改变
 
 	return (
-		<ProTableContext.Provider value={{ state: reducerState, dispatch }}>
+		<ProTableContext.Provider value={{ state, methods }}>
 			<div className={styles.pro_table_wrap}>
 				{/* proTable 暂时不提供对 query filter 的配置 后续会增强 search 字段的功能 */}
 				<QueryFilter
-					loading={reducerState.loading}
+					loading={state.loading}
 					className={classNames("mb-10", {
 						hidden: !search,
 					})}
 					submitConfig={{
 						resetProps: {
 							onClick: () => {
-								dispatch(actions.reset(request?.params ?? {}))
+								methods.reset(request?.params ?? {})
 							},
 						},
 					}}
@@ -216,12 +207,7 @@ function ProTable<T extends object>(
 				</QueryFilter>
 				<div className='bg-white'>
 					<div className={styles.table_toolbar_wrap}>
-						{renderTitle?.(
-							reducerState,
-							dispatch,
-							actions,
-							tableTitleExtra
-						) ?? (
+						{renderTitle?.(state, methods, tableTitleExtra) ?? (
 							<TableTitle
 								title={title}
 								extra={<Space>{tableTitleExtra}</Space>}
@@ -231,17 +217,17 @@ function ProTable<T extends object>(
 
 					<Table
 						showSorterTooltip={false}
+						loading={state.loading}
 						{...rest}
 						className={classNames("px-10 bg-white", rest.className)}
-						dataSource={reducerState.data}
-						loading={reducerState.loading}
+						dataSource={state.data}
 						columns={columns as ColumnsType<any>}
 						rowSelection={rowSelection}
 						// 分页
 						pagination={{
-							current: reducerState.current,
-							total: reducerState.total,
-							pageSize: reducerState.pageSize,
+							current: state.current,
+							total: state.total,
+							pageSize: state.pageSize,
 						}}
 						// 同样改变 params
 						onChange={handleTableChange}
@@ -254,6 +240,7 @@ function ProTable<T extends object>(
 export default memo(
 	withDefaultProps(forwardRef(ProTable), {
 		search: true,
+		bordered: true,
 		size: "middle",
 		rowKey: "key",
 	})

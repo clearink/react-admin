@@ -4,10 +4,9 @@ import { FormItemProps } from "antd/lib/form"
 import { ColumnType, TableProps } from "antd/lib/table"
 import { ReactNode } from "react"
 import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
-import { AnyAction } from "@reduxjs/toolkit"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
-import { actions, initialState } from "./reducer"
-import { useFetchDataProps } from "@/hooks/useFetchData"
+import { initialState, TableMethods } from "./useTableFetch"
+import { useFetchDataProps } from "@/hooks/useMemoFetch"
 
 // pro table column 类型
 export type ProFieldType =
@@ -38,6 +37,8 @@ export interface ProTableColumns<T extends object = any>
 	tooltip?: string
 	search?: boolean // 提取到 query filter
 	hideInTable?: boolean // 在table中隐藏
+	hideInForm?:boolean // 在form中隐藏
+	hideInDetail?:boolean // 在详情页隐藏
 	render?: (
 		value: any,
 		record: any,
@@ -61,14 +62,9 @@ export interface ProTableColumns<T extends object = any>
 export type ProTableRef = {
 	reset: () => void // 重置 table
 	reload: () => void // 重新加载数据
-	clearSelected: () => void // 清除选中
-	changeParams: {
-		dispatch: React.Dispatch<AnyAction>
-		params: object
-		actions: typeof actions
-	}
+	clearRows: () => void // 清除选中
+	setParams: (params: object) => void
 }
-
 export interface ProTableProps<T extends object>
 	extends Omit<
 		TableProps<T>,
@@ -87,8 +83,7 @@ export interface ProTableProps<T extends object>
 	/** 渲染title */
 	renderTitle?: (
 		state: typeof initialState,
-		dispatch: React.Dispatch<AnyAction>,
-		Actions: typeof actions,
+		methods: TableMethods,
 		dom: JSX.Element[]
 	) => JSX.Element
 	/** 转换数据 */

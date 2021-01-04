@@ -3,7 +3,7 @@ import { Radio } from "antd"
 import { SelectProps } from "antd/lib/select"
 import withFormItem from "../../hocs/withFormItem"
 import { BaseProFieldProps } from "../../ProField/type"
-import useFetchData, { useFetchDataProps } from "@/hooks/useFetchData"
+import useMemoFetch, { useFetchDataProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { transformOptions } from "../../ProField/components/FieldStatus/utils"
 import { isArray } from "@/utils/validate"
@@ -21,7 +21,7 @@ export interface ProFormSelectProps extends Omit<RadioGroupProps, "options"> {
 function ProFormSelect(props: ProFormSelectProps) {
 	const { request, options: PO, render, ...rest } = props
 
-	const { data } = useFetchData({ cache: true, auto: true, ...request })
+	const [data] = useMemoFetch(request ?? {})
 
 	const options = useDeepMemo(() => {
 		if (PO) return transformOptions(PO) // 直接设置的 options 优先级最高

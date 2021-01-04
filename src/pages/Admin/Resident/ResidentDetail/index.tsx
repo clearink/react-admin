@@ -6,20 +6,19 @@ import { UserOutlined } from "@ant-design/icons"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"
 import NurseDetail from "../NurseDetail"
-import useFetchData from "@/hooks/useFetchData"
+import useMemoFetch from "@/hooks/useMemoFetch"
 import { useRouteMatch } from "react-router-dom"
 import { FieldAvatar } from "@/components/Pro/ProField"
 
 // 住户详情
 function ResidentDetail() {
 	const { params } = useRouteMatch<{ id: string }>()
-	const { data, loading } = useFetchData({
+	const [data, loading] = useMemoFetch({
 		url: "/orgmgt/member/queryById",
 		params: {
 			id: params.id,
 		},
 		cache: true,
-		auto: true,
 		transform: (data) => data.result,
 	})
 	return (

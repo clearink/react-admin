@@ -1,12 +1,15 @@
 import React, { memo } from "react"
 import classNames from "classnames"
-import { Avatar, Space } from "antd"
-import { UserOutlined } from "@ant-design/icons"
+import { Space } from "antd"
 import ProTable from "@/components/Pro/ProTable"
-import { Random } from "mockjs"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import styles from "./style.module.scss"
+import {
+	commonTransformServerData,
+	formatTableSearchParams,
+} from "@/utils/formatValues"
+import { TextProps } from "antd/lib/typography/Text"
 
 // 护管管理
 
@@ -14,20 +17,21 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
 		dataIndex: "avatar",
+		field: "avatar",
 		width: 80,
-		render: () => <Avatar icon={<UserOutlined />} />,
 	},
 	{
 		title: "姓名",
 		dataIndex: "name",
 		search: true,
+		width: 140,
 		fieldProps: {
 			copyable: true,
 		},
 	},
 	{
 		title: "性别",
-		dataIndex: "sex",
+		dataIndex: "gender",
 	},
 	{
 		title: "年龄",
@@ -36,33 +40,39 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "身份证号",
 		width: 200,
-		dataIndex: "num",
+		dataIndex: "cardNum",
+		fieldProps: {
+			copyable: true,
+			ellipsis: true,
+		} as TextProps,
 	},
 	{
 		title: "联系电话",
-		dataIndex: "phone",
+		dataIndex: "mobile",
 		fieldProps: {
 			copyable: true,
 		},
 	},
 	{
 		title: "职务",
-		dataIndex: "job",
+		dataIndex: "position",
 	},
 	{
 		title: "账号状态",
-		dataIndex: "status",
+		dataIndex: "enabled",
 		search: true,
 		field: "select",
 		fieldProps: {
 			statusList: colorArray,
-			options: ["正常", "离职"],
+			options: [
+				{ label: "正常", value: true },
+				{ label: "离职", value: false },
+			],
 		},
 	},
 	{
 		title: "操作",
 		key: "action",
-		fixed: "right" as "right",
 		width: 300,
 		render: () => (
 			<Space>
@@ -74,27 +84,27 @@ const columns: ProTableColumns<any>[] = [
 		),
 	},
 ]
-const data = Array.from({ length: 10 }, (_, i) => {
-	return {
-		key: i,
-		avatar: i,
-		name: Random.cname(),
-		age: Random.integer(60, 80),
-		sex: Random.boolean() ? "男" : "女",
-		num: "45002219820503****",
-		phone: Random.integer(13088888888, 18088888888),
-		job: Random.integer(0, 2) === 1 ? "普通护工" : "高级护工",
-		status: Random.boolean() ? "正常" : "离职",
-	}
-})
 function Nurse() {
 	return (
 		<div className='h-full flex flex-col'>
 			<ProTable
-				bordered
-				columns={columns}
-				dataSource={data}
-				// scroll={{ x: 1300 }}
+				request={{
+					url: "/orgmgt/careWorker/list",
+					method: "post",
+				}}
+				columns={columns as any}
+				rowKey='id'
+				// 搜索请求
+				onSearch={formatTableSearchParams}
+				// 删除
+				// onDelete={async (values) => {
+				// 	await http.delete("/membermgt/member/deleteBatch", {
+				// 		params: { ids: values.map((item: any) => item.id).join(",") },
+				// 	})
+				// }}
+				// transform 需要设置 当前页数,pageSize, 总数 数据
+				transform={commonTransformServerData}
+				title={{ title: "护管管理", tooltip: "护工人员管理" }}
 			/>
 		</div>
 	)

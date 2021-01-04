@@ -1,11 +1,12 @@
 import React, { PropsWithChildren, useMemo, useState } from "react"
-import { Button, Card, Space, Spin, Tabs, Tree } from "antd"
+import { Card, Skeleton, Space, Tabs, Tree } from "antd"
+import classNames from "classnames"
 import { CommonHeader } from "@/components/PepLife"
 import { BankOutlined, UserOutlined } from "@ant-design/icons"
 import styles from "./style.module.scss"
 import { IBaseProps } from "@/@types/fc"
 import { useHistory, useLocation } from "react-router-dom"
-import useFetchData from "@/hooks/useFetchData"
+import useMemoFetch from "@/hooks/useMemoFetch"
 import TreeTitleWrapper from "../components/TreeTitleWrapper"
 import { convertTreeNode } from "../utils"
 import BedAllotContext from "../BedAllotContext"
@@ -19,10 +20,10 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	const [buildingId, setBuildingId] = useState<string | number | undefined>(
 		undefined
 	)
-	const { data, loading, error } = useFetchData({
+	const [data, loading] = useMemoFetch({
 		url: "/orgmgt/building/treeList",
+		params: {},
 		method: "post",
-		auto: true,
 	})
 	const treeData = useMemo(() => {
 		if (!data) return []
@@ -58,7 +59,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 						</div>
 					}
 				>
-					<Spin spinning={loading}>
+					<Skeleton loading={loading} paragraph={{ rows: 10 }}>
 						<Tree.DirectoryTree
 							blockNode
 							onSelect={handleSelectTree}
@@ -66,7 +67,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 							defaultExpandAll
 							titleRender={(node) => <TreeTitleWrapper {...node} />}
 						/>
-					</Spin>
+					</Skeleton>
 				</Card>
 				<BedAllotContext.Provider value={buildingId}>
 					<div className='flex-auto'>{children}</div>

@@ -85,7 +85,7 @@ export function formatTableSearchParams(
 	values: TableSearchParamsProps
 ): BigSiteQueryProps {
 	const { filters, pagination, sorter, params, form } = values
-	const result: BigSiteQueryProps = { ...(params ?? {}) }
+	let result: BigSiteQueryProps = { ...(params ?? {}) }
 
 	// 筛选相关  当前公司无该选项
 	if (filters) {
@@ -95,7 +95,7 @@ export function formatTableSearchParams(
 		// 搜索字段
 		// 搜索时 默认返回第一页
 		result.pageNo = 1
-		Object.assign(result, removeEmpty(form))
+		result = removeEmpty({ ...result, ...form })
 	}
 
 	// 分页相关
@@ -125,7 +125,6 @@ export function formatTableSearchParams(
 			// })
 		}
 	}
-
 	return result
 }
 

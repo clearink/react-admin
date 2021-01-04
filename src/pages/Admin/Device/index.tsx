@@ -7,6 +7,10 @@ import ProTable from "@/components/Pro/ProTable"
 import { Random } from "mockjs"
 import styles from "./style.module.scss"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
+import {
+	commonTransformServerData,
+	formatTableSearchParams,
+} from "@/utils/formatValues"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -23,45 +27,32 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "SIM卡号(ICCID)",
-		width: 200,
-		dataIndex: "iccId",
-		fieldProps: {
-			label: false,
-			copyable: true,
-			ellipsis: true,
-		},
+		dataIndex: "modelNum",
 	},
-	{
-		title: "使用状态",
-		width: 200,
-		dataIndex: "status",
-		field: "select",
-		fieldProps: {
-			statusList: colorArray,
-			options: ["启用", "停用"],
-		},
-	},
+	// {
+	// 	title: "使用状态",
+	// 	width: 200,
+	// 	dataIndex: "status",
+	// 	field: "select",
+	// 	fieldProps: {
+	// 		statusList: colorArray,
+	// 		options: ["启用", "停用"],
+	// 	},
+	// },
 	{
 		title: "使用人/房间",
-		width: 140,
-		dataIndex: "user",
+		dataIndex: "producerName",
 		fieldProps: {
 			copyable: true,
 		},
 	},
 	{
 		title: "领出人",
-		width: 160,
-		dataIndex: "getter",
-		fieldProps: {
-			copyable: true,
-		},
+		dataIndex: "supplierName",
 	},
 	{
 		title: "操作",
 		key: "action",
-		fixed: "right" as "right",
-		width: 360,
 		render: () => (
 			<Space>
 				<span>
@@ -80,27 +71,29 @@ const columns: ProTableColumns<any>[] = [
 		),
 	},
 ]
-console.time("object")
-const data = Array.from({ length: 10 }, (_, i) => {
-	return {
-		key: i,
-		num: `MAT20200${Random.integer(10000, 80000)}`,
-		iccId: `${Random.integer(1000, 8000)}00MFSSYYGXXXXXXP`,
-		status: Random.boolean() ? "启用" : "停用",
-		user: Random.cname(),
-		getter: Random.cname(),
-	}
-})
 
 // 设备管理
 function Device() {
 	return (
 		<div className='bg-white h-full'>
 			<ProTable
-				bordered
-				dataSource={[]}
+				request={{
+					url: "/orgmgt/device/list",
+					method: "post",
+				}}
 				columns={columns}
-				// scroll={{ x: 1000 }}
+				rowKey='id'
+				// 搜索请求
+				onSearch={formatTableSearchParams}
+				// 删除
+				// onDelete={async (values) => {
+				// 	await http.delete("/membermgt/member/deleteBatch", {
+				// 		params: { ids: values.map((item: any) => item.id).join(",") },
+				// 	})
+				// }}
+				// transform 需要设置 当前页数,pageSize, 总数 数据
+				transform={commonTransformServerData}
+				title={{ title: "设备管理", tooltip: "各种设备管理" }}
 			/>
 		</div>
 	)

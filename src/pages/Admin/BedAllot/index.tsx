@@ -1,18 +1,16 @@
-import React, { memo, useContext, useRef } from "react"
-import classNames from "classnames"
+import React, { memo, useContext, useEffect, useMemo, useRef } from "react"
 import styles from "./style.module.scss"
-import { Space, Switch } from "antd"
+import { Button, Space as div, Switch } from "antd"
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
-import useFetchData from "@/hooks/useFetchData"
 import BedAllotContext from "./BedAllotContext"
-import useEventEffect from "@/hooks/useEventEffect"
 import { isUndefined } from "@/utils/validate"
 import {
 	commonTransformServerData,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
+import RenderDrawerForm from "@/components/Pro/ProForm/components/DrawerForm/RenderDrawerForm"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -61,47 +59,56 @@ const columns: ProTableColumns<any>[] = [
 			return <Switch defaultChecked={value} />
 		},
 	},
-	{
-		title: "床垫设备号",
-		key: "action",
-		width: 250,
-		render: () => {
-			return (
-				<Space>
-					<span>
-						<UserOutlined />
-						住户信息
-					</span>
-					<span>
-						<UserOutlined />
-						编辑
-					</span>
-					<span>
-						<DeleteOutlined />
-						删除
-					</span>
-				</Space>
-			)
-		},
-	},
 ]
 
 function BedAllot() {
 	const buildingId = useContext(BedAllotContext)
 	const ref = useRef<ProTableRef>()
-	useEventEffect(() => {
-		if (isUndefined(buildingId) || !ref.current) return
-		const { dispatch, params, actions } = ref.current.changeParams
-		dispatch(actions.changeParams({ ...params, buildingId }))
+	useEffect(() => {
+		const tableMethods = ref.current
+		if (isUndefined(buildingId) || !tableMethods) return
+		tableMethods.setParams({ buildingId })
 	}, [buildingId])
 
+	const proTableColumns = useMemo(
+		() =>
+			columns.concat({
+				title: "床垫设备号",
+				key: "action",
+				width: 250,
+				render: (...args) => {
+					return (
+						<div>
+							<Button icon={<UserOutlined />} type='link' size='small'>
+								住户信息
+							</Button>
+
+							<Button
+								onClick={() => {
+									console.log("设置form", args)
+								}}
+								icon={<UserOutlined />}
+								type='link'
+								size='small'
+							>
+								编辑
+							</Button>
+							<Button icon={<UserOutlined />} type='link' size='small'>
+								删除
+							</Button>
+						</div>
+					)
+				},
+			}),
+		[]
+	)
 	return (
 		<div className={styles.page_wrap}>
 			<ProTable
 				bordered
 				rowKey='id'
 				ref={ref as any}
-				columns={columns}
+				columns={proTableColumns}
 				title='床位管理'
 				request={{
 					url: "/orgmgt/bed/list",
@@ -113,6 +120,7 @@ function BedAllot() {
 				}}
 				transform={commonTransformServerData}
 			/>
+			<RenderDrawerForm columns={columns} />
 		</div>
 	)
 }
