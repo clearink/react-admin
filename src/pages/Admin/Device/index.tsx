@@ -17,11 +17,12 @@ const columns: ProTableColumns<any>[] = [
 		title: "设备编号",
 		dataIndex: "num",
 		width: 100,
-		search: true,
-		fieldProps: {
+		search: {
 			label: false,
-			copyable: true,
 			placeholder: "名称/编号",
+		},
+		read: {
+			copyable: true,
 			ellipsis: true,
 		},
 	},
@@ -42,7 +43,7 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "使用人/房间",
 		dataIndex: "producerName",
-		fieldProps: {
+		read: {
 			copyable: true,
 		},
 	},

@@ -16,11 +16,7 @@ const columns: ProTableColumns<any>[] = [
 		title: "房间编号",
 		width: 100,
 		dataIndex: "num",
-		search: true,
-		fieldProps: {
-			label: false,
-			placeholder: "房间编号",
-		},
+		search: { placeholder: "房间编号", label: false },
 	},
 	{
 		title: "入住人数/床位数",
@@ -83,7 +79,7 @@ function RoomAllot() {
 				rowKey='id'
 				ref={ref as any}
 				columns={columns}
-				title='床位管理'
+				title='房间管理'
 				request={{
 					url: "/orgmgt/room/list",
 					method: "post",

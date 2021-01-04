@@ -17,18 +17,19 @@ const columns: ProTableColumns<any>[] = [
 		title: "头像",
 		dataIndex: "avatar",
 		field: "avatar",
-		fieldProps: {
+		read: {
 			icon: <UserOutlined />,
 		} as FieldAvatarProps,
 	},
 	{
 		title: "姓名",
 		dataIndex: "name",
-		search: true,
-		fieldProps: {
-			copyable: true,
+		search: {
+			label: undefined,
 			placeholder: "性别/手机",
-			label: false,
+		},
+		read: {
+			copyable: true,
 		},
 	},
 	{
@@ -42,52 +43,49 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "入住楼层",
 		dataIndex: "floor",
-		search: true,
 		field: "select",
-		fieldProps: {
+		search: {
 			placeholder: "选择楼层",
-			label: false,
+			label: undefined,
 		},
 	},
 	{
 		title: "入住房间",
 		dataIndex: "roomName",
-		search: true,
-		fieldProps: {
+		search: {
+			label: undefined,
 			placeholder: "选择房间",
-			label: false,
 		},
 	},
 	{
 		title: "时间",
 		dataIndex: "time",
-		search: true,
 		field: "date",
-		fieldProps: {
+		search: {
 			placeholder: "选择时间",
-			label: false,
+			label: undefined,
 		},
 	},
 	{
 		title: "住户手机",
 		dataIndex: "mobile",
-		fieldProps: {
+		read: {
 			copyable: true,
 		},
 	},
 	{
 		title: "紧急联系电话",
 		dataIndex: "contactNumber",
-		fieldProps: {
+		read: {
 			copyable: true,
 		},
 	},
 	{
 		title: "账号状态",
 		dataIndex: "enabled",
-		render:(value)=>{
-			return value ? "正常" :'离院'
-		}
+		render: (value) => {
+			return value ? "正常" : "离院"
+		},
 	},
 	{
 		title: "操作",

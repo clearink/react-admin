@@ -22,17 +22,17 @@ const columns: ProTableColumns<any>[] = [
 		title: "当前状态",
 		dataIndex: "status",
 		field: "select",
-		fieldProps: {
-			showTag: false, // badge 渲染
+		read: {
+			renderType: "badge",
 			options: ["停护", "启用"],
 			statusList: ["#666", "green"],
-		} as FieldStatusProps,
+		},
 	},
 	{
 		title: "护理内容",
 		width: 600,
 		dataIndex: "content",
-		fieldProps: {
+		read: {
 			ellipsis: true,
 		},
 	},

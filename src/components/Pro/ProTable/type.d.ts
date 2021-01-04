@@ -1,3 +1,4 @@
+import { InputProps } from "antd/lib/input"
 import { TitleTipProps } from "./../ProCard/components/TitleTip/index"
 import { TextProps } from "antd/lib/typography/Text"
 import { FormItemProps } from "antd/lib/form"
@@ -7,6 +8,7 @@ import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
 import { initialState, TableMethods } from "./useTableFetch"
 import { useFetchDataProps } from "@/hooks/useMemoFetch"
+import { BaseProFormProps } from "../hocs/withFormItem"
 
 // pro table column 类型
 export type ProFieldType =
@@ -31,14 +33,23 @@ export type ProFieldType =
 	| "text"
 	| "orderNum"
 	| "option"
+
+type FieldSelectProps = {
+	/** Field Select checkbox radio */
+	renderType?: "tag" | "badge"
+	options?: FieldOptionType[] | string[]
+	request?: useFetchDataProps
+	statusList?: string[]
+}
+
+type BaseProFormChildrenProps = {
+	placeholder?: string
+}
 export interface ProTableColumns<T extends object = any>
 	extends Omit<ColumnType<T>, "render"> {
 	field?: ProFieldType | "option"
 	tooltip?: string
-	search?: boolean // 提取到 query filter
-	hideInTable?: boolean // 在table中隐藏
-	hideInForm?:boolean // 在form中隐藏
-	hideInDetail?:boolean // 在详情页隐藏
+
 	render?: (
 		value: any,
 		record: any,
@@ -46,17 +57,18 @@ export interface ProTableColumns<T extends object = any>
 		action: ProTableRef
 	) => ReactNode // 扩展 table 原本的render函数
 
+	hideInTable?: boolean // 在table中隐藏
+	hideInForm?: boolean // 在form中隐藏
+	hideInDetail?: boolean // 在详情页隐藏
+
 	/** 注意 ellipsis 必须搭配 width  使用 */
-	fieldProps?: FormItemProps &
-		BaseProFieldProps &
-		TextProps & {
-			// Field Select checkbox radio
-			showTag?: boolean
-			options?: FieldOptionType[] | string[]
-			request?: useFetchDataProps
-			placeholder?: ReactNode
-			statusList?: string[]
-		}
+	fieldProps?: BaseProFieldProps<any> & TextProps & FieldSelectProps
+	/** 搜索属性 提取到 query filter */
+	search?: (BaseProFormProps & BaseProFormChildrenProps) | boolean
+	/** Field的属性 */
+	read?: (TextProps & FieldSelectProps) | boolean
+	/** ProForm的属性 */
+	edit?: BaseProFormProps | boolean
 }
 
 export type ProTableRef = {
@@ -73,13 +85,18 @@ export interface ProTableProps<T extends object>
 	columns?: ProTableColumns<T>[]
 	/** 搜索改变 */
 	onSearch?: (values: any) => object
+	/** 删除 */
 	onDelete?: (
 		values: string[] // 需要删除的数据
 	) => void
+	/** 新增 */
+	onCreate?: () => void
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
 	request?: useFetchDataProps
 	title?: TitleTipProps["title"]
+	/** 渲染右上角的action button */
+	renderAction?: (dom: JSX.Element[]) => JSX.Element[]
 	/** 渲染title */
 	renderTitle?: (
 		state: typeof initialState,

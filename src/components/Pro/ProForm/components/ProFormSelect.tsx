@@ -21,7 +21,6 @@ export interface ProFormSelectProps
 
 function ProFormSelect(props: ProFormSelectProps) {
 	const { request, options: PO, render, ...rest } = props
-
 	const [data] = useMemoFetch(request ?? {})
 
 	const options = useDeepMemo(() => {
@@ -30,9 +29,7 @@ function ProFormSelect(props: ProFormSelectProps) {
 		return []
 	}, [data, PO])
 
-	const DOM = (
-		<Select {...FilterValue(rest, ["statusList"] as any)} options={options} />
-	)
+	const DOM = <Select {...rest} options={options} />
 	if (render) return render({ ...rest, options }, DOM)
 	return DOM
 }

@@ -23,9 +23,13 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "姓名",
 		dataIndex: "name",
-		search: true,
 		width: 140,
-		fieldProps: {
+		search: {
+			label: undefined,
+			placeholder: "姓名/手机",
+			name: "nameOrMobile",
+		},
+		read: {
 			copyable: true,
 		},
 	},
@@ -60,10 +64,12 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "账号状态",
 		dataIndex: "enabled",
-		search: true,
 		field: "select",
-		fieldProps: {
+		read: {
+			renderType: "badge",
 			statusList: colorArray,
+		},
+		fieldProps: {
 			options: [
 				{ label: "正常", value: true },
 				{ label: "离职", value: false },

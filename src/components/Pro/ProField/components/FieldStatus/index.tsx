@@ -10,7 +10,7 @@ export interface FieldStatusProps extends BaseProFieldProps<FieldStatusProps> {
 	text?: string | number | Array<string | number>
 	options?: string[] | Array<FieldOptionType>
 	/** 渲染方式  "tag" | "badge"*/
-	type?: "tag" | "badge"
+	renderType?: "tag" | "badge"
 	request?: useFetchDataProps
 	statusList?: string[]
 }
@@ -25,7 +25,7 @@ function FieldStatus(props: FieldStatusProps) {
 	const {
 		text,
 		statusList,
-		type,
+		renderType,
 		request,
 		options: PO,
 		render,
@@ -40,9 +40,10 @@ function FieldStatus(props: FieldStatusProps) {
 		if (isArray(data)) return data as any
 		return []
 	}, [data, PO])
-	const DOM = <span>{renderStatus(text, options, statusList, type)}</span>
-	if (render) return render({ text, ...rest, type, statusList, options }, DOM)
+	const DOM = <span>{renderStatus(text, options, statusList, renderType)}</span>
+	if (render)
+		return render({ text, ...rest, renderType, statusList, options }, DOM)
 	return DOM
 }
 
-export default memo(withDefaultProps(FieldStatus, { text: "", type: "tag" }))
+export default memo(withDefaultProps(FieldStatus, { text: "", renderType: "tag" }))

@@ -34,7 +34,6 @@ function FieldDateRange(props: FieldDateRangeProps) {
 		return (text as Array<Moment | string | number>).map((item) => moment(item))
 	}, [text])
 
-	console.log("timeValue", timeValue, text)
 	const DOM = momentToText(timeValue, fromNow, timeFormat)
 	if (render) return render({ text, fromNow, timeFormat, ...rest }, DOM)
 	return DOM

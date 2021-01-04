@@ -104,8 +104,8 @@ class Http {
 		window.clearTimeout(this.timer)
 		this.timer = window.setTimeout(() => {
 			message.error({
-				key: error?.statusText ?? error?.message,
-				content: error?.statusText ?? error?.message,
+				key: "error",
+				content: error?.message ? error?.message : "访问出错",
 			})
 		}, 300)
 	}

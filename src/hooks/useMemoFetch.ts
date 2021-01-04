@@ -5,6 +5,7 @@ import GetBoundAction from "@/utils/GetBoundAction"
 import { AnyFunc } from "@/components/Pro/hooks/memo-callback"
 import useActionPending from "@/components/Pro/hooks/action-pending"
 import useMountedRef from "@/components/Pro/hooks/mounted-ref"
+import useDeepEqual from "@/components/Pro/hooks/deep-equal"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -27,7 +28,7 @@ export interface useFetchDataProps {
 	/** 是否需要缓存 */
 	cache?: boolean
 	/** 自动请求一次 */
-	auto?: boolean
+	// auto?: boolean
 	/** 转换数据 */
 	transform?: AnyFunc
 }
@@ -35,7 +36,7 @@ export default function useMemoFetch(props: useFetchDataProps) {
 	const [data, setData] = useState<any | null>(null)
 	const mountedRef = useMountedRef() // 是否挂载标志
 
-	const { url, params, method, cache, transform, auto = true } = props ?? {}
+	const { url, params, method = "get", cache, transform } = props ?? {}
 
 	const [count, fn] = useActionPending(async () => {
 		const realUrl = `${url}${JSON.stringify(params)}`
@@ -53,10 +54,12 @@ export default function useMemoFetch(props: useFetchDataProps) {
 		if (cache) boundKvActions.add({ key: realUrl, value: data }) // save redux store
 	})
 
+	// params 或者url变化重新请求
+	const paramsEqual = useDeepEqual(params)
+	const urlEqual = useDeepEqual(url)
 	useEffect(() => {
-		// 自动 或者 params 变化了
-		if (auto) fn()
-	}, [auto, fn])
+		if (!paramsEqual) fn()
+	}, [paramsEqual, urlEqual, fn])
 
 	return [data, count > 0, fn] as const
 }

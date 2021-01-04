@@ -1,17 +1,28 @@
-import React, { memo } from "react"
+import React, { memo, useMemo } from "react"
 import { IBaseProps } from "@/@types/fc"
 import classNames from "classnames"
+import moment from "moment"
 import { PepLifeIcon } from "@/components/IconFont"
 import styles from "./style.module.scss"
 import { Avatar } from "antd"
 import SysNotice from "./SysNotice"
 import { CommonHeader } from "@/components/PepLife"
 import { Link } from "react-router-dom"
-import MOCK from "mockjs"
 import { UserOutlined } from "@ant-design/icons"
 import useTypedSelector from "@/hooks/useTypedSelector"
+import useMemoFetch from "@/hooks/useMemoFetch"
 function Home(props: IBaseProps) {
 	const { user } = useTypedSelector((state) => state.user)
+	const [data] = useMemoFetch({
+		url: "/orgmgt/index/info",
+	})
+	const lastLogin = useMemo(() => {
+		if (data)
+			return moment(data?.result?.lastLoginTime).format(
+				"YYYY年MM月DD日 星期E HH:mm:ss"
+			)
+		return "loading..."
+	}, [data])
 	return (
 		<div className={styles["home-page__wrap"]}>
 			<CommonHeader icon='icon-chilun' title='管理首页' fixed />
@@ -26,8 +37,8 @@ function Home(props: IBaseProps) {
 								src={user?.avatar}
 							/>
 							<div className={styles.info}>
-								<p>{user?.username}, 欢迎进入XXX康养中心系统</p>
-								<p>上次登录: 2020年8月10日 星期三 20:30:23</p>
+								<p>{user?.username} 欢迎进入云达康智慧养老看护系统</p>
+								<p>上次登录: {lastLogin}</p>
 							</div>
 						</div>
 						<div className={styles.sys_info}>

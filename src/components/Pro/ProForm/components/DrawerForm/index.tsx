@@ -1,15 +1,18 @@
+import { useToggle } from "@/components/Pro/hooks/boolean"
 import { TitleTip } from "@/components/Pro/ProCard/components"
 import { TitleTipProps } from "@/components/Pro/ProCard/components/TitleTip"
-import useBoolean from "@/hooks/useBoolean"
-import useDeepMemo from "@/hooks/useDeepMemo"
-import { Drawer } from "antd"
+import { Drawer, Form, message } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { DrawerProps } from "antd/lib/drawer"
+import { FormInstance } from "antd/lib/form"
 import React, {
 	cloneElement,
+	forwardRef,
 	isValidElement,
 	memo,
 	ReactNode,
+	Ref,
+	useImperativeHandle,
 	useMemo,
 	useState,
 } from "react"
@@ -20,26 +23,50 @@ import Submitter from "../Submitter"
 
 export interface DrawerFormProps extends Omit<BaseFormProps, "title"> {
 	children?: ReactNode
-	trigger: JSX.Element
+	trigger: ReactNode
 	drawerProps?: Omit<DrawerProps, "title">
 	title?: TitleTipProps["title"]
 }
-
-function DrawerForm(props: DrawerFormProps) {
+export interface DrawerFormRef {
+	toggle: () => void
+	form: FormInstance
+}
+function DrawerForm(
+	props: DrawerFormProps,
+	ref: Ref<DrawerFormRef | undefined>
+) {
 	const { children, trigger, drawerProps, title, onFinish, ...rest } = props
 	// 内部状态
 	const [isOpen, setIsOpen] = useState(false)
-	const [visible, toggle] = useBoolean()
+	const [visible, toggle] = useToggle()
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
-
+	const [form] = Form.useForm(rest.form)
 	const handleFinish = async (values: any) => {
-		setLoading({ delay: 100 })
-		await onFinish?.(values)
-		setLoading(false)
+		// 提交完成关闭 drawer 重置表单
+		try {
+			setLoading({ delay: 100 })
+			await onFinish?.(values)
+			toggle()
+			form.resetFields()
+		} catch (error) {
+			throw error
+		} finally {
+			setLoading(false)
+		}
 	}
+	/** 外部控制 显示隐藏 */
+	useImperativeHandle(
+		ref,
+		() => ({
+			toggle,
+			form,
+			open: isOpen,
+		}),
+		[form, toggle]
+	)
 
 	const wrapperTrigger = useMemo(() => {
-		if (!trigger && !isValidElement(trigger)) return trigger
+		if (!isValidElement(trigger)) return trigger
 		return cloneElement(trigger, {
 			onClick: (e: MouseEvent) => {
 				toggle()
@@ -62,6 +89,7 @@ function DrawerForm(props: DrawerFormProps) {
 		<BaseForm
 			submitConfig={{ render: () => null }}
 			layout='vertical'
+			form={form}
 			{...rest}
 			onFinish={handleFinish}
 		>
@@ -92,4 +120,4 @@ function DrawerForm(props: DrawerFormProps) {
 	)
 }
 
-export default memo(DrawerForm)
+export default memo(forwardRef(DrawerForm))

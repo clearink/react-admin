@@ -1,3 +1,4 @@
+import { isBoolean, isObject } from "@/utils/validate"
 import { Tooltip } from "antd"
 import React, { cloneElement } from "react"
 import { TitleTip } from "../ProCard/components"
@@ -18,22 +19,31 @@ export default function renderTableColumn<T extends object>(
 			fieldProps,
 			field,
 			search,
+			read,
+			edit,
 			hideInTable,
 			render: CR,
 			...props
 		} = data[i]
-		// 处理query filter
+		// search
 		if (search) {
-			const requiredProps = {
+			const searchProps = {
 				key: props.dataIndex,
 				label: title,
 				name: props.dataIndex,
 			}
-			QFA.push([field, Object.assign(requiredProps, fieldProps ?? {})])
+			Object.assign(searchProps, fieldProps ?? {})
+			if (!isBoolean(search)) {
+				Object.assign(searchProps, search)
+			}
+			QFA.push([field, searchProps])
 		}
-		const { ellipsis, copyable, request } = fieldProps ?? {}
+		// read
+		let readProps = { ...fieldProps }
+		if (isObject(read)) Object.assign(readProps, read)
+		const { ellipsis, copyable, request } = readProps as any
 		const ProField = ProFieldMap[field ?? "text"] ?? FieldText
-		let DOM = <ProField {...fieldProps} />
+		let DOM = <ProField {...readProps} />
 		const colElement: ProTableColumns = {
 			title: () => <TitleTip title={{ title, tooltip }} />,
 			render: (text, record, index) => {
@@ -42,7 +52,7 @@ export default function renderTableColumn<T extends object>(
 				// request 属性
 				if (request) {
 					DOM = cloneElement(DOM, {
-						// 什么是否自动请求? index === 0 并且 search = true
+						// 是否自动请求? index === 0 并且 search = 不为空
 						request: Object.assign(request, { auto: !index && search }),
 					})
 				}
@@ -64,6 +74,7 @@ export default function renderTableColumn<T extends object>(
 			},
 			...props,
 		}
+		// 不在table中隐藏
 		if (!hideInTable) columns.push(colElement)
 	}
 	return [columns, QFA]

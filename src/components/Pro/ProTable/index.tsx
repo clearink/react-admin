@@ -42,7 +42,7 @@ import useMountedRef from "../hooks/mounted-ref"
 
 function ProTable<T extends object>(
 	props: ProTableProps<T>,
-	ref: Ref<ProTableRef>
+	ref: Ref<ProTableRef | undefined>
 ) {
 	const {
 		onSearch,
@@ -52,7 +52,9 @@ function ProTable<T extends object>(
 		request,
 		dataSource: PDataSource,
 		title,
+		renderAction,
 		renderTitle,
+		onCreate,
 		transform,
 		onDelete,
 		...rest
@@ -103,9 +105,9 @@ function ProTable<T extends object>(
 		return {
 			preserveSelectedRowKeys: true,
 			selectedRowKeys: state.rows,
-			onChange: methods.setParams,
+			onChange: methods.setRows,
 		}
-	}, [methods.setParams, state.rows])
+	}, [methods.setRows, state.rows])
 
 	const [columns, QFArray] = useMemo(
 		() => renderTableColumn(PCol ?? [], tableAction),
@@ -160,7 +162,7 @@ function ProTable<T extends object>(
 	}
 
 	const tableTitleExtra = (() => {
-		return [
+		const actions = [
 			<Button
 				type='primary'
 				danger
@@ -171,7 +173,12 @@ function ProTable<T extends object>(
 			>
 				删除数据
 			</Button>,
-			<Button type='primary' icon={<PlusOutlined />} key='add'>
+			<Button
+				type='primary'
+				icon={<PlusOutlined />}
+				onClick={onCreate}
+				key='add'
+			>
 				新增数据
 			</Button>,
 			<Button key='import' icon={<DownloadOutlined />}>
@@ -182,6 +189,8 @@ function ProTable<T extends object>(
 			</Button>,
 			<ReloadOutlined key='reload' onClick={fetchData} />,
 		]
+		if (renderAction) return renderAction(actions)
+		return actions
 	})()
 	// 列表数据改变
 
