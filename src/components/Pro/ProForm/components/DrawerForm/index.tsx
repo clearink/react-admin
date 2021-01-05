@@ -1,7 +1,7 @@
 import { useToggle } from "@/components/Pro/hooks/boolean"
 import { TitleTip } from "@/components/Pro/ProCard/components"
 import { TitleTipProps } from "@/components/Pro/ProCard/components/TitleTip"
-import { Drawer, Form, message } from "antd"
+import { Drawer, Form } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { DrawerProps } from "antd/lib/drawer"
 import { FormInstance } from "antd/lib/form"
@@ -14,6 +14,7 @@ import React, {
 	Ref,
 	useImperativeHandle,
 	useMemo,
+	useRef,
 	useState,
 } from "react"
 import { createPortal } from "react-dom"
@@ -37,17 +38,17 @@ function DrawerForm(
 ) {
 	const { children, trigger, drawerProps, title, onFinish, ...rest } = props
 	// 内部状态
-	const [isOpen, setIsOpen] = useState(false)
+	const [open, setOpen] = useState(false)
 	const [visible, toggle] = useToggle()
+	const formRef = useRef<FormInstance | undefined>(undefined)
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
-	const [form] = Form.useForm(rest.form)
 	const handleFinish = async (values: any) => {
 		// 提交完成关闭 drawer 重置表单
 		try {
 			setLoading({ delay: 100 })
 			await onFinish?.(values)
 			toggle()
-			form.resetFields()
+			formRef.current?.resetFields()
 		} catch (error) {
 			throw error
 		} finally {
@@ -59,10 +60,10 @@ function DrawerForm(
 		ref,
 		() => ({
 			toggle,
-			form,
-			open: isOpen,
+			form: formRef.current!,
+			open,
 		}),
-		[form, toggle]
+		[toggle, open]
 	)
 
 	const wrapperTrigger = useMemo(() => {
@@ -89,7 +90,7 @@ function DrawerForm(
 		<BaseForm
 			submitConfig={{ render: () => null }}
 			layout='vertical'
-			form={form}
+			ref={formRef}
 			{...rest}
 			onFinish={handleFinish}
 		>
@@ -99,7 +100,7 @@ function DrawerForm(
 				width={800}
 				getContainer={false}
 				onClose={toggle}
-				afterVisibleChange={setIsOpen}
+				afterVisibleChange={setOpen}
 				{...drawerProps}
 				footerStyle={{ textAlign: "right" }}
 				footer={submitter}

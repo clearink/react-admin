@@ -4,13 +4,14 @@ import { Space, Switch } from "antd"
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
-import BedAllotContext from "../BedAllotContext"
+import BedAllotContext from "../BedAllot/BedAllotContext"
 import { isUndefined } from "@/utils/validate"
 import {
 	commonTransformServerData,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 
+// 房间管理
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",

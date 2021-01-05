@@ -1,5 +1,4 @@
 import React, {
-	cloneElement,
 	memo,
 	useContext,
 	useEffect,
@@ -19,12 +18,11 @@ import {
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import RenderDrawerForm from "@/components/Pro/ProForm/components/DrawerForm/RenderDrawerForm"
-import DrawerForm, {
-	DrawerFormRef,
-} from "@/components/Pro/ProForm/components/DrawerForm"
-import { ProFormInput } from "@/components/Pro/ProForm"
+import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import { sleep } from "@/utils/test"
 
+import AddForm from "./add"
+import EditForm from "./edit"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
@@ -81,8 +79,12 @@ const columns: ProTableColumns<any>[] = [
 function BedAllot() {
 	const formRef = useRef<DrawerFormRef | undefined>(undefined)
 	const addRef = useRef<DrawerFormRef | undefined>(undefined)
-	const buildingId = useContext(BedAllotContext)
+
+	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
+
 	const [editId, setEditId] = useState<string | undefined>(undefined)
+
+	// 外部设置table 的 params 控制数据请求
 	const ref = useRef<ProTableRef>()
 	useEffect(() => {
 		const tableMethods = ref.current
@@ -93,7 +95,7 @@ function BedAllot() {
 	const proTableColumns = useMemo(
 		() =>
 			columns.concat({
-				title: "床垫设备号",
+				title: "操作",
 				key: "action",
 				width: 250,
 				render: (record) => {
@@ -151,7 +153,7 @@ function BedAllot() {
 				// }}
 			/>
 			{/* 外部如何能控制呢? */}
-			<RenderDrawerForm
+			<EditForm
 				request={{
 					url: "/orgmgt/bed/member/queryByBedId",
 					params: { id: editId },
@@ -160,16 +162,11 @@ function BedAllot() {
 				id={editId}
 				title='床位管理编辑'
 				ref={formRef}
-				columns={columns}
 			/>
 
-
-
-			
-			<DrawerForm
-				ref={addRef}
-				trigger={null}
+			<AddForm
 				title='新增床位'
+				ref={addRef}
 				onFinish={async (values) => {
 					try {
 						await sleep(1000)
@@ -177,11 +174,7 @@ function BedAllot() {
 						message.error("新增失败")
 					}
 				}}
-			>
-				<ProFormInput label='床位名称' name='name' />
-				<ProFormInput label='房间名称' name='room' />
-				<ProFormInput label='楼层名称' name='floor' />
-			</DrawerForm>
+			/>
 		</div>
 	)
 }

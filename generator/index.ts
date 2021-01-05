@@ -10,7 +10,8 @@ const ejs = require("ejs")
  *    --index.tsx
  *  --details  详情 pro-card与pro-field
  *    -- index.tsx
- *  --add      添加 DrawerForm or ModalForm 新增会与table严重耦合 如何解决
+ *  --add      添加 DrawerForm or ModalForm 新增会与table严重耦合 如何解决 
+ * 						 目前是table暴露一个onCreate
  *    -- index.tsx
  *  --edit     编辑 DrawerForm or ModalForm
  *    -- index.tsx

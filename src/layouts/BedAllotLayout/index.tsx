@@ -7,9 +7,9 @@ import styles from "./style.module.scss"
 import { IBaseProps } from "@/@types/fc"
 import { useHistory, useLocation } from "react-router-dom"
 import useMemoFetch from "@/hooks/useMemoFetch"
-import TreeTitleWrapper from "../components/TreeTitleWrapper"
-import { convertTreeNode } from "../utils"
-import BedAllotContext from "../BedAllotContext"
+import TreeTitleWrapper from "@/components/PepLife/TreeTitleWrapper"
+import { convertTreeNode } from "../../pages/BedAllot/utils"
+import BedAllotContext from "../../pages/BedAllot/BedAllotContext"
 import { TreeProps } from "antd/lib/tree"
 
 // 床位分配 layout

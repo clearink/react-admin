@@ -18,7 +18,7 @@ const routes: IRoute[] = [
 				path: "/",
 				icon: "icon-computer",
 				title: "管理首页",
-				component: withLazyLoad(lazy(() => import("@/pages/Admin/Home"))),
+				component: withLazyLoad(lazy(() => import("@/pages/Home"))),
 			},
 			{
 				path: "/monitor",
@@ -26,31 +26,31 @@ const routes: IRoute[] = [
 				title: "监控分析",
 				hideChildren: true,
 				component: withLazyLoad(
-					lazy(() => import("@/pages/Admin/Monitor/Layout"))
+					lazy(() => import("@/layouts/MonitorLayout"))
 				),
 				routes: [
 					{
 						path: "/monitor",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Monitor"))
+							lazy(() => import("@/pages/Monitor"))
 						),
 					},
 					{
 						path: "/monitor/alarm",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Monitor/AlarmRecord"))
+							lazy(() => import("@/pages/Monitor/AlarmRecord"))
 						),
 					},
 					{
 						path: "/monitor/analysis",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Monitor/Analysis"))
+							lazy(() => import("@/pages/Monitor/Analysis"))
 						),
 					},
 					{
 						path: "/monitor/sleep/:id",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Monitor/SleepRecord"))
+							lazy(() => import("@/pages/Monitor/SleepRecord"))
 						),
 					},
 				],
@@ -61,19 +61,19 @@ const routes: IRoute[] = [
 				title: "床位分配",
 				hideChildren: true,
 				component: withLazyLoad(
-					lazy(() => import("@/pages/Admin/BedAllot/Layout"))
+					lazy(() => import("@/layouts/BedAllotLayout"))
 				),
 				routes: [
 					{
 						path: "/bedallot",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/BedAllot"))
+							lazy(() => import("@/pages/BedAllot"))
 						),
 					},
 					{
 						path: "/bedallot/room",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/BedAllot/RoomAllot"))
+							lazy(() => import("@/pages/RoomAllot"))
 						),
 					},
 				],
@@ -84,19 +84,19 @@ const routes: IRoute[] = [
 				title: "住户管理",
 				hideChildren: true,
 				component: withLazyLoad(
-					lazy(() => import("@/pages/Admin/Resident/Layout"))
+					lazy(() => import("@/pages/Resident/Layout"))
 				),
 				routes: [
 					{
 						path: "/resident",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Resident"))
+							lazy(() => import("@/pages/Resident"))
 						),
 					},
 					{
 						path: "/resident/:id",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Resident/ResidentDetail"))
+							lazy(() => import("@/pages/Resident/ResidentDetail"))
 						),
 					},
 				],
@@ -107,17 +107,17 @@ const routes: IRoute[] = [
 				title: "护管管理",
 				hideChildren: true,
 				component: withLazyLoad(
-					lazy(() => import("@/pages/Admin/Nurse/Layout"))
+					lazy(() => import("@/pages/Nurse/Layout"))
 				),
 				routes: [
 					{
 						path: "/nurse",
-						component: withLazyLoad(lazy(() => import("@/pages/Admin/Nurse"))),
+						component: withLazyLoad(lazy(() => import("@/pages/Nurse"))),
 					},
 					{
 						path: "/nurse/setting",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Nurse/NurseSetting"))
+							lazy(() => import("@/pages/Nurse/NurseSetting"))
 						),
 					},
 				],
@@ -128,17 +128,17 @@ const routes: IRoute[] = [
 				title: "设备管理",
 				hideChildren: true,
 				component: withLazyLoad(
-					lazy(() => import("@/pages/Admin/Device/Layout"))
+					lazy(() => import("@/layouts/DeviceLayout"))
 				),
 				routes: [
 					{
 						path: "/device",
-						component: withLazyLoad(lazy(() => import("@/pages/Admin/Device"))),
+						component: withLazyLoad(lazy(() => import("@/pages/Device"))),
 					},
 					{
 						path: "/device/remind",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Admin/Device/Remind"))
+							lazy(() => import("@/pages/DeviceRemind"))
 						),
 					},
 				],
@@ -147,7 +147,7 @@ const routes: IRoute[] = [
 				path: "/dashboard",
 				title: "工作台",
 				icon: "icon-dashboard",
-				component: withLazyLoad(lazy(() => import("@/pages/Admin/DashBoard"))),
+				component: withLazyLoad(lazy(() => import("@/pages/DashBoard"))),
 			},
 		],
 	},

@@ -1,4 +1,5 @@
 import { TitleTip } from "@/components/Pro/ProCard/components"
+import { TitleTipProps } from "@/components/Pro/ProCard/components/TitleTip"
 import useBoolean from "@/hooks/useBoolean"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { ButtonProps } from "antd/lib/button"
@@ -18,9 +19,9 @@ import Submitter from "../Submitter"
 
 export interface ModalFormProps extends Omit<BaseFormProps, "title"> {
 	children?: ReactNode
-	trigger: JSX.Element
+	trigger: ReactNode
 	modalProps?: Omit<ModalProps, "title">
-	title?: string | { title: string; tooltip?: string }
+	title?: TitleTipProps["title"]
 }
 
 function ModalForm(props: ModalFormProps) {
@@ -43,7 +44,7 @@ function ModalForm(props: ModalFormProps) {
 	}
 
 	const wrapperTrigger = useMemo(() => {
-		if (!trigger && !isValidElement(trigger)) return trigger
+		if (!isValidElement(trigger)) return trigger
 		return cloneElement(trigger, {
 			onClick: (e: MouseEvent) => {
 				toggle()
