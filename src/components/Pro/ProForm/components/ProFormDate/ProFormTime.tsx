@@ -18,6 +18,5 @@ function ProFormDate(props: ProFormTimeProps) {
 	return DOM
 }
 export default withFormItem<ProFormTimeProps>(ProFormDate, {
-	allowClear: true,
 	placeholder: "请输入",
 })

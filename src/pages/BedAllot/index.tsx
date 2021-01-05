@@ -7,7 +7,7 @@ import React, {
 	useState,
 } from "react"
 import styles from "./style.module.scss"
-import { Button, message, Space as div, Switch } from "antd"
+import { Button, Form, Input, message, Space as div, Switch } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
@@ -17,12 +17,13 @@ import {
 	commonTransformServerData,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
-import RenderDrawerForm from "@/components/Pro/ProForm/components/DrawerForm/RenderDrawerForm"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import { sleep } from "@/utils/test"
 
 import AddForm from "./add"
 import EditForm from "./edit"
+import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
+import { ProFormInput } from "@/components/Pro/ProForm"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
@@ -77,8 +78,8 @@ const columns: ProTableColumns<any>[] = [
 ]
 
 function BedAllot() {
-	const formRef = useRef<DrawerFormRef | undefined>(undefined)
-	const addRef = useRef<DrawerFormRef | undefined>(undefined)
+	const editRef = useRef<DrawerFormRef>(undefined)
+	const addRef = useRef<DrawerFormRef>(undefined)
 
 	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
 
@@ -108,7 +109,7 @@ function BedAllot() {
 							<Button
 								onClick={() => {
 									setEditId(record.id)
-									formRef.current?.toggle?.()
+									editRef.current?.toggle()
 								}}
 								icon={<UserOutlined />}
 								type='link'
@@ -142,7 +143,6 @@ function BedAllot() {
 				}}
 				onCreate={() => {
 					addRef.current?.toggle()
-					console.log("新增数据")
 				}}
 				// onCreate 新增 table 内部
 				// onDelete 删除 table 内部
@@ -153,26 +153,30 @@ function BedAllot() {
 				// }}
 			/>
 			{/* 外部如何能控制呢? */}
+
+			{/* 编辑 form */}
 			<EditForm
+				title='床位管理编辑'
+				id={editId}
+				ref={editRef}
 				request={{
 					url: "/orgmgt/bed/member/queryByBedId",
 					params: { id: editId },
 					method: "get",
 				}}
-				id={editId}
-				title='床位管理编辑'
-				ref={formRef}
+				onFinish={async () => {
+					await sleep(1000)
+					return true
+				}}
 			/>
 
+			{/* 新增form */}
 			<AddForm
 				title='新增床位'
 				ref={addRef}
 				onFinish={async (values) => {
-					try {
-						await sleep(1000)
-					} catch (error) {
-						message.error("新增失败")
-					}
+					await sleep(1000)
+					return true
 				}}
 			/>
 		</div>

@@ -1,7 +1,6 @@
-import React, { memo } from "react"
+import React, { memo, useMemo, useRef, useState } from "react"
 import classNames from "classnames"
-import styles from "./style.module.scss"
-import { Space } from "antd"
+import { Button, Space } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
@@ -11,7 +10,10 @@ import {
 	commonTransformServerData,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
-
+import ResidentAddForm from "./add"
+import ResidentEditForm from "./edit"
+import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
+import { sleep } from "@/utils/test"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
@@ -87,39 +89,84 @@ const columns: ProTableColumns<any>[] = [
 			return value ? "正常" : "离院"
 		},
 	},
-	{
-		title: "操作",
-		dataIndex: "id",
-		width: 300,
-		render: (value) => {
-			return (
-				<Space>
-					<Link to={`/resident/${value}`}>住户详情</Link>
-					<span>处理设置</span>
-					<span>设备详情</span>
-					<span>编辑</span>
-					<span>停护</span>
-				</Space>
-			)
-		},
-	},
 ]
 
 function Resident() {
+	const editRef = useRef<DrawerFormRef>(undefined)
+	const addRef = useRef<DrawerFormRef>(undefined)
+
+	const [editId, setEditId] = useState<string | undefined>(undefined)
+	const tableColumns = useMemo(() => {
+		return columns.concat({
+			title: "操作",
+			dataIndex: "id",
+			render: (value) => {
+				return (
+					<Space>
+						<Link to={`/resident/${value}`}>住户详情</Link>
+						<Button type='link'>处理设置</Button>
+						<Button
+							type='link'
+							onClick={() => {
+								editRef.current?.toggle()
+								setEditId(value)
+							}}
+						>
+							编辑
+						</Button>
+						<Button type='link'>停护</Button>
+					</Space>
+				)
+			},
+		})
+	}, [])
 	return (
-		<ProTable
-			bordered
-			rowKey='id'
-			columns={columns}
-			title='床位管理'
-			request={{
-				url: "/orgmgt/member/list",
-				method: "post",
-				params: { pageNo: 1, pageSize: 10 },
-			}}
-			onSearch={formatTableSearchParams}
-			transform={commonTransformServerData}
-		/>
+		<>
+			<ProTable
+				bordered
+				rowKey='id'
+				columns={tableColumns}
+				title='住户管理'
+				request={{
+					url: "/orgmgt/member/list",
+					method: "post",
+					params: { pageNo: 1, pageSize: 10 },
+				}}
+				onSearch={formatTableSearchParams}
+				transform={commonTransformServerData}
+				onCreate={() => {
+					addRef.current?.toggle()
+				}}
+			/>
+			{/* 编辑 form */}
+			<ResidentEditForm
+				title='住户信息编辑'
+				name='edit'
+				id={editId}
+				ref={editRef}
+				request={{
+					url: "/orgmgt/member/queryById",
+					params: { id: editId },
+					method: "get",
+				}}
+				onFinish={async () => {
+					await sleep(1000)
+					return true
+				}}
+			/>
+
+			{/* 新增form */}
+			<ResidentAddForm
+				name='add'
+				title='新增住户'
+				ref={addRef}
+				onFinish={async (values) => {
+					console.log(values)
+					await sleep(1000)
+					return true
+				}}
+			/>
+		</>
 	)
 }
 export default memo(Resident)

@@ -28,7 +28,7 @@ export interface useFetchDataProps {
 	/** 是否需要缓存 */
 	cache?: boolean
 	/** 自动请求一次 */
-	// auto?: boolean
+	auto?: boolean
 	/** 转换数据 */
 	transform?: AnyFunc
 }
@@ -36,7 +36,8 @@ export default function useMemoFetch(props: useFetchDataProps) {
 	const [data, setData] = useState<any | null>(null)
 	const mountedRef = useMountedRef() // 是否挂载标志
 
-	const { url, params, method = "get", cache, transform } = props ?? {}
+	const { url, params, method = "get", cache, transform, auto = true } =
+		props ?? {}
 
 	const [count, fn] = useActionPending(async () => {
 		const realUrl = `${url}${JSON.stringify(params)}`
@@ -58,8 +59,9 @@ export default function useMemoFetch(props: useFetchDataProps) {
 	const paramsEqual = useDeepEqual(params)
 	const urlEqual = useDeepEqual(url)
 	useEffect(() => {
+		if (!auto) return
 		if (!paramsEqual) fn()
-	}, [paramsEqual, urlEqual, fn])
+	}, [paramsEqual, urlEqual, fn, auto])
 
 	return [data, count > 0, fn] as const
 }

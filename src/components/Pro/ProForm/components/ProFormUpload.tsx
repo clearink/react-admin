@@ -4,16 +4,18 @@ import withFormItem from "../../hocs/withFormItem"
 import { BaseProFieldProps } from "../../ProField/type"
 import { UploadProps } from "antd/lib/upload"
 
+// 该组件只是用于upload button
 export interface ProFormUploadProps extends UploadProps {
 	render?: BaseProFieldProps<ProFormUploadProps>["render"]
 	value?: UploadProps["fileList"]
 }
 function ProFormUpload(props: ProFormUploadProps) {
-	const { render, ...rest } = props
-	const DOM = <Upload {...rest} />
+	const { render, value, ...rest } = props
+	const DOM = <Upload fileList={value} {...rest} />
 	if (render) return render(rest, DOM)
 	return DOM
 }
 export default withFormItem<ProFormUploadProps>(ProFormUpload, {
 	// 可在此设置   headers
+	value: [],
 })

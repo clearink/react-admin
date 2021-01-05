@@ -49,6 +49,8 @@ export const reducers = {
 	// 重置
 	reset: (state: TableData, defaultParams: object) => ({
 		...initialState,
+		data:state.data,
+		total:state.total,
 		params: defaultParams,
 	}),
 }

@@ -13,14 +13,15 @@ export type ProFormDateProps = DatePickerProps &
 	}
 function ProFormDate(props: ProFormDateProps) {
 	const { render, value, ...rest } = props
-	const timeValue = useMemo(() => (isMoment(value) ? value : moment(value)), [
-		value,
-	])
+	const timeValue = useMemo(() => {
+		if (!value) return undefined
+		if (isMoment(value)) return value
+		return moment(value)
+	}, [value])
 	const DOM = <DatePicker value={timeValue} {...rest} />
 	if (render) return render(rest, DOM)
 	return DOM
 }
 export default withFormItem<ProFormDateProps>(ProFormDate, {
-	allowClear: true,
 	placeholder: "请选择日期",
 })

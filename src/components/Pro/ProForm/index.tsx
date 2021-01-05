@@ -1,4 +1,5 @@
-import ProFormAvatar from "./components/ProFormUpload"
+import ProFormUpload from "./components/ProFormUpload"
+import ProFormAvatar from "./components/ProFormAvatar"
 import ProFormCaptcha from "./components/ProFormCaptcha"
 import ProFormCheckbox from "./components/ProFormCheckbox"
 import ProFormRadio from "./components/ProFormRadio"
@@ -17,6 +18,7 @@ export { ProFormCaptcha }
 export { ProFormSelect }
 export { ProFormCheckbox }
 export { ProFormRadio }
+export { ProFormUpload }
 export { ProFormAvatar }
 export { ProFormTextArea }
 

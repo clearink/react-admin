@@ -199,6 +199,7 @@ function ProTable<T extends object>(
 			<div className={styles.pro_table_wrap}>
 				{/* proTable 暂时不提供对 query filter 的配置 后续会增强 search 字段的功能 */}
 				<QueryFilter
+					name='table-query-filter'
 					loading={state.loading}
 					className={classNames("mb-10", {
 						hidden: !search,

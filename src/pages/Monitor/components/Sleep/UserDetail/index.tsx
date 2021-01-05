@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { DatePicker, Form, Input, Radio, Select } from "antd"
+import { DatePicker, Form, Input, notification, Radio, Select } from "antd"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import {
@@ -28,11 +28,15 @@ function UserDetail(props: UserDetailProps) {
 	const ref = useRef<FormInstance | null>(null)
 	const handleFinish = async (values: any) => {
 		const { birthday, ...rest } = values
-
 		await updateUserDetail({
 			...rest,
 			id: data.id,
 			birthday: isString(birthday) ? birthday : birthday.format("YYYY-MM-DD"),
+		})
+		notification.success({
+			message: "用户信息保存成功",
+			placement:'bottomRight',
+			key:"set user info"
 		})
 	}
 	useEffect(() => {

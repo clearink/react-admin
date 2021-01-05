@@ -1,18 +1,14 @@
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import useMountedRef from "@/components/Pro/hooks/mounted-ref"
-import { ProFormInput, ProFormRadio } from "@/components/Pro/ProForm"
 import DrawerForm, {
 	DrawerFormProps,
 	DrawerFormRef,
 } from "@/components/Pro/ProForm/components/DrawerForm"
 import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
-import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
-import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
 import ProSkeleton from "@/components/Pro/ProSkeleton"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { useFetchDataProps } from "@/hooks/useMemoFetch"
 import http from "@/http"
-import { Skeleton } from "antd"
 import React, {
 	forwardRef,
 	memo,
@@ -23,6 +19,7 @@ import React, {
 	useState,
 } from "react"
 
+/** 包装一下 DrawerForm 以便于请求详情数据 */
 export interface AddFormProps extends DrawerFormProps {
 	/** form 渲染方式 */
 	type?: "drawer" | "modal"
@@ -30,14 +27,14 @@ export interface AddFormProps extends DrawerFormProps {
 	id?: string
 }
 function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
-	const { type, request, id, ...rest } = props
+	const { type, request, id, children, ...rest } = props
 
 	const mountedRef = useMountedRef()
 	const formRef = useRef<DrawerFormRef>()
 	useImperativeHandle(ref, () => formRef.current, [])
 
 	// 请求详情
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false) // 请求数据loading
 	const fetchData = useMemoCallback(async () => {
 		const { method = "get", url, params, transform } = request ?? {}
 		if (!url) return
@@ -64,7 +61,19 @@ function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 		return () => clearTimeout(timer)
 	}, [fetchData, id])
 
-	// 这个应该是自动生成的
+	const FormComponent = type === "drawer" ? DrawerForm : ModalForm
+	return (
+		<FormComponent ref={formRef} {...rest}>
+			{loading ? <ProSkeleton type='form' /> : children}
+		</FormComponent>
+	)
+}
+
+export default memo(
+	withDefaultProps(forwardRef(EditForm), { type: "drawer", trigger: null })
+)
+/**
+ * 	// 这个应该是自动生成的
 	const DOM = (
 		<>
 			<ProFormInput label='姓名' name='name' />
@@ -74,15 +83,4 @@ function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 			<ProFormInput label='身份证号' name='cardNum' />
 		</>
 	)
-
-	const FormComponent = type === "drawer" ? DrawerForm : ModalForm
-	return (
-		<FormComponent ref={formRef} {...rest}>
-			{loading ? <ProSkeleton type='form' /> : DOM}
-		</FormComponent>
-	)
-}
-
-export default memo(
-	withDefaultProps(forwardRef(EditForm), { type: "drawer", trigger: null })
-)
+ */
