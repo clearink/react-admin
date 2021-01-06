@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { Avatar, DatePicker, Form, Spin, Tabs, Typography } from "antd"
+import { DatePicker, Form, Spin, Tabs } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"

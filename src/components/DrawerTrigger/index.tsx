@@ -1,21 +1,17 @@
 import React, {
 	cloneElement,
-	createContext,
 	forwardRef,
 	isValidElement,
 	memo,
 	ReactNode,
 	Ref,
-	useCallback,
 	useImperativeHandle,
 	useMemo,
-	useState,
 } from "react"
-import { Drawer, Modal } from "antd"
-import { ModalProps } from "antd/lib/modal"
-import useBoolean from "@/hooks/useBoolean"
+import { Drawer } from "antd"
 import { isFunction } from "@/utils/validate"
 import { DrawerProps } from "antd/lib/drawer"
+import { useSwitch } from "../Pro/hooks/boolean"
 // antd 模态框封装
 interface DrawerTriggerProps extends Omit<DrawerProps, "visible"> {
 	trigger?: ReactNode
@@ -33,21 +29,22 @@ function DrawerTrigger(
 	ref: Ref<IModalTriggerRef | undefined>
 ) {
 	const { trigger, children, ...rest } = props
-	const [visible, toggle] = useBoolean(false)
+	const [visible, on, off, toggle] = useSwitch()
 
 	useImperativeHandle(ref, () => ({ toggle, visible }), [toggle, visible])
 
 	const wrappedTrigger = useMemo(() => {
-		if (!trigger || !isValidElement(trigger)) return trigger
+		if (!isValidElement(trigger)) return trigger
 		return cloneElement(trigger, {
 			onClick: (e: MouseEvent) => {
 				const { onClick } = trigger.props
-				onClick ? onClick(e, toggle) : toggle()
+				onClick?.(e)
+				on()
 			},
 		})
-	}, [trigger, toggle])
+	}, [trigger, on])
 	const handleClose: DrawerProps["onClose"] = (e) => {
-		toggle()
+		off()
 		rest.onClose?.(e)
 	}
 	return (

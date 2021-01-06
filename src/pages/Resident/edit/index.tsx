@@ -19,7 +19,6 @@ export interface AddFormProps extends DrawerFormProps {
 	id?: string
 }
 function ResidentEditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
-	console.log('function ResidentEditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {',props);
 	return (
 		<EditForm {...props} ref={ref}>
 			<ProFormInput label='姓名' name='name' />

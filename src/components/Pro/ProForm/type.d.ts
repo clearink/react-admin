@@ -12,6 +12,7 @@ export type SubmitConfigType = {
 export interface BaseFormProps extends FormProps {
 	submitConfig?: SubmitConfigType | false
 	loading?: ButtonProps["loading"]
+	render?: (dom: JSX.Element, submitter: JSX.Element) => JSX.Element
 }
 
 interface FieldStyleProps {

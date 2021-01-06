@@ -16,9 +16,9 @@ import React, {
 	useMemo,
 	useState,
 } from "react"
-import { createPortal } from "react-dom"
 import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
+import { DrawerFormRef } from "../DrawerForm"
 
 export interface ModalFormProps extends Omit<BaseFormProps, "title"> {
 	children?: ReactNode
@@ -27,13 +27,8 @@ export interface ModalFormProps extends Omit<BaseFormProps, "title"> {
 	title?: TitleTipProps["title"]
 	onFinish?: (values: any) => Promise<boolean>
 }
-export type ModalFormRef =
-	| {
-			form: FormInstance
-			toggle: () => void
-	  }
-	| undefined
-function ModalForm(props: ModalFormProps, ref: Ref<ModalFormRef>) {
+
+function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 	const { children, trigger, modalProps, title, onFinish, ...rest } = props
 	// 内部状态
 	const [visible, on, off, toggle] = useSwitch()

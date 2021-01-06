@@ -30,8 +30,8 @@ function Detail(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 	const { type, request, id, children, ...rest } = props
 
 	const mountedRef = useMountedRef()
-	const formRef = useRef<DrawerFormRef>()
-	useImperativeHandle(ref, () => formRef.current, [])
+	const formRef = useRef<DrawerFormRef>(null)
+	useImperativeHandle(ref, () => formRef.current!, [])
 
 	// 请求详情
 	const [loading, setLoading] = useState(false) // 请求数据loading

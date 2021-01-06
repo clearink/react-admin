@@ -30,14 +30,15 @@ function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 	const { type, request, id, children, ...rest } = props
 
 	const mountedRef = useMountedRef()
-	const formRef = useRef<DrawerFormRef>()
-	useImperativeHandle(ref, () => formRef.current, [])
+	const formRef = useRef<DrawerFormRef>(null)
+
+	useImperativeHandle(ref, () => formRef.current!, [])
 
 	// 请求详情
 	const [loading, setLoading] = useState(false) // 请求数据loading
 	const fetchData = useMemoCallback(async () => {
 		const { method = "get", url, params, transform } = request ?? {}
-		if (!url) return
+		if (!url || !id) return
 		try {
 			const { form } = formRef.current!
 			// 请求前重置表单数据
@@ -45,6 +46,10 @@ function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 			const { data } = await http[method as any](url, params)
 			if (!mountedRef.current) return
 			const result = transform?.(data) ?? data
+			// 后期会加上是否缓存下来详情数据
+			// 提交时再更新缓存
+
+			// setFieldValue 可能需要外部转换一下
 			form.setFieldsValue(result.result)
 		} catch (error) {
 			console.log(error)

@@ -4,7 +4,6 @@ import {
 	DrawerFormProps,
 	DrawerFormRef,
 } from "@/components/Pro/ProForm/components/DrawerForm"
-import { ModalFormRef } from "@/components/Pro/ProForm/components/ModalForm"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
 import withDefaultProps from "@/hocs/withDefaultProps"
@@ -14,7 +13,7 @@ export interface AddFormProps extends DrawerFormProps {
 	/** form 渲染方式 */
 	type?: "drawer" | "modal"
 }
-export type AddFormRef = DrawerFormRef | ModalFormRef
+export type AddFormRef = DrawerFormRef
 function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (
 		<AddForm {...props} ref={ref}>

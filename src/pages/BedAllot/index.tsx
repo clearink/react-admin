@@ -7,12 +7,12 @@ import React, {
 	useState,
 } from "react"
 import styles from "./style.module.scss"
-import { Button, Form, Input, message, Space as div, Switch } from "antd"
+import { Button, Switch } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "./BedAllotContext"
-import { isUndefined } from "@/utils/validate"
+import { isNull } from "@/utils/validate"
 import {
 	commonTransformServerData,
 	formatTableSearchParams,
@@ -22,8 +22,6 @@ import { sleep } from "@/utils/test"
 
 import AddForm from "./add"
 import EditForm from "./edit"
-import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import { ProFormInput } from "@/components/Pro/ProForm"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
@@ -78,18 +76,18 @@ const columns: ProTableColumns<any>[] = [
 ]
 
 function BedAllot() {
-	const editRef = useRef<DrawerFormRef>(undefined)
-	const addRef = useRef<DrawerFormRef>(undefined)
+	const editRef = useRef<DrawerFormRef>(null)
+	const addRef = useRef<DrawerFormRef>(null)
+	const tableRef = useRef<ProTableRef>(null)
 
 	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
 
 	const [editId, setEditId] = useState<string | undefined>(undefined)
 
 	// 外部设置table 的 params 控制数据请求
-	const ref = useRef<ProTableRef>()
 	useEffect(() => {
-		const tableMethods = ref.current
-		if (isUndefined(buildingId) || !tableMethods) return
+		const tableMethods = tableRef.current
+		if (isNull(buildingId) || !tableMethods) return
 		tableMethods.setParams({ buildingId })
 	}, [buildingId])
 
@@ -131,7 +129,7 @@ function BedAllot() {
 			<ProTable
 				bordered
 				rowKey='id'
-				ref={ref}
+				ref={tableRef}
 				title='床位管理'
 				columns={proTableColumns}
 				onSearch={formatTableSearchParams}
@@ -166,6 +164,7 @@ function BedAllot() {
 				}}
 				onFinish={async () => {
 					await sleep(1000)
+					tableRef.current?.reload()
 					return true
 				}}
 			/>
@@ -176,6 +175,7 @@ function BedAllot() {
 				ref={addRef}
 				onFinish={async (values) => {
 					await sleep(1000)
+					tableRef.current?.reload()
 					return true
 				}}
 			/>

@@ -28,6 +28,8 @@ import { sleep } from "@/utils/test"
 import useTableFetch from "./useTableFetch"
 import http from "@/http"
 import useMountedRef from "../hooks/mounted-ref"
+import useTrackedEffect from "../hooks/tracked-effect"
+import useMemoCallback from "../hooks/memo-callback"
 /**
  * search 属性 在 query filter中显示
  *
@@ -89,14 +91,18 @@ function ProTable<T extends object>(
 
 	// 暴露的方法
 	// TODO: 添加 query filter 的 form
+	const handleReset = useMemoCallback(
+		() => methods.reset(request?.params ?? {}),
+		[]
+	)
 	const tableAction = useMemo(
 		() => ({
 			setParams: methods.setParams, // 外部如何能够该变table内部的params呢?
 			reload: fetchData,
-			reset: () => methods.reset(request?.params ?? {}),
+			reset: handleReset,
 			clearRows: () => methods.setRows([]),
 		}),
-		[fetchData, methods, request]
+		[fetchData, methods, handleReset]
 	)
 	useImperativeHandle(ref, () => tableAction, [tableAction])
 
@@ -113,6 +119,12 @@ function ProTable<T extends object>(
 		() => renderTableColumn(PCol ?? [], tableAction),
 		[PCol, tableAction]
 	)
+	useTrackedEffect(
+		(changes) => {
+			console.log(changes)
+		},
+		[fetchData, methods, handleReset]
+	)
 
 	/** 搜索方法 	 */
 	const handleSearch = (values: any, type: "form" | "table" = "form") => {
@@ -122,6 +134,7 @@ function ProTable<T extends object>(
 			: values
 		try {
 			methods.setLoading({ delay: 50 })
+			console.log("12312312")
 			if (onSearch) {
 				const params = onSearch(searchParams)
 				methods.setParams(params)

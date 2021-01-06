@@ -92,8 +92,8 @@ const columns: ProTableColumns<any>[] = [
 ]
 
 function Resident() {
-	const editRef = useRef<DrawerFormRef>(undefined)
-	const addRef = useRef<DrawerFormRef>(undefined)
+	const editRef = useRef<DrawerFormRef>(null)
+	const addRef = useRef<DrawerFormRef>(null)
 
 	const [editId, setEditId] = useState<string | undefined>(undefined)
 	const tableColumns = useMemo(() => {

@@ -17,6 +17,7 @@ import { Button, Form, Input } from "antd"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
 import { sleep } from "@/utils/test"
+import DrawerForm from "@/components/Pro/ProForm/components/DrawerForm"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "avatar",
@@ -77,7 +78,8 @@ function WorkPlace(props: IBaseProps) {
 					transform={commonTransformServerData}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/> */}
-				<ModalForm
+				<DrawerForm
+					title={{ title: "12123",tooltip:"3212323" }}
 					trigger={<button>12312</button>}
 					onFinish={async (va) => {
 						console.log(va)
@@ -86,7 +88,7 @@ function WorkPlace(props: IBaseProps) {
 					}}
 				>
 					<ProFormInput label='131' name='2332' />
-				</ModalForm>
+				</DrawerForm>
 			</main>
 		</div>
 	)

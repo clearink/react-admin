@@ -12,7 +12,6 @@ import ProSkeleton from "@/components/Pro/ProSkeleton"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { useFetchDataProps } from "@/hooks/useMemoFetch"
 import http from "@/http"
-import { Skeleton } from "antd"
 import React, {
 	forwardRef,
 	memo,
@@ -33,8 +32,8 @@ function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 	const { type, request, id, ...rest } = props
 
 	const mountedRef = useMountedRef()
-	const formRef = useRef<DrawerFormRef>()
-	useImperativeHandle(ref, () => formRef.current, [])
+	const formRef = useRef<DrawerFormRef>(null)
+	useImperativeHandle(ref, () => formRef.current!, [])
 
 	// 请求详情
 	const [loading, setLoading] = useState(false)
