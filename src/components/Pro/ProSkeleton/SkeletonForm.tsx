@@ -9,47 +9,46 @@ export interface SkeletonFormProps {
 	active?: boolean
 	loading?: boolean
 	size?: "small" | "large" | "default"
+	row?: number
 }
 function SkeletonForm(props: SkeletonFormProps) {
+	const { row, ...rest } = props
+	const height = row === undefined ? "100%" : row * 30
 	return (
-		<div className={styles.pro_skeleton}>
+		<div className={styles.pro_skeleton} style={{ height }}>
 			<div className={styles.skeleton_title}>
-				<Skeleton.Input {...props} className={styles.title} />
+				<Skeleton.Input {...rest} className={styles.title} />
 			</div>
 			<div className={styles.skeleton_content}>
 				<div className={styles.form_input}>
 					{Array.from({ length: 2 }, (_, i) => (
 						<div className={styles.item} key={i}>
-							<Skeleton.Input {...props} className={styles.label} />
-							<Skeleton.Input {...props} className={styles.value} />
+							<Skeleton.Input {...rest} className={styles.label} />
+							<Skeleton.Input {...rest} className={styles.value} />
 						</div>
 					))}
 				</div>
 				{Array.from({ length: 2 }, (_, i) => (
 					<div className={styles.single} key={i}>
-						<Skeleton.Input {...props} className={styles.label} />
-						<Skeleton.Input {...props} className={styles.value} />
+						<Skeleton.Input {...rest} className={styles.label} />
+						<Skeleton.Input {...rest} className={styles.value} />
 					</div>
 				))}
 				<div className={styles.form_select}>
 					<div className={styles.select_wrap}>
-						<Skeleton.Button {...props} />
-						<Skeleton.Button {...props} />
-						<Skeleton.Button {...props} />
-						<Skeleton.Button {...props} />
+						<Skeleton.Button {...rest} />
+						<Skeleton.Button {...rest} />
+						<Skeleton.Button {...rest} />
+						<Skeleton.Button {...rest} />
 					</div>
-					<Skeleton.Input {...props} className={styles.input} />
+					<Skeleton.Input {...rest} className={styles.input} />
 				</div>
-				<Skeleton.Input {...props} className='w-full my-6' />
+				<Skeleton.Input {...rest} className='w-full my-6' />
 				<div className={styles.media}>
-					<Skeleton.Image className={styles.image} {...props} />
-					<Skeleton.Input className={styles.code} {...props} />
+					<Skeleton.Image className={styles.image} {...rest} />
+					<Skeleton.Input className={styles.code} {...rest} />
 				</div>
 			</div>
-			{/* <div className={styles.submit}>
-				<Skeleton.Button {...props} className={styles.button} />
-				<Skeleton.Button {...props} className={styles.button} />
-			</div> */}
 		</div>
 	)
 }

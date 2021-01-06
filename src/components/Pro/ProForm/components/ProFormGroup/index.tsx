@@ -1,19 +1,8 @@
-import React, {
-	Children,
-	cloneElement,
-	isValidElement,
-	memo,
-	ReactNode,
-	useMemo,
-} from "react"
+import React, { memo, ReactNode, useMemo, Children } from "react"
 import TitleTip, { TitleTipProps } from "@/components/Pro/components/TitleTip"
-import classNames from "classnames"
-
 import styles from "./style.module.scss"
-import { Space } from "antd"
-import { SpaceProps } from "antd/lib/space"
 
-export interface ProFormGroupProps extends SpaceProps {
+export interface ProFormGroupProps {
 	title?: TitleTipProps["title"]
 	renderTitle?: (title: ProFormGroupProps["title"]) => JSX.Element
 	children?: ReactNode
@@ -21,7 +10,7 @@ export interface ProFormGroupProps extends SpaceProps {
 	style?: React.CSSProperties
 }
 function ProFormGroup(props: ProFormGroupProps) {
-	const { title, renderTitle, children, ...rest } = props
+	const { title, renderTitle, children } = props
 
 	const groupTitle = useMemo(() => {
 		if (renderTitle) return renderTitle(title)
@@ -31,9 +20,15 @@ function ProFormGroup(props: ProFormGroupProps) {
 	return (
 		<div className={styles.form_group_wrapper}>
 			{title && <div className={styles.form_group_title}>{groupTitle}</div>}
-			<Space wrap size={[20, 0]} {...rest}>
-				{children}
-			</Space>
+			<div className={styles.child_wrap}>
+				{Children.map(children, (child, index) => {
+					return (
+						<div key={index} className={styles.child}>
+							{child}
+						</div>
+					)
+				})}
+			</div>
 		</div>
 	)
 }

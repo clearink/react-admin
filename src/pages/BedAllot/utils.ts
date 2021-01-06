@@ -4,7 +4,7 @@ import { DataNode } from "antd/lib/tree"
 export function convertTreeNode(data: any[], childKey: string) {
 	return data.reduce((pre, cur) => {
 		const ele: DataNode = { title: cur.name, key: cur.id }
-		if (isArray(cur[childKey])) {
+		if (isArray(cur[childKey]) && cur[childKey].length) {
 			ele.children = convertTreeNode(cur[childKey], childKey)
 		} else {
 			ele.isLeaf = true

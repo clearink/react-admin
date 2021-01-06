@@ -22,6 +22,7 @@ function AddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 			<ProFormGroup>
 				<ProFormInput label='姓名' name='name' width='m' />
 				<ProFormInput label='护管' name='nurse' width='m' />
+				<ProFormInput label='护管2' name='nurs2e' width='m' />
 			</ProFormGroup>
 		</>
 	)

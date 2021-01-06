@@ -9,48 +9,51 @@ export interface SkeletonDetailProps {
 	active?: boolean
 	loading?: boolean
 	size?: "small" | "large" | "default"
+	row?: number
 }
 function SkeletonDetail(props: SkeletonDetailProps) {
+	const { row, ...rest } = props
+	const height = row === undefined ? "100%" : row * 30
 	return (
-		<div className={styles.pro_skeleton}>
+		<div className={styles.pro_skeleton} style={{ height }}>
 			<div className={styles.skeleton_title}>
-				<Skeleton.Input {...props} className={styles.title} />
+				<Skeleton.Input {...rest} className={styles.title} />
 			</div>
 			<div className={styles.skeleton_content}>
 				<div className={styles.list}>
 					{Array.from({ length: 3 }, (_, i) => (
 						<div className={styles.item} key={i}>
-							<Skeleton.Input {...props} className={styles.label} />
-							<Skeleton.Input {...props} className={styles.value} />
+							<Skeleton.Input {...rest} className={styles.label} />
+							<Skeleton.Input {...rest} className={styles.value} />
 						</div>
 					))}
 					{Array.from({ length: 3 }, (_, i) => (
 						<div className={styles.item} key={i}>
-							<Skeleton.Input {...props} className={styles.label} />
-							<Skeleton.Input {...props} className={styles.value} />
+							<Skeleton.Input {...rest} className={styles.label} />
+							<Skeleton.Input {...rest} className={styles.value} />
 						</div>
 					))}
 					{Array.from({ length: 3 }, (_, i) => (
 						<div className={styles.item} key={i}>
-							<Skeleton.Input {...props} className={styles.label} />
-							<Skeleton.Input {...props} className={styles.value} />
+							<Skeleton.Input {...rest} className={styles.label} />
+							<Skeleton.Input {...rest} className={styles.value} />
 						</div>
 					))}
 				</div>
-				<Skeleton {...props} />
+				<Skeleton {...rest} />
 				<div className={styles.group}>
-					<Skeleton.Input {...props} className={styles.group_title} />
+					<Skeleton.Input {...rest} className={styles.group_title} />
 					<div className={styles.group_content}>
 						<Skeleton
 							title={false}
 							paragraph={{ rows: 4 }}
-							{...props}
+							{...rest}
 							className={styles.group_item}
 						/>
 						<Skeleton
 							title={false}
 							paragraph={{ rows: 4 }}
-							{...props}
+							{...rest}
 							className={styles.group_item}
 						/>
 					</div>

@@ -8,3 +8,11 @@
 		color: $color_text_black;
 	}
 }
+.child_wrap {
+	display: flex;
+	flex-wrap: wrap;
+	.child {
+		flex: auto;
+		margin-right: 16px;
+	}
+}

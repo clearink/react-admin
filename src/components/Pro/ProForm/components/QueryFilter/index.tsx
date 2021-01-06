@@ -88,6 +88,7 @@ function QueryFilter(props: QueryFilterProps) {
 		})
 	}, [children, collapsed, point])
 
+	/** 没有子节点 返回 null */
 	if (childCount === 0) return null
 	return (
 		<div

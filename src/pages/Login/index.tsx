@@ -1,17 +1,19 @@
-import React, { memo } from "react"
+import React, { memo, useState } from "react"
 import { IBaseProps } from "@/@types/fc"
-import { Form, Input, Button } from "antd"
 import { Store } from "antd/lib/form/interface"
 import { useHistory } from "react-router-dom"
 import { actions } from "@/store/reducers/user"
-import useTypedSelector from "@/hooks/useTypedSelector"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import Logo from "@/assets/images/login_logo.png"
 import { PepLifeIcon } from "@/components/IconFont"
 import Footer from "@/components/Footer"
 import "./style.scss"
-
-const { useForm } = Form
+import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
+import { ProFormCaptcha, ProFormInput } from "@/components/Pro/ProForm"
+import api from "@/http/api"
+import { phonePattern } from "@/utils/pattern"
+import { ButtonProps } from "antd/lib/button"
+import useTypedSelector from "@/hooks/useTypedSelector"
 
 const formValidateMessages = {
 	// eslint-disable-next-line no-template-curly-in-string
@@ -19,10 +21,10 @@ const formValidateMessages = {
 }
 
 function Login(props: IBaseProps) {
-	const [form] = useForm()
-	const { loginLoading } = useTypedSelector((state) => state.user)
 	const { push } = useHistory()
 	const unwrap = useUnwrapAsyncThunk()
+	const { loginLoading } = useTypedSelector((state) => state.user)
+
 	const handleSubmit = async (values: Store) => {
 		await unwrap(actions.login(values))
 		push("/")
@@ -37,37 +39,55 @@ function Login(props: IBaseProps) {
 						<img src={Logo} alt='LOGO' className='logo' />
 						<h1>智慧养老看护服务系统</h1>
 					</div>
-					<Form
-						form={form}
+					<BaseForm
 						validateMessages={formValidateMessages}
 						className='login-box__form w-5/6 sm:w-3/4'
 						onFinish={handleSubmit}
+						loading={loginLoading}
+						submitConfig={{
+							submitProps: {
+								block: true,
+								size: "large",
+								text: "登录",
+							},
+							render: (dom) => {
+								return dom.pop()
+							},
+						}}
 					>
-						<Form.Item name='username' rules={[{ required: true }]}>
-							<Input
-								className='login-box__username'
-								placeholder='请输入用户名称'
-								prefix={<PepLifeIcon type='icon-user' className='icon' />}
-							/>
-						</Form.Item>
-						<Form.Item name='password' rules={[{ required: true }]}>
-							<Input.Password
-								className='login-box__password'
-								placeholder='请输入登录密码'
-								prefix={<PepLifeIcon type='icon-password' className='icon' />}
-							/>
-						</Form.Item>
+						<ProFormInput
+							name='mobile'
+							rules={[
+								{
+									required: true,
+									pattern: phonePattern,
+									message: "手机号格式不正确",
+								},
+							]}
+							placeholder='请输入手机号'
+							prefix={<PepLifeIcon type='icon-user' className='icon' />}
+							className='login-box__username'
+						/>
 
-						<Button
-							loading={loginLoading}
-							type='primary'
-							htmlType='submit'
-							className='login-box__submit'
-							block
-						>
-							登录
-						</Button>
-					</Form>
+						<ProFormCaptcha
+							name='captcha'
+							className='login-box__password'
+							captchaProps={{ className: "login-box__password ml-4" }}
+							placeholder='请输入验证码'
+							prefix={<PepLifeIcon type='icon-password' className='icon' />}
+							onGetCaptcha={async (form) => {
+								const mobile = form?.getFieldValue("mobile")
+								if (!mobile) {
+									form?.setFields([
+										{ errors: ["请输入手机号"], name: "mobile" },
+									])
+									return false
+								}
+								await api.GetCaptcha({ mobile })
+								return true
+							}}
+						/>
+					</BaseForm>
 				</div>
 			</div>
 			<Footer />

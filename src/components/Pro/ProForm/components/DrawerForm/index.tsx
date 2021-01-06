@@ -1,6 +1,7 @@
 import { useSwitch } from "@/components/Pro/hooks/boolean"
 import { TitleTip } from "@/components/Pro/ProCard/components"
 import { TitleTipProps } from "@/components/Pro/ProCard/components/TitleTip"
+import { compose } from "@reduxjs/toolkit"
 import { Drawer, Space } from "antd"
 import Button, { ButtonProps } from "antd/lib/button"
 import { DrawerProps } from "antd/lib/drawer"
@@ -57,7 +58,8 @@ function DrawerForm(props: DrawerFormProps, ref: Ref<DrawerFormRef>) {
 		// 提交完成关闭 drawer 重置表单
 		setLoading({ delay: 100 })
 		const result = await onFinish?.(values)
-		if (result) off()
+		if (result) compose(off, form.resetFields)()
+
 		setLoading(false)
 	}
 	/** 外部控制 显示隐藏 */
@@ -93,7 +95,6 @@ function DrawerForm(props: DrawerFormProps, ref: Ref<DrawerFormRef>) {
 				visible={visible}
 				title={<TitleTip title={title} />}
 				width={800}
-				getContainer={false}
 				onClose={handleClose}
 				{...drawerProps}
 				footerStyle={{ textAlign: "right" }}

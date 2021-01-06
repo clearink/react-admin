@@ -19,6 +19,8 @@ import React, {
 import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
 import { DrawerFormRef } from "../DrawerForm"
+import { compose } from "@reduxjs/toolkit"
+import { sleep } from "@/utils/test"
 
 export interface ModalFormProps extends Omit<BaseFormProps, "title"> {
 	children?: ReactNode
@@ -32,7 +34,7 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 	const { children, trigger, modalProps, title, onFinish, ...rest } = props
 	// 内部状态
 	const [visible, on, off, toggle] = useSwitch()
-	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
+	const [loading, setLoading] = useState(false)
 
 	const [form] = Form.useForm(rest.form) // 防止外部传入form实例
 
@@ -41,10 +43,9 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 	const handleFinish = async (values: any) => {
 		// 提交完成关闭 modal 重置表单
 		try {
-			setLoading({ delay: 100 })
-			await onFinish?.(values)
-			off()
-			form.resetFields()
+			setLoading(true)
+			const result = await onFinish?.(values)
+			if (result) compose(off, form.resetFields)()
 		} catch (error) {
 			throw error
 		} finally {
@@ -72,7 +73,7 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 				onCancel={off}
 				{...modalProps}
 				onOk={form.submit}
-				confirmLoading={!!loading}
+				confirmLoading={loading}
 			>
 				<BaseForm
 					submitConfig={false}

@@ -143,12 +143,12 @@ const routes: IRoute[] = [
 					},
 				],
 			},
-			{
-				path: "/dashboard",
-				title: "工作台",
-				icon: "icon-dashboard",
-				component: withLazyLoad(lazy(() => import("@/pages/DashBoard"))),
-			},
+			// {
+			// 	path: "/dashboard",
+			// 	title: "工作台",
+			// 	icon: "icon-dashboard",
+			// 	component: withLazyLoad(lazy(() => import("@/pages/DashBoard"))),
+			// },
 		],
 	},
 ]

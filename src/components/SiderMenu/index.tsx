@@ -1,5 +1,5 @@
 import React, { memo, Profiler, useEffect, useMemo, useState } from "react"
-import { Menu, Layout } from "antd"
+import { Menu, Layout, Typography } from "antd"
 import logo from "@/assets/images/logo.png"
 import classNames from "classnames"
 import { Link, useHistory, useLocation } from "react-router-dom"
@@ -9,12 +9,14 @@ import GetBoundAction from "@/utils/GetBoundAction"
 import RenderMenu from "./RenderMenu"
 import { actions } from "@/store/reducers/menu"
 import "./style.scss"
+import { TitleTip } from "../Pro/ProCard/components"
 
 const boundToggle = GetBoundAction(actions.toggle)
 const theme = "light"
 function SiderMenu() {
 	const [collapsedMenu, setCollapsedMenu] = useState(false)
 	const { menu, collapsed } = useTypedSelector((state) => state.menu)
+	const { user } = useTypedSelector((state) => state.user)
 	const { pathname } = useLocation()
 	const [openKeys, setOpenKeys] = useState<string[]>([]) // 当前打开的菜单
 	const [selectKeys, setSelectKeys] = useState<string[]>([]) // 当前选中的菜单
@@ -60,8 +62,10 @@ function SiderMenu() {
 					})}
 					to='/'
 				>
-					<img src={logo} alt='logo' />
-					<span className='text-black'>智慧养老看护</span>
+					<img src={user?.sysDepart.logo} alt='logo' />
+					<Typography.Text ellipsis title={user?.sysDepart.departName}>
+						{user?.sysDepart.departName}
+					</Typography.Text>
 				</Link>
 				<Menu
 					onOpenChange={setOpenKeys as any} // 点击事件

@@ -69,7 +69,7 @@ function ProTable<T extends object>(
 		if (!url) return
 		const method = request?.method ?? "post"
 		try {
-			methods.setLoading(true)
+			methods.setLoading({ delay: 100 })
 			const { data } = await http[method as any](url, state.params)
 			if (!mountedRef.current) return // 如果 已经销毁了
 			if (!data || !transform) return
@@ -133,7 +133,7 @@ function ProTable<T extends object>(
 			? { params: state.params, form: values }
 			: values
 		try {
-			methods.setLoading({ delay: 50 })
+			methods.setLoading({ delay: 100 })
 			console.log("12312312")
 			if (onSearch) {
 				const params = onSearch(searchParams)

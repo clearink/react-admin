@@ -10,41 +10,29 @@ import React, {
 	useImperativeHandle,
 	useState,
 } from "react"
+import useMemoCallback from "../../hooks/memo-callback"
 import ProFormContext from "../../utils/ProFormContext"
 import { BaseFormProps } from "../type"
 import Submitter from "./Submitter"
 
-// 维护一个loading
-// 可以从外部控制
 function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 	const {
 		children,
 		form: propsForm,
 		submitConfig, // 为 false 不渲染 submitter
 		onFinish,
-		loading: propsLoading,
+		loading,
 		...rest
 	} = props
-
-	const [loading, setLoading] = useState<ButtonProps["loading"]>(false) // table loading 效果
-	useEffect(() => {
-		setLoading(propsLoading)
-	}, [propsLoading])
 
 	const [form] = Form.useForm(propsForm) // 可以使用外部的form
 
 	useImperativeHandle(ref, () => form, [form]) // 暴露 form
 
 	// 包装的 finish
-	const handleFinish = useEventCallback(async (values: any) => {
+	const handleFinish = useMemoCallback((values: any) => {
 		if (typeof onFinish !== "function") return
-		try {
-			setLoading({ delay: 50 })
-			// 这里还可以对一些常见的数据格式进行转换,比如 Moment
-			await onFinish(values)
-		} finally {
-			setLoading(false)
-		}
+		onFinish(values)
 	}, [])
 	return (
 		<ProFormContext.Provider value={{ form, loading }}>

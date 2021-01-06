@@ -10,6 +10,8 @@ export interface ProSkeletonProps {
 	active?: boolean
 	loading?: boolean
 	size?: "small" | "large" | "default"
+	/** 根据子元素的个数显示不同行 */
+	row: number
 }
 const SkeletonMap = {
 	detail: SkeletonDetail,

@@ -5,6 +5,9 @@
 
 	.action {
 		opacity: 0;
+		:not(:last-child) {
+			margin-right: 8px;
+		}
 	}
 	&:hover .action {
 		opacity: 1;

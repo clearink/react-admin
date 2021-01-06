@@ -6,15 +6,16 @@ import { Button, Input } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
 import CountDown from "./CountDown"
-import ProFormInput, { ProFormInputProps } from "../ProFormInput"
+import { InputProps } from "antd/lib/input"
 
 /* 验证码封装组件
 ProFormCaptcha
 */
-interface ProFormCaptchaProps extends ProFormInputProps {
+interface ProFormCaptchaProps extends InputProps {
 	// 一般验证码是需要手机号或其它联系方式 用户才能获取到
 	// 所以在 onGetCaptcha 函数中可以使用formInstance 去验证联系方式是否有效
-	onGetCaptcha?: (form?: FormInstance) => void
+	// 返回 true 开始倒计时
+	onGetCaptcha?: (form?: FormInstance) => Promise<boolean>
 	captchaProps?: Omit<ButtonProps, "children" | "disabled" | "loading"> & {
 		text?: ReactNode // 平常显示的文本
 		countDown?: number // 验证码 倒计时的时长 秒为单位
@@ -29,18 +30,15 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 	const handleClick = async (start: Function) => {
 		if (typeof onGetCaptcha !== "function") return
 		try {
-			setLoading({ delay: 50 })
-			await onGetCaptcha(form)
-			start()
+			setLoading({ delay: 100 })
+			const result = await onGetCaptcha(form)
+			if (result) start()
 		} finally {
 			setLoading(false)
 		}
 	}
 	return (
 		<div className='flex items-center'>
-			
-			<ProFormInput name='a' label='c' />
-
 			<Input {...rest} className={classNames("flex-auto", rest.className)} />
 			{/* 获取验证码的 */}
 			<CountDown num={countDown ?? 60}>

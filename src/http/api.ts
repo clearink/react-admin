@@ -1,9 +1,15 @@
 import http from "."
 
+export interface LoginData {
+	mobile: string
+	captcha: string
+}
+export interface CaptchaData {
+	mobile: string
+}
 export default {
-	// Login: (data: Object) => http.post("/api/login", data),
-	Login: (data: Object) => http.post("/sys/login", data),
+	Login: (data: LoginData) => http.post("/orgmgt/login", data), // 登录
 	GetUserInfo: () => http.get<any>("/sys/currentUser"),
-	GetPostList: (params?: Object) => http.get<any[]>("/api/posts", params),
-	GetTypeList: (params?: Object) => http.get<any[]>("/api/posts", params),
+	GetCaptcha: (params: CaptchaData) =>
+		http.get("/orgmgt/sendCaptchaDemo", params),
 }

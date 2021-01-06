@@ -10,6 +10,7 @@ import withDefaultProps from "@/hocs/withDefaultProps"
 import { useFetchDataProps } from "@/hooks/useMemoFetch"
 import http from "@/http"
 import React, {
+	Children,
 	forwardRef,
 	memo,
 	Ref,
@@ -24,6 +25,7 @@ export interface AddFormProps extends DrawerFormProps {
 	/** form 渲染方式 */
 	type?: "drawer" | "modal"
 	request?: useFetchDataProps
+	/** 数据请求 */
 	id?: string
 }
 function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
@@ -69,7 +71,11 @@ function EditForm(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 	const FormComponent = type === "drawer" ? DrawerForm : ModalForm
 	return (
 		<FormComponent ref={formRef} {...rest}>
-			{loading ? <ProSkeleton type='form' /> : children}
+			{loading ? (
+				<ProSkeleton type='form' row={Children.toArray(children).length} />
+			) : (
+				children
+			)}
 		</FormComponent>
 	)
 }

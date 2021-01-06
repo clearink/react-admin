@@ -7,6 +7,11 @@ type user = {
 	id: string
 	avatar: string
 	password?: string
+	sysDepart: {
+		departName: string
+		logo: string
+		[key: string]: any
+	}
 	[key: string]: any
 }
 
