@@ -1,6 +1,5 @@
-import { FormItemProps } from "antd/lib/form"
+import { Rule } from "antd/lib/form"
+/** 生成一些 antd form item rules */
 export function getRequiredRule(name: string) {
-	return [
-		{ required: true, message: `请输入${name}` },
-	] as FormItemProps["rules"]
+	return [{ required: true, message: `请输入${name}` }] as Rule[]
 }

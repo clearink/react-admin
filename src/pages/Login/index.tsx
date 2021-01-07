@@ -12,8 +12,6 @@ import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { ProFormCaptcha, ProFormInput } from "@/components/Pro/ProForm"
 import api from "@/http/api"
 import { phonePattern } from "@/utils/pattern"
-import { ButtonProps } from "antd/lib/button"
-import useTypedSelector from "@/hooks/useTypedSelector"
 
 const formValidateMessages = {
 	// eslint-disable-next-line no-template-curly-in-string
@@ -23,7 +21,6 @@ const formValidateMessages = {
 function Login(props: IBaseProps) {
 	const { push } = useHistory()
 	const unwrap = useUnwrapAsyncThunk()
-	const { loginLoading } = useTypedSelector((state) => state.user)
 
 	const handleSubmit = async (values: Store) => {
 		await unwrap(actions.login(values))
@@ -43,7 +40,6 @@ function Login(props: IBaseProps) {
 						validateMessages={formValidateMessages}
 						className='login-box__form w-5/6 sm:w-3/4'
 						onFinish={handleSubmit}
-						loading={loginLoading}
 						submitConfig={{
 							submitProps: {
 								block: true,

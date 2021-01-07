@@ -1,9 +1,7 @@
 import { useSwitch } from "@/components/Pro/hooks/boolean"
 import { TitleTip } from "@/components/Pro/ProCard/components"
 import { TitleTipProps } from "@/components/Pro/ProCard/components/TitleTip"
-import { ButtonProps } from "antd/lib/button"
 import { Form, Modal } from "antd"
-import { FormInstance } from "antd/lib/form"
 import { ModalProps } from "antd/lib/modal/Modal"
 import React, {
 	cloneElement,
@@ -18,9 +16,8 @@ import React, {
 } from "react"
 import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
+
 import { DrawerFormRef } from "../DrawerForm"
-import { compose } from "@reduxjs/toolkit"
-import { sleep } from "@/utils/test"
 
 export interface ModalFormProps extends Omit<BaseFormProps, "title"> {
 	children?: ReactNode
@@ -45,7 +42,10 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 		try {
 			setLoading(true)
 			const result = await onFinish?.(values)
-			if (result) compose(off, form.resetFields)()
+			if (result) {
+				off()
+				form.resetFields()
+			}
 		} catch (error) {
 			throw error
 		} finally {
@@ -69,7 +69,6 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 				visible={visible}
 				title={<TitleTip title={title} />}
 				width={600}
-				getContainer={false}
 				onCancel={off}
 				{...modalProps}
 				onOk={form.submit}

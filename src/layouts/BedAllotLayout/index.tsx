@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useMemo, useRef, useState } from "react"
-import { Card, Skeleton, Tabs, Tree } from "antd"
+import { Card, message, Skeleton, Tabs, Tree } from "antd"
 import classNames from "classnames"
 import { CommonHeader } from "@/components/PepLife"
 import {
@@ -133,11 +133,13 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 						params: { id: editId },
 					}}
 					onFinish={async (values) => {
-						console.log(values)
-						return false
+						await BedAllotApi.edit(values)
+						fetchData() // reload tree
+						message.success("修改成功")
+						return true
 					}}
 				>
-					<ProFormInput label='楼层名称' name='name' />
+					<ProFormInput label='楼层名称' autoFocus name='name' />
 				</EditForm>
 
 				{/* 楼层新增表单 */}

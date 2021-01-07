@@ -8,7 +8,12 @@ import React, {
 } from "react"
 import styles from "./style.module.scss"
 import { Button, Switch } from "antd"
-import { UserOutlined } from "@ant-design/icons"
+import {
+	DeleteOutlined,
+	EditOutlined,
+	ProfileOutlined,
+	UserOutlined,
+} from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "./BedAllotContext"
@@ -20,8 +25,8 @@ import {
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import { sleep } from "@/utils/test"
 
-import AddForm from "./add"
-import EditForm from "./edit"
+import AddForm from "./components/add"
+import EditForm from "./components/edit"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
@@ -79,10 +84,9 @@ function BedAllot() {
 	const editRef = useRef<DrawerFormRef>(null)
 	const addRef = useRef<DrawerFormRef>(null)
 	const tableRef = useRef<ProTableRef>(null)
+	const [editId, setEditId] = useState<string | undefined>(undefined)
 
 	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
-
-	const [editId, setEditId] = useState<string | undefined>(undefined)
 
 	// 外部设置table 的 params 控制数据请求
 	useEffect(() => {
@@ -100,22 +104,21 @@ function BedAllot() {
 				render: (record) => {
 					return (
 						<div>
-							<Button icon={<UserOutlined />} type='link' size='small'>
+							<Button icon={<ProfileOutlined />} type='link' size='small'>
 								住户信息
 							</Button>
-
 							<Button
 								onClick={() => {
 									setEditId(record.id)
 									editRef.current?.toggle()
 								}}
-								icon={<UserOutlined />}
+								icon={<EditOutlined />}
 								type='link'
 								size='small'
 							>
 								编辑
 							</Button>
-							<Button icon={<UserOutlined />} type='link' size='small'>
+							<Button icon={<DeleteOutlined />} type='link' size='small'>
 								删除
 							</Button>
 						</div>
@@ -162,7 +165,7 @@ function BedAllot() {
 					params: { id: editId },
 					method: "get",
 				}}
-				onFinish={async () => {
+				onFinish={async (values) => {
 					await sleep(1000)
 					tableRef.current?.reload()
 					return true
@@ -174,6 +177,7 @@ function BedAllot() {
 				title='新增床位'
 				ref={addRef}
 				onFinish={async (values) => {
+					console.log(values)
 					await sleep(1000)
 					tableRef.current?.reload()
 					return true

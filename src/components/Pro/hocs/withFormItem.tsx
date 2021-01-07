@@ -7,6 +7,7 @@ import { FormItemProps } from "antd/lib/form"
 import React, { memo } from "react"
 import { antdFormItemProps, WIDTH_SIZE_ENUM } from "../utils/constant"
 import { ColProps } from "antd/lib/col"
+import { getRequiredRule } from "@/utils/generatorFormRule"
 // 将各种 ProField 包装一下
 // TODO : SizeContext 用于设置组件的大小
 interface FieldStyleProps {
@@ -29,7 +30,6 @@ function withFormItem<P extends FieldStyleProps>(
 		// 找出所有的 属于 FormItem Props
 		const formItemProps = GetValue(rest, antdFormItemProps, false)
 		const fieldProps = FilterValue(rest, antdFormItemProps) as P
-
 		/** 计算width */
 		fieldProps.style = { width: "100%", ...fieldProps.style }
 		// 计算 formItem 的宽度
@@ -49,6 +49,12 @@ function withFormItem<P extends FieldStyleProps>(
 					width: WIDTH_SIZE_ENUM[width] ?? WIDTH_SIZE_ENUM["m"],
 					...FORM_ITEM_STYLE,
 				}
+		}
+		if (formItemProps.required && formItemProps.label) {
+			const requiredRule = getRequiredRule(formItemProps.label as string)
+			if (formItemProps.rules) {
+				formItemProps.rules = formItemProps.rules.concat(requiredRule) as any
+			} else formItemProps.rules = requiredRule as any
 		}
 
 		/** 解决 Field 报错的问题 */

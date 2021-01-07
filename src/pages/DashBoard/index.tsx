@@ -52,8 +52,6 @@ const columns: ProTableColumns<any>[] = [
 	},
 ]
 function WorkPlace(props: IBaseProps) {
-	const [form1] = Form.useForm()
-	const [form2] = Form.useForm()
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
@@ -79,7 +77,7 @@ function WorkPlace(props: IBaseProps) {
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/> */}
 				<DrawerForm
-					title={{ title: "12123",tooltip:"3212323" }}
+					title={{ title: "12123", tooltip: "3212323" }}
 					trigger={<button>12312</button>}
 					onFinish={async (va) => {
 						console.log(va)

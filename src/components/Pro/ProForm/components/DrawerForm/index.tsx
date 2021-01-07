@@ -1,7 +1,6 @@
 import { useSwitch } from "@/components/Pro/hooks/boolean"
 import { TitleTip } from "@/components/Pro/ProCard/components"
 import { TitleTipProps } from "@/components/Pro/ProCard/components/TitleTip"
-import { compose } from "@reduxjs/toolkit"
 import { Drawer, Space } from "antd"
 import Button, { ButtonProps } from "antd/lib/button"
 import { DrawerProps } from "antd/lib/drawer"
@@ -22,7 +21,7 @@ import BaseForm from "../BaseForm"
 
 export interface DrawerFormProps extends Omit<BaseFormProps, "title"> {
 	children?: ReactNode
-	trigger: ReactNode
+	trigger?: ReactNode
 	drawerProps?: Omit<DrawerProps, "title">
 	title?: TitleTipProps["title"]
 	/** 返回 true 关闭 drawer 且重置表单 */
@@ -52,14 +51,17 @@ function DrawerForm(props: DrawerFormProps, ref: Ref<DrawerFormRef>) {
 	const [visible, on, off, toggle] = useSwitch()
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
 
+	// 为了 能够控制 drawer 的 footer
 	const [form] = Form.useForm(PropsForm)
 
 	const handleFinish = async (values: any) => {
 		// 提交完成关闭 drawer 重置表单
 		setLoading({ delay: 100 })
 		const result = await onFinish?.(values)
-		if (result) compose(off, form.resetFields)()
-
+		if (result) {
+			off()
+			form.resetFields()
+		}
 		setLoading(false)
 	}
 	/** 外部控制 显示隐藏 */

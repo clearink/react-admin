@@ -1,15 +1,14 @@
-import React, { memo, Profiler, useEffect, useMemo, useState } from "react"
-import { Menu, Layout, Typography } from "antd"
+import React, { memo, useEffect, useMemo, useState } from "react"
+import { Menu, Layout, Typography, Skeleton, Spin } from "antd"
 import logo from "@/assets/images/logo.png"
 import classNames from "classnames"
-import { Link, useHistory, useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import FindMenuOpenKeys from "@/utils/FindMenuOpenKeys"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import GetBoundAction from "@/utils/GetBoundAction"
 import RenderMenu from "./RenderMenu"
 import { actions } from "@/store/reducers/menu"
 import "./style.scss"
-import { TitleTip } from "../Pro/ProCard/components"
 
 const boundToggle = GetBoundAction(actions.toggle)
 const theme = "light"
@@ -39,7 +38,6 @@ function SiderMenu() {
 	}, [collapsed])
 
 	const menuItemList = useMemo(() => RenderMenu(menu), [menu])
-
 	return (
 		<>
 			<div
@@ -62,10 +60,14 @@ function SiderMenu() {
 					})}
 					to='/'
 				>
-					<img src={user?.sysDepart.logo} alt='logo' />
-					<Typography.Text ellipsis title={user?.sysDepart.departName}>
-						{user?.sysDepart.departName}
-					</Typography.Text>
+					{user && (
+						<>
+							<img src={user?.sysDepart.logo} alt='logo' />
+							<Typography.Text ellipsis title={user?.sysDepart.departName}>
+								{user?.sysDepart.departName}
+							</Typography.Text>
+						</>
+					)}
 				</Link>
 				<Menu
 					onOpenChange={setOpenKeys as any} // 点击事件

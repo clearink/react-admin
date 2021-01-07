@@ -9,13 +9,12 @@ export interface SkeletonFormProps {
 	active?: boolean
 	loading?: boolean
 	size?: "small" | "large" | "default"
-	row?: number
 }
 function SkeletonForm(props: SkeletonFormProps) {
-	const { row, ...rest } = props
-	const height = row === undefined ? "100%" : row * 30
+	const rest = props
+
 	return (
-		<div className={styles.pro_skeleton} style={{ height }}>
+		<div className={styles.pro_skeleton}>
 			<div className={styles.skeleton_title}>
 				<Skeleton.Input {...rest} className={styles.title} />
 			</div>
