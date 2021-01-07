@@ -50,6 +50,8 @@ function withFormItem<P extends FieldStyleProps>(
 					...FORM_ITEM_STYLE,
 				}
 		}
+
+		// 扩展一些基本的rules
 		if (formItemProps.required && formItemProps.label) {
 			const requiredRule = getRequiredRule(formItemProps.label as string)
 			if (formItemProps.rules) {
