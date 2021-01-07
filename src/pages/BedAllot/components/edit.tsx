@@ -3,12 +3,12 @@ import { ProFormInput } from "@/components/Pro/ProForm"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
-} from "@/components/PepLife/EditForm"
+} from "@/components/BigSight/EditForm"
 
 function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	// 这里可以传入 request 对象
 	return (
-		<EditForm {...props} ref={ref}>
+		<EditForm {...props} name='edit-bed' ref={ref}>
 			<ProFormInput
 				name='bedName'
 				label='床位名称'

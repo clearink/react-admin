@@ -3,7 +3,7 @@ import { ProFormInput } from "@/components/Pro/ProForm"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
-} from "@/components/PepLife/EditForm"
+} from "@/components/BigSight/EditForm"
 
 function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	// 这里可以传入 request 对象

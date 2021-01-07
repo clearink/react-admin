@@ -28,7 +28,6 @@ import { sleep } from "@/utils/test"
 import useTableFetch from "./useTableFetch"
 import http from "@/http"
 import useMountedRef from "../hooks/mounted-ref"
-import useTrackedEffect from "../hooks/tracked-effect"
 import useMemoCallback from "../hooks/memo-callback"
 /**
  * search 属性 在 query filter中显示
@@ -119,12 +118,6 @@ function ProTable<T extends object>(
 		() => renderTableColumn(PCol ?? [], tableAction),
 		[PCol, tableAction]
 	)
-	useTrackedEffect(
-		(changes) => {
-			console.log(changes)
-		},
-		[fetchData, methods, handleReset]
-	)
 
 	/** 搜索方法 	 */
 	const handleSearch = (values: any, type: "form" | "table" = "form") => {
@@ -166,10 +159,14 @@ function ProTable<T extends object>(
 			title: "确定要删除该数据吗?",
 			content: "操作后该数据将会移除 请注意!!",
 			async onOk() {
-				await onDelete?.(state.rows)
-				// 没啥用
-				await sleep(100)
-				methods.reset(request?.params ?? {})
+				try {
+					await onDelete?.(state.rows)
+					methods.reset(request?.params ?? {})
+				} catch (error) {
+					return Promise.resolve()
+				} finally {
+					await sleep(100) // 没啥用
+				}
 			},
 		})
 	}

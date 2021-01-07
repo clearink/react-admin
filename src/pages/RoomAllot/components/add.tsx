@@ -1,7 +1,8 @@
 import React, { forwardRef, memo, Ref } from "react"
-import AddForm, { AddFormProps, AddFormRef } from "@/components/PepLife/AddForm"
+
 import { ProFormInput } from "@/components/Pro/ProForm"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
+import AddForm, { AddFormProps, AddFormRef } from "@/components/BigSight/AddForm"
 
 function RoomAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (

@@ -16,6 +16,7 @@ import React, {
 	useMemo,
 	useState,
 } from "react"
+import { createPortal } from "react-dom"
 import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
 
@@ -90,30 +91,35 @@ function DrawerForm(props: DrawerFormProps, ref: Ref<DrawerFormRef>) {
 		off()
 		drawerProps?.onClose?.(e)
 	}
-	return (
-		<div>
-			{wrappedTrigger}
+	const DOM = (
+		<BaseForm
+			name='drawer-form'
+			submitConfig={false}
+			layout='vertical'
+			{...rest}
+			form={form}
+			onFinish={handleFinish}
+		>
 			<Drawer
 				visible={visible}
 				title={<TitleTip title={title} />}
 				width={800}
 				onClose={handleClose}
 				{...drawerProps}
+				getContainer={false}
 				footerStyle={{ textAlign: "right" }}
 				footer={submitter}
 			>
-				<BaseForm
-					name='drawer-form'
-					submitConfig={false}
-					layout='vertical'
-					{...rest}
-					form={form}
-					onFinish={handleFinish}
-				>
-					{children}
-				</BaseForm>
+				{children}
 			</Drawer>
-		</div>
+		</BaseForm>
+	)
+	const portal = createPortal(DOM, document.querySelector("body") as Element)
+	return (
+		<>
+			{wrappedTrigger}
+			{portal}
+		</>
 	)
 }
 

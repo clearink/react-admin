@@ -14,6 +14,7 @@ import React, {
 	useMemo,
 	useState,
 } from "react"
+import { createPortal } from "react-dom"
 import { BaseFormProps } from "../../type"
 import BaseForm from "../BaseForm"
 
@@ -52,7 +53,7 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 			setLoading(false)
 		}
 	}
-	const wrapperTrigger = useMemo(() => {
+	const wrappedTrigger = useMemo(() => {
 		if (!isValidElement(trigger)) return trigger
 		return cloneElement(trigger, {
 			onClick: (e: MouseEvent) => {
@@ -61,30 +62,34 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 			},
 		})
 	}, [on, trigger])
-
-	return (
-		<div>
-			{wrapperTrigger}
+	const DOM = (
+		<BaseForm
+			submitConfig={false}
+			layout='vertical'
+			{...rest}
+			form={form}
+			onFinish={handleFinish}
+		>
 			<Modal
 				visible={visible}
 				title={<TitleTip title={title} />}
 				width={600}
 				onCancel={off}
 				{...modalProps}
+				getContainer={false}
 				onOk={form.submit}
 				confirmLoading={loading}
 			>
-				<BaseForm
-					submitConfig={false}
-					layout='vertical'
-					form={form}
-					{...rest}
-					onFinish={handleFinish}
-				>
-					{children}
-				</BaseForm>
+				{children}
 			</Modal>
-		</div>
+		</BaseForm>
+	)
+	const portal = createPortal(DOM, document.querySelector("body") as Element)
+	return (
+		<>
+			{wrappedTrigger}
+			{portal}
+		</>
 	)
 }
 

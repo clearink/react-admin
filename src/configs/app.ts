@@ -8,4 +8,6 @@ export default {
 	// TOKEN: "ACCESS_TOKEN",
 	TOKEN: "X-Access-Token",
 	ISDEV: process.env.NODE_ENV === "development",
+	/** 文件上传 url */
+	UPLOAD_URL: "/upload/file/cos",
 }

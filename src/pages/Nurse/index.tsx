@@ -1,15 +1,21 @@
-import React, { memo } from "react"
-import classNames from "classnames"
-import { Space } from "antd"
+import React, { memo, useMemo, useRef, useState } from "react"
+import { Button, Space } from "antd"
 import ProTable from "@/components/Pro/ProTable"
-import { ProTableColumns } from "@/components/Pro/ProTable/type"
+import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
-import styles from "./style.module.scss"
 import {
 	commonTransformServerData,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import { TextProps } from "antd/lib/typography/Text"
+import classNames from "classnames"
+import styles from "./style.module.scss"
+import { EditFormRef } from "@/components/BigSight/EditForm"
+import { AddFormRef } from "@/components/BigSight/AddForm"
+import NurseAddForm from "./components/add"
+import NurseEditForm from "./components/edit"
+import NurseApi from "@/http/NurseApi"
+import { EditOutlined } from "@ant-design/icons"
 
 // 护管管理
 
@@ -76,41 +82,80 @@ const columns: ProTableColumns<any>[] = [
 			],
 		},
 	},
-	{
-		title: "操作",
-		key: "action",
-		width: 300,
-		render: () => (
-			<Space>
-				<span>护理分配</span>
-				<span>认证信息</span>
-				<span>编辑</span>
-				<span>删除</span>
-			</Space>
-		),
-	},
 ]
 function Nurse() {
+	const [editId, setEditId] = useState<string | undefined>(undefined)
+	const addRef = useRef<AddFormRef>(null)
+	const editRef = useRef<EditFormRef>(null)
+	const tableRef = useRef<ProTableRef>(null)
+
+	const tableColumns = useMemo(() => {
+		return columns.concat({
+			title: "操作",
+			key: "action",
+			width: 300,
+			render: (record) => (
+				<Space>
+					<span>护理分配</span>
+					<span>认证信息</span>
+					<Button
+						icon={<EditOutlined />}
+						onClick={() => {
+							setEditId(record.id)
+							editRef.current?.toggle()
+						}}
+						type='link'
+					>
+						编辑
+					</Button>
+					<span>删除</span>
+				</Space>
+			),
+		})
+	}, [])
 	return (
 		<div className='h-full flex flex-col'>
 			<ProTable
+				ref={tableRef}
 				request={{
 					url: "/orgmgt/careWorker/list",
 					method: "post",
 				}}
-				columns={columns as any}
+				columns={tableColumns}
 				rowKey='id'
 				// 搜索请求
 				onSearch={formatTableSearchParams}
-				// 删除
-				// onDelete={async (values) => {
-				// 	await http.delete("/membermgt/member/deleteBatch", {
-				// 		params: { ids: values.map((item: any) => item.id).join(",") },
-				// 	})
-				// }}
-				// transform 需要设置 当前页数,pageSize, 总数 数据
 				transform={commonTransformServerData}
+				// 删除
+				onDelete={async (values) => {
+					await NurseApi.remove({ ids: values })
+				}}
+				// transform 需要设置 当前页数,pageSize, 总数 数据
 				title={{ title: "护管管理", tooltip: "护工人员管理" }}
+				onCreate={() => {
+					addRef.current?.toggle()
+				}}
+			/>
+			<NurseAddForm
+				ref={addRef}
+				title='新增护管'
+				onFinish={async (values) => {
+					await NurseApi.add(values)
+					tableRef.current?.reload()
+					return true
+				}}
+			/>
+			<NurseEditForm
+				ref={editRef}
+				title='编辑护管'
+				id={editId}
+				onFinish={async (values) => {
+					await NurseApi.edit(values)
+					tableRef.current?.reload()
+					// 清除 editId
+					setEditId(undefined)
+					return true
+				}}
 			/>
 		</div>
 	)

@@ -19,8 +19,8 @@ import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import { ProFormInput } from "@/components/Pro/ProForm"
 import BedAllotApi from "@/http/BedAllotApi"
-import AddForm from "@/components/PepLife/AddForm"
-import EditForm from "@/components/PepLife/EditForm"
+import AddForm from "@/components/BigSight/AddForm"
+import EditForm from "@/components/BigSight/EditForm"
 
 // 床位分配 layout
 function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
@@ -34,15 +34,19 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 		url: "/orgmgt/building/treeList",
 		params: {},
 		method: "post",
+		// cache: true,
 	})
 	const treeData = useMemo(() => {
 		if (!data) return []
 		return convertTreeNode(data?.result, "orgBuildings")
 	}, [data])
 
-	const handleSelectTree: TreeProps["onSelect"] = (keys) => {
-		if (keys[0] === buildingId) setBuildingId(null)
-		else setBuildingId(keys[0])
+	console.log(data, loading)
+	const handleSelectTree: TreeProps["onSelect"] = (keys, { node }) => {
+		if (!node.children) {
+			if (keys[0] === buildingId) setBuildingId(null)
+			else setBuildingId(keys[0])
+		}
 	}
 	const selectKeys = useMemo(() => {
 		if (buildingId === null) return []

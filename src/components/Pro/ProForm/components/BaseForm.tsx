@@ -1,4 +1,3 @@
-import useEventCallback from "@/hooks/useEventCallback"
 import { Form } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
@@ -6,7 +5,6 @@ import React, {
 	forwardRef,
 	memo,
 	Ref,
-	useEffect,
 	useImperativeHandle,
 	useState,
 } from "react"
@@ -34,7 +32,7 @@ function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 	const handleFinish = useMemoCallback(async (values: any) => {
 		if (typeof onFinish !== "function") return
 		try {
-			setLoading({ delay: 100 })
+			setLoading({ delay: 50 }) // 太大会导致内存泄漏
 			// TODO: 后续加上事先转换各种数据 比如Moment EditState
 			await onFinish(values)
 		} catch (error) {

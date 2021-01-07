@@ -7,12 +7,11 @@ import React, {
 	useState,
 } from "react"
 import styles from "./style.module.scss"
-import { Button, Space, Switch } from "antd"
+import { Button, Switch } from "antd"
 import {
 	DeleteOutlined,
 	EditOutlined,
 	ProfileOutlined,
-	UserOutlined,
 } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
@@ -22,11 +21,11 @@ import {
 	commonTransformServerData,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
-import { AddFormRef } from "@/components/PepLife/AddForm"
-import { EditFormRef } from "@/components/PepLife/EditForm"
 import RoomAddForm from "./components/add"
 import RoomEditForm from "./components/edit"
 import { sleep } from "@/utils/test"
+import { EditFormRef } from "@/components/BigSight/EditForm"
+import { AddFormRef } from "@/components/BigSight/AddForm"
 
 // 房间管理
 const columns: ProTableColumns<any>[] = [
@@ -75,7 +74,7 @@ function RoomAllot() {
 		return columns.concat({
 			title: "操作",
 			key: "action",
-			
+
 			render: (record) => {
 				return (
 					<div>

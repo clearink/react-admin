@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import http from "@/http"
 import { actions as kvActions } from "@/store/reducers/kv"
 import GetBoundAction from "@/utils/GetBoundAction"
-import { AnyFunc } from "@/components/Pro/hooks/memo-callback"
+import useMemoCallback, { AnyFunc } from "@/components/Pro/hooks/memo-callback"
 import useActionPending from "@/components/Pro/hooks/action-pending"
 import useMountedRef from "@/components/Pro/hooks/mounted-ref"
 import useDeepEqual from "@/components/Pro/hooks/deep-equal"
+import useMethods from "@/components/Pro/hooks/methods/useMethods"
+import useTypedSelector from "./useTypedSelector"
 
 /* 基本的 获取数据 hook 
   仅支持 GET
@@ -32,36 +34,52 @@ export interface useFetchDataProps {
 	/** 转换数据 */
 	transform?: AnyFunc
 }
+const initialState = {
+	data: null as any,
+	loading: false,
+}
+const reducers = {
+	setData(state: any, data: any) {
+		return { ...state, data }
+	},
+	setLoading(state: any, loading: boolean) {
+		return { ...state, loading }
+	},
+}
+// 再提供一个更新缓存的函数
 export default function useMemoFetch(props: useFetchDataProps) {
-	const [data, setData] = useState<any | null>(null)
-	const mountedRef = useMountedRef() // 是否挂载标志
-
 	const { url, params, method = "get", cache, transform, auto = true } =
 		props ?? {}
 
-	const [count, fn] = useActionPending(async () => {
+	const mountedRef = useMountedRef() // 是否挂载标志
+	const kvEntities = useTypedSelector((state) => state.kv.entities)
+	const [state, methods] = useMethods(reducers, initialState)
+
+	const fetchData = useMemoCallback(async () => {
 		const realUrl = `${url}${JSON.stringify(params)}`
-
-		const memoData = kvActions[realUrl]?.value // 缓存
-		if (memoData) return memoData
-
+		const memoData = kvEntities[realUrl]?.value // 缓存
+		methods.setLoading(true)
+		if (memoData) {
+			methods.setData(memoData)
+			methods.setLoading(false)
+			return
+		}
 		if (!url) return
-
 		const { data } = await http[method as any](url, params)
 		const result = transform?.(data) ?? data
 		if (!mountedRef.current) return
-
-		setData(result)
-		if (cache) boundKvActions.add({ key: realUrl, value: data }) // save redux store
-	})
+		methods.setData(result)
+		methods.setLoading(false)
+		if (cache) boundKvActions.add({ key: realUrl, value: result }) // save redux store
+	}, [])
 
 	// params 或者url变化重新请求
 	const paramsEqual = useDeepEqual(params)
 	const urlEqual = useDeepEqual(url)
 	useEffect(() => {
 		if (!auto) return
-		if (!paramsEqual) fn()
-	}, [paramsEqual, urlEqual, fn, auto])
+		if (!paramsEqual || !urlEqual) fetchData()
+	}, [paramsEqual, urlEqual, fetchData, auto])
 
-	return [data, count > 0, fn] as const
+	return [state.data, state.loading, fetchData] as const
 }

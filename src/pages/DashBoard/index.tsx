@@ -10,7 +10,7 @@ import {
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import http from "@/http"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
-import { ProFormInput } from "@/components/Pro/ProForm"
+import { ProFormAvatar, ProFormInput } from "@/components/Pro/ProForm"
 import ProSkeleton from "@/components/Pro/ProSkeleton"
 import DrawerTrigger from "@/components/DrawerTrigger"
 import { Button, Form, Input } from "antd"
@@ -18,6 +18,7 @@ import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
 import { sleep } from "@/utils/test"
 import DrawerForm from "@/components/Pro/ProForm/components/DrawerForm"
+import ProFormBsAvatar from "@/components/BigSight/ProFormBsAvatar"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "avatar",
@@ -76,17 +77,13 @@ function WorkPlace(props: IBaseProps) {
 					transform={commonTransformServerData}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/> */}
-				<DrawerForm
-					title={{ title: "12123", tooltip: "3212323" }}
-					trigger={<button>12312</button>}
-					onFinish={async (va) => {
-						console.log(va)
-						await sleep(1000)
-						return true
+				<BaseForm
+					onFinish={(values) => {
+						console.log(values)
 					}}
 				>
-					<ProFormInput label='131' name='2332' />
-				</DrawerForm>
+					<ProFormBsAvatar label='头像' name='avatar' />
+				</BaseForm>
 			</main>
 		</div>
 	)

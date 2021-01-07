@@ -1,17 +1,16 @@
 import React, { memo, useMemo, useRef, useState } from "react"
-import classNames from "classnames"
 import { Button, Space } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
-import { ProTableColumns } from "@/components/Pro/ProTable/type"
+import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
 import { FieldAvatarProps } from "@/components/Pro/ProField/components/FieldAvatar"
 import {
 	commonTransformServerData,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
-import ResidentAddForm from "./add"
-import ResidentEditForm from "./edit"
+import ResidentAddForm from "./components/add"
+import ResidentEditForm from "./components/edit"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import { sleep } from "@/utils/test"
 const columns: ProTableColumns<any>[] = [
@@ -92,10 +91,12 @@ const columns: ProTableColumns<any>[] = [
 ]
 
 function Resident() {
-	const editRef = useRef<DrawerFormRef>(null)
-	const addRef = useRef<DrawerFormRef>(null)
-
 	const [editId, setEditId] = useState<string | undefined>(undefined)
+
+	const addRef = useRef<DrawerFormRef>(null)
+	const editRef = useRef<DrawerFormRef>(null)
+	const tableRef = useRef<ProTableRef>(null)
+
 	const tableColumns = useMemo(() => {
 		return columns.concat({
 			title: "操作",
@@ -123,8 +124,8 @@ function Resident() {
 	return (
 		<>
 			<ProTable
-				bordered
 				rowKey='id'
+				ref={tableRef}
 				columns={tableColumns}
 				title='住户管理'
 				request={{
@@ -138,30 +139,20 @@ function Resident() {
 					addRef.current?.toggle()
 				}}
 			/>
-			{/* 编辑 form */}
-			<ResidentEditForm
-				title='住户信息编辑'
-				name='edit'
-				id={editId}
-				ref={editRef}
-				request={{
-					url: "/orgmgt/member/queryById",
-					params: { id: editId },
-					method: "get",
-				}}
-				onFinish={async () => {
-					await sleep(1000)
-					return true
-				}}
-			/>
-
-			{/* 新增form */}
 			<ResidentAddForm
-				name='add'
 				title='新增住户'
 				ref={addRef}
 				onFinish={async (values) => {
 					console.log(values)
+					await sleep(1000)
+					return true
+				}}
+			/>
+			<ResidentEditForm
+				title='编辑住户'
+				id={editId}
+				ref={editRef}
+				onFinish={async () => {
 					await sleep(1000)
 					return true
 				}}

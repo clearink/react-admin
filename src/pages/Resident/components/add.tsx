@@ -1,19 +1,12 @@
-import AddForm from "@/components/PepLife/AddForm"
+import React, { forwardRef, memo, Ref } from "react"
 import { ProFormInput, ProFormRadio } from "@/components/Pro/ProForm"
-import {
-	DrawerFormProps,
-	DrawerFormRef,
-} from "@/components/Pro/ProForm/components/DrawerForm"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
-import withDefaultProps from "@/hocs/withDefaultProps"
-import React, { forwardRef, memo, Ref } from "react"
+import AddForm, {
+	AddFormProps,
+	AddFormRef,
+} from "@/components/BigSight/AddForm"
 
-export interface AddFormProps extends DrawerFormProps {
-	/** form 渲染方式 */
-	type?: "drawer" | "modal"
-}
-export type AddFormRef = DrawerFormRef
 function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (
 		<AddForm {...props} ref={ref}>
@@ -36,9 +29,4 @@ function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	)
 }
 
-export default memo(
-	withDefaultProps(forwardRef(ResidentAddForm), {
-		type: "drawer",
-		trigger: null,
-	})
-)
+export default memo(forwardRef(ResidentAddForm))
