@@ -1,7 +1,6 @@
 import { Button, Space } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import React, { memo, useContext } from "react"
-import useMountedRef from "../../hooks/mounted-ref"
 import { SubmitConfigType } from "../type"
 import ProFormContext from "./BaseForm/ProFormContext"
 
@@ -18,7 +17,6 @@ function Submitter(props: SubmitterProps) {
 	const submitText = SP?.text ?? "提交"
 	const resetText = RP?.text ?? "重置"
 
-	const mountedRef = useMountedRef()
 	const handleReset: ButtonProps["onClick"] = (e) => {
 		form?.resetFields()
 		RP?.onClick?.(e)
