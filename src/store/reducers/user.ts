@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import api from "@/http/api"
 import LoginUtil from "@/utils/LoginUtil"
+import user from "@/http/api/user"
 
 type user = {
 	name: string
@@ -18,12 +18,12 @@ type user = {
 const login = createAsyncThunk<user, Object>(
 	"user/login",
 	async (data: any) => {
-		const res = await api.Login(data)
+		const res = await user.Login(data)
 		return res.data
 	}
 )
 const getCurrentUser = createAsyncThunk("user/GetUserInfo", async () => {
-	const res = await api.GetUserInfo()
+	const res = await user.GetUserInfo()
 	return res.data as user
 })
 
@@ -36,6 +36,9 @@ const slice = createSlice({
 	},
 	reducers: {
 		logout(state) {
+			state.user = null
+		},
+		deleteUerInfo(state) {
 			state.user = null
 		},
 	},

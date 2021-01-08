@@ -1,0 +1,38 @@
+@import "@/styles/index";
+$border_color: #d9d9d9;
+$text_color: rgba(#000000, $alpha: 0.6);
+$error_color: rgba(#ff4d4f, 0.8);
+$spacing: 6px;
+.avatar {
+	position: relative;
+	padding: $spacing;
+	cursor: pointer;
+	@include flex-center(column);
+	border: 1px dashed $border_color;
+	border-radius: $spacing;
+	color: $text_color;
+	&.circle {
+		border-radius: 50%;
+	}
+	.img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+	.icon {
+		margin-top: 8px;
+		font-size: 16px;
+	}
+	.text {
+		font-size: 14px;
+		margin-top: 4px;
+	}
+	.error_icon {
+		@extend .icon;
+		color: $error_color;
+	}
+	.error_text {
+		@extend .text;
+		color: $error_color;
+	}
+}

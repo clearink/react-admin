@@ -18,7 +18,7 @@ import { TreeProps } from "antd/lib/tree"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import { ProFormInput } from "@/components/Pro/ProForm"
-import BedAllotApi from "@/http/BedAllotApi"
+import BedAllotApi from "@/http/pages/BedAllotApi"
 import AddForm from "@/components/BigSight/AddForm"
 import EditForm from "@/components/BigSight/EditForm"
 
@@ -41,7 +41,6 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 		return convertTreeNode(data?.result, "orgBuildings")
 	}, [data])
 
-	console.log(data, loading)
 	const handleSelectTree: TreeProps["onSelect"] = (keys, { node }) => {
 		if (!node.children) {
 			if (keys[0] === buildingId) setBuildingId(null)

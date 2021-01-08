@@ -17,8 +17,6 @@ export interface ProFormAvatarProps extends UploadProps {
 	shape?: "rect" | "circle"
 	/** 头像大小 */
 	size?: number | string
-	/** 图片大小限制 单位 KB */
-	limit?: number
 }
 const initialState = {
 	loading: false,
@@ -32,8 +30,8 @@ const reducers = {
 		return { ...state, error }
 	},
 }
-// 该组件只用于 上传头像
-function ProFormAvatar(props: ProFormAvatarProps) {
+// 该组件只用于上传多个文件
+function ProFormUploadList(props: ProFormAvatarProps) {
 	const { render, value, onChange, shape, size, transform, ...rest } = props
 	const [state, methods] = useMethods(reducers, initialState)
 
@@ -110,7 +108,7 @@ function ProFormAvatar(props: ProFormAvatarProps) {
 	if (render) return render(rest, DOM)
 	return DOM
 }
-export default withFormItem<ProFormAvatarProps>(ProFormAvatar, {
+export default withFormItem<ProFormAvatarProps>(ProFormUploadList, {
 	// 可在此设置   headers
 	value: "",
 	size: 100,

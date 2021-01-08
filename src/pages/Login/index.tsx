@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react"
+import React, { memo } from "react"
 import { IBaseProps } from "@/@types/fc"
 import { Store } from "antd/lib/form/interface"
 import { useHistory } from "react-router-dom"
@@ -10,8 +10,8 @@ import Footer from "@/components/Footer"
 import "./style.scss"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { ProFormCaptcha, ProFormInput } from "@/components/Pro/ProForm"
-import api from "@/http/api"
 import { phonePattern } from "@/utils/pattern"
+import user from "@/http/api/user"
 
 const formValidateMessages = {
 	// eslint-disable-next-line no-template-curly-in-string
@@ -79,7 +79,7 @@ function Login(props: IBaseProps) {
 									])
 									return false
 								}
-								await api.GetCaptcha({ mobile })
+								await user.GetCaptcha({ mobile })
 								return true
 							}}
 						/>

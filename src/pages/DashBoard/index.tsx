@@ -3,21 +3,8 @@ import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
-import {
-	commonTransformServerData,
-	formatTableSearchParams,
-} from "@/utils/formatValues"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
-import http from "@/http"
-import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
-import { ProFormAvatar, ProFormInput } from "@/components/Pro/ProForm"
-import ProSkeleton from "@/components/Pro/ProSkeleton"
-import DrawerTrigger from "@/components/DrawerTrigger"
-import { Button, Form, Input } from "antd"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
-import { sleep } from "@/utils/test"
-import DrawerForm from "@/components/Pro/ProForm/components/DrawerForm"
 import ProFormBsAvatar from "@/components/BigSight/ProFormBsAvatar"
 const columns: ProTableColumns<any>[] = [
 	{

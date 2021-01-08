@@ -37,7 +37,6 @@ function SiderMenu() {
 		setCollapsedMenu(collapsed)
 	}, [collapsed])
 
-	console.log(user);
 	const menuItemList = useMemo(() => RenderMenu(menu), [menu])
 	return (
 		<>

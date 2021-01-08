@@ -1,28 +1,14 @@
 // big sight avatar 组件
-import React, { memo, useCallback } from "react"
+import React, { memo, useCallback, useMemo } from "react"
 import { ProFormAvatar } from "../Pro/ProForm"
-import { ProFormAvatarProps } from "../Pro/ProForm/components/ProFormAvatar"
-import app from "@/configs/app"
-import LoginUtil from "@/utils/LoginUtil"
-import { BaseProFormProps } from "../Pro/hocs/withFormItem"
-import { CommonServerData } from "./interface"
-
-export type ProFormBsAvatarProps = ProFormAvatarProps & BaseProFormProps
-
-export type AvatarServerData = CommonServerData<{ url: string }>
+import { AvatarServerData, ProFormBsAvatarProps } from "./interface"
+import { headers, actions } from "@/http/utils/file"
 
 // TODO:  将 actions 与 headers 的 获取都放到某一个专门的文件里
 function ProFormBsAvatar(props: ProFormBsAvatarProps) {
-	// 使用 函数是为了 总是获取最新的token
-	const actions = useCallback(() => {
-		return `${app.BASE_URL}${app.UPLOAD_URL}?path=org-avatar`
-	}, [])
-	const headers = useCallback(() => {
-		return {
-			[app.TOKEN]: LoginUtil.getToken(),
-		}
-	}, [])
+	const uploadUrl = useMemo(() => actions("org-avatar"), [])
 
+	// 转换从服务器得到的数据
 	const handleTransformServerData = useCallback(
 		(response: AvatarServerData) => response.result?.url ?? "error",
 		[]
@@ -30,9 +16,9 @@ function ProFormBsAvatar(props: ProFormBsAvatarProps) {
 	return (
 		<ProFormAvatar
 			{...props}
-			action={actions()}
+			action={uploadUrl}
 			transform={handleTransformServerData}
-			headers={headers()}
+			headers={headers}
 		/>
 	)
 }

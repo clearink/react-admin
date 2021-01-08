@@ -1,9 +1,8 @@
 import React, { memo, useEffect, useRef } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { DatePicker, Form, Input, notification, Radio, Select } from "antd"
+import { notification } from "antd"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import {
 	ProFormInput,
 	ProFormRadio,
@@ -35,8 +34,8 @@ function UserDetail(props: UserDetailProps) {
 		})
 		notification.success({
 			message: "用户信息保存成功",
-			placement:'bottomRight',
-			key:"set user info"
+			placement: "bottomRight",
+			key: "set user info",
 		})
 	}
 	useEffect(() => {

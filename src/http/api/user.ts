@@ -1,4 +1,4 @@
-import http from "."
+import http from ".."
 
 export interface LoginData {
 	mobile: string

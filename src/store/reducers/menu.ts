@@ -1,6 +1,6 @@
 import { TMenu } from "@/@types/menu"
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import https from "@/http/layout"
+import https from "@/http/api/menu"
 const fetchMenu = createAsyncThunk("menu/fetch", async () => {
 	const response = await https.GetMenu()
 	return response.data

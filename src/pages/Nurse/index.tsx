@@ -14,7 +14,7 @@ import { EditFormRef } from "@/components/BigSight/EditForm"
 import { AddFormRef } from "@/components/BigSight/AddForm"
 import NurseAddForm from "./components/add"
 import NurseEditForm from "./components/edit"
-import NurseApi from "@/http/NurseApi"
+import NurseApi from "@/http/pages/NurseApi"
 import { EditOutlined } from "@ant-design/icons"
 
 // 护管管理
