@@ -26,6 +26,8 @@ import RoomEditForm from "./components/edit"
 import { sleep } from "@/utils/test"
 import { EditFormRef } from "@/components/BigSight/EditForm"
 import { AddFormRef } from "@/components/BigSight/AddForm"
+import RoomAllotApi from "@/http/api/pages/RoomAllotApi"
+import { Link } from "react-router-dom"
 
 // 房间管理
 const columns: ProTableColumns<any>[] = [
@@ -73,8 +75,7 @@ function RoomAllot() {
 	const tableColumns = useMemo(() => {
 		return columns.concat({
 			title: "操作",
-			key: "action",
-
+			dataIndex: "id",
 			render: (record) => {
 				return (
 					<div>
@@ -91,9 +92,6 @@ function RoomAllot() {
 							size='small'
 						>
 							编辑
-						</Button>
-						<Button icon={<DeleteOutlined />} type='link' size='small'>
-							删除
 						</Button>
 					</div>
 				)
@@ -125,15 +123,14 @@ function RoomAllot() {
 				title='新增房间'
 				ref={addRef}
 				onFinish={async (values) => {
-					console.log(values)
-					await sleep(1000)
+					await RoomAllotApi.add(values)
 					tableRef.current?.reload()
 					return true
 				}}
 			/>
 			{/* 编辑 form request 在 RoomEditForm 中传入 */}
 			<RoomEditForm
-				title='房间管理编辑'
+				title='房间编辑'
 				id={editId}
 				ref={editRef}
 				onFinish={async (values) => {

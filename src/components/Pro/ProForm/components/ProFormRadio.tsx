@@ -11,17 +11,17 @@ import { RadioGroupProps } from "antd/lib/radio"
 
 // form.resetFields 会重新执行一次
 // 这是 antd 的设计 no bug
-export interface ProFormSelectProps extends Omit<RadioGroupProps, "options"> {
-	render?: BaseProFieldProps<ProFormSelectProps>["render"]
+export interface ProFormRadioProps extends Omit<RadioGroupProps, "options"> {
+	render?: BaseProFieldProps<ProFormRadioProps>["render"]
 	options?: string[] | Array<{ label: string; value: any }>
 	value?: SelectProps<any[]>["value"]
 	request?: useFetchDataProps
 }
 
-function ProFormSelect(props: ProFormSelectProps) {
+function ProFormRadio(props: ProFormRadioProps) {
 	const { request, options: PO, render, ...rest } = props
 
-	const [data] = useMemoFetch(request ?? {})
+	const [{ data, loading }] = useMemoFetch(request ?? {})
 
 	const options = useDeepMemo(() => {
 		if (PO) return transformOptions(PO) // 直接设置的 options 优先级最高
@@ -33,4 +33,4 @@ function ProFormSelect(props: ProFormSelectProps) {
 	if (render) return render({ ...rest, options }, DOM)
 	return DOM
 }
-export default withFormItem<ProFormSelectProps>(ProFormSelect)
+export default withFormItem<ProFormRadioProps>(ProFormRadio)

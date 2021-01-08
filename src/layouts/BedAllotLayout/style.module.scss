@@ -17,6 +17,7 @@
 	flex: auto;
 	width: 100%;
 	margin: 8rem auto 4rem;
+	overflow-y: auto;
 	@apply px-8 flex flex-shrink-0;
 }
 :global {
@@ -25,6 +26,19 @@
 		display: flex;
 		.ant-tree-title {
 			flex: auto;
+		}
+	}
+}
+.tree {
+	:global {
+		.ant-tree-list-holder {
+			&::-webkit-scrollbar {
+				width: 0.8rem;
+			}
+			&::-webkit-scrollbar-thumb {
+				border-radius: 0.4rem;
+				background-color: rgba($color_primary, 0.6);
+			}
 		}
 	}
 }

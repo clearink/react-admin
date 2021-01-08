@@ -1,7 +1,7 @@
 import React, { forwardRef, memo, Ref } from "react"
 import { ProFormInput, ProFormRadio } from "@/components/Pro/ProForm"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
-import ProFormBsAvatar from "@/components/BigSight/ProFormBsAvatar"
+import BSAvatar from "@/components/BigSight/BSAvatar"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import AddForm, { AddFormProps, AddFormRef } from "@/components/BigSight/AddForm"
 import { phonePattern } from "@/utils/pattern"
@@ -34,7 +34,7 @@ function NurseAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 					initialValue='男'
 					required
 				/>
-				<ProFormBsAvatar name='avatar' label='头像' />
+				<BSAvatar name='avatar' label='头像' />
 			</ProFormGroup>
 		</AddForm>
 	)

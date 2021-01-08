@@ -7,7 +7,7 @@ import EditForm, {
 import { phonePattern } from "@/utils/pattern"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
-import ProFormBsAvatar from "@/components/BigSight/ProFormBsAvatar"
+import BSAvatar from "@/components/BigSight/BSAvatar"
 
 function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	// 这里可以传入 request 对象
@@ -48,7 +48,7 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 					initialValue='男'
 					required
 				/>
-				<ProFormBsAvatar name='avatar' label='头像' />
+				<BSAvatar name='avatar' label='头像' />
 			</ProFormGroup>
 		</EditForm>
 	)

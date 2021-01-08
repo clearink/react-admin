@@ -2,8 +2,8 @@ import { Button, Space } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import React, { memo, useContext } from "react"
 import useMountedRef from "../../hooks/mounted-ref"
-import ProFormContext from "../../utils/ProFormContext"
 import { SubmitConfigType } from "../type"
+import ProFormContext from "./BaseForm/ProFormContext"
 
 /**
  * Q: 	onReset, onSubmit, 这两个有什么用 暂时没有发现

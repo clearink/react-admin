@@ -8,9 +8,10 @@ function createGridLayoutWidth(colNum = 24) {
 }
 module.exports = {
 	purge: {
-		content: ["./src/**/*.tsx", "./src/**/*.scss"],
+		content: ["./src/**/*.tsx", "./src/**/*.scss", './public/index.html'],
 		defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
 	},
+	darkMode: false,
 	theme: {
 		extend: {
 			width: {

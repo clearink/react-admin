@@ -21,7 +21,7 @@ export interface ProFormSelectProps
 
 function ProFormSelect(props: ProFormSelectProps) {
 	const { request, options: PO, render, ...rest } = props
-	const [data] = useMemoFetch(request ?? {})
+	const [{ data, loading }] = useMemoFetch(request ?? {})
 
 	const options = useDeepMemo(() => {
 		if (PO) return transformOptions(PO) // 直接设置的 options 优先级最高

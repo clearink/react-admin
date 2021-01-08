@@ -68,7 +68,10 @@ function Login(props: IBaseProps) {
 						<ProFormCaptcha
 							name='captcha'
 							className='login-box__password'
-							captchaProps={{ className: "login-box__password ml-4" }}
+							captchaProps={{
+								className: "login-box__password",
+								style: { minWidth: 140 },
+							}}
 							placeholder='请输入验证码'
 							prefix={<PepLifeIcon type='icon-password' className='icon' />}
 							onGetCaptcha={async (form) => {

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Upload } from "antd"
 import classNames from "classnames"
 import { UploadProps } from "antd/lib/upload"
@@ -41,15 +41,21 @@ function ProFormAvatar(props: ProFormAvatarProps) {
 	const handleUploadChange: UploadProps["onChange"] = (info) => {
 		const { file } = info
 		if (file.status === "uploading") {
-			// loading 如何设置呢?
+			onChange?.(file as any)
+			methods.setError(false)
 			methods.setLoading(true)
 		}
+
 		if (file.status === "done") {
 			const result = transform?.(file.response) ?? file.response
 			onChange?.(result)
 			methods.setLoading(false)
 		}
-		if (file.status === "error") methods.setLoading(false)
+		if (file.status === "error") {
+			onChange?.("error" as any)
+			methods.setError(true)
+			methods.setLoading(false)
+		}
 	}
 
 	// 根据条件渲染不同的uploadButton

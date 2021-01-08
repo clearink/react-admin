@@ -32,7 +32,7 @@ function FieldStatus(props: FieldStatusProps) {
 		...rest
 	} = props
 
-	const [data] = useMemoFetch(request ?? {})
+	const [{ data, loading }] = useMemoFetch(request ?? {})
 	// form.resetFields 会重新执行一次
 	// 这是 antd 的设计 no bug
 	const options = useDeepMemo(() => {
@@ -46,4 +46,6 @@ function FieldStatus(props: FieldStatusProps) {
 	return DOM
 }
 
-export default memo(withDefaultProps(FieldStatus, { text: "", renderType: "tag" }))
+export default memo(
+	withDefaultProps(FieldStatus, { text: "", renderType: "tag" })
+)

@@ -4,9 +4,7 @@ import { Space } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
-import { Random } from "mockjs"
 import styles from "./style.module.scss"
-import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import {
 	commonTransformServerData,
 	formatTableSearchParams,

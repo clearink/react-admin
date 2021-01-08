@@ -8,11 +8,12 @@ import React, {
 	useImperativeHandle,
 	useState,
 } from "react"
-import useMemoCallback from "../../hooks/memo-callback"
-import useMountedRef from "../../hooks/mounted-ref"
-import ProFormContext from "../../utils/ProFormContext"
-import { BaseFormProps } from "../type"
-import Submitter from "./Submitter"
+import useMemoCallback from "@/components/Pro/hooks/memo-callback"
+import useMountedRef from "@/components/Pro/hooks/mounted-ref"
+import ProFormContext from "./ProFormContext"
+import Submitter from "../Submitter"
+import { BaseFormProps } from "../../type"
+
 
 function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 	const {

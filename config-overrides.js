@@ -16,10 +16,6 @@ module.exports = override(
 		libraryDirectory: "es",
 		style: "css",
 	}),
-	fixBabelImports("zarm", {
-		libraryName: "zarm",
-		style: "css",
-	}),
 	(config) => {
 		config.plugins.push(new WebpackBar())
 		if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin()) // 生产环境启用

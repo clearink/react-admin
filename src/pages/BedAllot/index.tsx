@@ -12,7 +12,6 @@ import {
 	DeleteOutlined,
 	EditOutlined,
 	ProfileOutlined,
-	UserOutlined,
 } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
@@ -27,6 +26,7 @@ import { sleep } from "@/utils/test"
 
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
+import BedAllotApi from "@/http/api/pages/BedAllotApi"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
@@ -118,9 +118,6 @@ function BedAllot() {
 							>
 								编辑
 							</Button>
-							<Button icon={<DeleteOutlined />} type='link' size='small'>
-								删除
-							</Button>
 						</div>
 					)
 				},
@@ -149,9 +146,9 @@ function BedAllot() {
 				// onDelete 删除 table 内部
 				// onEdit  编辑 属于 table 外部
 
-				// onDelete={async(values)=>{
-				// 	console.log(values)
-				// }}
+				onDelete={async(values)=>{
+					// BedAllotApi.remove()
+				}}
 			/>
 			{/* 外部如何能控制呢? */}
 

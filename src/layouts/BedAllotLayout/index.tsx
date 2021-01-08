@@ -1,6 +1,5 @@
 import React, { PropsWithChildren, useMemo, useRef, useState } from "react"
 import { Card, message, Skeleton, Tabs, Tree } from "antd"
-import classNames from "classnames"
 import { CommonHeader } from "@/components/PepLife"
 import {
 	BankOutlined,
@@ -18,7 +17,7 @@ import { TreeProps } from "antd/lib/tree"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import { ProFormInput } from "@/components/Pro/ProForm"
-import BedAllotApi from "@/http/pages/BedAllotApi"
+import BedAllotApi from "@/http/api/pages/BedAllotApi"
 import AddForm from "@/components/BigSight/AddForm"
 import EditForm from "@/components/BigSight/EditForm"
 
@@ -30,22 +29,20 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	const addRef = useRef<DrawerFormRef>(null)
 	const editRef = useRef<DrawerFormRef>(null)
 
-	const [data, loading, fetchData] = useMemoFetch({
+	const [{ data: treeData, loading }, fetchData, updateMemo] = useMemoFetch({
 		url: "/orgmgt/building/treeList",
-		params: {},
 		method: "post",
-		// cache: true,
+		cache: true,
+		transform: (response) => {
+			if (response?.result)
+				return convertTreeNode(response?.result, "orgBuildings")
+			return []
+		},
 	})
-	const treeData = useMemo(() => {
-		if (!data) return []
-		return convertTreeNode(data?.result, "orgBuildings")
-	}, [data])
 
 	const handleSelectTree: TreeProps["onSelect"] = (keys, { node }) => {
-		if (!node.children) {
-			if (keys[0] === buildingId) setBuildingId(null)
-			else setBuildingId(keys[0])
-		}
+		if (keys[0] === buildingId) setBuildingId(null)
+		else setBuildingId(keys[0])
 	}
 	const selectKeys = useMemo(() => {
 		if (buildingId === null) return []
@@ -69,7 +66,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	const handleDelete = useMemoCallback(async (id: string) => {
 		// 请求接口
 		await BedAllotApi.remove({ id })
-		fetchData()
+		updateMemo()
 	}, [])
 	// 编辑
 	return (
@@ -102,12 +99,14 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 						</div>
 					}
 				>
-					<Skeleton loading={loading} paragraph={{ rows: 10 }}>
+					<Skeleton loading={loading || !treeData} paragraph={{ rows: 10 }}>
 						<Tree.DirectoryTree
+							height={688}
 							onSelect={handleSelectTree}
 							treeData={treeData}
 							defaultExpandAll
 							selectedKeys={selectKeys}
+							className={styles.tree}
 							titleRender={(node) => {
 								return (
 									<TreeTitleWrapper
@@ -154,7 +153,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 					onFinish={async (value) => {
 						await BedAllotApi.add({ parentId: addId, ...value })
 						// reload
-						fetchData()
+						updateMemo()
 						return true
 					}}
 				>

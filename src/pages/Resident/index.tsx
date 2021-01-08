@@ -28,6 +28,7 @@ const columns: ProTableColumns<any>[] = [
 		search: {
 			label: undefined,
 			placeholder: "性别/手机",
+			name: "nameOrMobile",
 		},
 		read: {
 			copyable: true,
@@ -48,6 +49,7 @@ const columns: ProTableColumns<any>[] = [
 		search: {
 			placeholder: "选择楼层",
 			label: undefined,
+			name: "buildingId",
 		},
 	},
 	{
@@ -104,7 +106,10 @@ function Resident() {
 			render: (value) => {
 				return (
 					<Space>
-						<Link to={`/resident/${value}`}>住户详情</Link>
+						<Button type='link'>
+							<Link to={`/resident/${value}`}>住户详情</Link>
+						</Button>
+
 						<Button type='link'>处理设置</Button>
 						<Button
 							type='link'

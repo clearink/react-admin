@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import http from "@/http"
 import { actions as kvActions } from "@/store/reducers/kv"
 import GetBoundAction from "@/utils/GetBoundAction"
-import useMemoCallback, { AnyFunc } from "@/components/Pro/hooks/memo-callback"
-import useActionPending from "@/components/Pro/hooks/action-pending"
+import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import useMountedRef from "@/components/Pro/hooks/mounted-ref"
 import useDeepEqual from "@/components/Pro/hooks/deep-equal"
 import useMethods from "@/components/Pro/hooks/methods/useMethods"
@@ -19,7 +18,12 @@ import useTypedSelector from "./useTypedSelector"
 */
 
 const boundKvActions = GetBoundAction(kvActions)
-
+interface CommonServerData<T = any> {
+	code: number
+	message: string
+	result?: T
+	success: boolean
+}
 export interface useFetchDataProps {
 	/** 请求地址 地址为空不请求 */
 	url?: string
@@ -31,8 +35,8 @@ export interface useFetchDataProps {
 	cache?: boolean
 	/** 自动请求一次 */
 	auto?: boolean
-	/** 转换数据 */
-	transform?: AnyFunc
+	/** 转换数据 以是否有 result 为 标志 */
+	transform?: (response: CommonServerData) => any
 }
 const initialState = {
 	data: null as any,
@@ -52,14 +56,15 @@ export default function useMemoFetch(props: useFetchDataProps) {
 		props ?? {}
 
 	const mountedRef = useMountedRef() // 是否挂载标志
-	const kvEntities = useTypedSelector((state) => state.kv.entities)
+	const kvEntities = useTypedSelector((state) => state.kv.entities) // kv store
 	const [state, methods] = useMethods(reducers, initialState)
 
-	const fetchData = useMemoCallback(async () => {
+	// 可以传入一个布尔值 决定是否抛弃缓存
+	const fetchData = useMemoCallback(async (update?: boolean) => {
 		const realUrl = `${url}${JSON.stringify(params)}`
 		const memoData = kvEntities[realUrl]?.value // 缓存
 		methods.setLoading(true)
-		if (memoData) {
+		if (memoData && !update) {
 			methods.setData(memoData)
 			methods.setLoading(false)
 			return
@@ -70,7 +75,9 @@ export default function useMemoFetch(props: useFetchDataProps) {
 		if (!mountedRef.current) return
 		methods.setData(result)
 		methods.setLoading(false)
-		if (cache) boundKvActions.add({ key: realUrl, value: result }) // save redux store
+		if (cache) {
+			boundKvActions[update ? "update" : "add"]({ key: realUrl, value: result }) // save redux store
+		}
 	}, [])
 
 	// params 或者url变化重新请求
@@ -80,6 +87,9 @@ export default function useMemoFetch(props: useFetchDataProps) {
 		if (!auto) return
 		if (!paramsEqual || !urlEqual) fetchData()
 	}, [paramsEqual, urlEqual, fetchData, auto])
+	const updateMemo = useMemoCallback(() => {
+		fetchData(true)
+	}, [])
 
-	return [state.data, state.loading, fetchData] as const
+	return [state, fetchData, updateMemo] as const
 }

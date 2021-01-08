@@ -9,7 +9,6 @@ import withDefaultProps from "@/hocs/withDefaultProps"
 import { useFetchDataProps } from "@/hooks/useMemoFetch"
 import http from "@/http"
 import { Spin } from "antd"
-import { type } from "os"
 import React, {
 	forwardRef,
 	memo,

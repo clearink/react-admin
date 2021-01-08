@@ -13,7 +13,7 @@ import { FieldAvatar } from "@/components/Pro/ProField"
 // 住户详情
 function ResidentDetail() {
 	const { params } = useRouteMatch<{ id: string }>()
-	const [data, loading] = useMemoFetch({
+	const [{ data, loading }] = useMemoFetch({
 		url: "/orgmgt/member/queryById",
 		params: {
 			id: params.id,

@@ -8,6 +8,8 @@ import Axios, {
 import { message } from "antd"
 import configs from "@/configs/app"
 import LoginUtil from "@/utils/LoginUtil"
+import store from "@/store"
+import { actions } from "@/store/reducers/user"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
 

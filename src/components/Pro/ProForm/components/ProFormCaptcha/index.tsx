@@ -1,12 +1,12 @@
 import React, { ReactNode, useContext, useState } from "react"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
 import classNames from "classnames"
-import ProFormContext from "@/components/Pro/utils/ProFormContext"
 import { Button, Input } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
 import CountDown from "./CountDown"
 import { InputProps } from "antd/lib/input"
+import ProFormContext from "../BaseForm/ProFormContext"
 
 /* 验证码封装组件
 ProFormCaptcha
@@ -48,12 +48,10 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 						loading={loading}
 						disabled={active}
 						onClick={() => handleClick(start)}
-						className='ml-4'
 						{...captchaPropsRest}
+						className={classNames("ml-4", captchaPropsRest.className)}
 					>
-						{active
-							? `${count} 秒后重新获取`
-							: captchaProps?.text ?? "获取验证码"}
+						{active ? `${count}秒后重新获取` : captchaProps?.text ?? "获取验证码"}
 					</Button>
 				)}
 			</CountDown>

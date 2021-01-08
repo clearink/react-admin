@@ -13,7 +13,7 @@ import useTypedSelector from "@/hooks/useTypedSelector"
 import useMemoFetch from "@/hooks/useMemoFetch"
 function Home(props: IBaseProps) {
 	const { user } = useTypedSelector((state) => state.user)
-	const [data] = useMemoFetch({
+	const [{ data, loading }] = useMemoFetch({
 		url: "/orgmgt/index/info",
 	})
 	const lastLogin = useMemo(() => {

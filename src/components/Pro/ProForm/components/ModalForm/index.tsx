@@ -75,6 +75,7 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 				title={<TitleTip title={title} />}
 				width={600}
 				onCancel={off}
+				destroyOnClose={false}
 				{...modalProps}
 				getContainer={false}
 				onOk={form.submit}

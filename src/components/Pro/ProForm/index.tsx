@@ -12,6 +12,7 @@ import ProFormDateRange from "./components/ProFormDate/ProFormDateRange"
 import ProFormTime from "./components/ProFormDate/ProFormTime"
 import ProFormDateRangeTime from "./components/ProFormDate/ProFormDateRangeTime"
 import ProFormTextArea from "./components/ProFormTextArea"
+import ProFormTreeSelect from "./components/ProFormTreeSelect"
 
 export { ProFormInput }
 export { ProFormCaptcha }
@@ -21,6 +22,7 @@ export { ProFormRadio }
 export { ProFormUpload }
 export { ProFormAvatar }
 export { ProFormTextArea }
+export { ProFormTreeSelect }
 
 // form type
 export { default as StepsForm } from "./components/StepsForm"

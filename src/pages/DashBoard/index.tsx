@@ -5,7 +5,6 @@ import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
-import ProFormBsAvatar from "@/components/BigSight/ProFormBsAvatar"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "avatar",
@@ -64,12 +63,8 @@ function WorkPlace(props: IBaseProps) {
 					transform={commonTransformServerData}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/> */}
-				<BaseForm
-					onFinish={(values) => {
-						console.log(values)
-					}}
-				>
-					<ProFormBsAvatar label='头像' name='avatar' />
+				<BaseForm onFinish={console.log}>
+					
 				</BaseForm>
 			</main>
 		</div>

@@ -4,12 +4,7 @@ import { Provider } from "react-redux"
 import App from "./components/App"
 import store from "./store"
 import "@/styles/index.scss"
-import app from "./configs/app"
-if (app.ISDEV) {
-	require("@/styles/tailwind.output.css")
-} else {
-	require("@/styles/tailwind.css")
-}
+import "@/styles/tailwind.css"
 
 ReactDOM.render(
 	<Provider store={store}>

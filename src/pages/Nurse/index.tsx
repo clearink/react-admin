@@ -14,7 +14,7 @@ import { EditFormRef } from "@/components/BigSight/EditForm"
 import { AddFormRef } from "@/components/BigSight/AddForm"
 import NurseAddForm from "./components/add"
 import NurseEditForm from "./components/edit"
-import NurseApi from "@/http/pages/NurseApi"
+import NurseApi from "@/http/api/pages/NurseApi"
 import { EditOutlined } from "@ant-design/icons"
 
 // 护管管理
@@ -92,7 +92,7 @@ function Nurse() {
 	const tableColumns = useMemo(() => {
 		return columns.concat({
 			title: "操作",
-			key: "action",
+			dataIndex: "id",
 			width: 300,
 			render: (record) => (
 				<Space>
@@ -101,14 +101,13 @@ function Nurse() {
 					<Button
 						icon={<EditOutlined />}
 						onClick={() => {
-							setEditId(record.id)
+							setEditId(record)
 							editRef.current?.toggle()
 						}}
 						type='link'
 					>
 						编辑
 					</Button>
-					<span>删除</span>
 				</Space>
 			),
 		})

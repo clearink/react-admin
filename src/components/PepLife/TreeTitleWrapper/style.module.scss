@@ -2,9 +2,10 @@
 	display: flex;
 	flex: auto;
 	justify-content: space-between;
-
+	
 	.action {
 		opacity: 0;
+		color: black;
 		:not(:last-child) {
 			margin-right: 8px;
 		}
