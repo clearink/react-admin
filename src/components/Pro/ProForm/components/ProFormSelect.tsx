@@ -3,11 +3,10 @@ import { Select } from "antd"
 import { SelectProps } from "antd/lib/select"
 import withFormItem from "../../hocs/withFormItem"
 import { BaseProFieldProps } from "../../ProField/type"
-import useMemoFetch, { useFetchDataProps } from "@/hooks/useMemoFetch"
+import useMemoFetch, { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { transformOptions } from "../../ProField/components/FieldStatus/utils"
 import { isArray } from "@/utils/validate"
-import FilterValue from "@/utils/FilterValue"
 
 // form.resetFields 会重新执行一次
 // 这是 antd 的设计 no bug
@@ -16,7 +15,7 @@ export interface ProFormSelectProps
 	render?: BaseProFieldProps<ProFormSelectProps>["render"]
 	options?: string[] | Array<{ label: string; value: any }>
 	value?: SelectProps<any[]>["value"]
-	request?: useFetchDataProps
+	request?: UseMemoFetchProps
 }
 
 function ProFormSelect(props: ProFormSelectProps) {

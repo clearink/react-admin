@@ -17,7 +17,6 @@ import { useHistory } from "react-router-dom"
 
 const { Content } = Layout
 const SaveMenu = GetBoundAction(menuActions.saveMenu)
-const boundDeleteUser = GetBoundAction(actions.deleteUerInfo)
 function BaseLayout(props: IBaseProps) {
 	const { children, routes } = props
 	const isLogin = LoginUtil.isLogin()
@@ -67,17 +66,6 @@ function BaseLayout(props: IBaseProps) {
 		})()
 	}, [unwrap])
 
-	// 监听 Storage 的变化
-	useEffect(() => {
-		const CheckLogin = (e: StorageEvent) => {
-			const isLogin = LoginUtil.isLogin()
-			if (!isLogin) boundDeleteUser()
-		}
-		window.addEventListener("storage", CheckLogin)
-		return () => {
-			window.removeEventListener("storage", CheckLogin)
-		}
-	}, [])
 	return (
 		<Layout className={"app-base-layout"}>
 			<SiderMenu />

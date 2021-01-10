@@ -3,14 +3,14 @@ import { TreeSelect } from "antd"
 import { BaseProFieldProps } from "@/components/Pro/ProField/type"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
 import { TreeSelectProps } from "antd/lib/tree-select"
-import useMemoFetch, { useFetchDataProps } from "@/hooks/useMemoFetch"
+import useMemoFetch, { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 
 export interface ProFormTreeSelectProps<T = any> extends TreeSelectProps<T> {
 	render?: BaseProFieldProps<ProFormTreeSelectProps>["render"]
 	value?: TreeSelectProps<T>["value"]
 	/** 转换value */
 	transform?: (data: any, multiple?: boolean) => TreeSelectProps<T>["value"]
-	request?: useFetchDataProps
+	request?: UseMemoFetchProps
 }
 function ProFormTreeSelect(props: ProFormTreeSelectProps) {
 	const {

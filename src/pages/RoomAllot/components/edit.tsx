@@ -3,9 +3,9 @@ import { ProFormInput } from "@/components/Pro/ProForm"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
-} from "@/components/BigSight/EditForm"
+} from "@/components/BigSight/Form/EditForm"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
-import ProFormBsTreeSelect from "@/components/BigSight/BSTreeSelect"
+import ProFormBsTreeSelect from "@/components/BigSight/Form/BSTreeSelect"
 import { convertTreeNode } from "@/pages/BedAllot/utils"
 
 function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {

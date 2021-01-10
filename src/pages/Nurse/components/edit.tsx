@@ -3,11 +3,11 @@ import { ProFormInput, ProFormRadio } from "@/components/Pro/ProForm"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
-} from "@/components/BigSight/EditForm"
+} from "@/components/BigSight/Form/EditForm"
 import { phonePattern } from "@/utils/pattern"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
-import BSAvatar from "@/components/BigSight/BSAvatar"
+import BSAvatar from "@/components/BigSight/Form/BSAvatar"
 
 function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	// 这里可以传入 request 对象

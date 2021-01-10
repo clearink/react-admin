@@ -1,9 +1,9 @@
 // big sight avatar 组件
 import React, { memo, useCallback } from "react"
 import { isArray } from "@/utils/validate"
-import { ProFormTreeSelect } from "../Pro/ProForm"
-import { BSFormItemProps } from "./interface"
-import { ProFormTreeSelectProps } from "../Pro/ProForm/components/ProFormTreeSelect"
+import { ProFormTreeSelect } from "../../Pro/ProForm"
+import { BSFormItemProps } from "../interface"
+import { ProFormTreeSelectProps } from "../../Pro/ProForm/components/ProFormTreeSelect"
 
 // TODO:
 

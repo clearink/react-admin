@@ -5,8 +5,8 @@ import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
 import AddForm, {
 	AddFormProps,
 	AddFormRef,
-} from "@/components/BigSight/AddForm"
-import BSTreeSelect from "@/components/BigSight/BSTreeSelect"
+} from "@/components/BigSight/Form/AddForm"
+import BSTreeSelect from "@/components/BigSight/Form/BSTreeSelect"
 import { convertTreeNode } from "@/pages/BedAllot/utils"
 
 function RoomAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {

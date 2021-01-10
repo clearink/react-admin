@@ -5,10 +5,10 @@ import DrawerForm, {
 	DrawerFormRef,
 } from "@/components/Pro/ProForm/components/DrawerForm"
 import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
-import ProSkeleton from "@/components/Pro/ProSkeleton"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import { useFetchDataProps } from "@/hooks/useMemoFetch"
+import { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import http from "@/http"
+import { Spin } from "antd"
 import React, {
 	forwardRef,
 	memo,
@@ -18,33 +18,38 @@ import React, {
 	useRef,
 	useState,
 } from "react"
+import { ProFormInput } from "../../Pro/ProForm"
 
-/** 包装一下 Drawer modal 以便于请求详情数据 */
-export interface AddFormProps extends DrawerFormProps {
+/** 包装一下 DrawerForm 以便于请求详情数据 */
+export interface EditFormProps extends DrawerFormProps {
 	/** form 渲染方式 */
 	type?: "drawer" | "modal"
-	request?: useFetchDataProps
+	request?: UseMemoFetchProps
+	/** 数据请求 */
 	id?: string
 }
-function Detail(props: AddFormProps, ref: Ref<DrawerFormRef>) {
+export type EditFormRef = DrawerFormRef
+function EditForm(props: EditFormProps, ref: Ref<DrawerFormRef>) {
 	const { type, request, id, children, ...rest } = props
 
 	const mountedRef = useMountedRef()
 	const formRef = useRef<DrawerFormRef>(null)
+
 	useImperativeHandle(ref, () => formRef.current!, [])
 
 	// 请求详情
 	const [loading, setLoading] = useState(false) // 请求数据loading
 	const fetchData = useMemoCallback(async () => {
 		const { method = "get", url, params, transform } = request ?? {}
-		if (!url) return
+		if (!url || !id) return
 		try {
 			const { form } = formRef.current!
 			// 请求前重置表单数据
-			form.resetFields()
 			const { data } = await http[method as any](url, params)
 			if (!mountedRef.current) return
-			const result = transform?.(data) ?? data
+			const result = transform?.(data, false) ?? data
+			// 后期会加上是否缓存下来详情数据
+			// 提交时再更新缓存
 			form.setFieldsValue(result.result)
 		} catch (error) {
 			console.log(error)
@@ -53,8 +58,9 @@ function Detail(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 		}
 	}, [])
 
-	// 请求详细数据 等到完全打开drawer后再发起请求
+	// 请求详细数据 等到完全打开drawer or modal后再发起请求
 	useEffect(() => {
+		formRef.current?.form.resetFields()
 		if (!id) return
 		setLoading(true)
 		const timer = window.setTimeout(() => fetchData(), 300)
@@ -63,15 +69,15 @@ function Detail(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 
 	const FormComponent = type === "drawer" ? DrawerForm : ModalForm
 	return (
-		<FormComponent ref={formRef} {...rest}>
-			{loading ? <ProSkeleton type='form' /> : children}
+		<FormComponent ref={formRef} name='edit-form' {...rest}>
+			<Spin spinning={loading}>{children}</Spin>
+			{/* 一般修改时会传入id,这里默认给个Id */}
+			<ProFormInput name='id' formItemClassName='hidden' />
 		</FormComponent>
 	)
 }
 
-export default memo(
-	withDefaultProps(forwardRef(Detail), { type: "drawer", trigger: null })
-)
+export default memo(withDefaultProps(forwardRef(EditForm), { type: "drawer" }))
 /**
  * 	// 这个应该是自动生成的
 	const DOM = (

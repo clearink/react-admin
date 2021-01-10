@@ -6,7 +6,7 @@ import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
 import { FieldAvatarProps } from "@/components/Pro/ProField/components/FieldAvatar"
 import {
-	commonTransformServerData,
+	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import ResidentAddForm from "./components/add"
@@ -137,9 +137,9 @@ function Resident() {
 					url: "/orgmgt/member/list",
 					method: "post",
 					params: { pageNo: 1, pageSize: 10 },
+					transform: bsConvertTableList,
 				}}
 				onSearch={formatTableSearchParams}
-				transform={commonTransformServerData}
 				onCreate={() => {
 					addRef.current?.toggle()
 				}}

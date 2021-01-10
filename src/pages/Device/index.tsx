@@ -6,7 +6,7 @@ import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
 import styles from "./style.module.scss"
 import {
-	commonTransformServerData,
+	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 
@@ -79,6 +79,7 @@ function Device() {
 				request={{
 					url: "/orgmgt/device/list",
 					method: "post",
+					transform: bsConvertTableList,
 				}}
 				columns={columns}
 				rowKey='id'
@@ -91,7 +92,6 @@ function Device() {
 				// 	})
 				// }}
 				// transform 需要设置 当前页数,pageSize, 总数 数据
-				transform={commonTransformServerData}
 				title={{ title: "设备管理", tooltip: "各种设备管理" }}
 			/>
 		</div>

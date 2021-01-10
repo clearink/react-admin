@@ -2,9 +2,9 @@ import React, { forwardRef, memo, Ref } from "react"
 import AddForm, {
 	AddFormProps,
 	AddFormRef,
-} from "@/components/BigSight/AddForm"
+} from "@/components/BigSight/Form/AddForm"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
-import BSAvatar from "@/components/BigSight/BSAvatar"
+import BSAvatar from "@/components/BigSight/Form/BSAvatar"
 import { ProFormInput } from "@/components/Pro/ProForm"
 
 function BedAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {

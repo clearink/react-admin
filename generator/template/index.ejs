@@ -13,7 +13,7 @@ import { InfoOutlined,DeleteOutlined,EditOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import {
-	commonTransformServerData,
+	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import RenderDrawerForm from "@/components/Pro/ProForm/components/DrawerForm/RenderDrawerForm"
@@ -111,7 +111,7 @@ function BedAllot() {
 				title='<%= title %>'
 				columns={proTableColumns}
 				onSearch={formatTableSearchParams}
-				transform={commonTransformServerData}
+				transform={bsConvertTableList}
 				request={{
 					url: "/orgmgt/bed/list",
 					method: "post",

@@ -3,6 +3,7 @@ const {
 	fixBabelImports,
 	addWebpackAlias,
 	addPostcssPlugins,
+	setWebpackOptimizationSplitChunks,
 } = require("customize-cra")
 const WebpackBar = require("webpackbar")
 const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin")
@@ -22,6 +23,15 @@ module.exports = override(
 		if (isAnalyze) config.plugins.push(new BundleAnalyzerPlugin()) // 打包分析
 		return config
 	},
+	setWebpackOptimizationSplitChunks({
+		cacheGroups: {
+			commons: {
+				name: "chunks",
+				chunks: "initial",
+				minChunks: 2,
+			},
+		},
+	}),
 	addWebpackAlias({
 		"@": path.resolve(__dirname, "src"),
 	}),

@@ -9,7 +9,7 @@ import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
 import AddForm, {
 	AddFormProps,
 	AddFormRef,
-} from "@/components/BigSight/AddForm"
+} from "@/components/BigSight/Form/AddForm"
 import { BSAvatar } from "@/components/BigSight"
 import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
 

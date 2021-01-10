@@ -4,14 +4,14 @@ import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import {
-	commonTransformServerData,
+	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import { TextProps } from "antd/lib/typography/Text"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { EditFormRef } from "@/components/BigSight/EditForm"
-import { AddFormRef } from "@/components/BigSight/AddForm"
+import { EditFormRef } from "@/components/BigSight/Form/EditForm"
+import { AddFormRef } from "@/components/BigSight/Form/AddForm"
 import NurseAddForm from "./components/add"
 import NurseEditForm from "./components/edit"
 import NurseApi from "@/http/api/pages/NurseApi"
@@ -119,12 +119,12 @@ function Nurse() {
 				request={{
 					url: "/orgmgt/careWorker/list",
 					method: "post",
+					transform: bsConvertTableList,
 				}}
 				columns={tableColumns}
 				rowKey='id'
 				// 搜索请求
 				onSearch={formatTableSearchParams}
-				transform={commonTransformServerData}
 				// 删除
 				onDelete={async (values) => {
 					await NurseApi.remove({ ids: values })

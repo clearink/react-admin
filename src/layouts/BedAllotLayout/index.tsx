@@ -18,8 +18,8 @@ import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import { ProFormInput } from "@/components/Pro/ProForm"
 import BedAllotApi from "@/http/api/pages/BedAllotApi"
-import AddForm from "@/components/BigSight/AddForm"
-import EditForm from "@/components/BigSight/EditForm"
+import AddForm from "@/components/BigSight/Form/AddForm"
+import EditForm from "@/components/BigSight/Form/EditForm"
 
 // 床位分配 layout
 function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
@@ -33,9 +33,9 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 		url: "/orgmgt/building/treeList",
 		method: "post",
 		cache: true,
-		transform: (response) => {
-			if (response?.result)
-				return convertTreeNode(response?.result, "orgBuildings")
+		transform: (response, cache) => {
+			if (cache) return response
+			if (response) return convertTreeNode(response?.result, "orgBuildings")
 			return []
 		},
 	})

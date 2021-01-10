@@ -5,8 +5,9 @@ import { ReactNode } from "react"
 import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
 import { initialState, TableMethods } from "./useTableFetch"
-import { useFetchDataProps } from "@/hooks/useMemoFetch"
+import { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import { BaseProFormProps } from "../hocs/withFormItem"
+import { CommonServerData } from "@/hooks/useMemoFetch/interface"
 
 // pro table column 类型
 export type ProFieldType =
@@ -36,7 +37,7 @@ type FieldSelectProps = {
 	/** Field Select checkbox radio */
 	renderType?: "tag" | "badge"
 	options?: FieldOptionType[] | string[]
-	request?: useFetchDataProps
+	request?: UseMemoFetchProps
 	statusList?: string[]
 }
 
@@ -75,6 +76,12 @@ export type ProTableRef = {
 	clearRows: () => void // 清除选中
 	setParams: (params: object) => void
 }
+export interface ProTableRequest extends UseMemoFetchProps {
+	transform: (
+		data: CommonServerData
+	) => { data: any; pageSize: number; current: number; total: number }
+}
+
 export interface ProTableProps<T extends object>
 	extends Omit<
 		TableProps<T>,
@@ -91,7 +98,7 @@ export interface ProTableProps<T extends object>
 	onCreate?: () => void
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
 	search: boolean
-	request?: useFetchDataProps
+	request?: ProTableRequest
 	title?: TitleTipProps["title"]
 	/** 渲染右上角的action button */
 	renderAction?: (dom: JSX.Element[]) => JSX.Element[]
@@ -101,13 +108,4 @@ export interface ProTableProps<T extends object>
 		methods: TableMethods,
 		dom: JSX.Element[]
 	) => JSX.Element
-	/** 转换数据 */
-	transform?: (
-		OD: any
-	) => {
-		data: any[]
-		current: number
-		pageSize: number
-		total: number
-	}
 }

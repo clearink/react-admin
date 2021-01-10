@@ -3,12 +3,21 @@ import { ProFormInput } from "@/components/Pro/ProForm"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
-} from "@/components/BigSight/EditForm"
+} from "@/components/BigSight/Form/EditForm"
 
 function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	// 这里可以传入 request 对象
 	return (
-		<EditForm {...props} name='edit-bed' ref={ref}>
+		<EditForm
+			{...props}
+			request={{
+				url: "/orgmgt/bed/member/queryByBedId",
+				params: { id: props.id },
+				method: "get",
+			}}
+			name='edit-bed'
+			ref={ref}
+		>
 			<ProFormInput
 				name='bedName'
 				label='床位名称'

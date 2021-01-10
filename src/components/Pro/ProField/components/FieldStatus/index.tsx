@@ -1,6 +1,6 @@
 import React, { memo } from "react"
 import { BaseProFieldProps, FieldOptionType } from "../../type"
-import useMemoFetch, { useFetchDataProps } from "@/hooks/useMemoFetch"
+import useMemoFetch, { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { isArray } from "@/utils/validate"
 import withDefaultProps from "@/hocs/withDefaultProps"
@@ -11,7 +11,7 @@ export interface FieldStatusProps extends BaseProFieldProps<FieldStatusProps> {
 	options?: string[] | Array<FieldOptionType>
 	/** 渲染方式  "tag" | "badge"*/
 	renderType?: "tag" | "badge"
-	request?: useFetchDataProps
+	request?: UseMemoFetchProps
 	statusList?: string[]
 }
 

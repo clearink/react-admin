@@ -56,7 +56,6 @@ function ProTable<T extends object>(
 		renderAction,
 		renderTitle,
 		onCreate,
-		transform,
 		onDelete,
 		...rest
 	} = props
@@ -65,6 +64,7 @@ function ProTable<T extends object>(
 	const mountedRef = useMountedRef()
 	const [state, methods, fetchData] = useTableFetch(async () => {
 		const url = request?.url
+		const transform = request?.transform
 		if (!url) return
 		const method = request?.method ?? "post"
 		try {

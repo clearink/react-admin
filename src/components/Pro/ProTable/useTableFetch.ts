@@ -46,25 +46,22 @@ export const reducers = {
 		total: parentData.length,
 		loading: false,
 	}),
-	// 重置
+	// 重置时需要设置成默认的
 	reset: (state: TableData, defaultParams: object) => ({
 		...initialState,
-		data:state.data,
-		total:state.total,
-		params: defaultParams,
+		data: state.data,
+		total: state.total,
+		params: { ...defaultParams },
 	}),
 }
 export type TableMethods = Methods<typeof reducers, typeof initialState>
-export default function useTableFetch(
-	fetchData: () => void,
-	initialValue?: object
-) {
+export default function useTableFetch(fetchData: () => void, params?: any) {
 	// 主要是处理 table 中的各种 params
 	const fn = useMemoCallback(fetchData, [])
 
 	const [data, methods] = useMethods(reducers, () => ({
 		...initialState,
-		...initialValue,
+		params,
 	}))
 
 	return [data, methods, fn] as const

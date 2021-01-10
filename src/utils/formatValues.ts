@@ -129,8 +129,8 @@ export function formatTableSearchParams(
 }
 
 type commonServerData = {
-	result: {
-		records: any[]
+	result?: {
+		records: any
 		current: number
 		size: number
 		total: number
@@ -144,12 +144,12 @@ type commonServerData = {
  *  pageSize 每页数量
  *  total 总数
  */
-export function commonTransformServerData(data: commonServerData) {
+export function bsConvertTableList(data: commonServerData) {
 	const { result } = data
 	return {
-		data: result.records,
-		current: result.current,
-		pageSize: result.size,
-		total: result.total,
+		data: result!.records,
+		current: result!.current,
+		pageSize: result!.size,
+		total: result!.total,
 	}
 }

@@ -1,10 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
+import useCountDown from "@/components/Pro/hooks/count-down"
+import useInterval from "@/components/Pro/hooks/interval"
+import useMemoFetch from "@/hooks/useMemoFetch"
+import { convertTreeNode } from "../BedAllot/utils"
+import ProFormUploadList from "@/components/Pro/ProForm/components/ProFormUploadList"
+import { Button, Form, Upload } from "antd"
+import { UploadOutlined } from "@ant-design/icons"
+import { actions, headers } from "@/http/api/utils/file"
+import { BSAvatar } from "@/components/BigSight"
+import { ProFormAvatar } from "@/components/Pro/ProForm"
+import BSUploadList from "@/components/BigSight/Form/BSUploadList"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "avatar",
@@ -43,6 +54,8 @@ function WorkPlace(props: IBaseProps) {
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
+				<div>ProFormUploadList</div>
+
 				{/* <ProTable
 					request={{
 						url: "/membermgt/member/list",
@@ -60,11 +73,11 @@ function WorkPlace(props: IBaseProps) {
 						})
 					}}
 					// transform 需要设置 当前页数,pageSize, 总数 数据
-					transform={commonTransformServerData}
+					transform={bsConvertTableList}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/> */}
 				<BaseForm onFinish={console.log}>
-					
+					<BSUploadList name='file' label='fileList' initialValue={'123,13221'} />
 				</BaseForm>
 			</main>
 		</div>

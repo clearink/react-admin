@@ -1,25 +1,15 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Upload } from "antd"
 import classNames from "classnames"
-import { UploadProps } from "antd/lib/upload"
+import { RcFile, UploadProps } from "antd/lib/upload"
 import { FrownOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons"
-import { BaseProFieldProps } from "@/components/Pro/ProField/type"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
 import styles from "./style.module.scss"
 import useMethods from "@/components/Pro/hooks/methods/useMethods"
+import useMemoCallback from "@/components/Pro/hooks/memo-callback"
+import { limitFileSize, limitUploadImg } from "../utils"
+import { ProFormAvatarProps } from "../interface"
 
-export interface ProFormAvatarProps extends UploadProps {
-	render?: BaseProFieldProps<ProFormAvatarProps>["render"]
-	/** 转换上传后的数据 */
-	transform?: (response: any) => string
-	value?: string
-	/** 显示订的形状 */
-	shape?: "rect" | "circle"
-	/** 头像大小 */
-	size?: number | string
-	/** 图片大小限制 单位 KB */
-	limit?: number
-}
 const initialState = {
 	loading: false,
 	error: null,
@@ -34,22 +24,32 @@ const reducers = {
 }
 // 该组件只用于 上传头像
 function ProFormAvatar(props: ProFormAvatarProps) {
-	const { render, value, onChange, shape, size, transform, ...rest } = props
+	const {
+		render,
+		value,
+		onChange,
+		shape,
+		size,
+		transform,
+		limit,
+		beforeUpload,
+		...rest
+	} = props
 	const [state, methods] = useMethods(reducers, initialState)
 
 	// 处理 头像src 与 loading
 	const handleUploadChange: UploadProps["onChange"] = (info) => {
 		const { file } = info
 		if (file.status === "uploading") {
-			onChange?.(file as any)
+			onChange?.(file)
 			methods.setError(false)
 			methods.setLoading(true)
 		}
 
 		if (file.status === "done") {
 			const result = transform?.(file.response) ?? file.response
-			onChange?.(result)
 			methods.setLoading(false)
+			if (result !== false) onChange?.(result)
 		}
 		if (file.status === "error") {
 			onChange?.("error" as any)
@@ -102,9 +102,22 @@ function ProFormAvatar(props: ProFormAvatarProps) {
 		)
 	})()
 
+	const handleBeforeUpload = useMemoCallback(
+		(file: RcFile, fileList: RcFile[]) => {
+			const result = beforeUpload?.(file, fileList) ?? true
+			return limitFileSize(file, limit) && limitUploadImg(file) && result
+		},
+		[]
+	)
 	const isCircle = shape === "circle"
 	const DOM = (
-		<Upload {...rest} onChange={handleUploadChange} showUploadList={false}>
+		<Upload
+			accept='image/*'
+			{...rest}
+			beforeUpload={handleBeforeUpload}
+			onChange={handleUploadChange}
+			showUploadList={false}
+		>
 			<div
 				style={{ width: size, height: size }}
 				className={classNames({ [styles.circle]: isCircle }, styles.avatar)}

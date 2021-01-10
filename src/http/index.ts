@@ -94,6 +94,8 @@ class Http {
 		switch (code) {
 			case 1001:
 				// token 过期
+				console.log("token 过期了 清除用户登录信息")
+				store.dispatch(actions.deleteUerInfo())
 				LoginUtil.clearToken()
 				break
 			default:

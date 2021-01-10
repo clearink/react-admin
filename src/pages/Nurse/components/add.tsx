@@ -1,9 +1,9 @@
 import React, { forwardRef, memo, Ref } from "react"
 import { ProFormInput, ProFormRadio } from "@/components/Pro/ProForm"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
-import BSAvatar from "@/components/BigSight/BSAvatar"
+import BSAvatar from "@/components/BigSight/Form/BSAvatar"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
-import AddForm, { AddFormProps, AddFormRef } from "@/components/BigSight/AddForm"
+import AddForm, { AddFormProps, AddFormRef } from "@/components/BigSight/Form/AddForm"
 import { phonePattern } from "@/utils/pattern"
 
 function NurseAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {

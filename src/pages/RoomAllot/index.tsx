@@ -18,14 +18,14 @@ import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "../BedAllot/BedAllotContext"
 import { isUndefined } from "@/utils/validate"
 import {
-	commonTransformServerData,
+	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import RoomAddForm from "./components/add"
 import RoomEditForm from "./components/edit"
 import { sleep } from "@/utils/test"
-import { EditFormRef } from "@/components/BigSight/EditForm"
-import { AddFormRef } from "@/components/BigSight/AddForm"
+import { EditFormRef } from "@/components/BigSight/Form/EditForm"
+import { AddFormRef } from "@/components/BigSight/Form/AddForm"
 import RoomAllotApi from "@/http/api/pages/RoomAllotApi"
 import { Link } from "react-router-dom"
 
@@ -108,11 +108,11 @@ function RoomAllot() {
 				columns={tableColumns}
 				title='房间管理'
 				onSearch={formatTableSearchParams}
-				transform={commonTransformServerData}
 				request={{
 					url: "/orgmgt/room/list",
 					method: "post",
 					params: { buildingId, pageNo: 1, pageSize: 10 },
+					transform: bsConvertTableList,
 				}}
 				onCreate={() => {
 					addRef.current?.toggle()

@@ -5,7 +5,7 @@ import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
-} from "@/components/BigSight/EditForm"
+} from "@/components/BigSight/Form/EditForm"
 
 function ResidentEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	const { id, ...rest } = props

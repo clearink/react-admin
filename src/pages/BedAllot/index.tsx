@@ -18,7 +18,7 @@ import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "./BedAllotContext"
 import { isNull } from "@/utils/validate"
 import {
-	commonTransformServerData,
+	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
@@ -89,11 +89,12 @@ function BedAllot() {
 	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
 
 	// 外部设置table 的 params 控制数据请求
+	const params = { buildingId, pageNo: 1, pageSize: 2 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
 		if (isNull(buildingId) || !tableMethods) return
-		tableMethods.setParams({ buildingId })
-	}, [buildingId])
+		tableMethods.setParams(params)
+	}, [buildingId, params])
 
 	const proTableColumns = useMemo(
 		() =>
@@ -133,11 +134,11 @@ function BedAllot() {
 				title='床位管理'
 				columns={proTableColumns}
 				onSearch={formatTableSearchParams}
-				transform={commonTransformServerData}
 				request={{
 					url: "/orgmgt/bed/list",
 					method: "post",
-					params: { buildingId, pageNo: 1, pageSize: 10 },
+					params,
+					transform: bsConvertTableList,
 				}}
 				onCreate={() => {
 					addRef.current?.toggle()
@@ -146,22 +147,16 @@ function BedAllot() {
 				// onDelete 删除 table 内部
 				// onEdit  编辑 属于 table 外部
 
-				onDelete={async(values)=>{
+				onDelete={async (values) => {
 					// BedAllotApi.remove()
 				}}
 			/>
-			{/* 外部如何能控制呢? */}
 
 			{/* 编辑 form */}
 			<EditForm
 				title='床位管理编辑'
 				id={editId}
 				ref={editRef}
-				request={{
-					url: "/orgmgt/bed/member/queryByBedId",
-					params: { id: editId },
-					method: "get",
-				}}
 				onFinish={async (values) => {
 					await sleep(1000)
 					tableRef.current?.reload()

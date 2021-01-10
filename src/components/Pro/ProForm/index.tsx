@@ -1,5 +1,3 @@
-import ProFormUpload from "./components/ProFormUpload"
-import ProFormAvatar from "./components/ProFormAvatar"
 import ProFormCaptcha from "./components/ProFormCaptcha"
 import ProFormCheckbox from "./components/ProFormCheckbox"
 import ProFormRadio from "./components/ProFormRadio"
@@ -13,14 +11,15 @@ import ProFormTime from "./components/ProFormDate/ProFormTime"
 import ProFormDateRangeTime from "./components/ProFormDate/ProFormDateRangeTime"
 import ProFormTextArea from "./components/ProFormTextArea"
 import ProFormTreeSelect from "./components/ProFormTreeSelect"
+import { ProFormAvatar, ProFormUploadList } from "./components/ProFormUpload"
 
 export { ProFormInput }
 export { ProFormCaptcha }
 export { ProFormSelect }
 export { ProFormCheckbox }
 export { ProFormRadio }
-export { ProFormUpload }
 export { ProFormAvatar }
+export { ProFormUploadList }
 export { ProFormTextArea }
 export { ProFormTreeSelect }
 

@@ -6,19 +6,4 @@
 
 ## yarn start
 
-# TODO: pro table 完善
-
-# TODO: 增加 FieldSecond 组件
-
-# TODO: 新增数据与 编辑数据完善 (暂定只用 DrawerTrigger)  
-# TODO: ProForm.Group
-
-# TODO: 表单筛选问题 不支持多列查询
-
-
-## TODO: 分离 renderColumn
-
-## TODO: ProTableColumns fieldProps 读写模式 优化
-
-
-npx tailwindcss build src/styles/tailwind.css -o src/styles/tailwind.output.css 
+# TODO: UPLOAD 组件 初始值优化

@@ -6,52 +6,21 @@ import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import useMountedRef from "@/components/Pro/hooks/mounted-ref"
 import useDeepEqual from "@/components/Pro/hooks/deep-equal"
 import useMethods from "@/components/Pro/hooks/methods/useMethods"
-import useTypedSelector from "./useTypedSelector"
+import useTypedSelector from "../useTypedSelector"
+import useDeepMemo from "@/components/Pro/hooks/deep-memo"
+import { FetchProps } from "./interface"
+import reducers, { initialState } from "./reducer"
 
 /* 基本的 获取数据 hook 
-  仅支持 GET
   默认使用封装过的 axios
-	返回 loading data error
-	
-	需求 期望通过 url 当 key 将所有的数据存放到 store 检测到有数据后直接返回不用发请求
- 
+	返回 loading data 
+	通过 url 当 key 将所有的数据存放到 store 检测到有数据后直接返回不用发请求
 */
 
+export type UseMemoFetchProps = FetchProps
+
 const boundKvActions = GetBoundAction(kvActions)
-interface CommonServerData<T = any> {
-	code: number
-	message: string
-	result?: T
-	success: boolean
-}
-export interface useFetchDataProps {
-	/** 请求地址 地址为空不请求 */
-	url?: string
-	/**  请求参数 */
-	params?: object
-	/** 请求方式 */
-	method?: "get" | "post" | "delete" | "put"
-	/** 是否需要缓存 */
-	cache?: boolean
-	/** 自动请求一次 */
-	auto?: boolean
-	/** 转换数据 以是否有 result 为 标志 */
-	transform?: (response: CommonServerData) => any
-}
-const initialState = {
-	data: null as any,
-	loading: false,
-}
-const reducers = {
-	setData(state: any, data: any) {
-		return { ...state, data }
-	},
-	setLoading(state: any, loading: boolean) {
-		return { ...state, loading }
-	},
-}
-// 再提供一个更新缓存的函数
-export default function useMemoFetch(props: useFetchDataProps) {
+export default function useMemoFetch(props: UseMemoFetchProps) {
 	const { url, params, method = "get", cache, transform, auto = true } =
 		props ?? {}
 
@@ -59,24 +28,40 @@ export default function useMemoFetch(props: useFetchDataProps) {
 	const kvEntities = useTypedSelector((state) => state.kv.entities) // kv store
 	const [state, methods] = useMethods(reducers, initialState)
 
+	const realUrl = useDeepMemo(() => `${url}${JSON.stringify(params)}`, [
+		url,
+		params,
+	])
+	const memoData = kvEntities[realUrl]?.value // 缓存
+	useEffect(() => {
+		// 缓存的值发生该变 需要更新data
+		if (cache && memoData) methods.setData(memoData)
+	}, [memoData, cache, methods])
+
 	// 可以传入一个布尔值 决定是否抛弃缓存
 	const fetchData = useMemoCallback(async (update?: boolean) => {
-		const realUrl = `${url}${JSON.stringify(params)}`
-		const memoData = kvEntities[realUrl]?.value // 缓存
-		methods.setLoading(true)
 		if (memoData && !update) {
-			methods.setData(memoData)
-			methods.setLoading(false)
+			console.log("拿到了缓存值")
+			const result = transform?.(memoData, true) ?? memoData
+			methods.setData(result)
 			return
 		}
 		if (!url) return
+		methods.setLoading(true)
 		const { data } = await http[method as any](url, params)
-		const result = transform?.(data) ?? data
+		const result = transform?.(data, false) ?? data
 		if (!mountedRef.current) return
-		methods.setData(result)
 		methods.setLoading(false)
+		/**
+		 * 如果不用缓存值 直接setData
+		 * 但是需要缓存值的话
+		 * 为了保持 同步 需要在useEffect中去同步最新的值
+		 * 所以这里不能直接setData
+		 * 		 */
 		if (cache) {
 			boundKvActions[update ? "update" : "add"]({ key: realUrl, value: result }) // save redux store
+		} else {
+			methods.setData(result)
 		}
 	}, [])
 
@@ -87,6 +72,7 @@ export default function useMemoFetch(props: useFetchDataProps) {
 		if (!auto) return
 		if (!paramsEqual || !urlEqual) fetchData()
 	}, [paramsEqual, urlEqual, fetchData, auto])
+
 	const updateMemo = useMemoCallback(() => {
 		fetchData(true)
 	}, [])
