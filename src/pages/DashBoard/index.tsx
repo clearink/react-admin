@@ -10,11 +10,15 @@ import useInterval from "@/components/Pro/hooks/interval"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { convertTreeNode } from "../BedAllot/utils"
 import ProFormUploadList from "@/components/Pro/ProForm/components/ProFormUploadList"
-import { Button, Form, Upload } from "antd"
+import { Button, Form, Input, Upload } from "antd"
 import { UploadOutlined } from "@ant-design/icons"
 import { actions, headers } from "@/http/api/utils/file"
 import { BSAvatar } from "@/components/BigSight"
-import { ProFormAvatar } from "@/components/Pro/ProForm"
+import {
+	ProFormAvatar,
+	ProFormInput,
+	TableForm,
+} from "@/components/Pro/ProForm"
 import BSUploadList from "@/components/BigSight/Form/BSUploadList"
 const columns: ProTableColumns<any>[] = [
 	{
@@ -50,6 +54,7 @@ const columns: ProTableColumns<any>[] = [
 	},
 ]
 function WorkPlace(props: IBaseProps) {
+	const [form] = Form.useForm()
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
@@ -76,9 +81,7 @@ function WorkPlace(props: IBaseProps) {
 					transform={bsConvertTableList}
 					title={{ title: "高级表格", tooltip: "这是一个标题提示" }}
 				/> */}
-				<BaseForm onFinish={console.log}>
-					<BSUploadList name='file' label='fileList' initialValue={'123,13221'} />
-				</BaseForm>
+				<TableForm />
 			</main>
 		</div>
 	)

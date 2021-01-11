@@ -1,4 +1,4 @@
-// big sight avatar 组件
+// big sight upload list 组件
 import React, { memo, useCallback, useMemo } from "react"
 import { ProFormUploadList } from "../../Pro/ProForm"
 import { AvatarServerData, BSFormItemProps } from "../interface"
@@ -6,6 +6,7 @@ import { headers, actions } from "@/http/api/utils/file"
 import { ProFormUploadListProps } from "@/components/Pro/ProForm/components/ProFormUpload/interface"
 import { UploadFile } from "antd/lib/upload/interface"
 import { isArray, isString } from "@/utils/validate"
+import { FormItemProps, Rule } from "antd/lib/form"
 
 // TODO:  将 actions 与 headers 的 获取都放到某一个专门的文件里
 export interface BSUploadListProps
@@ -13,8 +14,8 @@ export interface BSUploadListProps
 	value?: string | ProFormUploadListProps["value"]
 }
 function BSAvatar(props: BSUploadListProps) {
-	const { value, ...rest } = props
-	const uploadUrl = useMemo(() => actions("org-avatar"), [])
+	const { initialValue, value, rules, ...rest } = props
+	const uploadUrl = useMemo(() => actions("org-file"), [])
 
 	// 转换从服务器得到的数据
 	const handleTransformServerData = useCallback(
@@ -26,16 +27,26 @@ function BSAvatar(props: BSUploadListProps) {
 		[]
 	)
 	const fileList = useMemo(() => {
-		// 可能将来还会在前面加上 app.image_url
-		if (!value) return []
-		if (!isArray(value))
-			return value.split(",").map((item) => {
+		// TODO可能将来还会在前面加上 oss_url
+		if (!initialValue) return []
+		if (!isArray(initialValue))
+			return initialValue.split(",").map((item: any) => {
 				if (isString(item)) return { uid: item, url: item }
 				return item
 			})
-		return value
-	}, [value])
-	console.log(value)
+		return initialValue
+	}, [initialValue])
+	const formRules = useMemo(() => {
+		const loadingRule: Rule = {
+			validator: (_, list: UploadFile[]) => {
+				if (list && list.some((item) => item.originFileObj))
+					return Promise.reject("文件上传中")
+				return Promise.resolve()
+			},
+		}
+		if (rules) return rules.concat(loadingRule)
+		return [loadingRule]
+	}, [rules])
 	return (
 		<ProFormUploadList
 			{...rest}
@@ -44,16 +55,8 @@ function BSAvatar(props: BSUploadListProps) {
 			headers={headers}
 			transform={handleTransformServerData}
 			limit={2048}
+			rules={formRules}
 			// 上传中请等待
-			rules={[
-				{
-					validator: (_, list: UploadFile[]) => {
-						if (list && list.some((item) => item.originFileObj))
-							return Promise.reject("文件上传中")
-						return Promise.resolve()
-					},
-				},
-			]}
 		/>
 	)
 }

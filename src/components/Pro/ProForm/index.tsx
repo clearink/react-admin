@@ -26,6 +26,7 @@ export { ProFormTreeSelect }
 // form type
 export { default as StepsForm } from "./components/StepsForm"
 export { default as QueryFilter } from "./components/QueryFilter"
+export { default as TableForm } from "./components/TableForm"
 export { default as ProForm } from "./components/BaseForm"
 
 export const formItemMap = {

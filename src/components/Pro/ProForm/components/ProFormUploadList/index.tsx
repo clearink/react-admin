@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useCallback, useMemo } from "react"
 import { message, Upload } from "antd"
 import { RcFile, UploadProps } from "antd/lib/upload"
 import { PlusOutlined } from "@ant-design/icons"
@@ -29,16 +29,12 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 	// 删除时 remove value
 	const fileList = useMemo<any[]>(() => {
 		if (!value) return []
-		if (!isArray(value)) return []
-		return value.map((item) => {
-			if (isString(item)) return { uid: item, url: item }
-			return item
-		})
+		return value
 	}, [value])
 
 	// 处理 头像src 与 loading
 
-	const handleRemoveFile = useMemoCallback(
+	const handleRemoveFile = useCallback(
 		(file: UploadFile, FL: UploadFile[]) =>
 			FL.filter((item) => file.uid !== item.uid),
 		[]
