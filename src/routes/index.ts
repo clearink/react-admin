@@ -38,7 +38,7 @@ const routes: IRoute[] = [
 					{
 						path: "/monitor/alarm",
 						component: withLazyLoad(
-							lazy(() => import("@/pages/Monitor/AlarmRecord"))
+							lazy(() => import("@/pages/AlarmRecord"))
 						),
 					},
 					{

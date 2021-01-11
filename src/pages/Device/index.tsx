@@ -4,7 +4,6 @@ import { Space } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
-import styles from "./style.module.scss"
 import {
 	bsConvertTableList,
 	formatTableSearchParams,
@@ -78,6 +77,7 @@ function Device() {
 			<ProTable
 				request={{
 					url: "/orgmgt/device/list",
+					params: { pageNo: 1, pageSize: 10 },
 					method: "post",
 					transform: bsConvertTableList,
 				}}

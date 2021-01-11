@@ -6,4 +6,4 @@
 
 ## yarn start
 
-# TODO: UPLOAD 组件 初始值优化
+# TODO: UPLOAD LIST  组件 的 count 优化

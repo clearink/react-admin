@@ -1,10 +1,11 @@
+import { ProFormMap } from "@/components/BigSight"
 import React from "react"
-import { formItemMap, ProFormInput } from "../ProForm"
+import { ProFormInput } from "../ProForm"
 import { ProFieldType } from "../ProTable/type"
 
 function renderQueryFilter(QFArray: Array<[ProFieldType | undefined, object]>) {
 	return QFArray.map(([type, props]) => {
-		const QueryComponent = formItemMap[type ?? "text"] ?? ProFormInput
+		const QueryComponent = ProFormMap[type ?? "text"] ?? ProFormInput
 		return <QueryComponent {...props} />
 	})
 }

@@ -25,6 +25,7 @@ export { FieldProgress }
 export { FieldDate }
 export { FieldPassword }
 export { FieldCode }
+export { FieldStatus }
 
 // key 根据 proForm 定义
 /**
@@ -45,31 +46,3 @@ export { FieldCode }
 }
 
  */
-export const ProFieldMap = {
-	text: FieldText,
-	orderNum: FieldText, // TODO 定义一个组件
-	digit: FieldDigit,
-	money: FieldMoney,
-
-	select: FieldStatus,
-	checkbox: FieldStatus,
-	radio: FieldStatus,
-
-	// 不同的timeFormat
-	date: FieldDate,
-	dateTime: FieldDate,
-	dateRange: FieldDate,
-	dateTimeRange: FieldDate,
-	time: FieldDate,
-
-	avatar: FieldAvatar,
-
-	status: FieldStatus,
-	password: FieldPassword,
-	code: FieldCode,
-
-	progress: FieldProgress,
-
-	percent: FieldPercent,
-	rete: FieldRate,
-}

@@ -1,3 +1,4 @@
+import { sleep } from "@/utils/test"
 import { useEffect } from "react"
 import http from "@/http"
 import { actions as kvActions } from "@/store/reducers/kv"
@@ -33,6 +34,7 @@ export default function useMemoFetch(props: UseMemoFetchProps) {
 		params,
 	])
 	const memoData = kvEntities[realUrl]?.value // 缓存
+	
 	useEffect(() => {
 		// 缓存的值发生该变 需要更新data
 		if (cache && memoData) methods.setData(memoData)
@@ -52,12 +54,6 @@ export default function useMemoFetch(props: UseMemoFetchProps) {
 		const result = transform?.(data, false) ?? data
 		if (!mountedRef.current) return
 		methods.setLoading(false)
-		/**
-		 * 如果不用缓存值 直接setData
-		 * 但是需要缓存值的话
-		 * 为了保持 同步 需要在useEffect中去同步最新的值
-		 * 所以这里不能直接setData
-		 * 		 */
 		if (cache) {
 			boundKvActions[update ? "update" : "add"]({ key: realUrl, value: result }) // save redux store
 		} else {

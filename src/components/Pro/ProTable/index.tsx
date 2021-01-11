@@ -127,7 +127,6 @@ function ProTable<T extends object>(
 			: values
 		try {
 			methods.setLoading({ delay: 100 })
-			console.log("12312312")
 			if (onSearch) {
 				const params = onSearch(searchParams)
 				methods.setParams(params)

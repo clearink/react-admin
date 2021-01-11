@@ -15,7 +15,7 @@ export interface ProFormAvatarProps extends Omit<UploadProps, "onChange"> {
 	/** true 代表上传中 */
 	onChange?: (file: string | UploadFile) => void
 }
-export type UploadListValue = Array<string | { uid: string; url: string }>
+export type UploadListValue = Array<{ uid: string; url: string }>
 export interface ProFormUploadListProps extends Omit<UploadProps, "onChange"> {
 	render?: BaseProFieldProps<ProFormUploadListProps>["render"]
 	/** 转换上传后的数据 返回false 会删除该数据 考虑上传时可能提示未登录 */

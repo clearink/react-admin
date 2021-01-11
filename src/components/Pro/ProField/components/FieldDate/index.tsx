@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react"
 import { RangePickerProps } from "antd/lib/date-picker"
-import { isArray, isString } from "@/utils/validate"
+import { isArray } from "@/utils/validate"
 import moment, { Moment } from "moment"
 import { BaseProFieldProps } from "../../type"
 import { momentToText } from "./utils"
@@ -8,8 +8,7 @@ import withDefaultProps from "@/hocs/withDefaultProps"
 
 // 日期相关
 // 最基本的 date
-export interface FieldDateRangeProps
-	extends BaseProFieldProps<FieldDateRangeProps> {
+export interface FieldDateProps extends BaseProFieldProps<FieldDateProps> {
 	text?:
 		| RangePickerProps["value"]
 		| [string | number, string | number]
@@ -19,7 +18,7 @@ export interface FieldDateRangeProps
 	fromNow?: boolean
 }
 
-function FieldDateRange(props: FieldDateRangeProps) {
+function FieldDateRange(props: FieldDateProps) {
 	const {
 		text,
 		render,

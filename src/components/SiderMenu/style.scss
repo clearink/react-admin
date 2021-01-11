@@ -3,7 +3,7 @@ $collapsed_width: 48px;
 .sider-menu {
 	&__wrap {
 		position: fixed !important;
-		transition: max-width 0.2s, min-width 0.2s, width 0.2s !important; // 禁止侧边栏除了宽度之外的动画
+		transition: max-width 0.3s, min-width 0.3s, width 0.3s !important; // 禁止侧边栏除了宽度之外的动画
 		height: 100vh;
 		left: 0;
 		top: 0;
@@ -54,7 +54,7 @@ $collapsed_width: 48px;
 	&__placeholder {
 		min-height: 100vh;
 		width: 200px;
-		transition: width 0.2s;
+		transition: width 0.3s;
 		&.collapsed {
 			width: 48px;
 		}

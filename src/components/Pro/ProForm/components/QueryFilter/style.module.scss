@@ -10,7 +10,7 @@
 		color: $color_primary;
 	}
 	.trigger_icon {
-		transition: transform 0.2s;
+		transition: transform 0.3s;
 		margin-left: 6px;
 		&.collapsed {
 			transform: rotate(-180deg);

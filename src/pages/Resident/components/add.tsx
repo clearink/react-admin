@@ -4,13 +4,10 @@ import {
 	ProFormRadio,
 	ProFormTextArea,
 } from "@/components/Pro/ProForm"
-import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
-import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
 import AddForm, {
 	AddFormProps,
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
-import { BSAvatar } from "@/components/BigSight"
 import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
 
 function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {

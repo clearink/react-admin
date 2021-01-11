@@ -12,11 +12,15 @@ import store from "@/store"
 import { actions } from "@/store/reducers/user"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
-
+const requestMap = new Map<string, { url: string; time: number }>()
+// 多次请求相隔时间不能小于200ms
 class Http {
 	private axios: AxiosStatic = Axios
-	private timer: number = NaN
+	private timer: undefined | number = undefined
+	private SAME_REQUEST = "SAME_REQUEST_SHOULD_CANCEL"
+	private SAME_REQUEST_MIN_INTERVAL = 400 // 相同请求间隔最小时间
 
+	// 暂时没有需求
 	private retryDelay: number = configs.RETRY_DELAY
 	private retryCount: number = configs.RETRY_COUNT
 
@@ -44,6 +48,14 @@ class Http {
 			async (config: AxiosRequestConfig) => {
 				const token = LoginUtil.getToken()
 				if (token) config.headers[configs.TOKEN] = token
+				const { url } = config
+				const cache = requestMap.get(url!)
+
+				if (cache && Date.now() - cache.time < this.SAME_REQUEST_MIN_INTERVAL) {
+					return Promise.reject({ code: this.SAME_REQUEST })
+				} else {
+					requestMap.set(url!, { url: url!, time: Date.now() })
+				}
 				return config
 			},
 			(error) => {
@@ -70,16 +82,17 @@ class Http {
 					return response
 				}
 				this.errorHandle(response)
-				this.showError(response.data)
 				return Promise.reject(response)
 			},
 			// 多半是服务器问题
 			(error: AxiosError) => {
 				// 为了更好的提示动画
-				this.showError(error)
-				console.group("响应拦截器error callback")
-				console.error(error)
-				console.groupEnd()
+				if (error.code !== this.SAME_REQUEST) {
+					this.showError(error)
+					console.group("响应拦截器error callback")
+					console.log(error)
+					console.groupEnd()
+				}
 				return Promise.reject(error)
 			}
 		)
@@ -90,6 +103,7 @@ class Http {
 	private errorHandle(response: AxiosResponse<any>) {
 		const {
 			data: { code },
+			data,
 		} = response
 		switch (code) {
 			case 1001:
@@ -99,6 +113,7 @@ class Http {
 				LoginUtil.clearToken()
 				break
 			default:
+				this.showError(data)
 				break
 		}
 	}

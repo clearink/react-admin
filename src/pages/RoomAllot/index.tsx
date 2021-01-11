@@ -8,15 +8,11 @@ import React, {
 } from "react"
 import styles from "./style.module.scss"
 import { Button, Switch } from "antd"
-import {
-	DeleteOutlined,
-	EditOutlined,
-	ProfileOutlined,
-} from "@ant-design/icons"
+import { EditOutlined, ProfileOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "../BedAllot/BedAllotContext"
-import { isUndefined } from "@/utils/validate"
+import { isNullUndefined } from "@/utils/validate"
 import {
 	bsConvertTableList,
 	formatTableSearchParams,
@@ -27,7 +23,6 @@ import { sleep } from "@/utils/test"
 import { EditFormRef } from "@/components/BigSight/Form/EditForm"
 import { AddFormRef } from "@/components/BigSight/Form/AddForm"
 import RoomAllotApi from "@/http/api/pages/RoomAllotApi"
-import { Link } from "react-router-dom"
 
 // 房间管理
 const columns: ProTableColumns<any>[] = [
@@ -66,11 +61,12 @@ function RoomAllot() {
 
 	const buildingId = useContext(BedAllotContext)
 
+	const params = { buildingId, pageNo: 1, pageSize: 2 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
-		if (isUndefined(buildingId) || !tableMethods) return
-		tableMethods.setParams({ buildingId })
-	}, [buildingId])
+		if (isNullUndefined(buildingId) || !tableMethods) return
+		tableMethods.setParams(params)
+	}, [buildingId, params])
 
 	const tableColumns = useMemo(() => {
 		return columns.concat({

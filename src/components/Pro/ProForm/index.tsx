@@ -15,6 +15,12 @@ import { ProFormAvatar, ProFormUploadList } from "./components/ProFormUpload"
 
 export { ProFormInput }
 export { ProFormCaptcha }
+export { ProFormNumber }
+export { ProFormDate }
+export { ProFormDateTime }
+export { ProFormDateRange }
+export { ProFormTime }
+export { ProFormDateRangeTime }
 export { ProFormSelect }
 export { ProFormCheckbox }
 export { ProFormRadio }
@@ -28,19 +34,3 @@ export { default as StepsForm } from "./components/StepsForm"
 export { default as QueryFilter } from "./components/QueryFilter"
 export { default as TableForm } from "./components/TableForm"
 export { default as ProForm } from "./components/BaseForm"
-
-export const formItemMap = {
-	text: ProFormInput,
-	orderNum: ProFormInput,
-	select: ProFormSelect,
-	digit: ProFormNumber,
-	money: ProFormNumber,
-	date: ProFormDate,
-	dateTime: ProFormDateTime,
-	dateRange: ProFormDateRange,
-	time: ProFormTime,
-	dateTimeRange: ProFormDateRangeTime,
-	checkbox: ProFormCheckbox,
-	radio: ProFormRadio,
-	avatar: ProFormAvatar,
-}

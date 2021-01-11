@@ -2,7 +2,7 @@
 .login-page {
 	&__wrap {
 		@include flex-center();
-		transition: all 0.2s;
+		transition: all 0.3s;
 		flex: 1;
 		.login-box {
 			&__wrap {

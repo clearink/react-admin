@@ -4,12 +4,11 @@ import { RcFile, UploadProps } from "antd/lib/upload"
 import { PlusOutlined } from "@ant-design/icons"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
 import styles from "./style.module.scss"
-import { headers, actions } from "@/http/api/utils/file"
 import { ProFormUploadListProps } from "../ProFormUpload/interface"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import { limitFileSize } from "../ProFormUpload/utils"
 import { UploadFile } from "antd/lib/upload/interface"
-import { isArray, isString } from "@/utils/validate"
+import { isArray } from "@/utils/validate"
 
 // 该组件只用于 上传头像
 function ProFormUploadList(props: ProFormUploadListProps) {
@@ -23,16 +22,6 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 		beforeUpload,
 		...rest
 	} = props
-
-	// 应该自己维护一个fileList
-	// 上传成功 add value
-	// 删除时 remove value
-	const fileList = useMemo<any[]>(() => {
-		if (!value) return []
-		return value
-	}, [value])
-
-	// 处理 头像src 与 loading
 
 	const handleRemoveFile = useCallback(
 		(file: UploadFile, FL: UploadFile[]) =>
@@ -84,7 +73,7 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 	const DOM = (
 		<Upload
 			{...rest}
-			fileList={fileList}
+			fileList={value as any}
 			beforeUpload={handleBeforeUpload}
 			onChange={handleUploadChange}
 		>

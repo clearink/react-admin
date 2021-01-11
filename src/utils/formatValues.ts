@@ -129,7 +129,7 @@ export function formatTableSearchParams(
 }
 
 type commonServerData = {
-	result?: {
+	result: {
 		records: any
 		current: number
 		size: number
@@ -147,9 +147,9 @@ type commonServerData = {
 export function bsConvertTableList(data: commonServerData) {
 	const { result } = data
 	return {
-		data: result!.records,
-		current: result!.current,
-		pageSize: result!.size,
-		total: result!.total,
+		data: result.records,
+		current: result.current,
+		pageSize: result.size,
+		total: result.total,
 	}
 }

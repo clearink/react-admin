@@ -1,8 +1,9 @@
+import { ProFieldMap } from "@/components/BigSight"
 import { isBoolean, isObject } from "@/utils/validate"
 import { Tooltip } from "antd"
 import React, { cloneElement } from "react"
 import { TitleTip } from "../ProCard/components"
-import { FieldText, ProFieldMap } from "../ProField"
+import { FieldText } from "../ProField"
 import { ProFieldType, ProTableColumns, ProTableRef } from "../ProTable/type"
 
 // 获取pro table 的 columns

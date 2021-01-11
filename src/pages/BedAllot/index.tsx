@@ -8,15 +8,10 @@ import React, {
 } from "react"
 import styles from "./style.module.scss"
 import { Button, Switch } from "antd"
-import {
-	DeleteOutlined,
-	EditOutlined,
-	ProfileOutlined,
-} from "@ant-design/icons"
+import { EditOutlined, ProfileOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "./BedAllotContext"
-import { isNull } from "@/utils/validate"
 import {
 	bsConvertTableList,
 	formatTableSearchParams,
@@ -26,7 +21,8 @@ import { sleep } from "@/utils/test"
 
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
-import BedAllotApi from "@/http/api/pages/BedAllotApi"
+import { isNullUndefined } from "@/utils/validate"
+
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
@@ -89,10 +85,10 @@ function BedAllot() {
 	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
 
 	// 外部设置table 的 params 控制数据请求
-	const params = { buildingId, pageNo: 1, pageSize: 2 }
+	const params = { buildingId, pageNo: 1, pageSize: 10 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
-		if (isNull(buildingId) || !tableMethods) return
+		if (isNullUndefined(buildingId) || !tableMethods) return
 		tableMethods.setParams(params)
 	}, [buildingId, params])
 

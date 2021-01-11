@@ -32,6 +32,8 @@ export type ProFieldType =
 	| "text"
 	| "orderNum"
 	| "option"
+	| "tree-select"
+	| "upload-list"
 
 type FieldSelectProps = {
 	/** Field Select checkbox radio */

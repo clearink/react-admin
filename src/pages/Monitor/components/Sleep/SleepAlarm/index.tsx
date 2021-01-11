@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { alarmColumns } from "../../../AlarmRecord"
+import { alarmColumns } from "../../../../AlarmRecord"
 import { Table } from "antd"
 
 const columns = alarmColumns.filter((item) => item.dataIndex !== "user")

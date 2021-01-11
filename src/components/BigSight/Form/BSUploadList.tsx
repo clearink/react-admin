@@ -6,12 +6,12 @@ import { headers, actions } from "@/http/api/utils/file"
 import { ProFormUploadListProps } from "@/components/Pro/ProForm/components/ProFormUpload/interface"
 import { UploadFile } from "antd/lib/upload/interface"
 import { isArray, isString } from "@/utils/validate"
-import { FormItemProps, Rule } from "antd/lib/form"
+import { Rule } from "antd/lib/form"
 
 // TODO:  将 actions 与 headers 的 获取都放到某一个专门的文件里
 export interface BSUploadListProps
 	extends BSFormItemProps<Omit<ProFormUploadListProps, "value">> {
-	value?: string | ProFormUploadListProps["value"]
+	value?: string | ProFormUploadListProps["value"] | Array<string>
 }
 function BSAvatar(props: BSUploadListProps) {
 	const { initialValue, value, rules, ...rest } = props
@@ -34,7 +34,10 @@ function BSAvatar(props: BSUploadListProps) {
 				if (isString(item)) return { uid: item, url: item }
 				return item
 			})
-		return initialValue
+		return initialValue.map((item) => {
+			if (isString(item)) return { uid: item, url: item }
+			return item
+		})
 	}, [initialValue])
 	const formRules = useMemo(() => {
 		const loadingRule: Rule = {

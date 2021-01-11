@@ -1,5 +1,15 @@
 import React, { PropsWithChildren } from "react"
-import { Card, Form, Input, Popconfirm, Select, Space, Tabs, Tree } from "antd"
+import {
+	Card,
+	Form,
+	Input,
+	Popconfirm,
+	Select,
+	Skeleton,
+	Space,
+	Tabs,
+	Tree,
+} from "antd"
 import { CommonHeader } from "@/components/PepLife"
 import {
 	BankOutlined,
@@ -14,6 +24,7 @@ import { IBaseProps } from "@/@types/fc"
 import { Link, useHistory } from "react-router-dom"
 import ModalTrigger from "@/components/ModalTrigger"
 import useMemoFetch from "@/hooks/useMemoFetch"
+import { convertDeviceTreeNode } from "./utils"
 function TreeTitleWrapper(props: { title: React.ReactNode }) {
 	return (
 		<div className={styles.tree_title_wrap}>
@@ -51,13 +62,18 @@ function TreeTitleWrapper(props: { title: React.ReactNode }) {
 // 设备管理 layout
 function Layout(props: PropsWithChildren<IBaseProps>) {
 	const { children, location } = props
-	const { push } = useHistory()	
+	const { push } = useHistory()
 	// 获取 设备树
-	// const [data, loading] = useMemoFetch({
-	// 	url: "/orgmgt/building/treeList",
-	// 	params: {},
-	// 	method: "post",
-	// })
+	const [{ data, loading }, fetchData, updateMemo] = useMemoFetch({
+		url: "/orgmgt/device/deviceList",
+		cache: true,
+		transform: (response, cache) => {
+			if (cache) return response
+			if (response) return convertDeviceTreeNode(response.result)
+			return []
+		},
+	})
+	console.log(data)
 	return (
 		<div className={styles.page_wrap}>
 			<CommonHeader icon={<BankOutlined />} title='设备管理' fixed>
@@ -87,18 +103,17 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 						</div>
 					}
 				>
-					<Tree.DirectoryTree
-						expandedKeys={[]}
-						titleRender={(node) => {
-							const { title, ...rest } = node
-							// 这里可以添加wrapper逻辑
-							return <TreeTitleWrapper {...rest} title={title} />
-						}}
-						selectable={false}
-						multiple
-						defaultExpandAll
-						treeData={[]}
-					/>
+					<Skeleton loading={!data} paragraph={{ rows: 10 }}>
+						<Tree.DirectoryTree
+							multiple
+							treeData={data}
+							defaultExpandAll
+							titleRender={(node) => {
+								const { title, ...rest } = node
+								return <TreeTitleWrapper {...rest} title={title} />
+							}}
+						/>
+					</Skeleton>
 				</Card>
 				<div className='flex-auto overflow-x-hidden'>{children}</div>
 			</main>
