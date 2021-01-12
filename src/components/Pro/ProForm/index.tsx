@@ -1,33 +1,17 @@
-import ProFormCaptcha from "./components/ProFormCaptcha"
-import ProFormCheckbox from "./components/ProFormCheckbox"
-import ProFormRadio from "./components/ProFormRadio"
-import ProFormSelect from "./components/ProFormSelect"
-import ProFormInput from "./components/ProFormInput"
-import ProFormNumber from "./components/ProFormNumber"
-import ProFormDate from "./components/ProFormDate"
-import ProFormDateTime from "./components/ProFormDate/ProFormDateTime"
-import ProFormDateRange from "./components/ProFormDate/ProFormDateRange"
-import ProFormTime from "./components/ProFormDate/ProFormTime"
-import ProFormDateRangeTime from "./components/ProFormDate/ProFormDateRangeTime"
-import ProFormTextArea from "./components/ProFormTextArea"
-import ProFormTreeSelect from "./components/ProFormTreeSelect"
-import { ProFormAvatar, ProFormUploadList } from "./components/ProFormUpload"
-
-export { ProFormInput }
-export { ProFormCaptcha }
-export { ProFormNumber }
-export { ProFormDate }
-export { ProFormDateTime }
-export { ProFormDateRange }
-export { ProFormTime }
-export { ProFormDateRangeTime }
-export { ProFormSelect }
-export { ProFormCheckbox }
-export { ProFormRadio }
-export { ProFormAvatar }
-export { ProFormUploadList }
-export { ProFormTextArea }
-export { ProFormTreeSelect }
+export { default as ProFormCaptcha } from "./components/ProFormCaptcha"
+export { default as ProFormCheckbox } from "./components/ProFormCheckbox"
+export { default as ProFormRadio } from "./components/ProFormRadio"
+export { default as ProFormSelect } from "./components/ProFormSelect"
+export { default as ProFormInput } from "./components/ProFormInput"
+export { default as ProFormNumber } from "./components/ProFormNumber"
+export { default as ProFormDate } from "./components/ProFormDate"
+export { default as ProFormDateTime } from "./components/ProFormDate/ProFormDateTime"
+export { default as ProFormDateRange } from "./components/ProFormDate/ProFormDateRange"
+export { default as ProFormTime } from "./components/ProFormDate/ProFormTime"
+export { default as ProFormDateRangeTime } from "./components/ProFormDate/ProFormDateRangeTime"
+export { default as ProFormTextArea } from "./components/ProFormTextArea"
+export { default as ProFormTreeSelect } from "./components/ProFormTreeSelect"
+export * from "./components/ProFormUpload"
 
 // form type
 export { default as StepsForm } from "./components/StepsForm"

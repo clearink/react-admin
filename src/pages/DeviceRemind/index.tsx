@@ -5,16 +5,18 @@ import { Space, Switch } from "antd"
 import { SearchOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
+import { ProFormInput } from "@/components/Pro/ProForm"
 const columns: ProTableColumns[] = [
 	{
 		title: "方案名称",
 		dataIndex: "name",
-		search: true,
-		fieldProps: {
-			label: false,
-			placeholder: "方案名称",
-			suffix: <SearchOutlined />,
-		} as any,
+		search: (
+			<ProFormInput
+				label={undefined}
+				placeholder='方案名称'
+				suffix={<SearchOutlined />}
+			/>
+		),
 	},
 	{
 		title: "提醒渠道",

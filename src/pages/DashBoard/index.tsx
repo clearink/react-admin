@@ -1,26 +1,22 @@
 import React from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
-import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
-import { TableForm } from "@/components/Pro/ProForm"
+import { ProFormSelect, TableForm } from "@/components/Pro/ProForm"
+import { FieldAvatar, FieldDate, FieldStatus } from "@/components/Pro/ProField"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "avatar",
 		title: "头像",
-		field: "avatar",
+		read: <FieldAvatar />,
 	},
 	{
 		title: "性别",
 		dataIndex: "gender",
-		field: "select",
-		search: true,
+		search: <ProFormSelect />,
 		// 三种情形都需要的数据 read edit search
-		read: {
-			statusList: colorArray,
-			renderType: "badge",
-		},
+		read: <FieldStatus statusList={colorArray} renderType='badge' />,
 		fieldProps: {
 			options: ["男", "女"],
 		},
@@ -32,10 +28,7 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "生日",
 		dataIndex: "birthday",
-		field: "date",
-		read: {
-			timeFormat: "YYYY-MM-DD",
-		} as any,
+		read: <FieldDate timeFormat='YYYY-MM-DD' />,
 	},
 ]
 function WorkPlace(props: IBaseProps) {

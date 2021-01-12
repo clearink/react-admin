@@ -16,28 +16,30 @@ import NurseAddForm from "./components/add"
 import NurseEditForm from "./components/edit"
 import NurseApi from "@/http/api/pages/NurseApi"
 import { EditOutlined } from "@ant-design/icons"
+import { FieldAvatar, FieldStatus, FieldText } from "@/components/Pro/ProField"
+import { ProFormInput } from "@/components/Pro/ProForm"
 
 // 护管管理
 
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
-		dataIndex: "avatar",
-		field: "avatar",
 		width: 80,
+		dataIndex: "avatar",
+		read: <FieldAvatar />,
 	},
 	{
 		title: "姓名",
-		dataIndex: "name",
 		width: 140,
-		search: {
-			label: undefined,
-			placeholder: "姓名/手机",
-			name: "nameOrMobile",
-		},
-		read: {
-			copyable: true,
-		},
+		dataIndex: "name",
+		read: <FieldText copyable />,
+		search: (
+			<ProFormInput
+				placeholder='姓名/手机'
+				label={undefined}
+				name='nameOrMobile'
+			/>
+		),
 	},
 	{
 		title: "性别",
@@ -51,17 +53,12 @@ const columns: ProTableColumns<any>[] = [
 		title: "身份证号",
 		width: 200,
 		dataIndex: "cardNum",
-		fieldProps: {
-			copyable: true,
-			ellipsis: true,
-		} as TextProps,
+		read: <FieldText copyable ellipsis />,
 	},
 	{
 		title: "联系电话",
 		dataIndex: "mobile",
-		fieldProps: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "职务",
@@ -70,11 +67,7 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "账号状态",
 		dataIndex: "enabled",
-		field: "select",
-		read: {
-			renderType: "badge",
-			statusList: colorArray,
-		},
+		read: <FieldStatus renderType='badge' statusList={colorArray} />,
 		fieldProps: {
 			options: [
 				{ label: "正常", value: true },
@@ -94,14 +87,14 @@ function Nurse() {
 			title: "操作",
 			dataIndex: "id",
 			width: 300,
-			render: (record) => (
+			render: (dom, id) => (
 				<Space>
 					<span>护理分配</span>
 					<span>认证信息</span>
 					<Button
 						icon={<EditOutlined />}
 						onClick={() => {
-							setEditId(record)
+							setEditId(id)
 							editRef.current?.toggle()
 						}}
 						type='link'

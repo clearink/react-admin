@@ -1,60 +1,72 @@
-import { ProFieldMap } from "@/components/BigSight"
-import { isBoolean, isObject } from "@/utils/validate"
 import { Tooltip } from "antd"
-import React, { cloneElement } from "react"
+import React, { cloneElement, isValidElement } from "react"
 import { TitleTip } from "../ProCard/components"
 import { FieldText } from "../ProField"
-import { ProFieldType, ProTableColumns, ProTableRef } from "../ProTable/type"
+import { ProFormInput } from "../ProForm"
+import { ProTableColumns } from "../ProTable/type"
 
 // 获取pro table 的 columns
 export default function renderTableColumn<T extends object>(
-	data: ProTableColumns<T>[],
-	TableAction: ProTableRef
-): [ProTableColumns<T>[], Array<[ProFieldType | undefined, object]>] {
+	data: ProTableColumns<T>[]
+) {
 	const columns: ProTableColumns<T>[] = []
-	const QFA: Array<[ProFieldType | undefined, object]> = []
+	const searchList: Array<JSX.Element> = []
 	for (let i = 0; i < data.length; i++) {
 		const {
 			title,
 			tooltip,
 			fieldProps,
-			field,
-			search,
-			read,
-			edit,
+			search: SearchComponent,
+			read: ReadComponent,
 			hideInTable,
-			render: CR,
+			render,
 			...props
 		} = data[i]
 		// search
-		if (search) {
+		if (SearchComponent) {
 			const searchProps = {
-				key: props.dataIndex,
+				key: i,
 				label: title,
 				name: props.dataIndex,
+				...fieldProps,
 			}
-			Object.assign(searchProps, fieldProps ?? {})
-			if (!isBoolean(search)) {
-				Object.assign(searchProps, search)
+			if (SearchComponent === true) {
+				searchList.push(<ProFormInput {...searchProps} />)
+			} else if (isValidElement(SearchComponent)) {
+				searchList.push(
+					cloneElement(SearchComponent, {
+						...searchProps,
+						...(SearchComponent.props as any),
+					})
+				)
 			}
-			QFA.push([field, searchProps])
 		}
+
 		// read
-		let readProps = { ...fieldProps }
-		if (isObject(read)) Object.assign(readProps, read)
-		const { ellipsis, copyable, request } = readProps as any
-		const ProField = ProFieldMap[field ?? "text"] ?? FieldText
-		let DOM = <ProField {...readProps} />
-		const colElement: ProTableColumns = {
+		const { ellipsis, copyable, request } = fieldProps ?? {}
+
+		let DOM: JSX.Element = <FieldText {...fieldProps} />
+		if (ReadComponent === true) {
+			DOM = <FieldText {...fieldProps} />
+		} else if (isValidElement(ReadComponent)) {
+			DOM = cloneElement(ReadComponent, {
+				...fieldProps,
+				...(ReadComponent.props as any),
+			})
+		}
+		const TableElement: ProTableColumns = {
 			title: () => <TitleTip title={{ title, tooltip }} />,
 			render: (text, record, index) => {
-				if (CR) return CR(text, record, index, TableAction)
+				if (render) return render(DOM, text, record, index)
 
 				// request 属性
 				if (request) {
 					DOM = cloneElement(DOM, {
 						// 是否自动请求? index === 0 并且 search = 不为空
-						request: Object.assign(request, { auto: !index && search }),
+						request: {
+							...request,
+							auto: !index && SearchComponent,
+						},
 					})
 				}
 				// 有省略时,应当防止copyable的tooltips 干扰
@@ -76,7 +88,7 @@ export default function renderTableColumn<T extends object>(
 			...props,
 		}
 		// 不在table中隐藏
-		if (!hideInTable) columns.push(colElement)
+		if (!hideInTable) columns.push(TableElement)
 	}
-	return [columns, QFA]
+	return [columns, searchList] as const
 }

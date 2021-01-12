@@ -4,7 +4,7 @@ import { UserOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
-import { FieldAvatarProps } from "@/components/Pro/ProField/components/FieldAvatar"
+import FieldAvatar from "@/components/Pro/ProField/components/FieldAvatar"
 import {
 	bsConvertTableList,
 	formatTableSearchParams,
@@ -13,26 +13,29 @@ import ResidentAddForm from "./components/add"
 import ResidentEditForm from "./components/edit"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import { sleep } from "@/utils/test"
+import {
+	ProFormDate,
+	ProFormInput,
+	ProFormSelect,
+} from "@/components/Pro/ProForm"
+import { FieldDate, FieldStatus, FieldText } from "@/components/Pro/ProField"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
 		dataIndex: "avatar",
-		field: "avatar",
-		read: {
-			icon: <UserOutlined />,
-		} as FieldAvatarProps,
+		read: <FieldAvatar icon={<UserOutlined />} />,
 	},
 	{
 		title: "姓名",
 		dataIndex: "name",
-		search: {
-			label: undefined,
-			placeholder: "性别/手机",
-			name: "nameOrMobile",
-		},
-		read: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
+		search: (
+			<ProFormInput
+				label={undefined}
+				placeholder='性别/手机'
+				name='nameOrMobile'
+			/>
+		),
 	},
 	{
 		title: "性别",
@@ -45,48 +48,40 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "入住楼层",
 		dataIndex: "floor",
-		field: "select",
-		search: {
-			placeholder: "选择楼层",
-			label: undefined,
-			name: "buildingId",
-		},
+		read: <FieldStatus />,
+		search: (
+			<ProFormSelect
+				label={undefined}
+				placeholder='选择楼层'
+				name='buildingId'
+			/>
+		),
 	},
 	{
 		title: "入住房间",
 		dataIndex: "roomName",
-		search: {
-			label: undefined,
-			placeholder: "选择房间",
-		},
+		search: <ProFormInput label={undefined} placeholder='选择房间' />,
 	},
 	{
 		title: "时间",
 		dataIndex: "time",
-		field: "date",
-		search: {
-			placeholder: "选择时间",
-			label: undefined,
-		},
+		read: <FieldDate />,
+		search: <ProFormDate placeholder='选择时间' />,
 	},
 	{
 		title: "住户手机",
 		dataIndex: "mobile",
-		read: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "紧急联系电话",
 		dataIndex: "contactNumber",
-		read: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "账号状态",
 		dataIndex: "enabled",
-		render: (value) => {
+		render: (dom, value) => {
 			return value ? "正常" : "离院"
 		},
 	},
@@ -103,11 +98,11 @@ function Resident() {
 		return columns.concat({
 			title: "操作",
 			dataIndex: "id",
-			render: (value) => {
+			render: (dom, id) => {
 				return (
 					<Space>
 						<Button type='link'>
-							<Link to={`/resident/${value}`}>住户详情</Link>
+							<Link to={`/resident/${id}`}>住户详情</Link>
 						</Button>
 
 						<Button type='link'>处理设置</Button>
@@ -115,7 +110,7 @@ function Resident() {
 							type='link'
 							onClick={() => {
 								editRef.current?.toggle()
-								setEditId(value)
+								setEditId(id)
 							}}
 						>
 							编辑

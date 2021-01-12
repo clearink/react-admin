@@ -22,55 +22,48 @@ import { sleep } from "@/utils/test"
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
 import { isNullUndefined } from "@/utils/validate"
+import { ProFormInput } from "@/components/Pro/ProForm"
+import { FieldText } from "@/components/Pro/ProField"
 
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
 		width: 160,
 		dataIndex: "orgRoomId",
-		search: {
-			label: undefined,
-			name: "roomId",
-			placeholder: "房间编号",
-		},
-		read: {
-			copyable: true,
-			ellipsis: true,
-		},
+		search: (
+			<ProFormInput label={undefined} name='roomId' placeholder='房间编号' />
+		),
+		// search: {
+		// 	label: undefined,
+		// 	name: "roomId",
+		// 	placeholder: "房间编号",
+		// },
+		read: <FieldText copyable ellipsis />,
 	},
 	{
 		title: "床位编号",
 		width: 100,
 		dataIndex: "num",
-		edit: {
-			width: "lg",
-		},
 	},
 	{
 		title: "入住用户",
 		dataIndex: "memberName",
-		read: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "护管人员",
 		dataIndex: "careWorkerName",
-		read: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "床垫设备号",
 		dataIndex: "deviceNum",
-		read: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "开放状态",
 		dataIndex: "status",
-		render(value) {
+		render(dom, value) {
 			return <Switch defaultChecked={value} />
 		},
 	},
@@ -96,9 +89,9 @@ function BedAllot() {
 		() =>
 			columns.concat({
 				title: "操作",
-				key: "action",
+				dataIndex: "id",
 				width: 250,
-				render: (record) => {
+				render: (dom, id) => {
 					return (
 						<div>
 							<Button icon={<ProfileOutlined />} type='link' size='small'>
@@ -106,7 +99,7 @@ function BedAllot() {
 							</Button>
 							<Button
 								onClick={() => {
-									setEditId(record.id)
+									setEditId(id)
 									editRef.current?.toggle()
 								}}
 								icon={<EditOutlined />}

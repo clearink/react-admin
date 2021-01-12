@@ -4,9 +4,9 @@ import { RcFile, UploadProps } from "antd/lib/upload"
 import { PlusOutlined } from "@ant-design/icons"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
 import styles from "./style.module.scss"
-import { ProFormUploadListProps } from "../ProFormUpload/interface"
+import { ProFormUploadListProps } from "../interface"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
-import { limitFileSize } from "../ProFormUpload/utils"
+import { limitFileSize } from "../utils"
 import { UploadFile } from "antd/lib/upload/interface"
 import { isArray } from "@/utils/validate"
 
@@ -22,6 +22,12 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 		beforeUpload,
 		...rest
 	} = props
+
+	const fileList = useMemo<UploadFile[]>(() => {
+		if (!value) return []
+		return value.slice(-(count ?? Infinity)) as UploadFile[]
+	}, [value, count])
+	console.log("fileList", value)
 
 	const handleRemoveFile = useCallback(
 		(file: UploadFile, FL: UploadFile[]) =>
@@ -50,7 +56,10 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 			newFileList = handleRemoveFile(file, FL)
 		}
 		// 只有上传才会更新
-		if (file.status) onChange?.(newFileList.slice(-(count ?? Infinity)))
+		if (file.status) {
+			console.log("fileList", newFileList)
+			onChange?.(newFileList.slice(-(count ?? Infinity)))
+		}
 	}
 	const handleBeforeUpload = useMemoCallback(
 		(file: RcFile, fileList: RcFile[]) => {
@@ -73,7 +82,7 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 	const DOM = (
 		<Upload
 			{...rest}
-			fileList={value as any}
+			fileList={fileList}
 			beforeUpload={handleBeforeUpload}
 			onChange={handleUploadChange}
 		>

@@ -1,11 +1,17 @@
 import { PlusOutlined } from "@ant-design/icons"
 import { Button, Table } from "antd"
-import { TableProps } from "antd/lib/table"
+import { ColumnsType, TableProps } from "antd/lib/table"
 import React, { memo, ReactNode } from "react"
 // table form
 
+export interface TableFormColumns<T = any> extends ColumnsType<T> {
+	read?: boolean | JSX.Element
+	edit?: boolean | JSX.Element
+	fieldProps?: any
+}
 export interface TableFormProps<T = any> extends TableProps<T> {
 	renderTitle?: (currentData: Array<T>, dom: ReactNode) => React.ReactNode
+	columns: TableFormColumns<T>
 }
 const columns: TableFormProps["columns"] = [
 	{

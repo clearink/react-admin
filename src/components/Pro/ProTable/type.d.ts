@@ -1,7 +1,7 @@
 import { TitleTipProps } from "./../ProCard/components/TitleTip/index"
 import { TextProps } from "antd/lib/typography/Text"
 import { ColumnType, TableProps } from "antd/lib/table"
-import { ReactNode } from "react"
+import { ComponentType, ReactNode } from "react"
 import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
 import { initialState, TableMethods } from "./useTableFetch"
@@ -48,28 +48,20 @@ type BaseProFormChildrenProps = {
 }
 export interface ProTableColumns<T extends object = any>
 	extends Omit<ColumnType<T>, "render"> {
-	field?: ProFieldType | "option"
 	tooltip?: string
 
-	render?: (
-		value: any,
-		record: any,
-		index: number,
-		action: ProTableRef
-	) => ReactNode // 扩展 table 原本的render函数
+	render?: (dom: ReactNode, value: any, record: any, index: number) => ReactNode // 扩展 table 原本的render函数
 
 	hideInTable?: boolean // 在table中隐藏
 	hideInForm?: boolean // 在form中隐藏
 	hideInDetail?: boolean // 在详情页隐藏
 
-	/** 注意 ellipsis 必须搭配 width  使用 */
+	/** search 与 read 都需要的属性 */
 	fieldProps?: BaseProFieldProps<any> & TextProps & FieldSelectProps
-	/** 搜索属性 提取到 query filter */
-	search?: (BaseProFormProps & BaseProFormChildrenProps) | boolean
-	/** Field的属性 */
-	read?: (TextProps & FieldSelectProps) | boolean
-	/** ProForm的属性 */
-	edit?: BaseProFormProps | boolean
+	/** 搜索属性 提取到 query filter 为true默认为ProFormInput */
+	search?: boolean | JSX.Element
+	/** ProField的属性 为true 默认为ProFieldText */
+	read?: boolean | JSX.Element
 }
 
 export type ProTableRef = {

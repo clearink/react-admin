@@ -23,32 +23,32 @@ import { sleep } from "@/utils/test"
 import { EditFormRef } from "@/components/BigSight/Form/EditForm"
 import { AddFormRef } from "@/components/BigSight/Form/AddForm"
 import RoomAllotApi from "@/http/api/pages/RoomAllotApi"
+import { ProFormInput } from "@/components/Pro/ProForm"
+import { FieldText } from "@/components/Pro/ProField"
 
 // 房间管理
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
 		dataIndex: "num",
-		search: { placeholder: "房间编号", label: false },
+		search: <ProFormInput placeholder='房间编号' label={undefined} />,
 	},
 	{
 		title: "入住人数/床位数",
 		dataIndex: "livingNum",
-		render: (value, record) => {
+		render: (dom, value, record) => {
 			return `${value}/${record.bedNum}`
 		},
 	},
 	{
 		title: "护管人员",
 		dataIndex: "careWorkerName",
-		fieldProps: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "开放状态",
 		dataIndex: "enabled",
-		render(value) {
+		render(dom, value) {
 			return <Switch defaultChecked={value} />
 		},
 	},
@@ -72,7 +72,7 @@ function RoomAllot() {
 		return columns.concat({
 			title: "操作",
 			dataIndex: "id",
-			render: (record) => {
+			render: (dom, id) => {
 				return (
 					<div>
 						<Button icon={<ProfileOutlined />} type='link' size='small'>
@@ -80,7 +80,7 @@ function RoomAllot() {
 						</Button>
 						<Button
 							onClick={() => {
-								setEditId(record.id)
+								setEditId(id)
 								editRef.current?.toggle()
 							}}
 							icon={<EditOutlined />}

@@ -12,7 +12,6 @@ import { ColumnsType, TableProps } from "antd/lib/table"
 import { ProTableProps, ProTableRef } from "./type"
 import { QueryFilter } from "../ProForm"
 import styles from "./style.module.scss"
-import renderQueryFilter from "../utils/renderQueryFilter"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import renderTableColumn from "../utils/renderTableColumn"
 import TableTitle from "./components/TableTitle"
@@ -114,10 +113,9 @@ function ProTable<T extends object>(
 		}
 	}, [methods.setRows, state.rows])
 
-	const [columns, QFArray] = useMemo(
-		() => renderTableColumn(PCol ?? [], tableAction),
-		[PCol, tableAction]
-	)
+	const [columns, searchList] = useMemo(() => renderTableColumn(PCol ?? []), [
+		PCol,
+	])
 
 	/** 搜索方法 	 */
 	const handleSearch = (values: any, type: "form" | "table" = "form") => {
@@ -222,7 +220,7 @@ function ProTable<T extends object>(
 					}}
 					onFinish={handleSearch}
 				>
-					{renderQueryFilter(QFArray)}
+					{searchList}
 				</QueryFilter>
 				<div className='bg-white'>
 					<div className={styles.table_toolbar_wrap}>

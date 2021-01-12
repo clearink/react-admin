@@ -4,8 +4,11 @@ import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { Button } from "antd"
 import { PlusOutlined, UsergroupAddOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
-import { FieldStatusProps } from "@/components/Pro/ProField/components/FieldStatus"
+import FieldStatus, {
+	FieldStatusProps,
+} from "@/components/Pro/ProField/components/FieldStatus"
 import styles from "./style.module.scss"
+import { FieldDate, FieldText } from "@/components/Pro/ProField"
 
 // 护理设置
 const columns: ProTableColumns<any>[] = [
@@ -16,30 +19,28 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "护理起始日期",
 		dataIndex: "beginDate",
-		field: "date",
+		read: <FieldDate />,
 	},
 	{
 		title: "当前状态",
 		dataIndex: "status",
-		field: "select",
-		read: {
-			renderType: "badge",
-			options: ["停护", "启用"],
-			statusList: ["#666", "green"],
-		},
+		read: (
+			<FieldStatus
+				renderType='badge'
+				statusList={["#666", "green"]}
+				options={["停护", "启用"]}
+			/>
+		),
 	},
 	{
 		title: "护理内容",
 		width: 600,
 		dataIndex: "content",
-		read: {
-			ellipsis: true,
-		},
+		read: <FieldText ellipsis />,
 	},
 	{
 		title: "操作",
-		field: "option",
-		render: (value, record, index, action) => {
+		render: (dom, value, record, index) => {
 			return (
 				<Button type='link' icon={<UsergroupAddOutlined />}>
 					护理设置

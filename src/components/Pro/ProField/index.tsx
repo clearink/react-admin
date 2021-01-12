@@ -1,48 +1,11 @@
-import FieldText from "./components/FieldText"
-import FieldRate from "./components/FieldRate"
-import FieldProgress from "./components/FieldProgress"
-import FieldMoney from "./components/FieldMoney"
-import FieldCode from "./components/FieldCode"
-import FieldDigit from "./components/FieldDigit"
-import FieldPercent from "./components/FieldPercent"
-import FieldPassword from "./components/FieldPassword"
-import FieldDate from "./components/FieldDate"
-import FieldStatus from "./components/FieldStatus"
-import FieldAvatar from "./components/FieldAvatar"
-
-/* 重写 ProField
-   将其分开
-   为了更好的 ts 提示
-   同时也提供原始的ProField 组件支持
-*/
-export { FieldText }
-export { FieldAvatar }
-export { FieldMoney }
-export { FieldDigit }
-export { FieldPercent }
-export { FieldRate }
-export { FieldProgress }
-export { FieldDate }
-export { FieldPassword }
-export { FieldCode }
-export { FieldStatus }
-
-// key 根据 proForm 定义
-/**
- * export const formItemMap = {
-	text: ProFormInput,
-	orderNum: ProFormInput,
-	select: ProFormSelect,
-	digit: ProFormNumber,
-	money: ProFormNumber,
-	date: ProFormDate,
-	dateTime: ProFormDateTime,
-	dateRange: ProFormDateRange,
-	time: ProFormTime,
-	dateTimeRange: ProFormDateRangeTime,
-	checkbox: ProFormCheckbox,
-	radio: ProFormRadio,
-	avatar: ProFormAvatar,
-}
-
- */
+export { default as FieldText } from "./components/FieldText"
+export { default as FieldRate } from "./components/FieldRate"
+export { default as FieldProgress } from "./components/FieldProgress"
+export { default as FieldMoney } from "./components/FieldMoney"
+export { default as FieldCode } from "./components/FieldCode"
+export { default as FieldDigit } from "./components/FieldDigit"
+export { default as FieldPercent } from "./components/FieldPercent"
+export { default as FieldPassword } from "./components/FieldPassword"
+export { default as FieldDate } from "./components/FieldDate"
+export { default as FieldStatus } from "./components/FieldStatus"
+export { default as FieldAvatar } from "./components/FieldAvatar"

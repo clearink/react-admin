@@ -14,9 +14,7 @@ function ProFormTextArea(props: ProFormTextAreaProps) {
 	if (render) return render(rest, DOM)
 	return DOM
 }
-const WrappedInput = withFormItem<ProFormTextAreaProps>(ProFormTextArea, {
+export default withFormItem<ProFormTextAreaProps>(ProFormTextArea, {
 	allowClear: true,
 	placeholder: "请输入",
 })
-
-export default WrappedInput

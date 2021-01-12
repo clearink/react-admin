@@ -50,6 +50,7 @@ function BSAvatar(props: BSUploadListProps) {
 		if (rules) return rules.concat(loadingRule)
 		return [loadingRule]
 	}, [rules])
+
 	return (
 		<ProFormUploadList
 			{...rest}

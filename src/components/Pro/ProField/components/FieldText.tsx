@@ -6,7 +6,7 @@ import { BaseProFieldProps } from "../type"
 export interface FieldTextProps
 	extends TextProps,
 		BaseProFieldProps<FieldTextProps> {
-	text: TextProps["children"]
+	text?: TextProps["children"]
 }
 function FieldText(props: FieldTextProps) {
 	const { text, render, ...rest } = props

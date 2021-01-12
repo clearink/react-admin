@@ -3,19 +3,19 @@ import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import { UserOutlined } from "@ant-design/icons"
 import { Avatar, Button, Space } from "antd"
-import MOCK, { Random } from "mockjs"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import {
 	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
-import { FieldDateProps } from "@/components/Pro/ProField/components/FieldDate"
+import FieldDate from "@/components/Pro/ProField/components/FieldDate"
 import AddAlarmForm from "./components/add"
 import EditAlarmForm from "./components/edit"
-import { convertTreeNode } from "../BedAllot/utils"
-import { DataNode } from "antd/lib/tree"
 import { convertFloorTreeNode } from "./utils"
+import { ProFormInput, ProFormSelect } from "@/components/Pro/ProForm"
+import { FieldAvatar, FieldStatus, FieldText } from "@/components/Pro/ProField"
+import { BSTreeSelect } from "@/components/BigSight"
 // 告警记录
 export const alarmColumns = [
 	{
@@ -41,7 +41,7 @@ export const alarmColumns = [
 	},
 	{
 		title: "持续时长",
-		dataIndex: "duration",
+		dataIndex: "description",
 	},
 	{
 		title: "护管人员",
@@ -69,75 +69,49 @@ export const alarmColumns = [
 const alarmArray = "离床超时,心率异常,呼吸率异常,体动频繁,围栏越界,血氧含量低".split(
 	","
 )
-const data = Array.from({ length: 40 }, (_, i) => {
-	return {
-		key: i,
-		avatar: "i",
-		user: MOCK.Random.cname(),
-		type: alarmArray[MOCK.Random.integer(0, 5)],
-		time: Random.date(),
-		duration: "00:12:35",
-		nurse: MOCK.Random.cname(),
-		status: MOCK.Random.boolean() ? "已处理" : "未处理",
-	}
-})
+
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "标识",
 		dataIndex: ["member", "avatar"],
-		field: "avatar",
-		fieldProps: {
-			size: 30,
-			icon: <UserOutlined />,
-		} as any,
+		read: <FieldAvatar size={30} icon={<UserOutlined />} />,
 	},
 	{
 		title: "告警用户",
 		dataIndex: ["member", "name"],
 		width: 130,
-		search: {
-			label: undefined,
-			placeholder: "姓名",
-			name: "name",
-		},
-		read: {
-			copyable: true,
-		},
+		search: <ProFormInput name='name' placeholder='姓名' label={undefined} />,
+		read: <FieldText copyable />,
 	},
 	{
 		dataIndex: "orgRoomId",
-		field: "tree-select",
 		hideInTable: true,
-		search: {
-			name: "roomId",
-			label: undefined,
-			placeholder: "选择房间",
-			request: {
-				url: "/orgmgt/room/treeList",
-				method: "post",
-				transform: (response: any, cache: boolean) => {
-					if (cache) return response
-					// 数据不规范 需要处理
-					if (response)
-						return convertFloorTreeNode(response.result, [
-							"orgBuildings",
-							"orgRooms",
-						])
-					return []
-				},
-			},
-		} as any,
+		search: (
+			<BSTreeSelect
+				name='roomId'
+				placeholder='选择房间'
+				request={{
+					url: "/orgmgt/room/treeList",
+					method: "post",
+					transform: (response, cache) => {
+						if (cache) return response
+						// 数据不规范 需要处理
+						if (response)
+							return convertFloorTreeNode(response.result, [
+								"orgBuildings",
+								"orgRooms",
+							])
+						return []
+					},
+				}}
+			/>
+		),
 	},
 	{
 		title: "告警类型",
 		dataIndex: "alarmType",
-		field: "select",
-		search: {
-			label: undefined,
-		},
-		read: {
-			statusList: colorArray,
-		},
+		search: <ProFormSelect placeholder='告警类型' label={undefined} />,
+		read: <FieldStatus statusList={colorArray} />,
 		fieldProps: {
 			options: alarmArray,
 		},
@@ -145,11 +119,8 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "告警时间",
 		dataIndex: "alarmTime",
-		field: "date",
 		width: 160,
-		fieldProps: {
-			timeFormat: "YYYY/MM/DD HH:mm",
-		} as FieldDateProps,
+		read: <FieldDate timeFormat='YYYY/MM/DD HH:mm' />,
 	},
 	{
 		title: "持续时长",
@@ -159,16 +130,13 @@ const columns: ProTableColumns<any>[] = [
 		title: "护管人员",
 		width: 100,
 		dataIndex: "careWorkerName",
-		read: {
-			copyable: true,
-		},
+		read: <FieldText copyable />,
 	},
 	{
 		title: "处理状态",
 		dataIndex: "status",
-		field: "select",
+		read: <FieldStatus statusList={colorArray} />,
 		fieldProps: {
-			statusList: colorArray,
 			options: ["已处理", "未处理"],
 		},
 	},
