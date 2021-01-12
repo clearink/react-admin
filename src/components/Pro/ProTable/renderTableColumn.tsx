@@ -1,9 +1,10 @@
+import { isBoolean } from "@/utils/validate"
 import { Tooltip } from "antd"
-import React, { cloneElement, isValidElement } from "react"
+import React, { cloneElement, ComponentType, isValidElement } from "react"
 import { TitleTip } from "../ProCard/components"
 import { FieldText } from "../ProField"
 import { ProFormInput } from "../ProForm"
-import { ProTableColumns } from "../ProTable/type"
+import { ProTableColumns } from "./type"
 
 // 获取pro table 的 columns
 export default function renderTableColumn<T extends object>(
@@ -30,60 +31,56 @@ export default function renderTableColumn<T extends object>(
 				name: props.dataIndex,
 				...fieldProps,
 			}
-			if (SearchComponent === true) {
-				searchList.push(<ProFormInput {...searchProps} />)
-			} else if (isValidElement(SearchComponent)) {
-				searchList.push(
-					cloneElement(SearchComponent, {
-						...searchProps,
-						...(SearchComponent.props as any),
-					})
-				)
+			let SearchDom = <ProFormInput {...searchProps} />
+
+			if (isValidElement(SearchComponent)) {
+				SearchDom = cloneElement(SearchComponent, {
+					...searchProps,
+					...(SearchComponent.props as any),
+				})
+			} else {
+				const SC = SearchComponent as ComponentType<any>
+				SearchDom = <SC {...searchProps} />
 			}
+			searchList.push(SearchDom)
 		}
 
 		// read
-		const { ellipsis, copyable, request } = fieldProps ?? {}
+		const { request } = fieldProps ?? {}
+		// 默认是 FieldText
 
-		let DOM: JSX.Element = <FieldText {...fieldProps} />
-		if (ReadComponent === true) {
-			DOM = <FieldText {...fieldProps} />
-		} else if (isValidElement(ReadComponent)) {
+		let DOM: JSX.Element = <FieldText />
+		if (isValidElement(ReadComponent)) {
 			DOM = cloneElement(ReadComponent, {
 				...fieldProps,
 				...(ReadComponent.props as any),
 			})
+		} else if (!isBoolean(ReadComponent) && ReadComponent) {
+			const RC = ReadComponent as ComponentType<any>
+			DOM = <RC {...fieldProps} />
 		}
 		const TableElement: ProTableColumns = {
 			title: () => <TitleTip title={{ title, tooltip }} />,
 			render: (text, record, index) => {
-				if (render) return render(DOM, text, record, index)
-
 				// request 属性
+				let renderDom = cloneElement(DOM, { text })
+
 				if (request) {
-					DOM = cloneElement(DOM, {
-						// 是否自动请求? index === 0 并且 search = 不为空
-						request: {
-							...request,
-							auto: !index && SearchComponent,
-						},
-					})
+					const requestProps = { ...request, auto: !index }
+					renderDom = cloneElement(renderDom, { request: requestProps })
 				}
-				// 有省略时,应当防止copyable的tooltips 干扰
-				if (ellipsis) {
-					return (
+				// 有省略
+				if (renderDom.props.ellipsis) {
+					renderDom = (
 						<Tooltip title={text}>
-							<span>
-								{cloneElement(DOM, {
-									copyable: copyable ? { tooltips: false } : null,
-									style: { width: props.width },
-									text,
-								})}
-							</span>
+							{cloneElement(renderDom, {
+								style: { width: props.width },
+							})}
 						</Tooltip>
 					)
 				}
-				return cloneElement(DOM, { text })
+				if (render) return render(renderDom, text, record, index)
+				return renderDom
 			},
 			...props,
 		}

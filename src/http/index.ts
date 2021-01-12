@@ -8,8 +8,6 @@ import Axios, {
 import { message } from "antd"
 import configs from "@/configs/app"
 import LoginUtil from "@/utils/LoginUtil"
-import store from "@/store"
-import { actions } from "@/store/reducers/user"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
 const requestMap = new Map<string, { url: string; time: number }>()
@@ -18,7 +16,7 @@ class Http {
 	private axios: AxiosStatic = Axios
 	private timer: undefined | number = undefined
 	private SAME_REQUEST = "SAME_REQUEST_SHOULD_CANCEL"
-	private SAME_REQUEST_MIN_INTERVAL = 400 // 相同请求间隔最小时间
+	private SAME_REQUEST_MIN_INTERVAL = 500 // 相同请求间隔最小时间
 
 	// 暂时没有需求
 	private retryDelay: number = configs.RETRY_DELAY
@@ -107,9 +105,7 @@ class Http {
 		} = response
 		switch (code) {
 			case 1001:
-				// token 过期
 				console.log("token 过期了 清除用户登录信息")
-				store.dispatch(actions.deleteUerInfo())
 				LoginUtil.clearToken()
 				break
 			default:

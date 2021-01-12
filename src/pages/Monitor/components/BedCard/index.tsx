@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect } from "react"
+import React, { memo, useContext } from "react"
 import classNames from "classnames"
 import { Card, Progress, Space } from "antd"
 import styles from "./style.module.scss"

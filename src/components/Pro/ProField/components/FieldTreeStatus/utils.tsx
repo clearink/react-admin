@@ -62,15 +62,6 @@ export function renderStatus(
 	return <Badge key={`${value}`} text={optionValue} color={color} />
 }
 
-/**
- * 转换原始的options
- * options : string[] | Array<{ label: string; value: string }>
- */
-export function ConvertOptions(options: string[] | Array<FieldOptionType>) {
-	if (isObject(options[0])) return options
-	if (!isArray(options)) return []
-	return (options as string[]).map((item) => ({
-		label: item,
-		value: item,
-	}))
+export function renderTreeStatus(){
+	
 }

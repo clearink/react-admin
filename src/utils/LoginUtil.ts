@@ -1,5 +1,7 @@
 import LocalStore from "./LocalStore"
 import configs from "@/configs/app"
+import store from "@/store"
+import { actions } from "@/store/reducers/user"
 
 // 登录工具封装 仅仅简化了不用每次引入 configs
 class LoginUtil {
@@ -13,8 +15,9 @@ class LoginUtil {
 		LocalStore.set(configs.TOKEN, val, time)
 	}
 
-	// 清除 token
+	/** 清除 token 与 store 中的用户信息  */
 	static clearToken() {
+		store.dispatch(actions.logout()) // 清除 store 中的 用户信息
 		LocalStore.remove(configs.TOKEN)
 	}
 

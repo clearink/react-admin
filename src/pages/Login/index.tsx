@@ -72,6 +72,7 @@ function Login(props: IBaseProps) {
 								className: "login-box__password",
 								style: { minWidth: 140 },
 							}}
+							rules={[{ required: true, message: "请输入验证码" }]}
 							placeholder='请输入验证码'
 							prefix={<PepLifeIcon type='icon-password' className='icon' />}
 							onGetCaptcha={async (form) => {

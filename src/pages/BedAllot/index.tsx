@@ -28,7 +28,7 @@ import { FieldText } from "@/components/Pro/ProField"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
-		width: 160,
+		width: 100,
 		dataIndex: "orgRoomId",
 		search: (
 			<ProFormInput label={undefined} name='roomId' placeholder='房间编号' />

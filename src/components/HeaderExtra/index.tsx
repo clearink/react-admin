@@ -28,13 +28,14 @@ import "./style.scss"
 import ModalTrigger from "../ModalTrigger"
 import { Random } from "mockjs"
 import { ProFormRadio } from "../Pro/ProForm"
+import UserAction from "./UserAction"
 
 interface IProps {}
 
 const BoundLogout = GetBoundAction(actions.logout)
 
-// 基础头部
-function UserAction(props: IProps) {
+// 基础头部 右侧用户操作
+function HeaderExtra(props: IProps) {
 	const { user } = useSelector((state: AppState) => state.user)
 	const handleLogout = () => {
 		// 清除 token
@@ -178,13 +179,8 @@ function UserAction(props: IProps) {
 					<MessageOutlined style={{ fontSize: "24px" }} />
 				</Badge>
 			</Dropdown>
-			<Dropdown overlay={menu}>
-				<span className='header_action px-3 flex items-center cursor-pointer'>
-					<Avatar className='mr-4' src={user?.avatar} alt='avatar' />
-					<span>{user?.username ?? <Spin />}</span>
-				</span>
-			</Dropdown>
+			<UserAction />
 		</div>
 	)
 }
-export default memo(UserAction)
+export default memo(HeaderExtra)

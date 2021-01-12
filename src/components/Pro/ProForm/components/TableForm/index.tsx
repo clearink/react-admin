@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons"
 import { Button, Table } from "antd"
 import { ColumnsType, TableProps } from "antd/lib/table"
-import React, { memo, ReactNode } from "react"
+import React, { memo } from "react"
 // table form
 
 export interface TableFormColumns<T = any> extends ColumnsType<T> {
@@ -9,9 +9,14 @@ export interface TableFormColumns<T = any> extends ColumnsType<T> {
 	edit?: boolean | JSX.Element
 	fieldProps?: any
 }
+
+/** 暴露的属性
+ * 1. add
+ * 2. edit
+ * 3. 自定义的render
+ */
 export interface TableFormProps<T = any> extends TableProps<T> {
-	renderTitle?: (currentData: Array<T>, dom: ReactNode) => React.ReactNode
-	columns: TableFormColumns<T>
+	columns?: TableFormColumns<T>
 }
 const columns: TableFormProps["columns"] = [
 	{

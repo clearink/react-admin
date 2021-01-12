@@ -4,7 +4,14 @@ import PageHeaderWrap from "@/components/PageHeaderWrap"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
 import { colorArray } from "@/components/Pro/ProField/components/FieldStatus/utils"
 import { ProFormSelect, TableForm } from "@/components/Pro/ProForm"
-import { FieldAvatar, FieldDate, FieldStatus } from "@/components/Pro/ProField"
+import {
+	FieldAvatar,
+	FieldDate,
+	FieldStatus,
+	FieldText,
+} from "@/components/Pro/ProField"
+import { Button } from "antd"
+import LoginUtil from "@/utils/LoginUtil"
 const columns: ProTableColumns<any>[] = [
 	{
 		dataIndex: "avatar",
@@ -39,6 +46,19 @@ function WorkPlace(props: IBaseProps) {
 				<div>ProFormUploadList</div>
 
 				<TableForm />
+				<Button
+					onClick={() => {
+						LoginUtil.clearToken()
+					}}
+				>
+					12312
+				</Button>
+				<FieldText
+					ellipsis
+					copyable
+					text={"445371199401016212"}
+					style={{ width: 100 }}
+				/>
 			</main>
 		</div>
 	)

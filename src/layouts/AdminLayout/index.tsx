@@ -20,7 +20,7 @@ const SaveMenu = GetBoundAction(menuActions.saveMenu)
 function BaseLayout(props: IBaseProps) {
 	const { children, routes } = props
 	const isLogin = LoginUtil.isLogin()
-	const { push } = useHistory()
+	const { replace } = useHistory()
 	const unwrap = useUnwrapAsyncThunk()
 	const { user } = useTypedSelector((state) => state.user)
 	const { menu } = useTypedSelector((state) => state.menu)
@@ -35,8 +35,8 @@ function BaseLayout(props: IBaseProps) {
 
 	// 未登录
 	useLayoutEffect(() => {
-		if (!isLogin) push("/login")
-	}, [isLogin, push])
+		if (!isLogin) replace("/login")
+	}, [isLogin, replace])
 
 	// 获取菜单数据
 	useEffect(() => {

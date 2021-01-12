@@ -9,7 +9,6 @@ import {
 } from "@/utils/formatValues"
 import { TextProps } from "antd/lib/typography/Text"
 import classNames from "classnames"
-import styles from "./style.module.scss"
 import { EditFormRef } from "@/components/BigSight/Form/EditForm"
 import { AddFormRef } from "@/components/BigSight/Form/AddForm"
 import NurseAddForm from "./components/add"
@@ -51,7 +50,7 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "身份证号",
-		width: 200,
+		width: 100,
 		dataIndex: "cardNum",
 		read: <FieldText copyable ellipsis />,
 	},
@@ -112,6 +111,7 @@ function Nurse() {
 				request={{
 					url: "/orgmgt/careWorker/list",
 					method: "post",
+					params: { pageNo: 1, pageSize: 10 },
 					transform: bsConvertTableList,
 				}}
 				columns={tableColumns}

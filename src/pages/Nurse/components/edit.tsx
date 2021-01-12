@@ -23,33 +23,27 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			}}
 			id={id}
 		>
-			<ProFormGroup>
-				<ProFormInput name='name' label='姓名' required />
+			<ProFormInput name='name' label='姓名' required />
 
-				<ProFormInput
-					name='mobile'
-					label='联系电话'
-					required
-					rules={[{ pattern: phonePattern, message: "手机号格式不正确" }]}
-				/>
-			</ProFormGroup>
+			<ProFormInput
+				name='mobile'
+				label='联系电话'
+				required
+				rules={[{ pattern: phonePattern, message: "手机号格式不正确" }]}
+			/>
 
-			<ProFormGroup>
-				<ProFormInput name='position' label='职务' />
-				<ProFormNumber name='age' label='年龄' required />
-				<ProFormInput name='cardNum' label='身份证号' required />
-			</ProFormGroup>
+			<ProFormInput name='position' label='职务' />
+			<ProFormNumber name='age' label='年龄' required />
+			<ProFormInput name='cardNum' label='身份证号' required />
 
-			<ProFormGroup>
-				<ProFormRadio
-					name='gender'
-					label='性别'
-					options={["男", "女"]}
-					initialValue='男'
-					required
-				/>
-				<BSAvatar name='avatar' label='头像' />
-			</ProFormGroup>
+			<BSAvatar name='avatar' label='头像' />
+			<ProFormRadio
+				name='gender'
+				label='性别'
+				options={["男", "女"]}
+				initialValue='男'
+				required
+			/>
 		</EditForm>
 	)
 }

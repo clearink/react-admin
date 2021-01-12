@@ -14,7 +14,12 @@ import AddAlarmForm from "./components/add"
 import EditAlarmForm from "./components/edit"
 import { convertFloorTreeNode } from "./utils"
 import { ProFormInput, ProFormSelect } from "@/components/Pro/ProForm"
-import { FieldAvatar, FieldStatus, FieldText } from "@/components/Pro/ProField"
+import {
+	FieldAvatar,
+	FieldStatus,
+	FieldText,
+	FieldTreeStatus,
+} from "@/components/Pro/ProField"
 import { BSTreeSelect } from "@/components/BigSight"
 // 告警记录
 export const alarmColumns = [
@@ -85,27 +90,25 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		dataIndex: "orgRoomId",
-		hideInTable: true,
-		search: (
-			<BSTreeSelect
-				name='roomId'
-				placeholder='选择房间'
-				request={{
-					url: "/orgmgt/room/treeList",
-					method: "post",
-					transform: (response, cache) => {
-						if (cache) return response
-						// 数据不规范 需要处理
-						if (response)
-							return convertFloorTreeNode(response.result, [
-								"orgBuildings",
-								"orgRooms",
-							])
-						return []
-					},
-				}}
-			/>
-		),
+		// hideInTable: true,
+		read: <FieldTreeStatus statusList={colorArray} />,
+		search: <BSTreeSelect name='roomId' placeholder='选择房间/楼层' />,
+		fieldProps: {
+			request: {
+				url: "/orgmgt/room/treeList",
+				method: "post",
+				transform: (response, cache) => {
+					if (cache) return response
+					// 数据不规范 需要处理
+					if (response)
+						return convertFloorTreeNode(response.result, [
+							"orgBuildings",
+							"orgRooms",
+						])
+					return []
+				},
+			},
+		},
 	},
 	{
 		title: "告警类型",
@@ -135,9 +138,9 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "处理状态",
 		dataIndex: "status",
-		read: <FieldStatus statusList={colorArray} />,
+		read: <FieldStatus statusList={["green", "red"]} />,
 		fieldProps: {
-			options: ["已处理", "未处理"],
+			options: ["已处理", "待处理"],
 		},
 	},
 ]

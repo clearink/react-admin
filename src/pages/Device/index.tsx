@@ -8,35 +8,24 @@ import {
 	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
-import { ProFormInput } from "@/components/Pro/ProForm"
 import { FieldText } from "@/components/Pro/ProField"
 
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "设备编号",
 		dataIndex: "num",
-		width: 100,
-		search: <ProFormInput placeholder='名称/编号' label={undefined} />,
-		read: <FieldText copyable ellipsis />,
+		width: 90,
+		// search: <ProFormInput placeholder='名称/编号' label={undefined} />,
+		read: <FieldText ellipsis copyable />,
 	},
 	{
 		title: "SIM卡号(ICCID)",
 		dataIndex: "modelNum",
 	},
-	// {
-	// 	title: "使用状态",
-	// 	width: 200,
-	// 	dataIndex: "status",
-	// 	field: "select",
-	// 	fieldProps: {
-	// 		statusList: colorArray,
-	// 		options: ["启用", "停用"],
-	// 	},
-	// },
 	{
 		title: "使用人/房间",
 		dataIndex: "producerName",
-		read: <FieldText copyable />,
+		read: <FieldText />,
 	},
 	{
 		title: "领出人",

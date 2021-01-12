@@ -1,35 +1,9 @@
-import {
-	FieldAvatar,
-	FieldCode,
-	FieldDate,
-	FieldDigit,
-	FieldMoney,
-	FieldPassword,
-	FieldPercent,
-	FieldProgress,
-	FieldRate,
-	FieldText,
-	FieldStatus,
-} from "../Pro/ProField"
-import {
-	ProFormCheckbox,
-	ProFormDate,
-	ProFormDateRange,
-	ProFormDateRangeTime,
-	ProFormDateTime,
-	ProFormInput,
-	ProFormNumber,
-	ProFormRadio,
-	ProFormSelect,
-	ProFormTime,
-} from "../Pro/ProForm"
-import BSAvatar from "./Form/BSAvatar"
-import BSTreeSelect from "./Form/BSTreeSelect"
-import BSUploadList from "./Form/BSUploadList"
+export * from "../Pro/ProField"
+export * from "../Pro/ProForm"
 
-export { BSAvatar }
-export { BSTreeSelect }
-
+export { default as BSAvatar } from "./Form/BSAvatar"
+export { default as BSTreeSelect } from "./Form/BSTreeSelect"
+export { default as BSUploadList } from "./Form/BSUploadList"
 export { default as AddForm } from "./Form/AddForm"
 export { default as EditForm } from "./Form/EditForm"
 export { default as Detail } from "./Field/Detail"

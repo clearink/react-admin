@@ -5,7 +5,7 @@ import withFormItem from "../../hocs/withFormItem"
 import { BaseProFieldProps } from "../../ProField/type"
 import useMemoFetch, { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
-import { transformOptions } from "../../ProField/components/FieldStatus/utils"
+import { ConvertOptions } from "../../ProField/components/FieldStatus/utils"
 import { isArray } from "@/utils/validate"
 
 // form.resetFields 会重新执行一次
@@ -23,7 +23,7 @@ function ProFormSelect(props: ProFormSelectProps) {
 	const [{ data, loading }] = useMemoFetch(request ?? {})
 
 	const options = useDeepMemo(() => {
-		if (PO) return transformOptions(PO) // 直接设置的 options 优先级最高
+		if (PO) return ConvertOptions(PO) // 直接设置的 options 优先级最高
 		if (isArray(data)) return data as any
 		return []
 	}, [data, PO])

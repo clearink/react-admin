@@ -4,9 +4,10 @@ import useMemoFetch, { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { isArray } from "@/utils/validate"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import { renderStatus, ConvertOptions } from "./utils"
+import { renderStatus } from "./utils"
 
-export interface FieldStatusProps extends BaseProFieldProps<FieldStatusProps> {
+export interface FieldTreeStatusProps
+	extends BaseProFieldProps<FieldTreeStatusProps> {
 	text?: string | number | Array<string | number>
 	options?: string[] | Array<FieldOptionType>
 	/** 渲染方式  "tag" | "badge"*/
@@ -16,12 +17,9 @@ export interface FieldStatusProps extends BaseProFieldProps<FieldStatusProps> {
 }
 
 /**
-
-	问题1 transform 每次都会改变 需要缓存它吗?
-	期望 期望 transform只在 data 变化时调用一次
-	暂时先缓存下来
+ * 回显树型结构的status
  */
-function FieldStatus(props: FieldStatusProps) {
+function FieldTreeStatus(props: FieldTreeStatusProps) {
 	const {
 		text,
 		statusList,
@@ -36,10 +34,11 @@ function FieldStatus(props: FieldStatusProps) {
 	// form.resetFields 会重新执行一次
 	// 这是 antd 的设计 no bug
 	const options = useDeepMemo(() => {
-		if (PO) return ConvertOptions(PO) // 直接设置的 options 优先级最高
+		if (PO) return PO
 		if (isArray(data)) return data as any
 		return []
 	}, [data, PO])
+	// console.log("tree select", text, options, statusList, renderType)
 	const DOM = <span>{renderStatus(text, options, statusList, renderType)}</span>
 	if (render)
 		return render({ text, ...rest, renderType, statusList, options }, DOM)
@@ -47,5 +46,5 @@ function FieldStatus(props: FieldStatusProps) {
 }
 
 export default memo(
-	withDefaultProps(FieldStatus, { text: "", renderType: "tag" })
+	withDefaultProps(FieldTreeStatus, { text: "", renderType: "tag" })
 )

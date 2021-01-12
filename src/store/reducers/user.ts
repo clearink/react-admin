@@ -38,9 +38,6 @@ const slice = createSlice({
 		logout(state) {
 			state.user = null
 		},
-		deleteUerInfo(state) {
-			state.user = null
-		},
 	},
 	extraReducers: (builder) => {
 		builder

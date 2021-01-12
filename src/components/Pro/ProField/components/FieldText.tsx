@@ -9,8 +9,14 @@ export interface FieldTextProps
 	text?: TextProps["children"]
 }
 function FieldText(props: FieldTextProps) {
-	const { text, render, ...rest } = props
-	const DOM = <Typography.Text children={text} {...rest} />
+	const { text, render, copyable, ...rest } = props
+	const DOM = (
+		<Typography.Text
+			children={text}
+			{...rest}
+			copyable={copyable ? { tooltips: false } : undefined}
+		/>
+	)
 	if (render) return render({ text, ...rest }, DOM)
 	return DOM
 }

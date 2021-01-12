@@ -13,7 +13,7 @@ import { ProTableProps, ProTableRef } from "./type"
 import { QueryFilter } from "../ProForm"
 import styles from "./style.module.scss"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import renderTableColumn from "../utils/renderTableColumn"
+import renderTableColumn from "./renderTableColumn"
 import TableTitle from "./components/TableTitle"
 import ProTableContext from "./ProTableContext"
 import {
@@ -113,9 +113,9 @@ function ProTable<T extends object>(
 		}
 	}, [methods.setRows, state.rows])
 
-	const [columns, searchList] = useMemo(() => renderTableColumn(PCol ?? []), [
-		PCol,
-	])
+	const [columns, searchList] = useMemo(() => {
+		return renderTableColumn(PCol ?? [])
+	}, [PCol])
 
 	/** 搜索方法 	 */
 	const handleSearch = (values: any, type: "form" | "table" = "form") => {
@@ -208,9 +208,7 @@ function ProTable<T extends object>(
 				<QueryFilter
 					name='table-query-filter'
 					loading={state.loading}
-					className={classNames("mb-10", {
-						hidden: !search,
-					})}
+					className={classNames({ hidden: !search })}
 					submitConfig={{
 						resetProps: {
 							onClick: () => {

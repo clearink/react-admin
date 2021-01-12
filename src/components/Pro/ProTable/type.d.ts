@@ -57,11 +57,11 @@ export interface ProTableColumns<T extends object = any>
 	hideInDetail?: boolean // 在详情页隐藏
 
 	/** search 与 read 都需要的属性 */
-	fieldProps?: BaseProFieldProps<any> & TextProps & FieldSelectProps
+	fieldProps?: FieldSelectProps
 	/** 搜索属性 提取到 query filter 为true默认为ProFormInput */
-	search?: boolean | JSX.Element
+	search?: boolean | JSX.Element | ComponentType<any>
 	/** ProField的属性 为true 默认为ProFieldText */
-	read?: boolean | JSX.Element
+	read?: boolean | JSX.Element | ComponentType<any>
 }
 
 export type ProTableRef = {

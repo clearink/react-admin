@@ -13,7 +13,8 @@ function FieldMoney(props: FieldMoneyProps) {
 	const { text, render, locale } = props
 
 	const prefix = useMemo(() => moneySign[locale ?? ""] ?? "", [locale]) // 前缀
-	const money = formatMoney(text ?? 0)
+	const money = formatMoney(text ? text : 0)
+
 	const dom = <span>{`${prefix}${money}`}</span>
 	if (render) return render({ text, locale }, dom)
 	return dom
