@@ -5,11 +5,10 @@ import EditForm, {
 	EditFormRef,
 } from "@/components/BigSight/Form/EditForm"
 import ProFormGroup from "@/components/Pro/ProForm/components/ProFormGroup"
-import ProFormBsTreeSelect from "@/components/BigSight/Form/BSTreeSelect"
 import { convertTreeNode } from "@/pages/BedAllot/utils"
+import { BSTreeSelect } from "@/components/BigSight"
 
 function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
-	// 这里可以传入 request 对象
 	return (
 		<EditForm
 			{...props}
@@ -22,19 +21,17 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 		>
 			<ProFormGroup>
 				<ProFormInput name='num' label='床位名称' required />
-				<ProFormBsTreeSelect
+				<BSTreeSelect
 					name='orgBuildingId'
 					width='l'
 					label='所属楼层'
 					request={{
-						url: "/orgmgt/building/treeList",
 						method: "post",
-						transform: (response) => {
-							if (response.success) {
-								return convertTreeNode(response.result, "orgBuildings")
-							}
-							if (response) return response
-							return []
+						url: "/orgmgt/building/treeList",
+						transform: (response, cache) => {
+							console.log("cache", cache)
+							if (cache) return response
+							return convertTreeNode(response.result, "orgBuildings") ?? []
 						},
 					}}
 				/>

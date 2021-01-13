@@ -1,4 +1,4 @@
-import { isBoolean } from "@/utils/validate"
+import { isBoolean } from "@/utils/data/validate"
 import { Tooltip } from "antd"
 import React, { cloneElement, ComponentType, isValidElement } from "react"
 import { TitleTip } from "../ProCard/components"

@@ -14,3 +14,4 @@ export default {
 	GetCaptcha: (params: CaptchaData) =>
 		http.get("/orgmgt/sendCaptchaOrg", params),
 }
+

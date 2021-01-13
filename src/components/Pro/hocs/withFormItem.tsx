@@ -1,13 +1,13 @@
 import withDefaultProps from "@/hocs/withDefaultProps"
-import FilterValue from "@/utils/FilterValue"
-import GetValue from "@/utils/GetValue"
-import { isArray, isNumber } from "@/utils/validate"
+import FilterValue from "@/utils/data/FilterValue"
+import GetValue from "@/utils/data/GetValue"
+import { isArray, isNumber } from "@/utils/data/validate"
 import { Form } from "antd"
 import { FormItemProps } from "antd/lib/form"
 import React, { memo } from "react"
 import { antdFormItemProps, WIDTH_SIZE_ENUM } from "../utils/constant"
 import { ColProps } from "antd/lib/col"
-import { getRequiredRule } from "@/utils/generatorFormRule"
+import { getRequiredRule } from "@/utils/form/FormRule"
 // 将各种 ProField 包装一下
 // TODO : SizeContext 用于设置组件的大小
 interface FieldStyleProps {

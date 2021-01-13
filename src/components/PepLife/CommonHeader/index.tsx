@@ -1,9 +1,9 @@
-import React, { memo, PropsWithChildren, ReactNode, useMemo } from "react"
+import React, { memo, PropsWithChildren, ReactNode } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
 import GetIcon from "@/components/GetIcon"
 import withDefaultProps from "@/hocs/withDefaultProps"
-import HeaderExtra from "../HeaderExtra"
+import UserAction from "../HeaderExtra"
 import useTypedSelector from "@/hooks/useTypedSelector"
 // 派博 基础的 header
 /**
@@ -33,7 +33,7 @@ function CommonHeader(props: PropsWithChildren<CommonHeaderProps>) {
 				<span className={styles.common_header_title}>{title}</span>
 			</header>
 			<div className={styles.children}>{children}</div>
-			<div className={styles.extra}>{extra ?? <HeaderExtra />}</div>
+			<div className={styles.extra}>{extra ?? <UserAction />}</div>
 		</div>
 	)
 }

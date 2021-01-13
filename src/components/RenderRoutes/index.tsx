@@ -4,7 +4,7 @@ import { IRoute } from "@/@types/route"
 import { IBaseProps } from "@/@types/fc"
 import withLazyLoad from "@/hocs/withLazyLoad"
 import { dequal } from "dequal"
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 
 interface IProps {
 	routes: IRoute[]

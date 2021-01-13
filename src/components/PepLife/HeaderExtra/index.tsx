@@ -6,8 +6,8 @@ import UserAlarm from "./UserAlarm"
 function HeaderExtra() {
 	return (
 		<div className='flex items-center'>
-			<UserAction />
 			<UserAlarm />
+			<UserAction />
 		</div>
 	)
 }

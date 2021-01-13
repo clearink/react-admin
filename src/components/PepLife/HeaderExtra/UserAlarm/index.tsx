@@ -1,126 +1,72 @@
 import React, { memo } from "react"
-import classNames from "classnames"
+import { Badge, Dropdown } from "antd"
 import styles from "./style.module.scss"
-import { Dropdown } from "antd"
+import useAlarmService, { AlarmService } from "./useAlarmService"
+import { MessageOutlined, RightOutlined } from "@ant-design/icons"
+import { Link } from "react-router-dom"
+import UserAlarmDetail from "./UserAlarmDetail/UserAlarm.Detail"
 
 // 用户告警信息
 function UserAlarm() {
+	const alarmService = useAlarmService()
+
+	const AlarmList = (
+		<div className={styles.alarm_list_wrap}>
+			<div className={styles.title}>异常告警</div>
+			{alarmService.data?.records.map((item: any) => {
+				return (
+					<div className={styles.alarm_list_item} key={item.id}>
+						<div className={styles.item_name}>
+							<span className={styles.name}>{item?.member?.name}</span>
+							<span className={styles.floor}>{item?.member?.floor}</span>
+						</div>
+						<div className={styles.item_action}>
+							<span className={styles.type}>{item?.description}</span>
+							<span
+								className={styles.link}
+								onClick={() => alarmService.open(item.id)}
+							>
+								处理告警
+							</span>
+						</div>
+					</div>
+				)
+			})}
+			<div className={styles.footer}>
+				<span className={styles.un_resolve}>
+					未处理告警(
+					<span className='text-red-400 font-bold'>
+						{alarmService.data?.total ?? 0}
+					</span>
+					)
+				</span>
+				<Link to='/monitor/alarm'>
+					查看更多告警
+					<RightOutlined />
+				</Link>
+			</div>
+		</div>
+	)
 	return (
-		<Dropdown
-			placement='bottomCenter'
-			trigger={["click"]}
-			overlay={
-				<div className='bg-white item_wrap'>
-					<div className='px-10 py-4 bg-grey-600 title'>异常告警</div>
-					{Array.from({ length: 10 }, (_, i) => {
-						return (
-							<div key={i} className={classNames("p-4 item")}>
-								<div>
-									<span className='name'>{Random.cname()}</span>
-									<span>五楼 {Random.integer(100, 400)}房 02床</span>
-								</div>
-								<div className='flex items-center justify-between mt-4'>
-									<span>离床超时</span>
-									<ModalTrigger
-										footer={null}
-										width={640}
-										trigger={
-											<span className='underline cursor-pointer link'>
-												处理告警
-											</span>
-										}
-									>
-										{({ toggle }: any) => (
-											<div>
-												<div className='flex items-center justify-between'>
-													<Avatar icon={<UserOutlined />} size={90} />
-													<div className='user_name flex flex-col'>
-														<span className='block text-3xl font-bold mb-4 text-center'>
-															{Random.cname()}
-														</span>
-														<span className='text-2xl text-center'>
-															{Random.boolean() ? "男" : "女"}
-															&nbsp;&nbsp;&nbsp;{Random.integer(60, 80)}岁
-														</span>
-													</div>
-													<div
-														className='flex flex-col flex-auto text-gray-700'
-														style={{ fontSize: "18px" }}
-													>
-														<span>入住床位: 五楼-507房-022床</span>
-														<span>
-															护管人员:
-															<Typography.Text copyable>
-																{Random.cname()}（17712345678）
-															</Typography.Text>
-														</span>
-														<span>
-															家属联系:
-															<Typography.Text copyable>
-																{Random.cname()}（18012345678）
-															</Typography.Text>
-														</span>
-													</div>
-												</div>
-												<Divider />
-												<div>
-													<Descriptions column={1}>
-														<Descriptions.Item
-															label={
-																<Space>
-																	<UserOutlined />
-																	告警信息
-																</Space>
-															}
-														>
-															离床超时
-														</Descriptions.Item>
-														<Descriptions.Item label='处理方式'>
-															<ProFormRadio
-																value={["电话通知护管人员查看核实"]}
-																className='field_radio'
-																options={[
-																	"电话通知护管人员查看核实",
-																	" 短信通知护管人员查看核实",
-																	"已核实，已联系专业医护人员",
-																	"误报，重新检测数据正常",
-																	"误报，设备异常",
-																]}
-															/>
-														</Descriptions.Item>
-														<Descriptions.Item label='处理备注'>
-															<Input.TextArea
-																style={{ width: 400 }}
-																placeholder='请输入处理备注'
-																maxLength={100}
-																showCount
-																rows={4}
-															/>
-														</Descriptions.Item>
-													</Descriptions>
-													<div className='text-center'>
-														<Space>
-															<Button onClick={toggle as any}>暂不处理</Button>
-															<Button type='primary' onClick={toggle as any}>
-																处理提交
-															</Button>
-														</Space>
-													</div>
-												</div>
-											</div>
-										)}
-									</ModalTrigger>
-								</div>
-							</div>
-						)
-					})}
-				</div>
-			}
-		>
-			<Badge count={28} className='mr-6 cursor-pointer'>
-				<MessageOutlined style={{ fontSize: "24px" }} />
-			</Badge>
-		</Dropdown>
+		<AlarmService.Provider value={alarmService}>
+			<Dropdown
+				placement='bottomRight'
+				trigger={["click"]}
+				overlay={AlarmList}
+				getPopupContainer={(trigger) => trigger.parentElement!}
+			>
+				<Badge
+					count={alarmService.data?.total ?? 0}
+					className='mr-6 cursor-pointer'
+				>
+					<MessageOutlined style={{ fontSize: "24px" }} />
+				</Badge>
+			</Dropdown>
+			<UserAlarmDetail
+				id={alarmService.alarmId}
+				ref={alarmService.alarmDetailRef}
+			/>
+		</AlarmService.Provider>
 	)
 }
 export default memo(UserAlarm)

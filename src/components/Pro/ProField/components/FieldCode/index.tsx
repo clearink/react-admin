@@ -5,7 +5,7 @@ import { BaseProFieldProps } from "../../type"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import "./style.scss"
 import toNumber from "lodash.tonumber"
-import { isString } from "@/utils/validate"
+import { isString } from "@/utils/data/validate"
 
 export interface FieldCodeProps
 	extends ParagraphProps,

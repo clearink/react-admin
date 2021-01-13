@@ -15,3 +15,14 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+@mixin scrollbar($color, $width: 5px) {
+	&::-webkit-scrollbar {
+		width: $width;
+		background-color: rgba($color, $alpha: 0.1);
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 1rem;
+		background-color: $color;
+	}
+}

@@ -8,7 +8,7 @@ import { ProFormUploadListProps } from "../interface"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import { limitFileSize } from "../utils"
 import { UploadFile } from "antd/lib/upload/interface"
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 
 // 该组件只用于 上传头像
 function ProFormUploadList(props: ProFormUploadListProps) {

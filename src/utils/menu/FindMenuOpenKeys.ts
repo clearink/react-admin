@@ -1,6 +1,6 @@
 import { TMenu } from "@/@types/menu"
 import { matchPath } from "react-router-dom"
-import unique from "./unique"
+import unique from "../data/unique"
 
 // 递归查找路径
 /**

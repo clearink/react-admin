@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { TreeSelect } from "antd"
 import { BaseProFieldProps } from "@/components/Pro/ProField/type"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
@@ -24,7 +24,7 @@ function ProFormTreeSelect(props: ProFormTreeSelectProps) {
 
 	// 远程请求数据
 	const [{ data, loading }] = useMemoFetch({ cache: true, ...request })
-	
+
 	const treeData = useMemo(() => {
 		if (propsData) return propsData
 		if (data) return data

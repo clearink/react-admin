@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react"
 import { RangePickerProps } from "antd/lib/date-picker"
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 import moment, { Moment } from "moment"
 import { BaseProFieldProps } from "../../type"
 import { momentToText } from "./utils"

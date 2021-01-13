@@ -8,7 +8,7 @@ import EditForm, {
 	EditFormProps,
 	EditFormRef,
 } from "@/components/BigSight/Form/EditForm"
-import { phonePattern } from "@/utils/pattern"
+import { phonePattern } from "@/utils/form/pattern"
 import ProFormNumber from "@/components/Pro/ProForm/components/ProFormNumber"
 import BSAvatar from "@/components/BigSight/Form/BSAvatar"
 

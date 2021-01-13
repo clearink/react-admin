@@ -11,18 +11,18 @@ import React, {
 import { Modal } from "antd"
 import { ModalProps } from "antd/lib/modal"
 import useBoolean from "@/hooks/useBoolean"
-import { isFunction } from "@/utils/validate"
+import { isFunction } from "@/utils/data/validate"
 // antd 模态框封装
 interface IProps extends Omit<ModalProps, "visible"> {
 	trigger?: ReactNode
 	children?: ReactNode
 }
-export interface IModalTriggerRef {
+export interface ModalTriggerRef {
 	toggle: (e?: MouseEvent, t?: () => void) => void
 	visible: boolean
 	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
 }
-function ModalTrigger(props: IProps, ref: Ref<IModalTriggerRef | undefined>) {
+function ModalTrigger(props: IProps, ref: Ref<ModalTriggerRef | undefined>) {
 	const { trigger, children, ...rest } = props
 	const [visible, toggle] = useBoolean(false)
 

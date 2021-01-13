@@ -21,7 +21,7 @@ import { sleep } from "@/utils/test"
 
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
-import { isNullUndefined } from "@/utils/validate"
+import { isNullUndefined } from "@/utils/data/validate"
 import { ProFormInput } from "@/components/Pro/ProForm"
 import { FieldText } from "@/components/Pro/ProField"
 

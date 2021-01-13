@@ -60,8 +60,8 @@ function EditForm(props: EditFormProps, ref: Ref<DrawerFormRef>) {
 
 	// 请求详细数据 等到完全打开drawer or modal后再发起请求
 	useEffect(() => {
-		formRef.current?.form.resetFields()
 		if (!id) return
+		formRef.current?.form.resetFields() // resetFields会重置mounted表单组件
 		setLoading(true)
 		const timer = window.setTimeout(() => fetchData(), 300)
 		return () => clearTimeout(timer)
@@ -71,7 +71,8 @@ function EditForm(props: EditFormProps, ref: Ref<DrawerFormRef>) {
 	return (
 		<FormComponent ref={formRef} name='edit-form' {...rest}>
 			<Spin spinning={loading}>{children}</Spin>
-			{/* 一般修改时会传入id,这里默认给个Id */}
+
+			{/* 一般修改时会传入id,这里默认给个id */}
 			<ProFormInput name='id' formItemClassName='hidden' />
 		</FormComponent>
 	)

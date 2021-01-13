@@ -9,7 +9,7 @@ import React, {
 	useMemo,
 } from "react"
 import { Drawer } from "antd"
-import { isFunction } from "@/utils/validate"
+import { isFunction } from "@/utils/data/validate"
 import { DrawerProps } from "antd/lib/drawer"
 import { useSwitch } from "../Pro/hooks/boolean"
 // antd 模态框封装
@@ -17,7 +17,7 @@ interface DrawerTriggerProps extends Omit<DrawerProps, "visible"> {
 	trigger?: ReactNode
 	children?: ReactNode
 }
-export interface IModalTriggerRef {
+export interface ModalTriggerRef {
 	toggle: (e?: MouseEvent, t?: () => void) => void
 	visible: boolean
 	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
@@ -26,7 +26,7 @@ export interface IModalTriggerRef {
 
 function DrawerTrigger(
 	props: DrawerTriggerProps,
-	ref: Ref<IModalTriggerRef | undefined>
+	ref: Ref<ModalTriggerRef | undefined>
 ) {
 	const { trigger, children, ...rest } = props
 	const [visible, on, off, toggle] = useSwitch()

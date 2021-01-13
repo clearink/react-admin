@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react"
 import useTypedSelector from "@/hooks/useTypedSelector"
-import FindBreadcrumb from "@/utils/FindBreadcrumb"
+import FindBreadcrumb from "@/utils/menu/FindBreadcrumb"
 import { PageHeader } from "antd"
 import { PageHeaderProps } from "antd/lib/page-header"
 import { Link, useLocation } from "react-router-dom"

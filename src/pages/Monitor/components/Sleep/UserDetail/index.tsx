@@ -10,11 +10,11 @@ import {
 	ProFormTextArea,
 } from "@/components/Pro/ProForm"
 import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
-import { getRequiredRule } from "@/utils/generatorFormRule"
+import { getRequiredRule } from "@/utils/form/FormRule"
 import { CheckCircleOutlined } from "@ant-design/icons"
 import { FormInstance } from "antd/lib/form"
 import http from "@/http"
-import { isString } from "@/utils/validate"
+import { isString } from "@/utils/data/validate"
 
 const updateUserDetail = (data: any) => http.post("/orgmgt/member/save", data)
 

@@ -1,4 +1,4 @@
-import LocalStore from "./LocalStore"
+import LocalStore from "../data/LocalStore"
 import configs from "@/configs/app"
 import store from "@/store"
 import { actions } from "@/store/reducers/user"

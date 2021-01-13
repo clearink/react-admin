@@ -1,4 +1,4 @@
-import { isArray, isObject } from "@/utils/validate"
+import { isArray, isObject } from "@/utils/data/validate"
 import { Badge, Space, Tag } from "antd"
 import { CheckboxValueType } from "antd/lib/checkbox/Group"
 import React from "react"

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import { Space } from "antd"
 import { Moment } from "moment"
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 
 // 将 timeValue转成字符
 export function momentToText(

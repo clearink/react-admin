@@ -21,12 +21,9 @@ function RoomAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 					request={{
 						url: "/orgmgt/building/treeList",
 						method: "post",
-						transform: (response) => {
-							if (response.success) {
-								return convertTreeNode(response.result, "orgBuildings")
-							}
-							if (response) return response
-							return []
+						transform: (response, cache) => {
+							if (cache) return response
+							return convertTreeNode(response.result, "orgBuildings") ?? []
 						},
 					}}
 				/>

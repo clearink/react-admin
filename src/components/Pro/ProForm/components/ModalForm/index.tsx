@@ -27,8 +27,8 @@ export interface ModalFormProps extends Omit<BaseFormProps, "title"> {
 	title?: TitleTipProps["title"]
 	onFinish?: (values: any) => Promise<boolean>
 }
-
-function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
+export type ModalFormRef = DrawerFormRef
+function ModalForm(props: ModalFormProps, ref: Ref<ModalFormRef>) {
 	const { children, trigger, modalProps, title, onFinish, ...rest } = props
 	// 内部状态
 	const [visible, on, off, toggle] = useSwitch()
@@ -71,12 +71,12 @@ function ModalForm(props: ModalFormProps, ref: Ref<DrawerFormRef>) {
 			onFinish={handleFinish}
 		>
 			<Modal
-				visible={visible}
-				title={<TitleTip title={title} />}
 				width={600}
+				{...modalProps}
+				title={<TitleTip title={title} />}
+				visible={visible}
 				onCancel={off}
 				destroyOnClose={false}
-				{...modalProps}
 				getContainer={false}
 				onOk={form.submit}
 				confirmLoading={loading}

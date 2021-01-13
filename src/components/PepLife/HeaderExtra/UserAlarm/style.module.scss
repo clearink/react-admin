@@ -1,37 +1,49 @@
 @import "@/styles/index";
-
-.header_action {
-	transition: all 0.3s;
-	min-width: 100px;
-	&:hover {
-		background-color: rgba($color-grey, $alpha: 0.3);
+.alarm_list_wrap {
+	background-color: white;
+	width: 300px;
+	box-shadow: 1px 1px 4px rgba(black, $alpha: 0.2);
+	border-radius: 4px;
+	.title {
+		padding: 6px 20px;
+		background-color: $color_grey-1;
+		color: $color_text;
 	}
-}
-.item,
-.title {
-	border-bottom: 1px solid rgba(#000, 0.1);
-	width: 240px;
-}
-.item_wrap {
-	border: 1px solid rgba(#000, 0.1);
-	border-bottom: none;
-}
-.name {
-	font-size: 18px;
-	font-weight: bold;
-	margin-right: 40px;
-}
-.link {
-	color: #1890ff;
-}
+	.alarm_list_item {
+		padding: 4px 20px;
+		.item_name {
+			display: flex;
+			margin-bottom: 6px;
+			align-items: center;
+			.name {
+				margin-right: 60px;
+				font-weight: bold;
+				font-size: 18px;
+			}
+		}
+		.item_action {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 6px;
+			.link {
+				text-align: center;
+				flex-basis: 70px;
+				flex-shrink: 0;
+				color: $color-primary;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		}
+		border-bottom: 1px solid rgba($color_grey-2, 0.2);
+	}
+	.footer {
+		padding: 10px 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
-.user_name {
-	flex-basis: 140px;
-}
-.field_radio {
-	.ant-radio-wrapper {
-		display: block;
-		margin-bottom: 10px;
-		margin-left: 10px;
+		.un_resolve {
+			color: $color_primary;
+		}
 	}
 }

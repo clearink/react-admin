@@ -1,0 +1,51 @@
+@import "@/styles/index";
+.detail_wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid rgba($color_text, 0.4);
+	.avatar {
+		flex-shrink: 0;
+	}
+	.user {
+		padding: 0 40px;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.nurse {
+		@apply flex flex-col flex-auto text-3xl text-gray-500;
+	}
+}
+.alarm_reason {
+	position: relative;
+	padding-left: 4px;
+	display: flex;
+	margin-bottom: 10px;
+	align-items: center;
+	&::before {
+		content: "";
+		position: absolute;
+		width: 4px;
+		height: 100%;
+		left: 0;
+		background-color: $color_primary;
+	}
+	.label{
+		width: 100px;
+	}
+}
+.radio_group {
+	@apply flex flex-col;
+	& > label {
+		margin-bottom: 6px;
+	}
+}
+.form{
+	label{
+		display: inline-block;
+		width: 94px;
+	}
+}

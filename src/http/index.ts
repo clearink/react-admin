@@ -7,7 +7,7 @@ import Axios, {
 } from "axios"
 import { message } from "antd"
 import configs from "@/configs/app"
-import LoginUtil from "@/utils/LoginUtil"
+import LoginUtil from "@/utils/store/LoginUtil"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
 const requestMap = new Map<string, { url: string; time: number }>()
@@ -50,7 +50,7 @@ class Http {
 				const cache = requestMap.get(url!)
 
 				if (cache && Date.now() - cache.time < this.SAME_REQUEST_MIN_INTERVAL) {
-					return Promise.reject({ code: this.SAME_REQUEST })
+					return Promise.reject({ code: this.SAME_REQUEST, config })
 				} else {
 					requestMap.set(url!, { url: url!, time: Date.now() })
 				}

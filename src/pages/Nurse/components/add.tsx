@@ -7,7 +7,7 @@ import AddForm, {
 	AddFormProps,
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
-import { phonePattern } from "@/utils/pattern"
+import { phonePattern } from "@/utils/form/pattern"
 
 function NurseAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (

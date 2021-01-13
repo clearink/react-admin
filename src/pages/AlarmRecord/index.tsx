@@ -84,7 +84,7 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "告警用户",
 		dataIndex: ["member", "name"],
-		width: 130,
+		width: 100,
 		search: <ProFormInput name='name' placeholder='姓名' label={undefined} />,
 		read: <FieldText copyable />,
 	},
@@ -131,9 +131,9 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "护管人员",
-		width: 100,
-		dataIndex: "careWorkerName",
-		read: <FieldText copyable />,
+		width: 140,
+		dataIndex: ["member", "careWorkerName"],
+		read: <FieldText />,
 	},
 	{
 		title: "处理状态",
@@ -152,8 +152,7 @@ function AlarmRecord() {
 	const tableColumns = useMemo(() => {
 		return columns.concat({
 			title: "操作",
-			key: "action",
-			width: 250,
+			dataIndex: "id",
 			render: () => (
 				<Space>
 					<Button type='link'>告警处理</Button>

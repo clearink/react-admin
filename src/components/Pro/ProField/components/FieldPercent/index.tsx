@@ -3,7 +3,7 @@ import { BaseProFieldProps } from "../../type"
 import { toNumber } from "./utils"
 import { removeSeparator } from "@/utils/formatValues"
 import PercentString from "./PercentString"
-import GetValue from "@/utils/GetValue"
+import GetValue from "@/utils/data/GetValue"
 import withDefaultProps from "@/hocs/withDefaultProps"
 
 interface FieldPercentProps extends BaseProFieldProps<FieldPercentProps> {

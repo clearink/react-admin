@@ -15,6 +15,7 @@ function Home(props: IBaseProps) {
 	const { user } = useTypedSelector((state) => state.user)
 	const [{ data, loading }] = useMemoFetch({
 		url: "/orgmgt/index/info",
+		cache:true
 	})
 	const lastLogin = useMemo(() => {
 		if (data)
@@ -23,7 +24,7 @@ function Home(props: IBaseProps) {
 			)
 		return "loading..."
 	}, [data])
-	return (
+		return (
 		<div className={styles["home-page__wrap"]}>
 			<CommonHeader icon='icon-chilun' title='管理首页' fixed />
 			<main className={styles.content_wrap}>
@@ -44,15 +45,15 @@ function Home(props: IBaseProps) {
 						<div className={styles.sys_info}>
 							<div className={styles.statistics}>
 								<div className={styles.title}>住户数量</div>
-								<div className={styles.value}>100</div>
+								<div className={styles.value}>{data?.result?.members ?? 0}</div>
 							</div>
 							<div className={styles.statistics}>
 								<div className={styles.title}>护管数量</div>
-								<div className={styles.value}>20</div>
+								<div className={styles.value}>{data?.result?.careWorkers ?? 0}</div>
 							</div>
 							<div className={styles.statistics}>
 								<div className={styles.title}>在线设备</div>
-								<div className={styles.value}>100</div>
+								<div className={styles.value}>{data?.result?.devices ?? 0}</div>
 							</div>
 						</div>
 					</div>

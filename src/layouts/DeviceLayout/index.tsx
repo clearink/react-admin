@@ -73,7 +73,6 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 			return []
 		},
 	})
-	console.log(data)
 	return (
 		<div className={styles.page_wrap}>
 			<CommonHeader icon={<BankOutlined />} title='设备管理' fixed>

@@ -1,4 +1,4 @@
-import { isNullUndefined } from "@/utils/validate"
+import { isNullUndefined } from "@/utils/data/validate"
 import { useEffect, useRef } from "react"
 import useMemoCallback from "../memo-callback"
 

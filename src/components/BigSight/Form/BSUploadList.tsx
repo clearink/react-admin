@@ -5,7 +5,7 @@ import { AvatarServerData, BSFormItemProps } from "../interface"
 import { headers, actions } from "@/http/api/utils/file"
 import { ProFormUploadListProps } from "@/components/Pro/ProForm/components/ProFormUpload/interface"
 import { UploadFile } from "antd/lib/upload/interface"
-import { isArray, isString } from "@/utils/validate"
+import { isArray, isString } from "@/utils/data/validate"
 import { Rule } from "antd/lib/form"
 
 // TODO:  将 actions 与 headers 的 获取都放到某一个专门的文件里

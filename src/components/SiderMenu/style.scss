@@ -38,14 +38,7 @@ $collapsed_width: 48px;
 			flex: 1;
 			overflow: hidden auto;
 			border-right: 0 !important;
-			&::-webkit-scrollbar {
-				width: 0.5rem;
-				background-color: rgba($color_primary, $alpha: 0.1);
-			}
-			&::-webkit-scrollbar-thumb {
-				border-radius: 1rem;
-				background-color: $color_primary;
-			}
+			@include scrollbar($color_primary);
 		}
 		.ant-menu-inline-collapsed {
 			width: $collapsed_width !important;

@@ -3,7 +3,7 @@ import { Tooltip } from "antd"
 import { TooltipProps } from "antd/lib/tooltip"
 import styles from "./style.module.scss"
 import { InfoCircleOutlined } from "@ant-design/icons"
-import { isString } from "@/utils/validate"
+import { isString } from "@/utils/data/validate"
 /**
  * title 属性后跟一个 tooltip 提示文案
  * TODO 只传入一个 title字段

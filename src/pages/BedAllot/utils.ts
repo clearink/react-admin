@@ -1,4 +1,4 @@
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 import { DataNode } from "antd/lib/tree"
 
 // 转换 server data

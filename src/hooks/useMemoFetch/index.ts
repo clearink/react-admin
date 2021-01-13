@@ -1,8 +1,9 @@
+import { CommonServerData } from "@/hooks/useMemoFetch/interface"
 import { sleep } from "@/utils/test"
 import { useEffect } from "react"
 import http from "@/http"
 import { actions as kvActions } from "@/store/reducers/kv"
-import GetBoundAction from "@/utils/GetBoundAction"
+import GetBoundAction from "@/utils/store/GetBoundAction"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import useMountedRef from "@/components/Pro/hooks/mounted-ref"
 import useDeepEqual from "@/components/Pro/hooks/deep-equal"
@@ -34,7 +35,7 @@ export default function useMemoFetch(props: UseMemoFetchProps) {
 		params,
 	])
 	const memoData = kvEntities[realUrl]?.value // 缓存
-	
+
 	useEffect(() => {
 		// 缓存的值发生该变 需要更新data
 		if (cache && memoData) methods.setData(memoData)
@@ -42,13 +43,12 @@ export default function useMemoFetch(props: UseMemoFetchProps) {
 
 	// 可以传入一个布尔值 决定是否抛弃缓存
 	const fetchData = useMemoCallback(async (update?: boolean) => {
+		if (!url) return
 		if (memoData && !update) {
-			console.log("拿到了缓存值")
 			const result = transform?.(memoData, true) ?? memoData
 			methods.setData(result)
 			return
 		}
-		if (!url) return
 		methods.setLoading(true)
 		const { data } = await http[method as any](url, params)
 		const result = transform?.(data, false) ?? data

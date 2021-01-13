@@ -1,7 +1,7 @@
 import { SorterResult } from "antd/lib/table/interface"
 import moment, { Moment } from "moment"
-import removeEmpty from "./removeEmpty"
-import { isArray, isObject } from "./validate"
+import removeEmpty from "./data/removeEmpty"
+import { isArray, isObject } from "./data/validate"
 // 金钱格式化
 export const formatMoney = (
 	money: string | number,

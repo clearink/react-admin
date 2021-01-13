@@ -4,7 +4,7 @@ import moment, { isMoment, Moment } from "moment"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
 import { BaseProFieldProps } from "@/components/Pro/ProField/type"
 import { RangePickerProps } from "antd/lib/date-picker"
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 
 export type ProFormDateRangeProps = RangePickerProps & {
 	render?: BaseProFieldProps<ProFormDateRangeProps>["render"]

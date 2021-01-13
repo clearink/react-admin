@@ -6,7 +6,7 @@ import { BaseProFieldProps } from "../../ProField/type"
 import useMemoFetch, { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
 import { ConvertOptions } from "../../ProField/components/FieldStatus/utils"
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 
 // form.resetFields 会重新执行一次
 // 这是 antd 的设计 no bug
@@ -20,7 +20,7 @@ export interface ProFormSelectProps
 
 function ProFormSelect(props: ProFormSelectProps) {
 	const { request, options: PO, render, ...rest } = props
-	const [{ data, loading }] = useMemoFetch(request ?? {})
+	const [{ data, loading }] = useMemoFetch({ cache: true, ...request })
 
 	const options = useDeepMemo(() => {
 		if (PO) return ConvertOptions(PO) // 直接设置的 options 优先级最高

@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
 import useTypedSelector from "@/hooks/useTypedSelector"
-import LoginUtil from "@/utils/LoginUtil"
+import LoginUtil from "@/utils/store/LoginUtil"
 import { Dropdown, Menu, Spin } from "antd"
 import { LogoutOutlined } from "@ant-design/icons"
 import { FieldAvatar } from "@/components/BigSight"
@@ -22,7 +22,7 @@ function UserAction() {
 		</Menu>
 	)
 	return (
-		<Dropdown overlay={menu}>
+		<Dropdown overlay={menu} trigger={['click']} 	getPopupContainer={(trigger) => trigger.parentElement!}> 
 			<span className='header_action px-3 flex items-center cursor-pointer'>
 				<FieldAvatar text={user?.avatar} />
 				<span>{user?.username ?? <Spin />}</span>

@@ -1,4 +1,4 @@
-import { isFunction } from "@/utils/validate"
+import { isFunction } from "@/utils/data/validate"
 import useCountDown from "@/components/Pro/hooks/count-down"
 
 // 倒计时组件 默认 60s

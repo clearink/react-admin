@@ -10,7 +10,7 @@ import Footer from "@/components/Footer"
 import "./style.scss"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { ProFormCaptcha, ProFormInput } from "@/components/Pro/ProForm"
-import { phonePattern } from "@/utils/pattern"
+import { phonePattern } from "@/utils/form/pattern"
 import user from "@/http/api/user"
 
 const formValidateMessages = {

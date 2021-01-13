@@ -1,6 +1,6 @@
 import { TMenu } from "@/@types/menu"
 import { matchPath } from "react-router-dom"
-import unique from "./unique"
+import unique from "../data/unique"
 
 // 递归查找路径 面包屑
 // 需要在routes里配置相应的path与title, 否则不会自动生成面包屑

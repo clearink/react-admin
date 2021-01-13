@@ -2,7 +2,7 @@ import React, { memo } from "react"
 import { BaseProFieldProps, FieldOptionType } from "../../type"
 import useMemoFetch, { UseMemoFetchProps } from "@/hooks/useMemoFetch"
 import useDeepMemo from "@/hooks/useDeepMemo"
-import { isArray } from "@/utils/validate"
+import { isArray } from "@/utils/data/validate"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import { renderStatus } from "./utils"
 

@@ -1,4 +1,4 @@
-import ModalTrigger, { IModalTriggerRef } from "@/components/ModalTrigger"
+import ModalTrigger, { ModalTriggerRef } from "@/components/ModalTrigger"
 import useBoolean from "@/hooks/useBoolean"
 import { CloseCircleOutlined } from "@ant-design/icons"
 import { Modal } from "antd"

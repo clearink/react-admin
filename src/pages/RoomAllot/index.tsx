@@ -12,7 +12,7 @@ import { EditOutlined, ProfileOutlined } from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "../BedAllot/BedAllotContext"
-import { isNullUndefined } from "@/utils/validate"
+import { isNullUndefined } from "@/utils/data/validate"
 import {
 	bsConvertTableList,
 	formatTableSearchParams,
@@ -114,7 +114,7 @@ function RoomAllot() {
 					addRef.current?.toggle()
 				}}
 			/>
-			{/* 新增form */}
+
 			<RoomAddForm
 				title='新增房间'
 				ref={addRef}
@@ -124,7 +124,7 @@ function RoomAllot() {
 					return true
 				}}
 			/>
-			{/* 编辑 form request 在 RoomEditForm 中传入 */}
+
 			<RoomEditForm
 				title='房间编辑'
 				id={editId}

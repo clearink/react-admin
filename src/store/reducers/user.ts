@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import LoginUtil from "@/utils/LoginUtil"
+import LoginUtil from "@/utils/store/LoginUtil"
 import user from "@/http/api/user"
 
 type user = {

@@ -32,13 +32,35 @@
 .tree {
 	:global {
 		.ant-tree-list-holder {
-			&::-webkit-scrollbar {
-				width: 0.8rem;
-			}
-			&::-webkit-scrollbar-thumb {
-				border-radius: 0.4rem;
-				background-color: rgba($color_primary, 0.6);
-			}
+			@include scrollbar($color_primary);
+		}
+	}
+}
+.link_wrap {
+	margin-left: 40px;
+
+	.link {
+		color: $color-text;
+		font-size: 16px;
+		padding: 0 20px;
+		position: relative;
+		&::after {
+			content: "";
+			transition: all 0.3s;
+			transition-delay: 0.1s;
+			position: absolute;
+			width: 0;
+			height: 2px;
+			background-color: $color_primary;
+			left: 0;
+			bottom: -20px;
+		}
+	}
+	.active {
+		color: $color_primary;
+		position: relative;
+		&::after {
+			width: 100%;
 		}
 	}
 }
