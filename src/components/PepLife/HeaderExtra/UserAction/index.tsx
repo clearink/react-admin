@@ -8,7 +8,7 @@ import { LogoutOutlined } from "@ant-design/icons"
 import { FieldAvatar } from "@/components/BigSight"
 
 // 退出登录
-function Logout() {
+function UserAction() {
 	const user = useTypedSelector((state) => state.user.user)
 	const handleLogout = () => {
 		// 清除 token
@@ -30,4 +30,4 @@ function Logout() {
 		</Dropdown>
 	)
 }
-export default memo(Logout)
+export default memo(UserAction)

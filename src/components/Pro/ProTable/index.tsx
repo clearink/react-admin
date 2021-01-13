@@ -27,17 +27,8 @@ import { sleep } from "@/utils/test"
 import useTableFetch from "./useTableFetch"
 import http from "@/http"
 import useMountedRef from "../hooks/mounted-ref"
-import useMemoCallback from "../hooks/memo-callback"
+
 /**
- * search 属性 在 query filter中显示
- *
- * Q1: 文本 or status 如何显示在 table 中呢
- * 更加 pro components 来看 是根据 field 字段决定 render时所用的组件
- * Q2 propsLoading 如何在外部控制 query filter (base form) submitter 的 loading?
- * Q3 处理分页逻辑
- * Q4 分页重新请求处理
- * Q5 外部params 改变如何映射到内部 ref
- *
  */
 
 function ProTable<T extends object>(
@@ -89,33 +80,25 @@ function ProTable<T extends object>(
 
 	// 暴露的方法
 	// TODO: 添加 query filter 的 form
-	const handleReset = useMemoCallback(
-		() => methods.reset(request?.params ?? {}),
-		[]
-	)
-	const tableAction = useMemo(
-		() => ({
-			setParams: methods.setParams, // 外部如何能够该变table内部的params呢?
-			reload: fetchData,
-			reset: handleReset,
-			clearRows: () => methods.setRows([]),
-		}),
-		[fetchData, methods, handleReset]
-	)
+	const tableAction = {
+		setParams: methods.setParams, // 外部如何能够该变table内部的params呢?
+		reload: fetchData,
+		reset: () => methods.reset(request?.params ?? {}),
+		clearRows: () => methods.setRows([]),
+	}
+
 	useImperativeHandle(ref, () => tableAction, [tableAction])
 
 	// 选择
-	const rowSelection = useMemo<TableProps<T>["rowSelection"]>(() => {
-		return {
-			preserveSelectedRowKeys: true,
-			selectedRowKeys: state.rows,
-			onChange: methods.setRows,
-		}
-	}, [methods.setRows, state.rows])
+	const rowSelection: TableProps<T>["rowSelection"] = {
+		preserveSelectedRowKeys: true,
+		selectedRowKeys: state.rows,
+		onChange: methods.setRows,
+	}
 
-	const [columns, searchList] = useMemo(() => {
-		return renderTableColumn(PCol ?? [])
-	}, [PCol])
+	const [columns, searchList] = useMemo(() => renderTableColumn(PCol ?? []), [
+		PCol,
+	])
 
 	/** 搜索方法 	 */
 	const handleSearch = (values: any, type: "form" | "table" = "form") => {

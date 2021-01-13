@@ -59,9 +59,9 @@ export interface ProTableColumns<T extends object = any>
 	/** search 与 read 都需要的属性 */
 	fieldProps?: FieldSelectProps
 	/** 搜索属性 提取到 query filter 为true默认为ProFormInput */
-	search?: boolean | JSX.Element | ComponentType<any>
+	search?: JSX.Element | ComponentType<any>
 	/** ProField的属性 为true 默认为ProFieldText */
-	read?: boolean | JSX.Element | ComponentType<any>
+	read?: JSX.Element | ComponentType<any>
 }
 
 export type ProTableRef = {

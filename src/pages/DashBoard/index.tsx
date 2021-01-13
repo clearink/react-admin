@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FC } from "react"
 import { IBaseProps } from "@/@types/fc"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import { ProTableColumns } from "@/components/Pro/ProTable/type"
@@ -38,6 +38,7 @@ const columns: ProTableColumns<any>[] = [
 		read: <FieldDate timeFormat='YYYY-MM-DD' />,
 	},
 ]
+const A: FC<any> = () => <div>123</div>
 function WorkPlace(props: IBaseProps) {
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
