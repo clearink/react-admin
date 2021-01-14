@@ -22,28 +22,15 @@ import { sleep } from "@/utils/test"
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
 import { isNullUndefined } from "@/utils/data/validate"
-import { ProFormInput } from "@/components/Pro/ProForm"
+import { ProFormInput, ProFormSelect } from "@/components/Pro/ProForm"
 import { FieldText } from "@/components/Pro/ProField"
 
 const columns: ProTableColumns<any>[] = [
 	{
-		title: "房间编号",
-		width: 100,
-		dataIndex: "orgRoomId",
-		search: (
-			<ProFormInput label={undefined} name='roomId' placeholder='房间编号' />
-		),
-		// search: {
-		// 	label: undefined,
-		// 	name: "roomId",
-		// 	placeholder: "房间编号",
-		// },
-		read: <FieldText copyable ellipsis />,
-	},
-	{
 		title: "床位编号",
 		width: 100,
 		dataIndex: "num",
+		read: <FieldText />,
 	},
 	{
 		title: "入住用户",
@@ -91,6 +78,27 @@ function BedAllot() {
 				title: "操作",
 				dataIndex: "id",
 				width: 250,
+				search: (
+					<ProFormSelect
+						label={undefined}
+						name='roomId'
+						placeholder='房间编号'
+						request={{
+							url: buildingId
+								? "/orgmgt/room/list/queryByBuildingId"
+								: undefined,
+							params: { id: buildingId },
+							method: "get",
+							transform: (response, cache) => {
+								if (cache) return response
+								return response.result.map((item:any) => ({
+									label: item.num,
+									value: item.id,
+								}))
+							},
+						}}
+					/>
+				),
 				render: (dom, id) => {
 					return (
 						<div>
@@ -112,7 +120,7 @@ function BedAllot() {
 					)
 				},
 			}),
-		[]
+		[buildingId]
 	)
 	return (
 		<div className={styles.page_wrap}>

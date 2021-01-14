@@ -29,7 +29,7 @@ function BSAvatar(props: BSAvatarProps) {
 	const formRules = useMemo(() => {
 		const loadingRule: Rule = {
 			validator: (_, value: UploadFile) => {
-				if (value.originFileObj) return Promise.reject("图片上传中")
+				if (value?.originFileObj) return Promise.reject("图片上传中")
 				return Promise.resolve()
 			},
 		}

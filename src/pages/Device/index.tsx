@@ -24,12 +24,11 @@ const columns: ProTableColumns<any>[] = [
 	},
 	{
 		title: "使用人/房间",
-		dataIndex: "producerName",
-		read: <FieldText />,
+		dataIndex: "useText",
 	},
 	{
 		title: "领出人",
-		dataIndex: "supplierName",
+		dataIndex: "leadPerson",
 	},
 	{
 		title: "操作",

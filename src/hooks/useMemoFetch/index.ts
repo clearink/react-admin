@@ -38,7 +38,10 @@ export default function useMemoFetch(props: UseMemoFetchProps) {
 
 	useEffect(() => {
 		// 缓存的值发生该变 需要更新data
-		if (cache && memoData) methods.setData(memoData)
+		if (cache && memoData) {
+			methods.setLoading(false)
+			methods.setData(memoData)
+		}
 	}, [memoData, cache, methods])
 
 	// 可以传入一个布尔值 决定是否抛弃缓存

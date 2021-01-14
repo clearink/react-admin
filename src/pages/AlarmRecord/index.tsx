@@ -21,6 +21,8 @@ import {
 	FieldTreeStatus,
 } from "@/components/Pro/ProField"
 import { BSTreeSelect } from "@/components/BigSight"
+import UserAlarmDetail from "@/components/PepLife/HeaderExtra/UserAlarm/UserAlarmDetail/UserAlarm.Detail"
+import AlarmApi from "@/http/api/pages/AlarmApi"
 // 告警记录
 export const alarmColumns = [
 	{
@@ -149,13 +151,19 @@ function AlarmRecord() {
 	const editRef = useRef<DrawerFormRef>(null)
 	const tableRef = useRef<ProTableRef>(null)
 	const [editId, setEditId] = useState<string | undefined>(undefined)
+	const handleEdit = (id?: string) => {
+		setEditId(id)
+		editRef.current?.toggle()
+	}
 	const tableColumns = useMemo(() => {
 		return columns.concat({
 			title: "操作",
 			dataIndex: "id",
-			render: () => (
+			render: (_, id) => (
 				<Space>
-					<Button type='link'>告警处理</Button>
+					<Button type='link' onClick={() => handleEdit(id)}>
+						告警处理
+					</Button>
 					<Button type='link'>设备详情</Button>
 				</Space>
 			),
@@ -164,6 +172,7 @@ function AlarmRecord() {
 	return (
 		<div className='h-full flex flex-col'>
 			<ProTable
+				ref={tableRef}
 				columns={tableColumns}
 				rowKey='id'
 				title={{ title: "告警记录", tooltip: "用于告知管理员告警信息" }}
@@ -180,9 +189,18 @@ function AlarmRecord() {
 				onCreate={() => {
 					addRef.current?.toggle()
 				}}
+				renderAction={(dom) => dom.slice(-2)}
 			/>
 			<AddAlarmForm name='add alarm form' ref={addRef} />
-			<EditAlarmForm name='edit alarm form' ref={editRef} />
+			<UserAlarmDetail
+				id={editId}
+				ref={editRef}
+				onFinish={async (values) => {
+					await AlarmApi.CheckAlarm(values)
+					tableRef.current?.reload()
+					return true
+				}}
+			/>
 		</div>
 	)
 }

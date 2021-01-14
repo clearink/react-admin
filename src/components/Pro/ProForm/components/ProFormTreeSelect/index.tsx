@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useMemo } from "react"
 import { TreeSelect } from "antd"
 import { BaseProFieldProps } from "@/components/Pro/ProField/type"
 import withFormItem from "@/components/Pro/hocs/withFormItem"

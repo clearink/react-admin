@@ -11,6 +11,7 @@ export { default as ProFormTime } from "./components/ProFormDate/ProFormTime"
 export { default as ProFormDateRangeTime } from "./components/ProFormDate/ProFormDateRangeTime"
 export { default as ProFormTextArea } from "./components/ProFormTextArea"
 export { default as ProFormTreeSelect } from "./components/ProFormTreeSelect"
+export { default as ProFormGroup } from "./components/ProFormGroup"
 export * from "./components/ProFormUpload"
 
 // form type

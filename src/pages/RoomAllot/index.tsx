@@ -8,7 +8,11 @@ import React, {
 } from "react"
 import styles from "./style.module.scss"
 import { Button, Switch } from "antd"
-import { EditOutlined, ProfileOutlined } from "@ant-design/icons"
+import {
+	EditOutlined,
+	ProfileOutlined,
+	SearchOutlined,
+} from "@ant-design/icons"
 import ProTable from "@/components/Pro/ProTable"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import BedAllotContext from "../BedAllot/BedAllotContext"
@@ -31,7 +35,13 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "房间编号",
 		dataIndex: "num",
-		search: <ProFormInput placeholder='房间编号' label={undefined} />,
+		search: (
+			<ProFormInput
+				placeholder='名称/编号'
+				label={undefined}
+				suffix={<SearchOutlined />}
+			/>
+		),
 	},
 	{
 		title: "入住人数/床位数",

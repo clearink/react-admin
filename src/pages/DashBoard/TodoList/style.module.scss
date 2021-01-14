@@ -1,0 +1,10 @@
+.item {
+	display: flex;
+	.title {
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.value {
+		margin-left: 20px;
+	}
+}

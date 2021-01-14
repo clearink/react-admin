@@ -59,6 +59,9 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 		if (file.status) {
 			console.log("fileList", newFileList)
 			onChange?.(newFileList.slice(-(count ?? Infinity)))
+		}else{
+			console.log('被阻断',file);
+			onChange?.(newFileList.filter(item=>item.uid !== file.uid))
 		}
 	}
 	const handleBeforeUpload = useMemoCallback(

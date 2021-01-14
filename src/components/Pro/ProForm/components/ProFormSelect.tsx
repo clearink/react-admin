@@ -28,7 +28,7 @@ function ProFormSelect(props: ProFormSelectProps) {
 		return []
 	}, [data, PO])
 
-	const DOM = <Select {...rest} options={options} />
+	const DOM = <Select loading={loading} {...rest} options={options} />
 	if (render) return render({ ...rest, options }, DOM)
 	return DOM
 }

@@ -13,7 +13,7 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 		<EditForm
 			{...props}
 			request={{
-				url: "/orgmgt/room/member/queryByRoomId",
+				url: "/orgmgt/room/queryById",
 				params: { id: props.id },
 			}}
 			name='update room form'

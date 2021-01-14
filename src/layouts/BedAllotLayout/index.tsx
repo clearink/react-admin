@@ -57,7 +57,6 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	}, [])
 	const [editId, setEditId] = useState<string | undefined>()
 	const handleEdit = useMemoCallback((id: string) => {
-		console.log("edit")
 		editRef.current?.toggle()
 		setEditId(id)
 	}, [])
@@ -136,7 +135,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 					}}
 					onFinish={async (values) => {
 						await BedAllotApi.edit(values)
-						fetchData() // reload tree
+						updateMemo() // reload tree
 						message.success("修改成功")
 						return true
 					}}
