@@ -6,7 +6,7 @@ import {
 import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
 import { UserOutlined, WarningOutlined } from "@ant-design/icons"
 import { Spin } from "antd"
-import React, { forwardRef, memo, Ref } from "react"
+import React, { forwardRef, Ref } from "react"
 import styles from "./style.module.scss"
 import useAlarmDetailService, { AlarmDetailService } from "./useAlarmDetail"
 
@@ -15,7 +15,7 @@ export interface AlarmDetailProps {
 	id?: string
 }
 function AlarmDetail(props: AlarmDetailProps, ref: Ref<() => void>) {
-	const alarmDetailService = useAlarmDetailService(props.id, ref)
+	const alarmDetailService = useAlarmDetailService(ref)
 
 	return (
 		<AlarmDetailService.Provider value={alarmDetailService}>
@@ -68,7 +68,9 @@ function AlarmDetail(props: AlarmDetailProps, ref: Ref<() => void>) {
 							<WarningOutlined className='mx-2' />
 							<span className='mr-4'>告警信息:</span>
 						</span>
-						<span className='text-red-500'>{alarmDetailService.data?.alarmType}</span>
+						<span className='text-red-500'>
+							{alarmDetailService.data?.alarmType}
+						</span>
 					</div>
 
 					<ProFormRadio

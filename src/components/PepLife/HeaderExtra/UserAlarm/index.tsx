@@ -62,10 +62,7 @@ function UserAlarm() {
 					<MessageOutlined style={{ fontSize: "24px" }} />
 				</Badge>
 			</Dropdown>
-			<UserAlarmDetail
-				id={alarmService.alarmId}
-				ref={alarmService.alarmDetailRef}
-			/>
+			<UserAlarmDetail ref={alarmService.alarmDetailRef} />
 		</AlarmService.Provider>
 	)
 }
