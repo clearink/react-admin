@@ -34,11 +34,11 @@ function Login(props: IBaseProps) {
 				<div className='login-box__wrap select-none'>
 					<div className='login-box__title'>
 						<img src={Logo} alt='LOGO' className='logo' />
-						<h1>智慧养老看护服务系统</h1>
+						<h1 className='app_title'>智慧养老看护服务系统</h1>
 					</div>
 					<BaseForm
 						validateMessages={formValidateMessages}
-						className='login-box__form w-5/6 sm:w-3/4'
+						className='login-box__form'
 						onFinish={handleSubmit}
 						submitConfig={{
 							submitProps: {

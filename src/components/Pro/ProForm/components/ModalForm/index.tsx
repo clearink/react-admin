@@ -39,18 +39,12 @@ function ModalForm(props: ModalFormProps, ref: Ref<ModalFormRef>) {
 	useImperativeHandle(ref, () => ({ form, toggle }), [toggle, form])
 
 	const handleFinish = async (values: any) => {
-		// 提交完成关闭 modal 重置表单
-		try {
-			setLoading(true)
-			const result = await onFinish?.(values)
-			if (result) {
-				off()
-				form.resetFields()
-			}
-		} catch (error) {
-			throw error
-		} finally {
-			setLoading(false)
+		setLoading(true)
+		const result = await onFinish?.(values)
+		setLoading(false)
+		if (result) {
+			off()
+			form.resetFields()
 		}
 	}
 	const wrappedTrigger = useMemo(() => {

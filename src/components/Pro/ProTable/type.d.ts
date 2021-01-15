@@ -1,12 +1,10 @@
 import { TitleTipProps } from "./../ProCard/components/TitleTip/index"
-import { TextProps } from "antd/lib/typography/Text"
 import { ColumnType, TableProps } from "antd/lib/table"
 import { ComponentType, ReactNode } from "react"
-import { BaseProFieldProps, FieldOptionType } from "../ProField/type"
+import { FieldOptionType } from "../ProField/type"
 import { QueryFilterProps } from "../ProForm/components/QueryFilter"
 import { initialState, TableMethods } from "./useTableFetch"
 import { UseMemoFetchProps } from "@/hooks/useMemoFetch"
-import { BaseProFormProps } from "../hocs/withFormItem"
 import { CommonServerData } from "@/hooks/useMemoFetch/interface"
 
 // pro table column 类型
@@ -36,7 +34,7 @@ export type ProFieldType =
 	| "upload-list"
 
 type FieldSelectProps = {
-	/** Field Select checkbox radio */
+	/** 渲染方式  tag  badge */
 	renderType?: "tag" | "badge"
 	options?: FieldOptionType[] | string[]
 	request?: UseMemoFetchProps

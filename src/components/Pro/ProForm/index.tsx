@@ -11,11 +11,12 @@ export { default as ProFormTime } from "./components/ProFormDate/ProFormTime"
 export { default as ProFormDateRangeTime } from "./components/ProFormDate/ProFormDateRangeTime"
 export { default as ProFormTextArea } from "./components/ProFormTextArea"
 export { default as ProFormTreeSelect } from "./components/ProFormTreeSelect"
+export { default as ProFormTable } from "./components/ProFormTable"
 export { default as ProFormGroup } from "./components/ProFormGroup"
 export * from "./components/ProFormUpload"
 
 // form type
 export { default as StepsForm } from "./components/StepsForm"
 export { default as QueryFilter } from "./components/QueryFilter"
-export { default as TableForm } from "./components/TableForm"
+// export { default as TableForm } from "./components/TableForm"
 export { default as ProForm } from "./components/BaseForm"

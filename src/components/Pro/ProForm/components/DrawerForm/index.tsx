@@ -59,11 +59,11 @@ function DrawerForm(props: DrawerFormProps, ref: Ref<DrawerFormRef>) {
 		// 提交完成关闭 drawer 重置表单
 		setLoading({ delay: 100 })
 		const result = await onFinish?.(values)
+		setLoading(false)
 		if (result) {
 			off()
 			form.resetFields()
 		}
-		setLoading(false)
 	}
 	/** 外部控制 显示隐藏 */
 	useImperativeHandle(ref, () => ({ toggle, form }), [toggle, form])
@@ -80,8 +80,7 @@ function DrawerForm(props: DrawerFormProps, ref: Ref<DrawerFormRef>) {
 		if (!isValidElement(trigger)) return trigger
 		return cloneElement(trigger, {
 			onClick: (e: MouseEvent) => {
-				const { onClick } = trigger.props
-				onClick?.(e)
+				trigger.props.onClick?.(e)
 				on()
 			},
 		})

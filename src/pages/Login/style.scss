@@ -1,4 +1,10 @@
 @import "@/styles/index.scss";
+.app-login-layout {
+	background-image: url("~@/assets/images/login_background.jpg");
+	background-position: center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
 .login-page {
 	&__wrap {
 		@include flex-center();
@@ -7,12 +13,12 @@
 		.login-box {
 			&__wrap {
 				@include flex-center(column);
-				border-radius: 1rem;
-				opacity: 0.9;
-				background-color: white;
+				border-radius: 10px;
+				padding: 30px 50px;
+				background-color: rgba(white, $alpha: 0.4);
 				box-shadow: 1rem 1rem 4rem rgb(168, 164, 164);
-				height: 55rem;
-				width: 50rem;
+				height: 558px;
+				width: 450px;
 
 				@include media(sm, max) {
 					background-color: transparent;
@@ -30,10 +36,17 @@
 					font-weight: 700;
 					color: $color_primary;
 				}
-				.logo{
-					height: 140px;
+				.logo {
+					width: 85px;
+					height: 79px;
+					margin-bottom: 20px;
 					object-fit: cover;
-					margin-bottom: 10px;
+				}
+				.app_title {
+					font-size: 26px;
+					color: #124a7a;
+					font-weight: bold;
+					margin-bottom: 22px;
 				}
 			}
 			&__form {

@@ -26,40 +26,38 @@ export default function renderTableColumn<T extends object>(
 		// search
 		if (SearchComponent) {
 			const searchProps = {
-				key: i,
 				label: title,
 				name: props.dataIndex,
+				key: props.dataIndex as React.Key,
 				...fieldProps,
 			}
-			let SearchDom = <ProFormInput {...searchProps} />
-
 			if (isValidElement(SearchComponent)) {
-				SearchDom = cloneElement(SearchComponent, {
-					...searchProps,
-					...(SearchComponent.props as any),
-				})
-			} else {
+				searchList.push(
+					cloneElement(SearchComponent, {
+						...searchProps,
+						...(SearchComponent.props as any),
+					})
+				)
+			} else if (SearchComponent) {
 				const SC = SearchComponent as ComponentType<any>
-				SearchDom = <SC {...searchProps} />
+				searchList.push(<SC {...searchProps} />)
 			}
-			searchList.push(SearchDom)
 		}
-
 		// read
 		const { request } = fieldProps ?? {}
-		// 默认是 FieldText
 
-		let DOM: JSX.Element = <FieldText />
+		let DOM: JSX.Element = <FieldText /> // 默认是 FieldText
 		if (isValidElement(ReadComponent)) {
 			DOM = cloneElement(ReadComponent, {
 				...fieldProps,
 				...(ReadComponent.props as any),
 			})
-		} else if (!isBoolean(ReadComponent) && ReadComponent) {
+		} else if (ReadComponent) {
 			const RC = ReadComponent as ComponentType<any>
 			DOM = <RC {...fieldProps} />
 		}
 		const TableElement: ProTableColumns = {
+			...props,
 			title: () => <TitleTip title={{ title, tooltip }} />,
 			render: (text, record, index) => {
 				// request 属性
@@ -82,7 +80,6 @@ export default function renderTableColumn<T extends object>(
 				if (render) return render(renderDom, text, record, index)
 				return renderDom
 			},
-			...props,
 		}
 		// 不在table中隐藏
 		if (!hideInTable) columns.push(TableElement)
