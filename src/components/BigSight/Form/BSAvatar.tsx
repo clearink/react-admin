@@ -41,7 +41,7 @@ function BSAvatar(props: BSAvatarProps) {
 			{...rest}
 			initialValue={fullImgUrl}
 			action={uploadUrl}
-			headers={headers}
+			headers={headers()}
 			transform={handleTransformServerData}
 			limit={2048}
 			// 上传中请等待

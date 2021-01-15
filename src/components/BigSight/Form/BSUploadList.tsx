@@ -56,7 +56,7 @@ function BSAvatar(props: BSUploadListProps) {
 			{...rest}
 			initialValue={fileList}
 			action={uploadUrl}
-			headers={headers}
+			headers={headers()}
 			transform={handleTransformServerData}
 			limit={2048}
 			rules={formRules}

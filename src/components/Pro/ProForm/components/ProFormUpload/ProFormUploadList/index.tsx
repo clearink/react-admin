@@ -38,7 +38,7 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 	const handleUploadChange: UploadProps["onChange"] = (info) => {
 		const { file, fileList: FL } = info
 
-		let newFileList = [...FL]
+		let newFileList = FL
 		if (file.status === "done") {
 			const result = transform?.(file.response) ?? file.response
 			if (result === false) {

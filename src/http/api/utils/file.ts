@@ -6,4 +6,4 @@ import LoginUtil from "@/utils/store/LoginUtil"
 // 使用函数是为了随时获得最新的token
 export const actions = (path: string = "org") =>
 	`${app.BASE_URL}${app.UPLOAD_URL}?path=${path}`
-export const headers = { [app.TOKEN]: LoginUtil.getToken() }
+export const headers = () => ({ [app.TOKEN]: LoginUtil.getToken() })
