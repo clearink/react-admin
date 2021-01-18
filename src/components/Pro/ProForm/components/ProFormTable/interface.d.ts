@@ -1,5 +1,5 @@
 import React, { ComponentType } from "react"
-import { ColumnType } from "antd/lib/table"
+import { ColumnType, TableProps } from "antd/lib/table"
 import { FieldSelectProps } from "@/components/Pro/ProTable/type"
 
 export interface TableFormProps<T = any>

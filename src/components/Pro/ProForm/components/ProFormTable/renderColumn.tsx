@@ -1,6 +1,7 @@
 import { FieldText } from "@/components/BigSight"
 import { TitleTip } from "@/components/Pro/components"
-import { Tooltip } from "antd"
+import { DeleteFilled, EditFilled } from "@ant-design/icons"
+import { Button, Popconfirm, Tooltip } from "antd"
 import { ColumnType } from "antd/lib/table"
 import React, { cloneElement, ComponentType, isValidElement } from "react"
 import { TableFormColumns, TableFormRef } from "./interface"
@@ -50,6 +51,7 @@ export default function renderColumn(
 			const Read = read as ComponentType<any>
 			readElement = <Read {...fieldProps} />
 		}
+
 		const tableColumn: ColumnType<any> = {
 			...rest,
 			title: () => <TitleTip title={{ title, tooltip }} />,
@@ -69,11 +71,12 @@ export default function renderColumn(
 						</Tooltip>
 					)
 				}
-				if (render) return render(readElement, text, record, index, action)
+				if (render) return render(renderDom, text, record, index, action)
 
-				return cloneElement(readElement, { text })
+				return cloneElement(renderDom, { text })
 			},
 		}
+
 		if (!hideInTable) tableColumns.push(tableColumn)
 	}
 

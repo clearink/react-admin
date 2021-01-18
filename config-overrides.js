@@ -26,8 +26,9 @@ module.exports = override(
 	setWebpackOptimizationSplitChunks({
 		cacheGroups: {
 			commons: {
-				name: "chunks",
-				chunks: "initial",
+				test: /[\\/]node_modules[\\/]/,
+				name: "vendors",
+				chunks: "all",
 				minChunks: 2,
 			},
 		},

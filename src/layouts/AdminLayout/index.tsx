@@ -14,6 +14,7 @@ import Footer from "@/components/Footer"
 import "./style.scss"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import { useHistory } from "react-router-dom"
+import { formatMenuData, formatRoutesData } from "./utils"
 
 const { Content } = Layout
 const SaveMenu = GetBoundAction(menuActions.saveMenu)
@@ -38,31 +39,16 @@ function BaseLayout(props: IBaseProps) {
 		if (!isLogin) replace("/login")
 	}, [isLogin, replace])
 
-	// 获取菜单数据
-	useEffect(() => {
-		function filterMenu(
-			routes: IRoute[],
-			parentKeys: string = "root"
-		): TMenu[] {
-			if (!Array.isArray(routes)) throw new Error("routes must array")
-			return routes.map((route) => {
-				// 确保 menu key 全局唯一
-				const key = `${parentKeys}😜${route.key ?? route.path}`
-				return {
-					...FilterValue(route, ["component", "wrap"]),
-					key,
-					routes: route.routes && filterMenu(route.routes, key),
-				}
-			})
-		}
-		if (routes && menu.length === 0) SaveMenu(filterMenu(routes))
-	}, [routes, menu])
+	// // 获取菜单数据 根据 routes json
+	// useEffect(() => {
+	// 	SaveMenu(formatRoutesData(routes!))
+	// }, [routes])
 
 	// 请求菜单数据
 	useEffect(() => {
 		;(async () => {
-			const result = await unwrap(menuActions.fetchMenu())
-			// console.log(result)
+			const { result } = await unwrap(menuActions.fetchMenu())
+			SaveMenu(formatMenuData(result))
 		})()
 	}, [unwrap])
 

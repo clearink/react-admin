@@ -2,7 +2,7 @@ import React, { memo, useMemo } from "react"
 import { IBaseProps } from "@/@types/fc"
 import classNames from "classnames"
 import moment from "moment"
-import { PepLifeIcon } from "@/components/IconFont"
+import IconFont from "@/components/IconFont"
 import styles from "./style.module.scss"
 import { Avatar } from "antd"
 import SysNotice from "./SysNotice"
@@ -15,7 +15,7 @@ function Home(props: IBaseProps) {
 	const { user } = useTypedSelector((state) => state.user)
 	const [{ data, loading }] = useMemoFetch({
 		url: "/orgmgt/index/info",
-		cache:true
+		cache: true,
 	})
 	const lastLogin = useMemo(() => {
 		if (data)
@@ -24,7 +24,7 @@ function Home(props: IBaseProps) {
 			)
 		return "loading..."
 	}, [data])
-		return (
+	return (
 		<div className={styles["home-page__wrap"]}>
 			<CommonHeader icon='icon-chilun' title='管理首页' fixed />
 			<main className={styles.content_wrap}>
@@ -49,7 +49,9 @@ function Home(props: IBaseProps) {
 							</div>
 							<div className={styles.statistics}>
 								<div className={styles.title}>护管数量</div>
-								<div className={styles.value}>{data?.result?.careWorkers ?? 0}</div>
+								<div className={styles.value}>
+									{data?.result?.careWorkers ?? 0}
+								</div>
 							</div>
 							<div className={styles.statistics}>
 								<div className={styles.title}>在线设备</div>
@@ -59,23 +61,23 @@ function Home(props: IBaseProps) {
 					</div>
 					<div className={styles.module_card}>
 						<Link className={styles.card} to='/monitor'>
-							<PepLifeIcon type='icon-user' className={styles.icon} />
+							<IconFont type='icon-user' className={styles.icon} />
 							<span className={styles.name}>监控分析</span>
 						</Link>
 						<Link className={styles.card} to='/bedallot'>
-							<PepLifeIcon type='icon-user' className={styles.icon} />
+							<IconFont type='icon-user' className={styles.icon} />
 							<span className={styles.name}>床位分配</span>
 						</Link>
 						<Link className={styles.card} to='/resident'>
-							<PepLifeIcon type='icon-user' className={styles.icon} />
+							<IconFont type='icon-user' className={styles.icon} />
 							<span className={styles.name}>住户管理</span>
 						</Link>
 						<Link className={styles.card} to='/nurse'>
-							<PepLifeIcon type='icon-user' className={styles.icon} />
+							<IconFont type='icon-user' className={styles.icon} />
 							<span className={styles.name}>护管管理</span>
 						</Link>
 						<Link className={styles.card} to='/device'>
-							<PepLifeIcon type='icon-user' className={styles.icon} />
+							<IconFont type='icon-user' className={styles.icon} />
 							<span className={styles.name}>设备管理</span>
 						</Link>
 						<div className={styles.card_placeholder}></div>

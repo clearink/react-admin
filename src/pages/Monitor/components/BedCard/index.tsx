@@ -3,7 +3,7 @@ import classNames from "classnames"
 import { Card, Progress, Space } from "antd"
 import styles from "./style.module.scss"
 import { CardProps } from "antd/lib/card"
-import { PepLifeIcon } from "@/components/IconFont"
+import IconFont from "@/components/IconFont"
 import { BCGContext } from "../.."
 import { Link } from "react-router-dom"
 import { Random } from "mockjs"
@@ -27,11 +27,11 @@ function BedCard(props: BedCardProps) {
 			title={title}
 			actions={[
 				<Space size={2} key='bcg' className='action_wrap'>
-					<PepLifeIcon type='icon-user' />
+					<IconFont type='icon-user' />
 					<span onClick={handleBcgDetail}>心率/呼吸</span>
 				</Space>,
 				<Space size={2} key='sleep' className='action_wrap'>
-					<PepLifeIcon type='icon-user' />
+					<IconFont type='icon-user' />
 					<Link to={`/monitor/sleep/${1}`}>睡眠报告</Link>
 				</Space>,
 			]}
@@ -44,7 +44,7 @@ function BedCard(props: BedCardProps) {
 						[styles.leave_bed]: bedStatus === 1,
 					})}
 				>
-					<PepLifeIcon type='icon-user' style={{ fontSize: "20px" }} />
+					<IconFont type='icon-user' style={{ fontSize: "20px" }} />
 					<span>{["在床", "离床", "离线"][bedStatus]}</span>
 				</span>
 				<div className={styles.percent_name}>
@@ -68,7 +68,7 @@ function BedCard(props: BedCardProps) {
 						[styles.leave_bed]: Random.boolean(),
 					})}
 				>
-					<PepLifeIcon type='icon-user' style={{ fontSize: "20px" }} />
+					<IconFont type='icon-user' style={{ fontSize: "20px" }} />
 					<span>告警</span>
 				</span>
 			</div>

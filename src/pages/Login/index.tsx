@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom"
 import { actions } from "@/store/reducers/user"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import Logo from "@/assets/images/login_logo.png"
-import { PepLifeIcon } from "@/components/IconFont"
+import IconFont from "@/components/IconFont"
 import Footer from "@/components/Footer"
 import "./style.scss"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
@@ -61,7 +61,7 @@ function Login(props: IBaseProps) {
 								},
 							]}
 							placeholder='请输入手机号'
-							prefix={<PepLifeIcon type='icon-user' className='icon' />}
+							prefix={<IconFont type='icon-user' className='icon' />}
 							className='login-box__username'
 						/>
 
@@ -74,7 +74,7 @@ function Login(props: IBaseProps) {
 							}}
 							rules={[{ required: true, message: "请输入验证码" }]}
 							placeholder='请输入验证码'
-							prefix={<PepLifeIcon type='icon-password' className='icon' />}
+							prefix={<IconFont type='icon-password' className='icon' />}
 							onGetCaptcha={async (form) => {
 								const mobile = form?.getFieldValue("mobile")
 								if (!mobile) {

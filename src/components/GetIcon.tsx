@@ -1,6 +1,6 @@
 // 根据icon字段尝试匹配icon
-import React, { cloneElement, ReactNode } from "react"
-import { PepLifeIcon } from "./IconFont"
+import React, { cloneElement } from "react"
+import IconFont from "./IconFont"
 
 // 期望返回一个DOM 可以接受className style
 interface GetIconProps {
@@ -13,7 +13,7 @@ export default function GetIcon(props: GetIconProps) {
 	if (typeof icon === "string") {
 		// iconFont 默认以icon为开头
 		// 尝试使用 iconfont
-		if (icon.startsWith("icon")) return <PepLifeIcon type={icon} {...rest} />
+		if (icon.startsWith("icon")) return <IconFont type={icon} {...rest} />
 		return icon
 	}
 	// 如果是reactElement

@@ -1,5 +1,5 @@
 import React from "react"
-import { Divider } from "antd"
+import { Button, Divider } from "antd"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import {
 	ProForm,
@@ -13,7 +13,7 @@ const columns: TableFormColumns[] = [
 	{
 		title: "id",
 		dataIndex: "id",
-		edit: <ProFormInput />,
+		hideInTable: true,
 	},
 	{
 		title: "type",
@@ -32,7 +32,7 @@ function WorkPlace() {
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
 				<ProForm onFinish={console.log}>
-					<ProFormTable addType='modal' name='list' label='ad' columns={columns} />
+					<ProFormTable columns={columns} name='112' />
 				</ProForm>
 
 				<Divider />

@@ -15,3 +15,5 @@
 ## TODO: ProFormTable 自定义操作栏
 
 ## ProFormTable 如何自定义操作栏 是直接在外部处理还是能够在内部定义呢?
+
+## 按照 angular 的组织方式 编写 ProFormList组件

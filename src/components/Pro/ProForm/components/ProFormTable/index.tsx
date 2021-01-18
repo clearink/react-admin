@@ -61,6 +61,7 @@ function TableForm<T extends object = any>(
 		editRef.current?.toggle()
 	}
 	const TableDelete = (record: T) => {
+		console.log(record)
 		setList((p) => p.filter((item) => item !== record))
 	}
 
@@ -79,10 +80,14 @@ function TableForm<T extends object = any>(
 		[columns, action]
 	)
 
-	const handleAddSubmit = useCallback(async (values: T) => {
-		setList((p) => p.concat(values))
-		return true
-	}, [])
+	const handleAddSubmit = useCallback(
+		async (values: T) => {
+			// 新增时要给个 key
+			setList((p) => p.concat({ ...values, [rowKey!]: Date.now() }))
+			return true
+		},
+		[rowKey]
+	)
 	const handleEditSubmit = async (values: T) => {
 		const newList = list.map((item) => {
 			if (item === update) return { ...item, ...values }
@@ -99,7 +104,7 @@ function TableForm<T extends object = any>(
 		return _tableColumns.concat({
 			title: "操作",
 			key: "action",
-			render: (_, text, record) => {
+			render: (_, record) => {
 				return (
 					<>
 						<Button
@@ -152,5 +157,5 @@ function TableForm<T extends object = any>(
 	)
 }
 export default withFormItem<TableFormProps>(forwardRef(TableForm), {
-	rowKey: "id",
+	rowKey: "key",
 })
