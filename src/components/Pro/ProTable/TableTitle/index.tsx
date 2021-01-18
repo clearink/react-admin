@@ -2,9 +2,9 @@ import React, { memo, useContext } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
 import { TitleTip } from "@/components/Pro/ProCard/components"
-import { ProTableProps } from "../../type"
-import ProTableContext from "../../ProTableContext"
+import { ProTableProps } from "../type"
 import { Alert } from "antd"
+import { ProTableServiceContext } from "../useProTable.service"
 
 interface TableTitleProps {
 	title?: ProTableProps<any>["title"]
@@ -12,7 +12,7 @@ interface TableTitleProps {
 }
 function TableTitle(props: TableTitleProps) {
 	const { title, extra } = props
-	const { state, methods } = useContext(ProTableContext)
+	const { state, methods } = useContext(ProTableServiceContext)
 
 	const BT = (() => {
 		const SL = state.rows.length

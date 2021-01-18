@@ -30,9 +30,11 @@ function Detail(props: AddFormProps, ref: Ref<DrawerFormRef>) {
 	return <FormComponent ref={formRef} {...rest}></FormComponent>
 }
 
-export default memo(
-	withDefaultProps(forwardRef(Detail), { type: "drawer", trigger: null })
-)
+export default withDefaultProps(forwardRef(Detail), {
+	type: "drawer",
+	trigger: null,
+})
+
 /**
  * 	// 这个应该是自动生成的
 	const DOM = (

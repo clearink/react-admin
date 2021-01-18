@@ -49,4 +49,4 @@ function BSAvatar(props: BSAvatarProps) {
 		/>
 	)
 }
-export default memo(BSAvatar)
+export default BSAvatar

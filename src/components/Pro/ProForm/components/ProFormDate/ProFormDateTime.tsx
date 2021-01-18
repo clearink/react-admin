@@ -1,7 +1,7 @@
-import withFormItem from "@/components/Pro/hocs/withFormItem"
-import ProFormDate, { ProFormDateProps } from "."
+import withDefaultProps from "@/hocs/withDefaultProps"
+import ProFormDate from "."
 
-export default withFormItem<ProFormDateProps>(ProFormDate, {
+export default withDefaultProps(ProFormDate, {
 	showTime: true,
 	placeholder: "请输入",
 })

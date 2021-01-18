@@ -1,9 +1,7 @@
-import { isBoolean } from "@/utils/data/validate"
-import { Tooltip } from "antd"
 import React, { cloneElement, ComponentType, isValidElement } from "react"
+import { Tooltip } from "antd"
 import { TitleTip } from "../ProCard/components"
 import { FieldText } from "../ProField"
-import { ProFormInput } from "../ProForm"
 import { ProTableColumns } from "./type"
 
 // 获取pro table 的 columns

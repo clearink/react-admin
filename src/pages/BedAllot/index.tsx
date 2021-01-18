@@ -171,7 +171,7 @@ function BedAllot() {
 					tableRef.current?.reload()
 					return true
 				}}
-			/>
+			/> 
 		</div>
 	)
 }

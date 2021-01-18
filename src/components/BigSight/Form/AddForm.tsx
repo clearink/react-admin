@@ -18,7 +18,7 @@ function AddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	const { type, ...rest } = props
 	// 还有可能是单独一个页面 那么就是 Fragment or <></> 了
 	const FormComponent = type === "drawer" ? DrawerForm : ModalForm
-	return <FormComponent ref={ref} name="add-form" {...rest} />
+	return <FormComponent ref={ref} name='add-form' {...rest} />
 }
 
-export default memo(withDefaultProps(forwardRef(AddForm), { type: "drawer" }))
+export default withDefaultProps(forwardRef(AddForm), { type: "drawer" })

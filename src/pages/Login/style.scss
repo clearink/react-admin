@@ -14,24 +14,24 @@
 			&__wrap {
 				@include flex-center(column);
 				border-radius: 10px;
-				padding: 30px 50px;
+				padding: 30px;
 				background-color: rgba(white, $alpha: 0.4);
 				box-shadow: 1rem 1rem 4rem rgb(168, 164, 164);
 				height: 558px;
-				width: 450px;
 
-				@include media(sm, max) {
-					background-color: transparent;
-					position: static;
-					box-shadow: none;
-					width: 350px;
-				}
+				// @include media(sm, max) {
+				// 	background-color: transparent;
+				// 	position: static;
+				// 	box-shadow: none;
+				// 	width: 350px;
+				// }
 			}
 			&__title {
 				@include flex-center(column);
+				justify-content: flex-start;
 				font-size: 18px;
 				flex-shrink: 0;
-				flex-basis: 26rem;
+				flex-basis: 20rem;
 				h1 {
 					font-weight: 700;
 					color: $color_primary;
@@ -51,7 +51,8 @@
 			}
 			&__form {
 				flex-grow: 1;
-
+				max-width: 370px;
+				min-width: 370px;
 				.login-box__username,
 				.login-box__password,
 				.login-box__submit {

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
 import { DatePicker } from "antd"
-import moment, { isMoment, Moment } from "moment"
+import moment, { isMoment } from "moment"
 import withFormItem from "@/components/Pro/hocs/withFormItem"
 import { BaseProFieldProps } from "@/components/Pro/ProField/type"
 import { RangePickerProps } from "antd/lib/date-picker"
@@ -17,7 +17,7 @@ function ProFormDateRange(props: ProFormDateRangeProps) {
 		if (!isArray(value)) return undefined
 		return value.map((item) => (isMoment(item) ? item : moment(item)))
 	}, [value]) as RangePickerProps["value"]
-	
+
 	const DOM = <DatePicker.RangePicker value={timeValue} {...rest} />
 	if (render) return render(rest, DOM)
 	return DOM

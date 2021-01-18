@@ -2,11 +2,11 @@ import React from "react"
 import { Divider } from "antd"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
 import {
+	ProForm,
 	ProFormInput,
 	ProFormSelect,
 	ProFormTable,
-} from "@/components/Pro/ProForm"
-import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
+} from "@/components/BigSight"
 import { TableFormColumns } from "@/components/Pro/ProForm/components/ProFormTable/interface"
 
 const columns: TableFormColumns[] = [
@@ -31,14 +31,9 @@ function WorkPlace() {
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
-				<BaseForm onFinish={console.log}>
-					<ProFormTable
-						name='list'
-						label='list'
-						addType='modal'
-						columns={columns}
-					/>
-				</BaseForm>
+				<ProForm onFinish={console.log}>
+					<ProFormTable addType='modal' name='list' label='ad' columns={columns} />
+				</ProForm>
 
 				<Divider />
 			</main>

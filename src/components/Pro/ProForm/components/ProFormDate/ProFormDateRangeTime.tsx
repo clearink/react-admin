@@ -1,6 +1,4 @@
-import withFormItem from "@/components/Pro/hocs/withFormItem"
-import ProFormDateRange, { ProFormDateRangeProps } from "./ProFormDateRange"
+import withDefaultProps from "@/hocs/withDefaultProps"
+import ProFormDateRange from "./ProFormDateRange"
 
-export default withFormItem<ProFormDateRangeProps>(ProFormDateRange, {
-	showTime: true,
-})
+export default withDefaultProps(ProFormDateRange, { showTime: true })

@@ -15,10 +15,7 @@ export default function useMemoCallback<F extends AnyFunc>(
 		fn.current = callback
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [callback, ...deps])
-	return useCallback(
-		function (this: unknown, ...args: any) {
-			return fn.current.apply(this, args)
-		},
-		[fn]
-	) as F
+	return useCallback(function (this: unknown, ...args: any) {
+		return fn.current.apply(this, args)
+	}, []) as F
 }

@@ -32,4 +32,4 @@ function ProFormGroup(props: ProFormGroupProps) {
 		</div>
 	)
 }
-export default memo(ProFormGroup)
+export default ProFormGroup

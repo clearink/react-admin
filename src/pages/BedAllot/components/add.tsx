@@ -18,6 +18,9 @@ function BedAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	const formRef = useRef<AddFormRef>(null)
 	useImperativeHandle(ref, () => formRef.current!, [])
 	const [id, setId] = useState<string | undefined>(undefined)
+	useEffect(() => {
+		formRef.current?.form.setFieldsValue({ num: undefined })
+	}, [id])
 	return (
 		<AddForm
 			{...props}

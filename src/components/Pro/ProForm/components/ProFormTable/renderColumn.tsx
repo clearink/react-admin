@@ -3,10 +3,11 @@ import { TitleTip } from "@/components/Pro/components"
 import { Tooltip } from "antd"
 import { ColumnType } from "antd/lib/table"
 import React, { cloneElement, ComponentType, isValidElement } from "react"
-import { TableFormColumns } from "./interface"
-
-export default function renderColumn(columns?: TableFormColumns[]) {
-	if (!columns) return [] as const
+import { TableFormColumns, TableFormRef } from "./interface"
+export default function renderColumn(
+	columns: TableFormColumns[],
+	action: TableFormRef
+) {
 	const tableColumns: TableFormColumns[] = []
 	const editList: JSX.Element[] = []
 	for (let i = 0; i < columns.length; i++) {
@@ -63,12 +64,12 @@ export default function renderColumn(columns?: TableFormColumns[]) {
 					renderDom = (
 						<Tooltip title={text}>
 							{cloneElement(renderDom, {
-								style: { wdith: rest.width },
+								style: { width: rest.width },
 							})}
 						</Tooltip>
 					)
 				}
-				if (render) return render(readElement, text, record, index)
+				if (render) return render(readElement, text, record, index, action)
 
 				return cloneElement(readElement, { text })
 			},

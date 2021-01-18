@@ -70,13 +70,11 @@ function withFormItem<P extends FieldStyleProps>(
 			</Form.Item>
 		)
 	}
-	return memo(
-		withDefaultProps<Omit<P, keyof FormItemProps> & BaseProFormProps>(
-			FormItem as any,
-			{
-				...defaultProps,
-			}
-		)
+	return withDefaultProps<Omit<P, keyof FormItemProps> & BaseProFormProps>(
+		FormItem as any,
+		{
+			...defaultProps,
+		}
 	)
 }
 

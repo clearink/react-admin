@@ -21,7 +21,7 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	const [buildingId, setBuildingId] = useState<string | undefined>(undefined)
 	useImperativeHandle(ref, () => formRef.current!, [])
 	useEffect(() => {
-		formRef.current?.form.resetFields(["num"])
+		formRef.current?.form.setFieldsValue({ num: undefined })
 	}, [buildingId])
 	return (
 		<EditForm
