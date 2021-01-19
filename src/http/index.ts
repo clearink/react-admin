@@ -103,15 +103,11 @@ class Http {
 			data: { code },
 			data,
 		} = response
-		switch (code) {
-			case 1001:
-				console.log("token 过期了 清除用户登录信息")
-				LoginUtil.clearToken()
-				break
-			default:
-				this.showError(data)
-				break
+		if (code === 1001) {
+			console.log("token 过期了 清除用户登录信息")
+			LoginUtil.clearToken()
 		}
+		this.showError(data)
 	}
 
 	// antd message 更流畅
@@ -124,6 +120,7 @@ class Http {
 			})
 		}, 300)
 	}
+
 	// get请求会被缓存,添加一个随机字符串确保得到最新的结果
 	public get<R = any>(url: string, params?: Object) {
 		return this.axios.get<R>(url, { params: { ...params, _t: Date.now() } })
