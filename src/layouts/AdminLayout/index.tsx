@@ -39,18 +39,18 @@ function BaseLayout(props: IBaseProps) {
 		if (!isLogin) replace("/login")
 	}, [isLogin, replace])
 
-	// // 获取菜单数据 根据 routes json
-	// useEffect(() => {
-	// 	SaveMenu(formatRoutesData(routes!))
-	// }, [routes])
-
-	// 请求菜单数据
+	// 获取菜单数据 根据 routes json
 	useEffect(() => {
-		;(async () => {
-			const { result } = await unwrap(menuActions.fetchMenu())
-			SaveMenu(formatMenuData(result))
-		})()
-	}, [unwrap])
+		SaveMenu(formatRoutesData(routes!))
+	}, [routes])
+
+	// // 请求菜单数据
+	// useEffect(() => {
+	// 	;(async () => {
+	// 		const { result } = await unwrap(menuActions.fetchMenu())
+	// 		SaveMenu(formatMenuData(result))
+	// 	})()
+	// }, [unwrap])
 
 	return (
 		<Layout className={"app-base-layout"}>

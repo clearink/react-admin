@@ -22,7 +22,7 @@ export interface ModalTriggerRef {
 	visible: boolean
 	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
 }
-function ModalTrigger(props: IProps, ref: Ref<ModalTriggerRef | undefined>) {
+function ModalTrigger(props: IProps, ref: Ref<ModalTriggerRef>) {
 	const { trigger, children, ...rest } = props
 	const [visible, toggle] = useBoolean(false)
 

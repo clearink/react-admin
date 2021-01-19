@@ -67,6 +67,7 @@ function Login(props: IBaseProps) {
 
 						<ProFormCaptcha
 							name='captcha'
+							phoneName='mobile'
 							className='login-box__password'
 							captchaProps={{
 								className: "login-box__password",
@@ -75,14 +76,7 @@ function Login(props: IBaseProps) {
 							rules={[{ required: true, message: "请输入验证码" }]}
 							placeholder='请输入验证码'
 							prefix={<IconFont type='icon-password' className='icon' />}
-							onGetCaptcha={async (form) => {
-								const mobile = form?.getFieldValue("mobile")
-								if (!mobile) {
-									form?.setFields([
-										{ errors: ["请输入手机号"], name: "mobile" },
-									])
-									return false
-								}
+							onGetCaptcha={async (mobile) => {
 								await user.GetCaptcha({ mobile })
 								return true
 							}}

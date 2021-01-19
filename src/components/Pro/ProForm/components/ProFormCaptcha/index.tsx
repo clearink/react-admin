@@ -7,22 +7,23 @@ import { FormInstance } from "antd/lib/form"
 import CountDown from "./CountDown"
 import { InputProps } from "antd/lib/input"
 import ProFormContext from "../BaseForm/ProFormContext"
+import { NamePath } from "antd/lib/form/interface"
 
 /* 验证码封装组件
 ProFormCaptcha
 */
 interface ProFormCaptchaProps extends InputProps {
-	// 一般验证码是需要手机号或其它联系方式 用户才能获取到
-	// 所以在 onGetCaptcha 函数中可以使用formInstance 去验证联系方式是否有效
-	// 返回 true 开始倒计时
-	onGetCaptcha?: (form?: FormInstance) => Promise<boolean>
+	
+	/** phone 的 name */
+	phoneName: NamePath
+	onGetCaptcha?: (phoneValue: string) => Promise<boolean>
 	captchaProps?: Omit<ButtonProps, "children" | "disabled" | "loading"> & {
 		text?: ReactNode // 平常显示的文本
 		countDown?: number // 验证码 倒计时的时长 秒为单位
 	}
 }
 function ProFormCaptcha(props: ProFormCaptchaProps) {
-	const { onGetCaptcha, captchaProps, ...rest } = props
+	const { onGetCaptcha, captchaProps, phoneName, ...rest } = props
 	const { text, countDown, ...captchaPropsRest } = captchaProps ?? {}
 
 	const [loading, setLoading] = useState<ButtonProps["loading"]>(false)
@@ -31,7 +32,10 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 		if (typeof onGetCaptcha !== "function") return
 		try {
 			setLoading({ delay: 100 })
-			const result = await onGetCaptcha(form)
+			// 检测是否输入了手机号
+			await form?.validateFields([phoneName])
+			const phoneValue = form!.getFieldValue(phoneName)
+			const result = await onGetCaptcha(phoneValue)
 			if (result) start()
 		} finally {
 			setLoading(false)
@@ -51,7 +55,7 @@ function ProFormCaptcha(props: ProFormCaptchaProps) {
 						{...captchaPropsRest}
 						className={classNames("ml-4", captchaPropsRest.className)}
 					>
-						{active ? `${count}秒后重新获取` : captchaProps?.text ?? "获取验证码"}
+						{active ? `${count}秒后重发` : captchaProps?.text ?? "获取验证码"}
 					</Button>
 				)}
 			</CountDown>

@@ -1,19 +1,12 @@
 import { Form } from "antd"
 import { ButtonProps } from "antd/lib/button"
 import { FormInstance } from "antd/lib/form"
-import React, {
-	forwardRef,
-	memo,
-	Ref,
-	useImperativeHandle,
-	useState,
-} from "react"
+import React, { forwardRef, Ref, useImperativeHandle, useState } from "react"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import useMountedRef from "@/components/Pro/hooks/mounted-ref"
 import ProFormContext from "./ProFormContext"
 import Submitter from "../Submitter"
 import { BaseFormProps } from "../../type"
-
 
 function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 	const {
@@ -52,5 +45,5 @@ function BaseForm(props: BaseFormProps, ref: Ref<FormInstance | undefined>) {
 		</ProFormContext.Provider>
 	)
 }
-
-export default memo(forwardRef(BaseForm))
+BaseForm.List = Form.List
+export default forwardRef(BaseForm)

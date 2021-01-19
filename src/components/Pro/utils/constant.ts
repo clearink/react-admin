@@ -29,6 +29,8 @@ export const antdFormItemProps: Array<keyof FormItemProps> = [
 	"validateTrigger",
 	"valuePropName",
 	"wrapperCol",
+	"fieldKey",
+	"isListField",
 ]
 
 export const WIDTH_SIZE_ENUM = {

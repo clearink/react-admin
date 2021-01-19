@@ -20,11 +20,6 @@ function ProFormUploadList(props: ProFormUploadListProps) {
 	} = props
 	const uploadListService = useUploadListService(props)
 
-	// 根据条件渲染不同的uploadButton
-	// 这个要不要放到service里呢?
-	// 这个是属于UI的
-	// 不需要
-	// service里要放什么呢?
 	const len = uploadListService.list.length
 	const uploadButton = useMemo(() => {
 		if (len >= count!) return null

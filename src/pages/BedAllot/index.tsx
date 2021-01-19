@@ -22,7 +22,7 @@ import { sleep } from "@/utils/test"
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
 import { isNullUndefined } from "@/utils/data/validate"
-import { ProFormInput, ProFormSelect } from "@/components/Pro/ProForm"
+import { ProFormSelect } from "@/components/Pro/ProForm"
 import { FieldText } from "@/components/Pro/ProField"
 
 const columns: ProTableColumns<any>[] = [
@@ -91,7 +91,7 @@ function BedAllot() {
 							method: "get",
 							transform: (response, cache) => {
 								if (cache) return response
-								return response.result.map((item:any) => ({
+								return response.result.map((item: any) => ({
 									label: item.num,
 									value: item.id,
 								}))
@@ -171,7 +171,7 @@ function BedAllot() {
 					tableRef.current?.reload()
 					return true
 				}}
-			/> 
+			/>
 		</div>
 	)
 }
