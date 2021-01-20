@@ -10,17 +10,9 @@ moment.locale("zh-cn")
 function App(props: any) {
 	return (
 		<Router>
-			<Suspense
-				fallback={
-					<div className='flex justify-center items-center pt-24 w-full h-64'>
-						<Spin size='large' />
-					</div>
-				}
-			>
-				<ConfigProvider locale={zhCN}>
-					<RenderRoutes routes={routes} />
-				</ConfigProvider>
-			</Suspense>
+			<ConfigProvider locale={zhCN}>
+				<RenderRoutes routes={routes} />
+			</ConfigProvider>
 		</Router>
 	)
 }
