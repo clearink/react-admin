@@ -7,7 +7,7 @@ function WorkPlace() {
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
 				<ProForm onFinish={console.log}>
-					<BSUploadList name="file" />
+					<BSUploadList name='file' />
 				</ProForm>
 			</main>
 		</div>

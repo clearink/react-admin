@@ -9,6 +9,7 @@ import AddForm, {
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
 import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
+import { phonePattern } from "@/utils/form/pattern"
 
 function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (
@@ -22,7 +23,12 @@ function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 				initialValue='男'
 				options={["男", "女"]}
 			/>
-			<ProFormInput name='mobile' label='手机号' required />
+			<ProFormInput
+				name='mobile'
+				label='手机号'
+				required
+				rules={[{ pattern: phonePattern, message: "手机号格式不正确" }]}
+			/>
 			<ProFormInput name='cardNum' label='身份证号' />
 			<ProFormDate name='birthday' label='出生日期' required />
 			<ProFormDate name='time' label='入住时间' required />

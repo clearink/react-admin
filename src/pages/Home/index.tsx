@@ -11,6 +11,8 @@ import { Link } from "react-router-dom"
 import { UserOutlined } from "@ant-design/icons"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import useMemoFetch from "@/hooks/useMemoFetch"
+import UserAction from "@/pages/Home/HeaderExtra/UserAction"
+import HeaderExtra from "@/pages/Home/HeaderExtra"
 function Home(props: IBaseProps) {
 	const { user } = useTypedSelector((state) => state.user)
 	const [{ data, loading }] = useMemoFetch({
@@ -26,7 +28,12 @@ function Home(props: IBaseProps) {
 	}, [data])
 	return (
 		<div className={styles["home-page__wrap"]}>
-			<CommonHeader icon='icon-chilun' title='管理首页' fixed />
+			<CommonHeader
+				icon='icon-chilun'
+				title='管理首页'
+				fixed
+				extra={<HeaderExtra />}
+			/>
 			<main className={styles.content_wrap}>
 				<div className={styles.content}>
 					<div className='flex mb-8 flex-col lg:flex-row bg-white'>

@@ -1,18 +1,31 @@
-import React, { memo } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
-import { DatePicker, Form, Spin, Tabs } from "antd"
-import { UserOutlined } from "@ant-design/icons"
+import { Button, DatePicker, Form, Radio, Spin, Tabs } from "antd"
+import { EditFilled, EditOutlined, UserOutlined } from "@ant-design/icons"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"
 import NurseDetail from "../NurseDetail"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { useRouteMatch } from "react-router-dom"
 import { FieldAvatar } from "@/components/Pro/ProField"
+import ModalForm, {
+	ModalFormRef,
+} from "@/components/Pro/ProForm/components/ModalForm"
+import {
+	ProFormGroup,
+	ProFormInput,
+	ProFormRadio,
+	ProFormSelect,
+	ProFormTreeSelect,
+} from "@/components/BigSight"
+import { convertFloorTreeNode } from "@/pages/AlarmRecord/utils"
+import ResidentApi from "@/http/api/pages/ResidentApi"
 
 // 住户详情
 function ResidentDetail() {
 	const { params } = useRouteMatch<{ id: string }>()
+	const formRef = useRef<ModalFormRef>(null)
 	const [{ data, loading }] = useMemoFetch({
 		url: "/orgmgt/member/queryById",
 		params: {
@@ -21,6 +34,23 @@ function ResidentDetail() {
 		cache: true,
 		transform: (data) => data.result,
 	})
+	const [roomId, setRoomId] = useState<string | null>(null)
+	const [current, setCurrent] = useState(1)
+	// 请求 护管人员
+	const [{ data: nurseList }] = useMemoFetch({
+		url: "/orgmgt/careWorker/list",
+		method: "post",
+		params: {
+			pageNo: current,
+			pageSize: 10,
+		},
+		transform: (response) => {
+			return response.result.records
+		},
+	})
+	useEffect(() => {
+		formRef.current?.form.setFieldsValue({ bed: undefined })
+	}, [roomId])
 	return (
 		<div className='h-full flex flex-col'>
 			<Spin spinning={loading}>
@@ -41,9 +71,135 @@ function ResidentDetail() {
 						className={classNames("flex-auto flex flex-col", styles.bed_info)}
 					>
 						<span>
-							入住房间：{data?.floor}-{data?.roomName}房-{data?.bedName}床
+							入住房间:
+							<ModalForm
+								ref={formRef}
+								onFinish={async (values) => {
+									await ResidentApi.AllotBed({ ...values, memberId: params.id })
+									return true
+								}}
+								onFieldsChange={() => {
+									const newRoomId = formRef.current?.form.getFieldValue(
+										"orgRoomId"
+									)
+									console.log("newRoomId", newRoomId)
+									setRoomId(newRoomId)
+								}}
+								title='床位设置'
+								trigger={
+									<span className={styles.user_room}>
+										{data?.floor}-{data?.roomName}房-{data?.bedName}床
+										<EditOutlined className={styles.icon} />
+									</span>
+								}
+							>
+								<ProFormTreeSelect
+									label='房间'
+									required
+									name='orgRoomId'
+									placeholder='请选择房间'
+									request={{
+										url: "/orgmgt/room/treeList",
+										method: "post",
+										transform: (response, cache) => {
+											if (cache) return response
+											if (response)
+												return convertFloorTreeNode(response.result, [
+													"orgBuildings",
+													"orgRooms",
+												])
+											return []
+										},
+									}}
+								/>
+								<ProFormSelect
+									required
+									label='床位'
+									name='orgBedId'
+									placeholder='请选择床位'
+									request={{
+										url: roomId ? "/orgmgt/bed/queryByRoomId" : undefined,
+										params: { id: roomId },
+										cache: true,
+										transform: (response, cache) => {
+											if (cache) return response
+
+											return response.result.map((item: any) => ({
+												label: item.num,
+												value: item.id,
+											}))
+										},
+									}}
+								/>
+							</ModalForm>
 						</span>
-						<span>护管人员: {data?.careWorkerName}</span>
+						<span>
+							护管人员:
+							<ModalForm
+								layout='horizontal'
+								title='护管设置'
+								trigger={
+									<span className={styles.user_nurse}>
+										{data?.careWorkerName}
+										<EditOutlined className={styles.icon} />
+									</span>
+								}
+							>
+								<ProFormGroup>
+									<ProFormInput placeholder='姓名' label='人员查找' />
+									<ProFormSelect
+										placeholder='职务类型'
+										request={{
+											url: "/sys/dict/getDictItems/careworkerPosition",
+											cache: true,
+											transform: (response, cache) => {
+												if (cache) return response
+												return response.result.map((item: any) => ({
+													label: item.text,
+													value: item.value,
+												}))
+											},
+										}}
+									/>
+									<Button type='primary'>查找</Button>
+								</ProFormGroup>
+								<Form.Item label='人员选择' name='nurse'>
+									<Radio.Group>
+										{nurseList?.map((item: any) => {
+											return (
+												<div key={item.id}>
+													<FieldAvatar
+														icon={<UserOutlined />}
+														text={item.avatar}
+													/>
+													<div>{item.name}</div>
+													<div>{item.position}</div>
+													<Radio value={item.id} />
+												</div>
+											)
+										})}
+									</Radio.Group>
+								</Form.Item>
+								{/* <ProFormRadio
+									label='人员选择'
+									options={[1, 2, 3, 4, 5, 6]}
+									render={(props) => {
+										return (
+											<>
+												{(props.options as any[]).map((item) => {
+													return (
+														<div key={item.value}>
+															<FieldAvatar icon={<UserOutlined />} />
+															<span>21</span>
+														</div>
+													)
+												})}
+											</>
+										)
+									}}
+								/> */}
+							</ModalForm>
+						</span>
 					</div>
 				</div>
 			</Spin>

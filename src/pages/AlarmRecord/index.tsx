@@ -21,7 +21,7 @@ import {
 	FieldTreeStatus,
 } from "@/components/Pro/ProField"
 import { BSTreeSelect } from "@/components/BigSight"
-import UserAlarmDetail from "@/components/PepLife/HeaderExtra/UserAlarm/UserAlarmDetail/UserAlarm.Detail"
+import UserAlarmDetail from "@/pages/Home/HeaderExtra/UserAlarm/UserAlarmDetail/UserAlarm.Detail"
 import AlarmApi from "@/http/api/pages/AlarmApi"
 // 告警记录
 export const alarmColumns = [

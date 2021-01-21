@@ -66,7 +66,9 @@ export function renderStatus(
  * 转换原始的options
  * options : string[] | Array<{ label: string; value: string }>
  */
-export function ConvertOptions(options: string[] | Array<FieldOptionType>) {
+export function ConvertOptions(
+	options: Array<string | number> | Array<FieldOptionType>
+) {
 	if (isObject(options[0])) return options
 	if (!isArray(options)) return []
 	return (options as string[]).map((item) => ({

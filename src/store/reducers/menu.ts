@@ -1,7 +1,7 @@
 import { TMenu } from "@/@types/menu"
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import https from "@/http/api/system/menu"
-
+import { formatMenuData } from "@/layouts/AdminLayout/utils"
 
 const fetchMenu = createAsyncThunk("menu/fetch", async () => {
 	const response = await https.GetMenu()
@@ -26,7 +26,7 @@ const slice = createSlice({
 			})
 			.addCase(fetchMenu.fulfilled, (state, action) => {
 				state.loading = false
-				// state.menu = action.payload
+				state.menu = formatMenuData(action.payload.result)
 			})
 			.addCase(fetchMenu.rejected, (state, action) => {
 				state.loading = false

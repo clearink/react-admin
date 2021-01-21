@@ -19,6 +19,8 @@ import {
 	ProFormSelect,
 } from "@/components/Pro/ProForm"
 import { FieldDate, FieldStatus, FieldText } from "@/components/Pro/ProField"
+import ResidentApi from "@/http/api/pages/ResidentApi"
+import formatValue from "@/utils/form/formatValue"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
@@ -143,8 +145,7 @@ function Resident() {
 				title='新增住户'
 				ref={addRef}
 				onFinish={async (values) => {
-					console.log(values)
-					await sleep(1000)
+					await ResidentApi.AddResident(formatValue(values))
 					return true
 				}}
 			/>

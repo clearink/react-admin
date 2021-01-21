@@ -13,7 +13,7 @@ import { RadioGroupProps } from "antd/lib/radio"
 // 这是 antd 的设计 no bug
 export interface ProFormRadioProps extends Omit<RadioGroupProps, "options"> {
 	render?: BaseProFieldProps<ProFormRadioProps>["render"]
-	options?: string[] | Array<{ label: string; value: any }>
+	options?: Array<string | number> | Array<{ label: string; value: any }>
 	value?: SelectProps<any[]>["value"]
 	request?: UseMemoFetchProps
 }

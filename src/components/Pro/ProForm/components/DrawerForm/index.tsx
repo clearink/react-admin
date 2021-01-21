@@ -57,12 +57,16 @@ function DrawerForm(props: DrawerFormProps, ref: Ref<DrawerFormRef>) {
 
 	const handleFinish = async (values: any) => {
 		// 提交完成关闭 drawer 重置表单
-		setLoading({ delay: 100 })
-		const result = await onFinish?.(values)
-		setLoading(false)
-		if (result) {
-			off()
-			form.resetFields()
+		try {
+			setLoading({ delay: 100 })
+			const result = await onFinish?.(values)
+			setLoading(false)
+			if (result) {
+				off()
+				form.resetFields()
+			}
+		} catch (error) {
+			setLoading(false)
 		}
 	}
 	/** 外部控制 显示隐藏 */
