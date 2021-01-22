@@ -1,4 +1,11 @@
-import React, { createContext, useMemo, useRef, useState } from "react"
+import React, {
+	createContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react"
+import { Spin } from "antd"
 import styles from "./style.module.scss"
 import BedCard from "./components/BedCard"
 import BCGDetail from "./components/BCGDetail"
@@ -7,8 +14,7 @@ import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { ProFormRadio } from "@/components/Pro/ProForm"
 import { FormInstance } from "antd/lib/form"
 import useMemoFetch from "@/hooks/useMemoFetch"
-import { convertFloorTreeNode } from "../AlarmRecord/utils"
-import { Spin } from "antd"
+import { convertTreeNode } from "../BedAllot/utils"
 
 interface BCGContextProps {
 	visible: boolean
@@ -27,13 +33,14 @@ function Monitor() {
 	const [visible, toggle] = useBoolean()
 	const formRef = useRef<FormInstance>()
 
-	const [{ data, loading }] = useMemoFetch({
-		url: "/orgmgt/room/treeList",
+	const [{ data: buildingList, loading }, _, updateMemo] = useMemoFetch({
+		url: "/orgmgt/building/treeList",
 		method: "post",
 		cache: true,
 		transform: (response, cache) => {
 			if (cache) return response
-			return convertFloorTreeNode(response.result, ["orgBuildings", "orgRooms"])
+			if (response) return convertTreeNode(response?.result, "orgBuildings")
+			return []
 		},
 	})
 
@@ -41,14 +48,40 @@ function Monitor() {
 	const [floorId, setFloorId] = useState<string | undefined>() // 楼层ID
 	const [roomId, setRoomId] = useState<string | undefined>() // 房间ID
 
-	// 楼栋列表
-	const buildingList = useMemo(() => {
-		if (!data) return []
-		return data.map((item: any) => {
-			console.log(item)
-			return { label: item.title, value: item.key }
-		})
-	}, [data])
+	// 楼栋数据
+	const buildingData = useMemo(() => {
+		if (buildingList)
+			return buildingList.map((item: any) => ({
+				label: item.title,
+				value: item.key,
+			}))
+	}, [buildingList])
+
+	// 楼层数据
+	const floorData = useMemo(() => {
+		if (buildingList) {
+			const data = buildingList.find((item: any) => item.key === buildingId)
+			console.log(data)
+			if (data) {
+				return data.children?.map((item: any) => ({
+					label: item.title,
+					value: item.key,
+				}))
+			}
+		}
+	}, [buildingId, buildingList])
+
+	// 房间数据
+	const [{ data: roomData }] = useMemoFetch({
+		url: floorId ? "/orgmgt/room/list/queryByBuildingId" : undefined,
+		params: { id: floorId },
+		transform: (response) => {
+			return response.result.map((item: any) => ({
+				label: item.num,
+				value: item.id,
+			}))
+		},
+	})
 	return (
 		<main>
 			{/* 楼层 */}
@@ -60,8 +93,11 @@ function Monitor() {
 							name='buildingId'
 							optionType='button'
 							buttonStyle='solid'
-							options={buildingList}
+							options={buildingData}
 							formItemClassName={styles.filter_item}
+							onChange={(e) => {
+								setBuildingId(e.target.value)
+							}}
 						/>
 						<ProFormRadio
 							label='楼层'
@@ -69,7 +105,10 @@ function Monitor() {
 							initialValue={1}
 							optionType='button'
 							buttonStyle='solid'
-							options={[1, 2, 3, 4, 5]}
+							options={floorData}
+							onChange={(e) => {
+								setFloorId(e.target.value)
+							}}
 							formItemClassName={styles.filter_item}
 						/>
 						<ProFormRadio
@@ -77,8 +116,11 @@ function Monitor() {
 							name='room'
 							optionType='button'
 							buttonStyle='solid'
-							options={[1, 2, 3, 4, 5]}
+							options={roomData}
 							formItemClassName={styles.filter_item}
+							onChange={(e) => {
+								console.log("将发起请求")
+							}}
 						/>
 						<ProFormRadio
 							name='status'
@@ -94,7 +136,7 @@ function Monitor() {
 			{/* 病床 */}
 			<BCGContext.Provider value={{ visible, toggle, setBcgId }}>
 				<div className={styles.bed_card_list}>
-					{Array.from({ length: 30 }, (_, i) => (
+					{Array.from({ length: 20 }, (_, i) => (
 						<BedCard
 							title={`507房 - ${i.toString().padStart(2, "0")}床`}
 							key={i}

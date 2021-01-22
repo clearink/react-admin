@@ -9,11 +9,11 @@ export interface editData extends AddData {
 }
 
 export interface RemoveData {
-	id: string | number
+	ids: Array<string | number>
 }
 // 楼层管理 API
 export default {
 	add: (data: AddData) => http.post("/orgmgt/room/save", data),
 	edit: (data: editData) => http.post("/orgmgt/room/save", data),
-	remove: (data: RemoveData) => http.get("/orgmgt/room/delete", data),
+	remove: (data: RemoveData) => http.post("/orgmgt/room/delete", data),
 }

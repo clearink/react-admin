@@ -4533,6 +4533,11 @@ date-fns@^2.15.0:
   resolved "https://registry.npm.taobao.org/date-fns/download/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
   integrity sha1-BXdXksPzMx2oEq8lPhqTWFHTg0s=
 
+dayjs@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.npm.taobao.org/dayjs/download/dayjs-1.10.3.tgz?cache=0&sync_timestamp=1610178215007&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdayjs%2Fdownload%2Fdayjs-1.10.3.tgz#cf3357c8e7f508432826371672ebf376cb7d619b"
+  integrity sha1-zzNXyOf1CEMoJjcWcuvzdst9YZs=
+
 dayjs@^1.8.30:
   version "1.8.34"
   resolved "https://registry.npm.taobao.org/dayjs/download/dayjs-1.8.34.tgz?cache=0&sync_timestamp=1597892492786&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdayjs%2Fdownload%2Fdayjs-1.8.34.tgz#d3ad33cc43d6b0f24cb8686b90aad2c653708069"

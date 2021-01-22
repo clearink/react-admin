@@ -24,6 +24,7 @@ import EditForm from "./components/edit"
 import { isNullUndefined } from "@/utils/data/validate"
 import { ProFormSelect } from "@/components/Pro/ProForm"
 import { FieldText } from "@/components/Pro/ProField"
+import BedAllotApi from "@/http/api/pages/BedAllotApi"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -166,8 +167,7 @@ function BedAllot() {
 				title='新增床位'
 				ref={addRef}
 				onFinish={async (values) => {
-					console.log(values)
-					await sleep(1000)
+					await BedAllotApi.add(values)
 					tableRef.current?.reload()
 					return true
 				}}

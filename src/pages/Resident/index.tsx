@@ -113,13 +113,16 @@ function Resident() {
 			render: (dom, id) => {
 				return (
 					<Space>
-						<Button type='link'>
+						<Button type='link' size='small'>
 							<Link to={`/resident/${id}`}>住户详情</Link>
 						</Button>
 
-						<Button type='link'>处理设置</Button>
+						<Button type='link' size='small'>
+							处理设置
+						</Button>
 						<Button
 							type='link'
+							size='small'
 							onClick={() => {
 								editRef.current?.toggle()
 								setEditId(id)
@@ -127,7 +130,7 @@ function Resident() {
 						>
 							编辑
 						</Button>
-						<Button type='link'>停护</Button>
+						<Button type='link' size='small'>停护</Button>
 					</Space>
 				)
 			},

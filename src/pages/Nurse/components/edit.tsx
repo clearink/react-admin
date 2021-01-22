@@ -1,5 +1,9 @@
 import React, { forwardRef, memo, Ref } from "react"
-import { ProFormInput, ProFormRadio, ProFormSelect } from "@/components/Pro/ProForm"
+import {
+	ProFormInput,
+	ProFormRadio,
+	ProFormSelect,
+} from "@/components/Pro/ProForm"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
@@ -33,6 +37,7 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			/>
 
 			<ProFormSelect
+				required
 				name='position'
 				label='职务'
 				request={{

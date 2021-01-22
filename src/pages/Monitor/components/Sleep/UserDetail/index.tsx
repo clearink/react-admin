@@ -11,11 +11,12 @@ import {
 } from "@/components/Pro/ProForm"
 import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
 import { getRequiredRule } from "@/utils/form/FormRule"
-import { CheckCircleOutlined } from "@ant-design/icons"
+import { CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons"
 import { FormInstance } from "antd/lib/form"
 import http from "@/http"
 import { isString } from "@/utils/data/validate"
 import formatValue from "@/utils/form/formatValue"
+import { BSAvatar, ProFormGroup } from "@/components/BigSight"
 
 const updateUserDetail = (data: any) => http.post("/orgmgt/member/save", data)
 
@@ -60,7 +61,8 @@ function UserDetail(props: UserDetailProps) {
 			<div className='flex flex-col md:flex-row items-center md:justify-between'>
 				<div className='w-3/4 md:w-11/24'>
 					<header className={styles.info_header}>住户信息</header>
-					<div className='flex justify-between'>
+					<BSAvatar name='avatar' />
+					<ProFormGroup>
 						<ProFormRadio
 							name='gender'
 							label='性别'
@@ -73,29 +75,56 @@ function UserDetail(props: UserDetailProps) {
 							label='出生年月'
 							rules={[{ required: true, message: "请选择日期" }]}
 						/>
-					</div>
+					</ProFormGroup>
 					<ProFormInput
 						name='name'
 						label='姓名'
 						rules={getRequiredRule("姓名")}
 					/>
-					<ProFormInput
-						name='mobile'
-						label='手机号码'
-						rules={getRequiredRule("手机号码")}
-					/>
-					<ProFormInput
-						name='cardNum'
-						label='身份证号'
-						rules={getRequiredRule("身份证号")}
-					/>
+					<div className='flex justify-between'>
+						<ProFormInput
+							name='mobile'
+							label='手机号码'
+							rules={getRequiredRule("手机号码")}
+							formItemClassName='flex-auto'
+						/>
+						<span className='px-8' style={{ lineHeight: "32px" }}>
+							<UserAddOutlined />
+							认证
+						</span>
+					</div>
+					<div className='flex justify-between'>
+						<ProFormInput
+							name='cardNum'
+							label='身份证号'
+							rules={getRequiredRule("身份证号")}
+							formItemClassName='flex-auto'
+						/>
+						<span className='px-8' style={{ lineHeight: "32px" }}>
+							<UserAddOutlined />
+							认证
+						</span>
+					</div>
+
 					<ProFormTextArea
 						name={["memberProfile", "address"]}
 						label='家庭住址'
+						placeholder='请输入家庭住址'
+						maxLength={300}
+						showCount
+						rows={4}
 						rules={getRequiredRule("家庭住址")}
 					/>
 				</div>
 				<div className='w-3/4 md:w-11/24'>
+					<ProFormGroup
+						title={{
+							title: <header className={styles.info_header}>入住信息</header>,
+						}}
+					>
+						<ProFormDate required label='入住时间' />
+						<ProFormDate label='退房时间' />
+					</ProFormGroup>
 					<header className={styles.info_header}>紧急联系人信息</header>
 					<ProFormInput
 						label='联系人(一)'
@@ -117,18 +146,15 @@ function UserDetail(props: UserDetailProps) {
 					<ProFormInput
 						label='联系人(二)'
 						name={["memberProfile", "contactName2"]}
-						rules={getRequiredRule("联系人(二)")}
 					/>
 					<ProFormInput
 						label='联系人电话(二)'
 						name={["memberProfile", "contactMobile2"]}
-						rules={getRequiredRule("联系人电话(二)")}
 					/>
 					<ProFormSelect
 						label='关系类型(二)'
 						name={["memberProfile", "contactRelation2"]}
 						options={["子女", "亲属", "朋友"]}
-						rules={getRequiredRule("关系类型(二)")}
 					/>
 				</div>
 			</div>

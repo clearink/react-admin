@@ -22,7 +22,7 @@ function Home(props: IBaseProps) {
 	const lastLogin = useMemo(() => {
 		if (data)
 			return moment(data?.result?.lastLoginTime).format(
-				"YYYY年MM月DD日 星期E HH:mm:ss"
+				"YYYY年MM月DD日 星期d HH:mm:ss"
 			)
 		return "loading..."
 	}, [data])

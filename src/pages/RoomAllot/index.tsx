@@ -123,6 +123,9 @@ function RoomAllot() {
 				onCreate={() => {
 					addRef.current?.toggle()
 				}}
+				onDelete={async (ids) => {
+					await RoomAllotApi.remove({ ids })
+				}}
 			/>
 
 			<RoomAddForm

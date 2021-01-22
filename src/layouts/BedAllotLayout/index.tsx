@@ -1,4 +1,10 @@
-import React, { PropsWithChildren, useEffect, useMemo, useRef, useState } from "react"
+import React, {
+	PropsWithChildren,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react"
 import { Card, message, Skeleton, Tabs, Tree } from "antd"
 import { CommonHeader } from "@/components/PepLife"
 import {
@@ -29,7 +35,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	const addRef = useRef<DrawerFormRef>(null)
 	const editRef = useRef<DrawerFormRef>(null)
 
-	const [{ data: treeData, loading }, fetchData, updateMemo] = useMemoFetch({
+	const [{ data: treeData, loading }, _, updateMemo] = useMemoFetch({
 		url: "/orgmgt/building/treeList",
 		method: "post",
 		cache: true,

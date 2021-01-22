@@ -23,6 +23,7 @@ function NurseAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 				rules={[{ pattern: phonePattern, message: "手机号格式不正确" }]}
 			/>
 			<ProFormSelect
+				required
 				name='position'
 				label='职务'
 				request={{

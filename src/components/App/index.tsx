@@ -1,12 +1,13 @@
-import React, { Suspense } from "react"
+import React from "react"
 import { BrowserRouter, HashRouter as Router } from "react-router-dom"
-import { ConfigProvider, Spin } from "antd"
+import { ConfigProvider } from "antd"
 import RenderRoutes from "@/components/RenderRoutes"
 import routes from "@/routes"
 import zhCN from "antd/lib/locale/zh_CN"
-import moment from "moment"
-import "moment/locale/zh-cn"
-moment.locale("zh-cn")
+import dayjs from "dayjs"
+import "dayjs/locale/zh-cn"
+dayjs.locale("zh-cn")
+
 function App(props: any) {
 	return (
 		<Router>
