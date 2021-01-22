@@ -19,7 +19,7 @@ function ProFormDate(props: ProFormDateProps) {
 		return moment(value)
 	}, [value])
 	const DOM = <DatePicker value={timeValue} {...rest} />
-	if (render) return render(rest, DOM)
+	if (render) return render({ ...rest, value: timeValue }, DOM)
 	return DOM
 }
 export default withFormItem<ProFormDateProps>(ProFormDate, {

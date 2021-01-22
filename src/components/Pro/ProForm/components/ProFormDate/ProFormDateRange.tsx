@@ -22,4 +22,4 @@ function ProFormDateRange(props: ProFormDateRangeProps) {
 	if (render) return render(rest, DOM)
 	return DOM
 }
-export default withFormItem<ProFormDateRangeProps>(ProFormDateRange, {})
+export default withFormItem<ProFormDateRangeProps>(ProFormDateRange)

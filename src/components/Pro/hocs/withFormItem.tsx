@@ -72,9 +72,7 @@ function withFormItem<P extends FieldStyleProps>(
 	}
 	return withDefaultProps<Omit<P, keyof FormItemProps> & BaseProFormProps>(
 		FormItem as any,
-		{
-			...defaultProps,
-		}
+		defaultProps
 	)
 }
 

@@ -9,6 +9,7 @@
 	text-align: center;
 }
 .bed_info {
+	@apply flex-auto flex flex-col;
 	font-size: 18px;
 	color: $color_text;
 }
@@ -29,7 +30,7 @@
 	margin-left: 8px;
 	color: $color_primary;
 	cursor: pointer;
-	.icon{
+	.icon {
 		margin-left: 8px;
 	}
 }

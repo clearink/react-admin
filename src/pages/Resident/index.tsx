@@ -17,10 +17,12 @@ import {
 	ProFormDate,
 	ProFormInput,
 	ProFormSelect,
+	ProFormTreeSelect,
 } from "@/components/Pro/ProForm"
 import { FieldDate, FieldStatus, FieldText } from "@/components/Pro/ProField"
 import ResidentApi from "@/http/api/pages/ResidentApi"
 import formatValue from "@/utils/form/formatValue"
+import { convertTreeNode } from "../BedAllot/utils"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
@@ -52,10 +54,18 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: "floor",
 		read: <FieldStatus />,
 		search: (
-			<ProFormSelect
+			<ProFormTreeSelect
 				label={undefined}
 				placeholder='选择楼层'
 				name='buildingId'
+				request={{
+					url: "/orgmgt/building/treeList",
+					method: "post",
+					transform: (response, cache) => {
+						if (cache) return response
+						return convertTreeNode(response.result, "orgBuildings") ?? []
+					},
+				}}
 			/>
 		),
 	},
@@ -146,6 +156,7 @@ function Resident() {
 				ref={addRef}
 				onFinish={async (values) => {
 					await ResidentApi.AddResident(formatValue(values))
+					tableRef.current?.reload()
 					return true
 				}}
 			/>

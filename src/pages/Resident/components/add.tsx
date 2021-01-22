@@ -1,5 +1,6 @@
 import React, { forwardRef, memo, Ref } from "react"
 import {
+	ProFormDate,
 	ProFormInput,
 	ProFormRadio,
 	ProFormTextArea,
@@ -8,8 +9,8 @@ import AddForm, {
 	AddFormProps,
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
-import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
 import { phonePattern } from "@/utils/form/pattern"
+import { DatePicker } from "antd"
 
 function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (
@@ -31,6 +32,7 @@ function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 			/>
 			<ProFormInput name='cardNum' label='身份证号' />
 			<ProFormDate name='birthday' label='出生日期' required />
+
 			<ProFormDate name='time' label='入住时间' required />
 			<ProFormTextArea rows={4} name='address' label='家庭住址' />
 			<ProFormTextArea rows={4} name='info' label='备注' />

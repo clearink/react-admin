@@ -4,6 +4,7 @@ import styles from "./style.module.scss"
 import GetIcon from "@/components/GetIcon"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import useTypedSelector from "@/hooks/useTypedSelector"
+import useTitle from "@/hooks/ui/useTitle"
 // 派博 基础的 header
 /**
  * 左侧的icon 和 title
@@ -11,7 +12,7 @@ import useTypedSelector from "@/hooks/useTypedSelector"
  */
 interface CommonHeaderProps {
 	icon?: ReactNode
-	title: ReactNode
+	title: string
 	ghost: boolean
 	fixed: boolean // 是否固定
 	extra?: React.ReactNode
@@ -19,6 +20,7 @@ interface CommonHeaderProps {
 function CommonHeader(props: PropsWithChildren<CommonHeaderProps>) {
 	const { icon, title, ghost, fixed, children, extra } = props
 	const collapsed = useTypedSelector((state) => state.menu.collapsed)
+	useTitle(title)
 	return (
 		<div
 			className={classNames(styles.common_header_wrap, {

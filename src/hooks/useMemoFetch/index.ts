@@ -1,5 +1,3 @@
-import { CommonServerData } from "@/hooks/useMemoFetch/interface"
-import { sleep } from "@/utils/test"
 import { useEffect } from "react"
 import http from "@/http"
 import { actions as kvActions } from "@/store/reducers/kv"

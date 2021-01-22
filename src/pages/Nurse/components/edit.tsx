@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, Ref } from "react"
-import { ProFormInput, ProFormRadio } from "@/components/Pro/ProForm"
+import { ProFormInput, ProFormRadio, ProFormSelect } from "@/components/Pro/ProForm"
 import EditForm, {
 	EditFormProps,
 	EditFormRef,
@@ -32,7 +32,21 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 				rules={[{ pattern: phonePattern, message: "手机号格式不正确" }]}
 			/>
 
-			<ProFormInput name='position' label='职务' />
+			<ProFormSelect
+				name='position'
+				label='职务'
+				request={{
+					url: "/sys/dict/getDictItems/careworkerPosition",
+					cache: true,
+					transform: (response, cache) => {
+						if (cache) return response
+						return response.result.map((item: any) => ({
+							label: item.text,
+							value: item.value,
+						}))
+					},
+				}}
+			/>
 			<ProFormNumber name='age' label='年龄' required />
 			<ProFormInput name='cardNum' label='身份证号' required />
 

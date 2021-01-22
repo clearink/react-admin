@@ -1,12 +1,14 @@
-import React, { createContext, useEffect, useRef, useState } from "react"
+import React, { createContext, useMemo, useRef, useState } from "react"
 import styles from "./style.module.scss"
-import { Space } from "antd"
 import BedCard from "./components/BedCard"
 import BCGDetail from "./components/BCGDetail"
 import useBoolean from "@/hooks/useBoolean"
 import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { ProFormRadio } from "@/components/Pro/ProForm"
 import { FormInstance } from "antd/lib/form"
+import useMemoFetch from "@/hooks/useMemoFetch"
+import { convertFloorTreeNode } from "../AlarmRecord/utils"
+import { Spin } from "antd"
 
 interface BCGContextProps {
 	visible: boolean
@@ -18,121 +20,76 @@ export const BCGContext = createContext<BCGContextProps>({
 	toggle: () => {},
 })
 
-const roomData = [
-	{
-		title: "一楼",
-		id: 1,
-		children: Array.from({ length: 10 }, (_, i) => ({
-			id: 100 + i,
-			title: `${100 + i}`,
-		})),
-	},
-	{
-		title: "二楼",
-		id: 2,
-		children: Array.from({ length: 10 }, (_, i) => ({
-			id: 200 + i,
-			title: `${200 + i}`,
-		})),
-	},
-	{
-		title: "三楼",
-		id: 3,
-		children: Array.from({ length: 10 }, (_, i) => ({
-			id: 300 + i,
-			title: `${300 + i}`,
-		})),
-	},
-	{
-		title: "四楼",
-		id: 4,
-		children: Array.from({ length: 10 }, (_, i) => ({
-			id: 400 + i,
-			title: `${400 + i}`,
-		})),
-	},
-	{
-		title: "五楼",
-		id: 5,
-		children: Array.from({ length: 10 }, (_, i) => ({
-			id: 500 + i,
-			title: `${500 + i}`,
-		})),
-	},
-]
 const statusData = ["全部(30)", "在床(27)", "离床(2)", "离线(1)"]
 // 监控分析
 function Monitor() {
 	const [bcgId, setBcgId] = useState(undefined)
 	const [visible, toggle] = useBoolean()
 	const formRef = useRef<FormInstance>()
-	const [selectRoomData, setSelectRoomData] = useState<any[]>([])
 
-	useEffect(() => {
-		const floor = formRef.current?.getFieldValue("floor")
-		if (!floor) return
-		const SF = roomData.find((item) => item.id === floor)
-		if (SF)
-			setSelectRoomData(
-				SF.children.map((item) => ({ label: item.title, value: item.id })) ?? []
-			)
-	}, [])
+	const [{ data, loading }] = useMemoFetch({
+		url: "/orgmgt/room/treeList",
+		method: "post",
+		cache: true,
+		transform: (response, cache) => {
+			if (cache) return response
+			return convertFloorTreeNode(response.result, ["orgBuildings", "orgRooms"])
+		},
+	})
+
+	const [buildingId, setBuildingId] = useState<string | undefined>() // 楼栋ID
+	const [floorId, setFloorId] = useState<string | undefined>() // 楼层ID
+	const [roomId, setRoomId] = useState<string | undefined>() // 房间ID
+
+	// 楼栋列表
+	const buildingList = useMemo(() => {
+		if (!data) return []
+		return data.map((item: any) => {
+			console.log(item)
+			return { label: item.title, value: item.key }
+		})
+	}, [data])
 	return (
 		<main>
 			{/* 楼层 */}
 			<div className={styles.filter_bar}>
-				<BaseForm
-					ref={formRef}
-					submitConfig={{ render: () => <></> }}
-					className='px-4'
-				>
-					<div className={styles.filter_item}>
+				<Spin spinning={loading}>
+					<BaseForm ref={formRef} submitConfig={false} className='px-4'>
+						<ProFormRadio
+							label='楼栋'
+							name='buildingId'
+							optionType='button'
+							buttonStyle='solid'
+							options={buildingList}
+							formItemClassName={styles.filter_item}
+						/>
 						<ProFormRadio
 							label='楼层'
 							name='floor'
 							initialValue={1}
-							onChange={(e: any) => {
-								const floor = formRef.current?.getFieldValue("floor")
-								if (!floor) return
-								const SF = roomData.find((item) => item.id === floor)
-								if (SF)
-									setSelectRoomData(
-										SF.children.map((item) => ({
-											label: item.title,
-											value: item.id,
-										})) ?? []
-									)
-							}}
-							options={roomData.map((item) => ({
-								label: item.title,
-								value: item.id,
-							}))}
 							optionType='button'
 							buttonStyle='solid'
-							formItemClassName='mb-4'
+							options={[1, 2, 3, 4, 5]}
+							formItemClassName={styles.filter_item}
 						/>
-					</div>
-					<div className={styles.filter_item}>
 						<ProFormRadio
 							label='房间'
 							name='room'
-							options={selectRoomData}
 							optionType='button'
 							buttonStyle='solid'
-							formItemClassName='mb-4'
+							options={[1, 2, 3, 4, 5]}
+							formItemClassName={styles.filter_item}
 						/>
-					</div>
-					<div className={styles.filter_item}>
 						<ProFormRadio
 							name='status'
 							label='状态'
-							options={statusData}
 							optionType='button'
 							buttonStyle='solid'
-							formItemClassName='mb-4'
+							options={statusData}
+							formItemClassName={styles.filter_item}
 						/>
-					</div>
-				</BaseForm>
+					</BaseForm>
+				</Spin>
 			</div>
 			{/* 病床 */}
 			<BCGContext.Provider value={{ visible, toggle, setBcgId }}>
