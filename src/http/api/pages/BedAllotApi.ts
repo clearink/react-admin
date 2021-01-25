@@ -10,11 +10,14 @@ export interface editData {
 }
 
 export interface RemoveData {
-	id: string | number
+	ids: Array<string | number>
 }
 // 楼层管理 API
 export default {
-	add: (data: AddData) => http.post("/orgmgt/building/save", data),
-	edit: (data: editData) => http.post("/orgmgt/building/save", data),
-	remove: (data: RemoveData) => http.get("/orgmgt/building/delete", data),
+	add: (data: AddData) => http.post("/orgmgt/bed/save", data),
+	edit: (data: editData) => http.post("/orgmgt/bed/save", data),
+	// 楼层删除
+	removeFloor: (data: { id: string }) => http.get("/orgmgt/building/delete", data),
+	// 床位删除
+	removeBed: (data: RemoveData) => http.post("/orgmgt/bed/delete", data),
 }

@@ -58,6 +58,7 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 					label='房间名称'
 					required
 					request={{
+						cache:false,
 						url: buildingId ? "/orgmgt/room/list/queryByBuildingId" : undefined,
 						params: { id: buildingId },
 						method: "get",

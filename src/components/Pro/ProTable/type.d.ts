@@ -1,3 +1,4 @@
+import { FormInstance } from "antd/lib/form"
 import { TitleTipProps } from "./../ProCard/components/TitleTip/index"
 import { ColumnType, TableProps } from "antd/lib/table"
 import { ComponentType, ReactNode } from "react"
@@ -67,6 +68,7 @@ export type ProTableRef = {
 	reload: () => void // 重新加载数据
 	clearRows: () => void // 清除选中
 	setParams: (params: object) => void
+	form: FormInstance
 }
 export interface ProTableRequest extends UseMemoFetchProps {
 	transform: (

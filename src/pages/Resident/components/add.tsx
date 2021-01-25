@@ -10,7 +10,6 @@ import AddForm, {
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
 import { phonePattern } from "@/utils/form/pattern"
-import { DatePicker } from "antd"
 
 function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (

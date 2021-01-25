@@ -71,10 +71,10 @@ function RoomAllot() {
 
 	const buildingId = useContext(BedAllotContext)
 
-	const params = { buildingId, pageNo: 1, pageSize: 2 }
+	const params = { buildingId, pageNo: 1, pageSize: 10 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
-		if (isNullUndefined(buildingId) || !tableMethods) return
+		if (!tableMethods) return
 		tableMethods.setParams(params)
 	}, [buildingId, params])
 
@@ -143,7 +143,8 @@ function RoomAllot() {
 				id={editId}
 				ref={editRef}
 				onFinish={async (values) => {
-					await sleep(1000)
+					await RoomAllotApi.edit(values)
+					setEditId(undefined)
 					tableRef.current?.reload()
 					return true
 				}}

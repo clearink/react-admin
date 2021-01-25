@@ -36,11 +36,17 @@ function ProTable<T extends object>(
 		renderAction,
 		renderTitle,
 		onCreate,
-		onDelete,
 		...rest
 	} = props
 	const tableService = useProTableService(props)
-	useImperativeHandle(ref, () => tableService.action, [tableService.action])
+	useImperativeHandle(
+		ref,
+		() => ({
+			...tableService.action,
+			form: tableService.form,
+		}),
+		[tableService.action, tableService.form]
+	)
 
 	const tableTitleExtra = (() => {
 		const actions = [
@@ -79,6 +85,7 @@ function ProTable<T extends object>(
 			<div className={styles.pro_table_wrap}>
 				{/* proTable 暂时不提供对 query filter 的配置 后续会增强 search 字段的功能 */}
 				<QueryFilter
+					form={tableService.form}
 					name='table-query-filter'
 					loading={tableService.state.loading}
 					className={classNames({ hidden: !search })}

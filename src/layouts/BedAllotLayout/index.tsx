@@ -1,10 +1,4 @@
-import React, {
-	PropsWithChildren,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react"
+import React, { PropsWithChildren, useMemo, useRef, useState } from "react"
 import { Card, message, Skeleton, Tabs, Tree } from "antd"
 import { CommonHeader } from "@/components/PepLife"
 import {
@@ -70,7 +64,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	// 删除 楼层
 	const handleDelete = useMemoCallback(async (id: string) => {
 		// 请求接口
-		await BedAllotApi.remove({ id })
+		await BedAllotApi.removeFloor({ id })
 		updateMemo()
 	}, [])
 	// 编辑

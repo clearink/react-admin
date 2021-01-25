@@ -4,18 +4,17 @@ import classNames from "classnames"
 import moment from "moment"
 import IconFont from "@/components/IconFont"
 import styles from "./style.module.scss"
-import { Avatar, Statistic } from "antd"
+import { Avatar } from "antd"
 import SysNotice from "./SysNotice"
 import { CommonHeader } from "@/components/PepLife"
 import { Link } from "react-router-dom"
 import { UserOutlined } from "@ant-design/icons"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import useMemoFetch from "@/hooks/useMemoFetch"
-import UserAction from "@/pages/Home/HeaderExtra/UserAction"
 import HeaderExtra from "@/pages/Home/HeaderExtra"
-function Home(props: IBaseProps) {
+function Home() {
 	const { user } = useTypedSelector((state) => state.user)
-	const [{ data, loading }] = useMemoFetch({
+	const [{ data }] = useMemoFetch({
 		url: "/orgmgt/index/info",
 		cache: true,
 	})

@@ -2,6 +2,7 @@ import { SorterResult } from "antd/lib/table/interface"
 import moment, { Moment } from "moment"
 import removeEmpty from "./data/removeEmpty"
 import { isArray, isObject } from "./data/validate"
+import formatValue from "./form/formatValue"
 // 金钱格式化
 export const formatMoney = (
 	money: string | number,
@@ -95,7 +96,7 @@ export function formatTableSearchParams(
 		// 搜索字段
 		// 搜索时 默认返回第一页
 		result.pageNo = 1
-		result = removeEmpty({ ...result, ...form })
+		result = formatValue(removeEmpty({ ...result, ...form }))
 	}
 
 	// 分页相关

@@ -19,7 +19,7 @@ module.exports = override(
 	}),
 	(config) => {
 		config.plugins.push(new WebpackBar())
-		if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin()) // 生产环境启用
+		// if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin()) // 生产环境启用
 		if (isAnalyze) config.plugins.push(new BundleAnalyzerPlugin()) // 打包分析
 		return config
 	},

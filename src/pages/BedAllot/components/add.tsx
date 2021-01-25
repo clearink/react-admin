@@ -46,16 +46,17 @@ function BedAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 					}}
 				/>
 				<BSTreeSelect
-					name='num'
+					name='orgRoomId'
 					label='房间名称'
 					required
 					request={{
+						cache: false,
 						url: id ? "/orgmgt/room/list/queryByBuildingId" : undefined,
 						params: { id },
 						method: "get",
 						transform: (response, cache) => {
 							if (cache) return response
-							return response.result.map((item: any) => ({
+							return response.result?.map((item: any) => ({
 								label: item.num,
 								value: item.id,
 							}))
@@ -63,7 +64,7 @@ function BedAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 					}}
 				/>
 			</ProFormGroup>
-			<ProFormInput name='bedNum' label='床位名称' required />
+			<ProFormInput name='num' label='床位名称' required />
 		</AddForm>
 	)
 }

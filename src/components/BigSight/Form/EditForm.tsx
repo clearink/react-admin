@@ -79,15 +79,3 @@ function EditForm(props: EditFormProps, ref: Ref<DrawerFormRef>) {
 }
 
 export default memo(withDefaultProps(forwardRef(EditForm), { type: "drawer" }))
-/**
- * 	// 这个应该是自动生成的
-	const DOM = (
-		<>
-			<ProFormInput label='姓名' name='name' />
-			<ProFormRadio label='性别' name='gender' options={["男", "女"]} />
-			<ProFormDate label='生日' name='birthday' />
-			<ProFormNumber label='年龄' name='age' />
-			<ProFormInput label='身份证号' name='cardNum' />
-		</>
-	)
- */

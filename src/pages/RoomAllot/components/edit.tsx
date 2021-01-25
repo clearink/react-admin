@@ -20,7 +20,6 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			ref={ref}
 		>
 			<ProFormGroup>
-				<ProFormInput name='num' label='床位名称' required />
 				<BSTreeSelect
 					name='orgBuildingId'
 					width='l'
@@ -35,6 +34,7 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 						},
 					}}
 				/>
+				<ProFormInput name='num' label='床位名称' required />
 			</ProFormGroup>
 		</EditForm>
 	)

@@ -1,7 +1,7 @@
 import http from "@/http"
 import GetServiceContext from "@/utils/store/GetServiceContext"
 import { sleep } from "@/utils/test"
-import { Modal } from "antd"
+import { Form, Modal } from "antd"
 import { TableProps } from "antd/lib/table"
 import { useEffect, useMemo } from "react"
 import useMountedRef from "../hooks/mounted-ref"
@@ -14,6 +14,7 @@ export default function useProTableService<T extends object>(
 	props: ProTableProps<T>
 ) {
 	const { request, dataSource, columns, onSearch, onDelete } = props
+	const [form] = Form.useForm()
 
 	// 数据
 	const mountedRef = useMountedRef()
@@ -106,6 +107,7 @@ export default function useProTableService<T extends object>(
 	}
 	return {
 		state,
+		form,
 		methods,
 		fetchData,
 		action,

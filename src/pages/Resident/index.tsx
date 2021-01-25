@@ -10,9 +10,7 @@ import {
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import ResidentAddForm from "./components/add"
-import ResidentEditForm from "./components/edit"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
-import { sleep } from "@/utils/test"
 import {
 	ProFormDate,
 	ProFormInput,
@@ -23,6 +21,7 @@ import { FieldDate, FieldStatus, FieldText } from "@/components/Pro/ProField"
 import ResidentApi from "@/http/api/pages/ResidentApi"
 import formatValue from "@/utils/form/formatValue"
 import { convertTreeNode } from "../BedAllot/utils"
+import { convertFloorTreeNode } from "../AlarmRecord/utils"
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "头像",
@@ -36,7 +35,7 @@ const columns: ProTableColumns<any>[] = [
 		search: (
 			<ProFormInput
 				label={undefined}
-				placeholder='性别/手机'
+				placeholder='姓名/手机'
 				name='nameOrMobile'
 			/>
 		),
@@ -59,11 +58,11 @@ const columns: ProTableColumns<any>[] = [
 				placeholder='选择楼层'
 				name='buildingId'
 				request={{
-					url: "/orgmgt/building/treeList",
+					url: "/orgmgt/room/treeList",
 					method: "post",
 					transform: (response, cache) => {
 						if (cache) return response
-						return convertTreeNode(response.result, "orgBuildings") ?? []
+						return convertTreeNode(response.result, "orgBuildings")
 					},
 				}}
 			/>
@@ -72,13 +71,13 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "入住房间",
 		dataIndex: "roomName",
-		search: <ProFormInput label={undefined} placeholder='选择房间' />,
+		search: <ProFormSelect label={undefined} placeholder='选择房间' />,
 	},
 	{
 		title: "时间",
 		dataIndex: "time",
 		read: <FieldDate />,
-		search: <ProFormDate placeholder='选择时间' />,
+		search: <ProFormDate placeholder='选择时间' label={undefined} />,
 	},
 	{
 		title: "住户手机",
@@ -100,10 +99,7 @@ const columns: ProTableColumns<any>[] = [
 ]
 
 function Resident() {
-	const [editId, setEditId] = useState<string | undefined>(undefined)
-
 	const addRef = useRef<DrawerFormRef>(null)
-	const editRef = useRef<DrawerFormRef>(null)
 	const tableRef = useRef<ProTableRef>(null)
 
 	const tableColumns = useMemo(() => {
@@ -120,17 +116,9 @@ function Resident() {
 						<Button type='link' size='small'>
 							处理设置
 						</Button>
-						<Button
-							type='link'
-							size='small'
-							onClick={() => {
-								editRef.current?.toggle()
-								setEditId(id)
-							}}
-						>
-							编辑
+						<Button type='link' size='small'>
+							停护
 						</Button>
-						<Button type='link' size='small'>停护</Button>
 					</Space>
 				)
 			},
@@ -153,6 +141,9 @@ function Resident() {
 				onCreate={() => {
 					addRef.current?.toggle()
 				}}
+				onDelete={async (ids) => {
+					await ResidentApi.RemoveResident({ ids })
+				}}
 			/>
 			<ResidentAddForm
 				title='新增住户'
@@ -163,15 +154,17 @@ function Resident() {
 					return true
 				}}
 			/>
-			<ResidentEditForm
+			{/* <ResidentEditForm
 				title='编辑住户'
 				id={editId}
 				ref={editRef}
-				onFinish={async () => {
-					await sleep(1000)
+				onFinish={async (values) => {
+					await ResidentApi.EditResident(values)
+					tableRef.current?.reload()
+					setEditId(undefined)
 					return true
 				}}
-			/>
+			/> */}
 		</>
 	)
 }

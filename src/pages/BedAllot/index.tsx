@@ -2,6 +2,7 @@ import React, {
 	memo,
 	useContext,
 	useEffect,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -21,10 +22,10 @@ import { sleep } from "@/utils/test"
 
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
-import { isNullUndefined } from "@/utils/data/validate"
 import { ProFormSelect } from "@/components/Pro/ProForm"
 import { FieldText } from "@/components/Pro/ProField"
 import BedAllotApi from "@/http/api/pages/BedAllotApi"
+import useMemoFetch from "@/hooks/useMemoFetch"
 
 const columns: ProTableColumns<any>[] = [
 	{
@@ -69,10 +70,26 @@ function BedAllot() {
 	const params = { buildingId, pageNo: 1, pageSize: 10 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
-		if (isNullUndefined(buildingId) || !tableMethods) return
+		if (!tableMethods) return
 		tableMethods.setParams(params)
 	}, [buildingId, params])
 
+	const [{ data: roomData, loading }, fetchData, _, methods] = useMemoFetch({
+		auto: false,
+		url: "/orgmgt/room/list/queryByBuildingId",
+		params: { id: buildingId },
+		transform: (response) => {
+			console.log(response)
+			return response.result?.map((item: any) => ({
+				label: item.num,
+				value: item.id,
+			}))
+		},
+	})
+	useEffect(() => {
+		if (buildingId) fetchData()
+		else methods.setData(undefined)
+	}, [buildingId, fetchData, methods])
 	const proTableColumns = useMemo(
 		() =>
 			columns.concat({
@@ -84,20 +101,8 @@ function BedAllot() {
 						label={undefined}
 						name='roomId'
 						placeholder='房间编号'
-						request={{
-							url: buildingId
-								? "/orgmgt/room/list/queryByBuildingId"
-								: undefined,
-							params: { id: buildingId },
-							method: "get",
-							transform: (response, cache) => {
-								if (cache) return response
-								return response.result.map((item: any) => ({
-									label: item.num,
-									value: item.id,
-								}))
-							},
-						}}
+						options={roomData}
+						loading={loading}
 					/>
 				),
 				render: (dom, id) => {
@@ -121,7 +126,7 @@ function BedAllot() {
 					)
 				},
 			}),
-		[buildingId]
+		[loading, roomData]
 	)
 	return (
 		<div className={styles.page_wrap}>
@@ -141,12 +146,8 @@ function BedAllot() {
 				onCreate={() => {
 					addRef.current?.toggle()
 				}}
-				// onCreate 新增 table 内部
-				// onDelete 删除 table 内部
-				// onEdit  编辑 属于 table 外部
-
 				onDelete={async (values) => {
-					// BedAllotApi.remove()
+					await BedAllotApi.removeBed({ ids: values })
 				}}
 			/>
 
@@ -156,7 +157,7 @@ function BedAllot() {
 				id={editId}
 				ref={editRef}
 				onFinish={async (values) => {
-					await sleep(1000)
+					await BedAllotApi.edit(values)
 					tableRef.current?.reload()
 					return true
 				}}

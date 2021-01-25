@@ -74,5 +74,5 @@ export default function useMemoFetch(props: UseMemoFetchProps) {
 		fetchData(true)
 	}, [])
 
-	return [state, fetchData, updateMemo] as const
+	return [state, fetchData, updateMemo, methods] as const
 }
