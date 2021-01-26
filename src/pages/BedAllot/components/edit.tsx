@@ -28,7 +28,7 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			{...rest}
 			id={id}
 			request={{
-				url: "/orgmgt/bed/member/queryByBedId",
+				url: "/orgmgt/bed/queryById",
 				params: { id },
 				method: "get",
 			}}
@@ -54,11 +54,11 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 					}}
 				/>
 				<BSTreeSelect
-					name='num'
+					name='orgRoomId'
 					label='房间名称'
 					required
 					request={{
-						cache:false,
+						cache: false,
 						url: buildingId ? "/orgmgt/room/list/queryByBuildingId" : undefined,
 						params: { id: buildingId },
 						method: "get",
@@ -72,7 +72,7 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 					}}
 				/>
 			</ProFormGroup>
-			<ProFormInput name='bedNum' label='床位名称' required />
+			<ProFormInput name='num' label='床位名称' required />
 		</EditForm>
 	)
 }

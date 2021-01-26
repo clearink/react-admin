@@ -7,15 +7,30 @@ import {
 	FieldAvatar,
 	ProFormGroup,
 	ProFormInput,
-	ProFormRadio,
 	ProFormSelect,
 } from "@/components/BigSight"
-import { Button, Form, Radio } from "antd"
+import { Button, Empty, Form, Radio } from "antd"
 
 // 护管设置
 function NurseSetting() {
 	const service = useContext(ResidentDetailService)
-	const nurseList: any[] = []
+	const nurseList: any[] = [
+		{
+			id: "1",
+			name: "233",
+			position: "12213",
+		},
+		{
+			id: "11",
+			name: "233",
+			position: "12213",
+		},
+		{
+			id: "111",
+			name: "233",
+			position: "12213",
+		},
+	]
 	return (
 		<ModalForm
 			layout='horizontal'
@@ -45,11 +60,15 @@ function NurseSetting() {
 				/>
 				<Button type='primary'>查找</Button>
 			</ProFormGroup>
-			<Form.Item label='人员选择' name='nurse'>
+			<Form.Item
+				label='人员选择'
+				name='nurse'
+				rules={[{ required: true, message: "请选择护管" }]}
+			>
 				<Radio.Group>
 					{nurseList?.map((item: any) => {
 						return (
-							<div key={item.id}>
+							<div key={item.id} className={styles.nurse_list_item}>
 								<FieldAvatar icon={<UserOutlined />} text={item.avatar} />
 								<div>{item.name}</div>
 								<div>{item.position}</div>
@@ -57,26 +76,9 @@ function NurseSetting() {
 							</div>
 						)
 					})}
+					{nurseList.length === 0 && <Empty />}
 				</Radio.Group>
 			</Form.Item>
-			<ProFormRadio
-				label='人员选择'
-				options={[1, 2, 3, 4, 5, 6]}
-				render={(props) => {
-					return (
-						<Radio.Group>
-							{(props.options as any[]).map((item) => {
-								return (
-									<div key={item.value}>
-										<FieldAvatar icon={<UserOutlined />} />
-										<span>21</span>
-									</div>
-								)
-							})}
-						</Radio.Group>
-					)
-				}}
-			/>
 		</ModalForm>
 	)
 }

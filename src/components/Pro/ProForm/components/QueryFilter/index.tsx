@@ -101,7 +101,7 @@ function QueryFilter(props: QueryFilterProps) {
 				submitConfig={false}
 				layout={breakpoints.lg ? "horizontal" : "vertical"}
 				{...rest}
-				className={"flex flex-wrap"}
+				className='flex flex-wrap'
 			>
 				{renderChildren}
 				{submitConfig && (
