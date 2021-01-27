@@ -26,7 +26,7 @@ interface UserDetailProps {
 }
 function UserDetail(props: UserDetailProps) {
 	const { data } = props
-	const ref = useRef<FormInstance | null>(null)
+	const ref = useRef<FormInstance>(null)
 	const handleFinish = async (values: any) => {
 		await updateUserDetail({
 			id: data.id,

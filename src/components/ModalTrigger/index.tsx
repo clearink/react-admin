@@ -10,37 +10,48 @@ import React, {
 } from "react"
 import { Modal } from "antd"
 import { ModalProps } from "antd/lib/modal"
-import useBoolean from "@/hooks/useBoolean"
 import { isFunction } from "@/utils/data/validate"
+import { useSwitch } from "../Pro/hooks/boolean"
 // antd 模态框封装
 interface IProps extends Omit<ModalProps, "visible"> {
 	trigger?: ReactNode
 	children?: ReactNode
 }
 export interface ModalTriggerRef {
-	toggle: (e?: MouseEvent, t?: () => void) => void
+	toggle: (e?: MouseEvent) => void
 	visible: boolean
-	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
+	on: () => void
+	off: () => void
 }
 function ModalTrigger(props: IProps, ref: Ref<ModalTriggerRef>) {
 	const { trigger, children, ...rest } = props
-	const [visible, toggle] = useBoolean(false)
+	const [visible, on, off, toggle] = useSwitch()
 
-	useImperativeHandle(ref, () => ({ toggle, visible }), [toggle, visible])
+	useImperativeHandle(ref, () => ({ visible, on, off, toggle }), [
+		off,
+		on,
+		toggle,
+		visible,
+	])
 
 	const wrappedTrigger = useMemo(() => {
 		if (!trigger || !isValidElement(trigger)) return trigger
 		return cloneElement(trigger, {
 			onClick: (e: MouseEvent) => {
 				const { onClick } = trigger.props
-				onClick ? onClick(e, toggle) : toggle()
+				onClick?.(e)
+				on()
 			},
 		})
-	}, [trigger, toggle])
+	}, [trigger, on])
+	const handleCancel = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+		off()
+		rest.onCancel?.(e)
+	}
 	return (
 		<>
 			{wrappedTrigger}
-			<Modal visible={visible} onCancel={toggle as any} {...rest}>
+			<Modal visible={visible} {...rest} onCancel={handleCancel}>
 				{isFunction(children) ? children({ visible, toggle }) : children}
 			</Modal>
 		</>

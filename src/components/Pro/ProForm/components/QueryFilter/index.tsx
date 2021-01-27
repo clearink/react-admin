@@ -97,12 +97,7 @@ function QueryFilter(props: QueryFilterProps) {
 			})}
 			style={style}
 		>
-			<BaseForm
-				submitConfig={false}
-				layout={breakpoints.lg ? "horizontal" : "vertical"}
-				{...rest}
-				className='flex flex-wrap'
-			>
+			<BaseForm submitConfig={false} {...rest} className='flex flex-wrap'>
 				{renderChildren}
 				{submitConfig && (
 					<Submitter
@@ -111,10 +106,7 @@ function QueryFilter(props: QueryFilterProps) {
 						render={(dom, f) => {
 							const DOM = (
 								<Col span={STColSpan} className='text-right px-4'>
-									<Form.Item
-										label={STColSpan === 24 ? null : " "}
-										colon={false}
-									>
+									<Form.Item>
 										<Space>
 											{dom}
 											<span

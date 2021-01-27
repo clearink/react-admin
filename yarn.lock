@@ -2476,10 +2476,10 @@ antd@*:
     scroll-into-view-if-needed "^2.2.25"
     warning "^4.0.3"
 
-antd@4.9.4:
-  version "4.9.4"
-  resolved "https://registry.npm.taobao.org/antd/download/antd-4.9.4.tgz?cache=0&sync_timestamp=1611506221946&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fantd%2Fdownload%2Fantd-4.9.4.tgz#129092bc4a67c774145cb2450e4046d27a1acbb1"
-  integrity sha1-EpCSvEpnx3QUXLJFDkBG0noay7E=
+antd@4.9.3:
+  version "4.9.3"
+  resolved "https://registry.npm.taobao.org/antd/download/antd-4.9.3.tgz?cache=0&sync_timestamp=1611643416919&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fantd%2Fdownload%2Fantd-4.9.3.tgz#a9666fe3d7e0b18818e7f8bdb81abbf8a4a3e7d2"
+  integrity sha1-qWZv49fgsYgY5/i9uBq7+KSj59I=
   dependencies:
     "@ant-design/colors" "^5.0.0"
     "@ant-design/icons" "^4.3.0"

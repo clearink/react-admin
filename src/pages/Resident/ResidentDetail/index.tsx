@@ -31,7 +31,7 @@ function ResidentDetail() {
 	const formRef = useRef<ModalFormRef>(null)
 	// 住户详情
 	const [{ data, loading }] = useMemoFetch({
-		// url: "/orgmgt/member/queryById",
+		url: "/orgmgt/member/queryById",
 		params: { id: params.id },
 		cache: true,
 		transform: (data) => data.result,

@@ -29,12 +29,7 @@ const reducers = {
 		return { ...state, error }
 	},
 }
-export default function useUploadAvatarService(
-	props: Pick<
-		ProFormAvatarProps,
-		"onChange" | "transform" | "value" | "beforeUpload" | "limit"
-	>
-) {
+export default function useUploadAvatarService(props: ProFormAvatarProps) {
 	const { onChange, transform, value, beforeUpload, limit } = props
 	const [state, methods] = useMethods(reducers, { ...initialState, src: value })
 

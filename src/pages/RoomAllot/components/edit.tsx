@@ -34,7 +34,7 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 						},
 					}}
 				/>
-				<ProFormInput name='num' label='床位名称' required />
+				<ProFormInput name='num' label='房间编号' required />
 			</ProFormGroup>
 		</EditForm>
 	)

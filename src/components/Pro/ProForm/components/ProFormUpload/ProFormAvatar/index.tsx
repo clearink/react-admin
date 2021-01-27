@@ -23,13 +23,7 @@ function ProFormAvatar(props: ProFormAvatarProps) {
 	/**
 	 * 	"onChange" | "transform" | "value" | "beforeUpload" | "limit"
 	 */
-	const uploadAvatarService = useUploadAvatarService({
-		onChange,
-		transform,
-		value,
-		beforeUpload,
-		limit,
-	})
+	const uploadAvatarService = useUploadAvatarService(props)
 
 	// 根据条件渲染不同的uploadButton
 	const uploadButton = (() => {

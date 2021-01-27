@@ -12,26 +12,30 @@ import { Drawer } from "antd"
 import { isFunction } from "@/utils/data/validate"
 import { DrawerProps } from "antd/lib/drawer"
 import { useSwitch } from "../Pro/hooks/boolean"
-// antd 模态框封装
+
+// antd 抽屉封装
 interface DrawerTriggerProps extends Omit<DrawerProps, "visible"> {
 	trigger?: ReactNode
 	children?: ReactNode
 }
 export interface ModalTriggerRef {
-	toggle: (e?: MouseEvent, t?: () => void) => void
+	toggle: (e?: MouseEvent) => void
 	visible: boolean
-	//((instance: T | null) => void) | MutableRefObject<T | null> | null)
+	on: () => void
+	off: () => void
 }
 // 为了使数据请求更加流畅 modal trigger 劫持 afterVisibleChange函数 向下传入 isFinish 字段
-
-function DrawerTrigger(
-	props: DrawerTriggerProps,
-	ref: Ref<ModalTriggerRef | undefined>
-) {
+export type DrawerTriggerRef = ModalTriggerRef
+function DrawerTrigger(props: DrawerTriggerProps, ref: Ref<DrawerTriggerRef>) {
 	const { trigger, children, ...rest } = props
 	const [visible, on, off, toggle] = useSwitch()
 
-	useImperativeHandle(ref, () => ({ toggle, visible }), [toggle, visible])
+	useImperativeHandle(ref, () => ({ visible, on, off, toggle }), [
+		visible,
+		on,
+		off,
+		toggle,
+	])
 
 	const wrappedTrigger = useMemo(() => {
 		if (!isValidElement(trigger)) return trigger

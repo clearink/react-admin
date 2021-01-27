@@ -134,7 +134,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 						params: { id: editId },
 					}}
 					onFinish={async (values) => {
-						await BedAllotApi.edit(values)
+						await BedAllotApi.editFloor(values)
 						updateMemo() // reload tree
 						message.success("修改成功")
 						return true
@@ -150,7 +150,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 					ref={addRef}
 					name='add-floor'
 					onFinish={async (value) => {
-						await BedAllotApi.add({ parentId: addId, ...value })
+						await BedAllotApi.addFloor({ parentId: addId, ...value })
 						// reload
 						updateMemo()
 						return true
