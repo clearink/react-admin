@@ -88,7 +88,7 @@ function BedSetting() {
 				name='orgBedId'
 				required
 				request={{
-					url: orgRoomId ? "/orgmgt/bed/queryByRoomId" : undefined,
+					url: orgRoomId ? "/orgmgt/bed/emptyBedList/queryByRoomId" : undefined,
 					params: { id: orgRoomId },
 					transform: (response, cache) => {
 						if (cache) return response
