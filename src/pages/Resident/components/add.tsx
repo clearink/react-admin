@@ -32,8 +32,16 @@ function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 			<ProFormInput name='cardNum' label='身份证号' />
 			<ProFormDate name='birthday' label='出生日期' required />
 
-			<ProFormDate name='time' label='入住时间' required />
-			<ProFormTextArea rows={4} name='address' label='家庭住址' />
+			<ProFormDate
+				name={["memberProfile", "checkInTime"]}
+				label='入住时间'
+				required
+			/>
+			<ProFormTextArea
+				rows={4}
+				name={["memberProfile", "address"]}
+				label='家庭住址'
+			/>
 			<ProFormTextArea rows={4} name='info' label='备注' />
 		</AddForm>
 	)

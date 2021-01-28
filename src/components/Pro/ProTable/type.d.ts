@@ -59,6 +59,7 @@ export interface ProTableColumns<T extends object = any>
 	fieldProps?: FieldSelectProps
 	/** 搜索属性 提取到 query filter 为true默认为ProFormInput */
 	search?: JSX.Element | ComponentType<any>
+	searchOrder?: number
 	/** ProField的属性 为true 默认为ProFieldText */
 	read?: JSX.Element | ComponentType<any>
 }
@@ -81,6 +82,8 @@ export interface ProTableProps<T extends object>
 		TableProps<T>,
 		"columns" | "rowSelection" | "title" | "pagination"
 	> {
+	/** 筛选form ref */
+	formRef?: React.Ref<FormInstance>
 	columns?: ProTableColumns<T>[]
 	/** 搜索改变 */
 	onSearch?: (values: any) => object
@@ -91,7 +94,7 @@ export interface ProTableProps<T extends object>
 	/** 新增 */
 	onCreate?: () => void
 	searchProps?: Partial<Omit<QueryFilterProps, "collapsed">>
-	search: boolean
+	search: boolean | Partial<QueryFilterProps>
 	request?: ProTableRequest
 	title?: TitleTipProps["title"]
 	/** 渲染右上角的action button */

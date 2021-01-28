@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import { Button, Space } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
@@ -19,100 +19,119 @@ import {
 } from "@/components/Pro/ProForm"
 import { FieldDate, FieldStatus, FieldText } from "@/components/Pro/ProField"
 import ResidentApi from "@/http/api/pages/ResidentApi"
-import formatValue from "@/utils/form/formatValue"
 import { convertTreeNode } from "../BedAllot/utils"
-import { convertFloorTreeNode } from "../AlarmRecord/utils"
-const columns: ProTableColumns<any>[] = [
-	{
-		title: "头像",
-		dataIndex: "avatar",
-		read: <FieldAvatar icon={<UserOutlined />} />,
-	},
-	{
-		title: "姓名",
-		dataIndex: "name",
-		read: <FieldText copyable />,
-		search: (
-			<ProFormInput
-				label={undefined}
-				placeholder='姓名/手机'
-				name='nameOrMobile'
-			/>
-		),
-	},
-	{
-		title: "性别",
-		dataIndex: "gender",
-	},
-	{
-		title: "年龄",
-		dataIndex: "age",
-	},
-	{
-		title: "入住楼层",
-		dataIndex: "floor",
-		read: <FieldStatus />,
-		search: (
-			<ProFormTreeSelect
-				label={undefined}
-				placeholder='选择楼层'
-				name='buildingId'
-				request={{
-					url: "/orgmgt/room/treeList",
-					method: "post",
-					transform: (response, cache) => {
-						if (cache) return response
-						return convertTreeNode(response.result, "orgBuildings")
-					},
-				}}
-			/>
-		),
-	},
-	{
-		title: "入住房间",
-		dataIndex: "roomName",
-		search: <ProFormSelect label={undefined} placeholder='选择房间' />,
-	},
-	{
-		title: "时间",
-		dataIndex: "time",
-		read: <FieldDate />,
-		search: <ProFormDate placeholder='选择时间' label={undefined} />,
-	},
-	{
-		title: "住户手机",
-		dataIndex: "mobile",
-		read: <FieldText copyable />,
-	},
-	{
-		title: "紧急联系电话",
-		dataIndex: "contactNumber",
-		read: <FieldText copyable />,
-	},
-	{
-		title: "账号状态",
-		dataIndex: "enabled",
-		render: (dom, value) => {
-			return value ? "正常" : "离院"
-		},
-	},
-]
+import { FormInstance } from "antd/lib/form"
+import useMemoFetch from "@/hooks/useMemoFetch"
 
 function Resident() {
 	const addRef = useRef<DrawerFormRef>(null)
 	const tableRef = useRef<ProTableRef>(null)
+	const formRef = useRef<FormInstance>(null)
 
-	const tableColumns = useMemo(() => {
-		return columns.concat({
+	const [buildingId, setBuildingId] = useState<string | null>(null)
+	const columns: ProTableColumns<any>[] = [
+		{
+			title: "头像",
+			dataIndex: "avatar",
+			read: <FieldAvatar icon={<UserOutlined />} />,
+		},
+		{
+			title: "姓名",
+			dataIndex: "name",
+			read: <FieldText copyable />,
+			searchOrder: 1,
+			search: (
+				<ProFormInput
+					label={undefined}
+					placeholder='姓名/手机'
+					name='nameOrMobile'
+				/>
+			),
+		},
+		{
+			title: "性别",
+			dataIndex: "gender",
+		},
+		{
+			title: "年龄",
+			dataIndex: "age",
+		},
+		{
+			title: "入住楼层",
+			dataIndex: "floor",
+			read: <FieldStatus />,
+			search: (
+				<ProFormTreeSelect
+					onChange={(newId) => {
+						formRef.current?.setFieldsValue({ roomId: undefined })
+						setBuildingId(newId)
+					}}
+					label={undefined}
+					placeholder='选择楼层'
+					name='buildingId'
+					request={{
+						url: "/orgmgt/building/treeList",
+						method: "post",
+						transform: (response, cache) => {
+							console.log(response)
+							if (cache) return response
+							return convertTreeNode(response.result, "orgBuildings")
+						},
+					}}
+				/>
+			),
+		},
+		{
+			title: "入住房间",
+			dataIndex: "roomName",
+			search: (
+				<ProFormSelect
+					name='roomId'
+					request={{
+						url: buildingId ? "/orgmgt/room/list/queryByBuildingId" : undefined,
+						params: { id: buildingId },
+						transform: (response) => {
+							return response.result?.map((item: any) => ({
+								label: item.num,
+								value: item.id,
+							}))
+						},
+					}}
+					label={undefined}
+					placeholder='选择房间'
+				/>
+			),
+		},
+		{
+			title: "时间",
+			dataIndex: "createTime",
+			read: <FieldDate />,
+			search: <ProFormDate placeholder='选择时间' label={undefined} />,
+		},
+		{
+			title: "住户手机",
+			dataIndex: "mobile",
+			read: <FieldText copyable />,
+		},
+		{
+			title: "紧急联系电话",
+			dataIndex: "contactNumber",
+			read: <FieldText copyable />,
+		},
+		{
+			title: "账号状态",
+			dataIndex: "enabled",
+			render: (dom, value) => {
+				return value ? "正常" : "离院"
+			},
+		},
+		{
 			title: "操作",
 			dataIndex: "id",
 			render: (dom, id) => {
 				return (
 					<Space>
-						<Button type='link' size='small'>
-							<Link to={`/resident/${id}`}>住户详情</Link>
-						</Button>
-
+						<Link to={`/resident/${id}`}>住户详情</Link>
 						<Button type='link' size='small'>
 							处理设置
 						</Button>
@@ -122,14 +141,16 @@ function Resident() {
 					</Space>
 				)
 			},
-		})
-	}, [])
+		},
+	]
+
 	return (
 		<>
 			<ProTable
 				rowKey='id'
+				formRef={formRef}
 				ref={tableRef}
-				columns={tableColumns}
+				columns={columns}
 				title='住户管理'
 				request={{
 					url: "/orgmgt/member/list",
@@ -149,7 +170,7 @@ function Resident() {
 				title='新增住户'
 				ref={addRef}
 				onFinish={async (values) => {
-					await ResidentApi.AddResident(formatValue(values))
+					await ResidentApi.AddResident(values)
 					tableRef.current?.reload()
 					return true
 				}}

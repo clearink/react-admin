@@ -1,7 +1,5 @@
 import { SorterResult } from "antd/lib/table/interface"
-import moment, { Moment } from "moment"
 import removeEmpty from "./data/removeEmpty"
-import { isArray, isObject } from "./data/validate"
 import formatValue from "./form/formatValue"
 // 金钱格式化
 export const formatMoney = (
@@ -23,41 +21,7 @@ export const removeSeparator = (
  * 1.Moment
  * 2.富文本
  */
-// function findValueByPath(data: any, path: string[]) {
-// 	let value = data
-// 	while (value) {
-// 		value = data[path.pop()]
-// 	}
-// }
-export default function formatValues(
-	values: object | any[],
-	formatList: any[]
-): any {
-	const result = { ...values }
-	for (let i = 0; i < formatList.length; i++) {
-		const { type, path } = formatList[i]
-		if (type === "date") {
-			// 找 path
-		}
-	}
-	// if (isArray(values)) {
-	// 	return values.map((item) => {
-	// 		if (isArray(item) || isObject(item)) return formatValues(item, path)
-	// 		if (moment.isMoment(item)) return moment(item).format("YYYY-MM-DD")
-	// 		// 是富文本
-	// 		return item
-	// 	})
-	// }
-	// if (isObject(values)) {
-	// 	return Object.entries(values).reduce((pre, [k, v]) => {
-	// 		if (isArray(v) || isArray(v))
-	// 			return Object.assign(pre, { [k]: formatValues(v, path) })
-	// 		if (v !== undefined && v !== "") return Object.assign(pre, { [k]: v })
-	// 		return pre
-	// 	}, {})
-	// }
-	return result
-}
+
 export interface TableSearchParamsProps {
 	filters?: {}
 	pagination?: {

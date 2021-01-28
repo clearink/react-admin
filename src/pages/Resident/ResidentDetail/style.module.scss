@@ -34,10 +34,28 @@
 		margin-left: 8px;
 	}
 }
-:global {
-	:ant-radio-group {
-		width: 100%;
-	}
+.group {
+	width: 100%;
+	max-height: 200px;
+	overflow: auto;
 }
 .nurse_list_item {
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	margin-bottom: 10px;
+	cursor: pointer;
+	.nurse_info {
+		@include flex-center;
+		justify-content: flex-start;
+		flex: 1;
+		:not(:last-child) {
+			margin-right: 10px;
+		}
+	}
+	.name,
+	.position {
+		color: $color_text;
+		font-size: 16px;
+	}
 }

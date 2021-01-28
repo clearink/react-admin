@@ -8,7 +8,7 @@ interface TreeNode extends DataNode {
 export function convertTreeNode(data: any[], childKey: string) {
 	return data.reduce((pre, cur) => {
 		const ele: TreeNode = { title: cur.name, key: cur.id, value: cur.id }
-		if (isArray(cur[childKey]) && cur[childKey].length) {
+		if (isArray(cur[childKey])) {
 			ele.children = convertTreeNode(cur[childKey], childKey)
 			ele.disabled = true
 		} else {

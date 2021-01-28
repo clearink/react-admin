@@ -14,8 +14,6 @@ import { getRequiredRule } from "@/utils/form/FormRule"
 import { CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons"
 import { FormInstance } from "antd/lib/form"
 import http from "@/http"
-import { isString } from "@/utils/data/validate"
-import formatValue from "@/utils/form/formatValue"
 import { BSAvatar, ProFormGroup } from "@/components/BigSight"
 
 const updateUserDetail = (data: any) => http.post("/orgmgt/member/save", data)
@@ -28,10 +26,7 @@ function UserDetail(props: UserDetailProps) {
 	const { data } = props
 	const ref = useRef<FormInstance>(null)
 	const handleFinish = async (values: any) => {
-		await updateUserDetail({
-			id: data.id,
-			...formatValue(values),
-		})
+		await updateUserDetail(values)
 		notification.success({
 			message: "用户信息保存成功",
 			placement: "bottomRight",
@@ -62,6 +57,7 @@ function UserDetail(props: UserDetailProps) {
 				<div className='w-3/4 md:w-11/24'>
 					<header className={styles.info_header}>住户信息</header>
 					<BSAvatar name='avatar' />
+					<ProFormInput formItemClassName='hidden' name='id' />
 					<ProFormGroup>
 						<ProFormRadio
 							name='gender'
@@ -122,8 +118,15 @@ function UserDetail(props: UserDetailProps) {
 							title: <header className={styles.info_header}>入住信息</header>,
 						}}
 					>
-						<ProFormDate required label='入住时间' />
-						<ProFormDate label='退房时间' />
+						<ProFormDate
+							required
+							label='入住时间'
+							name={["memberProfile", "checkInTime"]}
+						/>
+						<ProFormDate
+							label='退房时间'
+							name={["memberProfile", "checkOutTime"]}
+						/>
 					</ProFormGroup>
 					<header className={styles.info_header}>紧急联系人信息</header>
 					<ProFormInput

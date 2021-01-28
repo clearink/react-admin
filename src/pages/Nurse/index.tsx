@@ -7,8 +7,6 @@ import {
 	bsConvertTableList,
 	formatTableSearchParams,
 } from "@/utils/formatValues"
-import { TextProps } from "antd/lib/typography/Text"
-import classNames from "classnames"
 import { EditFormRef } from "@/components/BigSight/Form/EditForm"
 import { AddFormRef } from "@/components/BigSight/Form/AddForm"
 import NurseAddForm from "./components/add"
