@@ -16,7 +16,6 @@ import { convertRoomTree } from "../utils"
 
 function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	// 这里可以传入 request 对象
-	const { id, ...rest } = props
 	const formRef = useRef<EditFormRef>(null)
 	const [buildingId, setBuildingId] = useState<string | undefined>(undefined)
 	useImperativeHandle(ref, () => formRef.current!, [])
@@ -25,11 +24,10 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	}, [buildingId])
 	return (
 		<EditForm
-			{...rest}
-			id={id}
+			{...props}
 			request={{
 				url: "/orgmgt/bed/queryById",
-				params: { id },
+				params: { id: props.id },
 				method: "get",
 			}}
 			name='edit-bed'
@@ -53,7 +51,7 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 						},
 					}}
 				/>
-				<ProFormInput name='num' label='床位名称' required />
+				<ProFormInput name='num' label='床位编号' required />
 			</ProFormGroup>
 		</EditForm>
 	)

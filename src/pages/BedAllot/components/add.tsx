@@ -33,7 +33,7 @@ function BedAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 						},
 					}}
 				/>
-				<ProFormInput name='num' label='床位名称' required />
+				<ProFormInput name='num' label='床位编号' required />
 			</ProFormGroup>
 		</AddForm>
 	)

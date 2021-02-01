@@ -21,9 +21,10 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 		>
 			<ProFormGroup>
 				<BSTreeSelect
+					required
 					name='orgBuildingId'
 					width='l'
-					label='选择'
+					label='选择楼层'
 					request={{
 						method: "post",
 						url: "/orgmgt/building/tree",

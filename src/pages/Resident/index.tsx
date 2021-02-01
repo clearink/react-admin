@@ -19,9 +19,8 @@ import {
 } from "@/components/Pro/ProForm"
 import { FieldDate, FieldStatus, FieldText } from "@/components/Pro/ProField"
 import ResidentApi from "@/http/api/pages/ResidentApi"
-import { convertTreeNode } from "../BedAllot/utils"
+import { convertRoomTree } from "../BedAllot/utils"
 import { FormInstance } from "antd/lib/form"
-import useMemoFetch from "@/hooks/useMemoFetch"
 
 function Resident() {
 	const addRef = useRef<DrawerFormRef>(null)
@@ -70,12 +69,12 @@ function Resident() {
 					placeholder='选择楼层'
 					name='buildingId'
 					request={{
-						url: "/orgmgt/building/treeList",
+						url: "/orgmgt/building/tree",
 						method: "post",
 						transform: (response, cache) => {
 							console.log(response)
 							if (cache) return response
-							return convertTreeNode(response.result, "orgBuildings")
+							return convertRoomTree(response.result, "childList")
 						},
 					}}
 				/>

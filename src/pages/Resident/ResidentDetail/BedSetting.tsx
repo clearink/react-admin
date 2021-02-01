@@ -8,8 +8,7 @@ import ResidentApi from "@/http/api/pages/ResidentApi"
 import styles from "./style.module.scss"
 import { ResidentDetailService } from "./useResidentDetail.service"
 import { EditOutlined } from "@ant-design/icons"
-import { convertFloorTreeNode } from "@/pages/AlarmRecord/utils"
-import { convertTreeNode } from "@/pages/BedAllot/utils"
+import { convertTreeNode, convertRoomTree } from "@/pages/BedAllot/utils"
 
 // 床位设置
 function BedSetting() {
@@ -58,11 +57,11 @@ function BedSetting() {
 				required
 				onChange={setBuildingId}
 				request={{
-					url: "/orgmgt/building/treeList",
+					url: "/orgmgt/building/tree",
 					method: "post",
 					transform: (response, cache) => {
 						if (cache) return response
-						return convertTreeNode(response?.result, "orgBuildings") ?? []
+						return convertRoomTree(response?.result, "childList") ?? []
 					},
 				}}
 			/>

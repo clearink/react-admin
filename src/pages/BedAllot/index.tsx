@@ -2,7 +2,6 @@ import React, {
 	memo,
 	useContext,
 	useEffect,
-	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -18,8 +17,6 @@ import {
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
-import { sleep } from "@/utils/test"
-
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
 import { ProFormSelect } from "@/components/Pro/ProForm"
@@ -64,7 +61,7 @@ function BedAllot() {
 	const tableRef = useRef<ProTableRef>(null)
 	const [editId, setEditId] = useState<string | undefined>(undefined)
 
-	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
+	const { buildingId } = useContext(BedAllotContext) // Layout传递过来的楼层ID
 
 	// 外部设置table 的 params 控制数据请求
 	useEffect(() => {

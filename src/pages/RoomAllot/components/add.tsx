@@ -14,6 +14,7 @@ function RoomAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 		<AddForm {...props} ref={ref} name='add room form'>
 			<ProFormGroup>
 				<BSTreeSelect
+					required
 					name='orgBuildingId'
 					width='l'
 					label='选择楼层'

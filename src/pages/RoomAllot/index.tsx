@@ -69,7 +69,7 @@ function RoomAllot() {
 	const tableRef = useRef<ProTableRef>(null)
 	const [editId, setEditId] = useState<string | undefined>(undefined)
 
-	const buildingId = useContext(BedAllotContext)
+	const { buildingId, updateRoomTree } = useContext(BedAllotContext)
 
 	useEffect(() => {
 		const tableMethods = tableRef.current
@@ -133,6 +133,8 @@ function RoomAllot() {
 				onFinish={async (values) => {
 					await RoomAllotApi.add(values)
 					tableRef.current?.reload()
+					// 更新房间树
+					updateRoomTree!()
 					return true
 				}}
 			/>
@@ -145,6 +147,8 @@ function RoomAllot() {
 					await RoomAllotApi.edit(values)
 					setEditId(undefined)
 					tableRef.current?.reload()
+					// 更新房间树
+					updateRoomTree!()
 					return true
 				}}
 			/>
