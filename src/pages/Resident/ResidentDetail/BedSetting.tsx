@@ -8,7 +8,9 @@ import ResidentApi from "@/http/api/pages/ResidentApi"
 import styles from "./style.module.scss"
 import { ResidentDetailService } from "./useResidentDetail.service"
 import { EditOutlined } from "@ant-design/icons"
-import { convertTreeNode, convertRoomTree } from "@/pages/BedAllot/utils"
+import { convertRoomTree } from "@/pages/BedAllot/utils"
+import useMemoFetch from "@/hooks/useMemoFetch"
+import { convertServerListData } from "./utils"
 
 // 床位设置
 function BedSetting() {
@@ -21,15 +23,37 @@ function BedSetting() {
 	// 房间ID
 	const [orgRoomId, setOrgRoomId] = useState<string | null>(null)
 
+	// 房间树
+	const [
+		{ data: roomTree, loading: roomLoading },
+		fetchRoomData,
+	] = useMemoFetch({
+		auto: false,
+		url: "/orgmgt/room/list/queryByBuildingId",
+		params: { id: buildingId },
+		transform: convertServerListData,
+	})
+	console.log("roomTree", roomTree)
+
+	// 床位树
+	const [{ data: bedTree, loading: bedLoading }, fetchBedData] = useMemoFetch({
+		auto: false,
+		url: "/orgmgt/bed/emptyBedList/queryByRoomId",
+		params: { id: orgRoomId },
+		transform: convertServerListData,
+	})
+
 	useEffect(() => {
 		// 楼层更改 修改房间值
 		formRef.current?.form.setFieldsValue({ orgRoomId: undefined })
-	}, [buildingId])
+		if (buildingId) fetchRoomData()
+	}, [buildingId, fetchRoomData])
 
 	useEffect(() => {
 		// 房间更改 修改床位值
 		formRef.current?.form.setFieldsValue({ orgBedId: undefined })
-	}, [orgRoomId])
+		if (orgRoomId) fetchBedData()
+	}, [orgRoomId, fetchBedData])
 
 	return (
 		<ModalForm
@@ -65,38 +89,21 @@ function BedSetting() {
 					},
 				}}
 			/>
-			<ProFormTreeSelect
+			<ProFormSelect
 				label='选择房间'
 				name='orgRoomId'
 				required
-				onChange={setOrgRoomId}
-				request={{
-					url: buildingId ? "/orgmgt/room/list/queryByBuildingId" : undefined,
-					params: { id: buildingId },
-					transform: (response, cache) => {
-						if (cache) return response
-						return response.result?.map((item: any) => ({
-							label: item.num,
-							value: item.id,
-						}))
-					},
-				}}
+				onChange={(value: any) => setOrgRoomId(value)}
+				loading={roomLoading}
+				options={roomTree}
 			/>
-			<ProFormTreeSelect
+
+			<ProFormSelect
 				label='选择床位'
 				name='orgBedId'
 				required
-				request={{
-					url: orgRoomId ? "/orgmgt/bed/emptyBedList/queryByRoomId" : undefined,
-					params: { id: orgRoomId },
-					transform: (response, cache) => {
-						if (cache) return response
-						return response.result?.map((item: any) => ({
-							label: item.num,
-							value: item.id,
-						}))
-					},
-				}}
+				loading={bedLoading}
+				options={bedTree}
 			/>
 		</ModalForm>
 	)
