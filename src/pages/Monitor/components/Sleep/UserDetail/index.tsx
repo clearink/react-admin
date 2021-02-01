@@ -32,12 +32,11 @@ function UserDetail(props: UserDetailProps) {
 	const [birthDay, setBirthDay] = useState<Moment>(() => moment().endOf("D"))
 	// 入住时间
 	const [liveDay, setLiveDay] = useState<Moment>(() => moment().endOf("D"))
-	// 退房时间
-	const [leaveDay, setLeaveDay] = useState<Moment>(() => moment().endOf("D"))
 
 	const ref = useRef<FormInstance>(null)
 	const handleFinish = async (values: any) => {
-		;(await updateMemo?.(values)) ?? updateUserDetail(values)
+		await updateUserDetail(values)
+		await updateMemo?.(values)
 		notification.success({
 			message: "用户信息保存成功",
 			placement: "bottomRight",

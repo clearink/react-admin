@@ -19,8 +19,8 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			name='update room form'
 			ref={ref}
 		>
-			<ProFormGroup>
-				<BSTreeSelect
+			{/* <ProFormGroup> */}
+			{/* <BSTreeSelect
 					required
 					name='orgBuildingId'
 					width='l'
@@ -34,9 +34,9 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 							return convertTreeNode(response.result, "orgBuildings") ?? []
 						},
 					}}
-				/>
-				<ProFormInput name='num' label='房间编号' required />
-			</ProFormGroup>
+				/> */}
+			<ProFormInput name='num' label='房间编号' required />
+			{/* </ProFormGroup> */}
 		</EditForm>
 	)
 }

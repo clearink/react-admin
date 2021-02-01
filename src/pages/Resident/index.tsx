@@ -21,6 +21,7 @@ import { FieldDate, FieldStatus, FieldText } from "@/components/Pro/ProField"
 import ResidentApi from "@/http/api/pages/ResidentApi"
 import { convertRoomTree } from "../BedAllot/utils"
 import { FormInstance } from "antd/lib/form"
+import useMemoFetch from "@/hooks/useMemoFetch"
 
 function Resident() {
 	const addRef = useRef<DrawerFormRef>(null)
@@ -28,6 +29,22 @@ function Resident() {
 	const formRef = useRef<FormInstance>(null)
 
 	const [buildingId, setBuildingId] = useState<string | null>(null)
+
+	const [{ data: roomData, loading }, fetchData] = useMemoFetch({
+		auto: false,
+		url: "/orgmgt/room/list/queryByBuildingId",
+		params: { id: buildingId },
+		transform: (response) => {
+			return response.result?.map((item: any) => ({
+				label: item.num,
+				value: item.id,
+			}))
+		},
+	})
+	useEffect(() => {
+		if (buildingId) fetchData()
+	}, [buildingId, fetchData])
+
 	const columns: ProTableColumns<any>[] = [
 		{
 			title: "头像",
@@ -86,16 +103,8 @@ function Resident() {
 			search: (
 				<ProFormSelect
 					name='roomId'
-					request={{
-						url: buildingId ? "/orgmgt/room/list/queryByBuildingId" : undefined,
-						params: { id: buildingId },
-						transform: (response) => {
-							return response.result?.map((item: any) => ({
-								label: item.num,
-								value: item.id,
-							}))
-						},
-					}}
+					loading={loading}
+					options={roomData}
 					label={undefined}
 					placeholder='选择房间'
 				/>

@@ -46,13 +46,6 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: "deviceNum",
 		read: <FieldText copyable />,
 	},
-	{
-		title: "开放状态",
-		dataIndex: "status",
-		render(dom, value) {
-			return <Switch defaultChecked={value} />
-		},
-	},
 ]
 
 function BedAllot() {
@@ -88,40 +81,61 @@ function BedAllot() {
 	}, [buildingId, fetchData, methods])
 	const proTableColumns = useMemo(
 		() =>
-			columns.concat({
-				title: "操作",
-				dataIndex: "id",
-				width: 250,
-				search: (
-					<ProFormSelect
-						label={undefined}
-						name='roomId'
-						placeholder='房间编号'
-						options={roomData}
-						loading={loading}
-					/>
-				),
-				render: (dom, id) => {
-					return (
-						<div>
-							<Button icon={<ProfileOutlined />} type='link' size='small'>
-								住户信息
-							</Button>
-							<Button
-								onClick={() => {
-									setEditId(id)
-									editRef.current?.toggle()
+			columns.concat(
+				{
+					title: "开放状态",
+					dataIndex: "enabled",
+					render(dom, value, record) {
+						return (
+							<Switch
+								checked={value}
+								onClick={async () => {
+									await BedAllotApi.changeBedStatus({
+										enabled: !value,
+										id: record.id,
+									})
+									// 刷新list
+									tableRef.current?.reload()
 								}}
-								icon={<EditOutlined />}
-								type='link'
-								size='small'
-							>
-								编辑
-							</Button>
-						</div>
-					)
+							/>
+						)
+					},
 				},
-			}),
+				{
+					title: "操作",
+					dataIndex: "id",
+					width: 250,
+					search: (
+						<ProFormSelect
+							label={undefined}
+							name='roomId'
+							placeholder='房间编号'
+							options={roomData}
+							loading={loading}
+						/>
+					),
+					render: (dom, id) => {
+						return (
+							<div>
+								<Button icon={<ProfileOutlined />} type='link' size='small'>
+									住户信息
+								</Button>
+								<Button
+									onClick={() => {
+										setEditId(id)
+										editRef.current?.toggle()
+									}}
+									icon={<EditOutlined />}
+									type='link'
+									size='small'
+								>
+									编辑
+								</Button>
+							</div>
+						)
+					},
+				}
+			),
 		[loading, roomData]
 	)
 	return (

@@ -4,8 +4,6 @@ import { DatePicker, Form, Tabs } from "antd"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"
 import NurseDetail from "../NurseDetail"
-import useMemoFetch from "@/hooks/useMemoFetch"
-import { useRouteMatch } from "react-router-dom"
 import useResidentDetailService, {
 	ResidentDetailService,
 } from "./useResidentDetail.service"

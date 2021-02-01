@@ -37,8 +37,8 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 				setBuildingId(newId)
 			}}
 		>
-			<ProFormGroup>
-				<BSTreeSelect
+			{/* <ProFormGroup> */}
+			{/* <BSTreeSelect
 					name='orgRoomId'
 					label='选择房间'
 					required
@@ -50,9 +50,9 @@ function BedEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 							return convertRoomTree(response.result, "childList") ?? []
 						},
 					}}
-				/>
-				<ProFormInput name='num' label='床位编号' required />
-			</ProFormGroup>
+				/> */}
+			<ProFormInput name='num' label='床位编号' required />
+			{/* </ProFormGroup> */}
 		</EditForm>
 	)
 }

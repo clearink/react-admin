@@ -36,7 +36,6 @@ export default function useProTableService<T extends object>(
 
 	useEffect(() => {
 		fetchData()
-		console.log("state.params change", state.params)
 	}, [fetchData, state.params])
 
 	// 外部传入的 dataSource

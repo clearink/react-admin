@@ -55,13 +55,6 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: "careWorkerName",
 		read: <FieldText copyable />,
 	},
-	{
-		title: "开放状态",
-		dataIndex: "enabled",
-		render(dom, value) {
-			return <Switch defaultChecked={value} />
-		},
-	},
 ]
 function RoomAllot() {
 	const editRef = useRef<EditFormRef>(null)
@@ -78,30 +71,50 @@ function RoomAllot() {
 	}, [buildingId])
 
 	const tableColumns = useMemo(() => {
-		return columns.concat({
-			title: "操作",
-			dataIndex: "id",
-			render: (dom, id) => {
-				return (
-					<div>
-						<Button icon={<ProfileOutlined />} type='link' size='small'>
-							查看入住人员
-						</Button>
-						<Button
-							onClick={() => {
-								setEditId(id)
-								editRef.current?.toggle()
+		return columns.concat(
+			{
+				title: "开放状态",
+				dataIndex: "enabled",
+				render(dom, value, record) {
+					return (
+						<Switch
+							checked={value}
+							onClick={async () => {
+								await RoomAllotApi.changeStatus({
+									enabled: !value,
+									id: record.id,
+								})
+								tableRef.current?.reload()
 							}}
-							icon={<EditOutlined />}
-							type='link'
-							size='small'
-						>
-							编辑
-						</Button>
-					</div>
-				)
+						/>
+					)
+				},
 			},
-		})
+			{
+				title: "操作",
+				dataIndex: "id",
+				render: (dom, id) => {
+					return (
+						<div>
+							<Button icon={<ProfileOutlined />} type='link' size='small'>
+								查看入住人员
+							</Button>
+							<Button
+								onClick={() => {
+									setEditId(id)
+									editRef.current?.toggle()
+								}}
+								icon={<EditOutlined />}
+								type='link'
+								size='small'
+							>
+								编辑
+							</Button>
+						</div>
+					)
+				},
+			}
+		)
 	}, [])
 
 	return (
