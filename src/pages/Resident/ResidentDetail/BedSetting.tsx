@@ -63,6 +63,8 @@ function BedSetting() {
 					orgBedId: values.orgBedId,
 					memberId: params.id,
 				})
+				setOrgRoomId(null)
+				setBuildingId(null)
 				service.updateMemo()
 				return true
 			}}

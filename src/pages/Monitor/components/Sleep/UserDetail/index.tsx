@@ -51,7 +51,7 @@ function UserDetail(props: UserDetailProps) {
 	return (
 		<BaseForm
 			ref={ref}
-			className='w-full px-4'
+			className='w-full px-4 pb-10'
 			onFinish={handleFinish}
 			submitConfig={{
 				submitProps: {
