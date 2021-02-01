@@ -67,12 +67,11 @@ function BedAllot() {
 	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
 
 	// 外部设置table 的 params 控制数据请求
-	const params = { buildingId, pageNo: 1, pageSize: 10 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
 		if (!tableMethods) return
-		tableMethods.setParams(params)
-	}, [buildingId, params])
+		tableMethods.setParams({ buildingId, pageNo: 1, pageSize: 10 })
+	}, [buildingId])
 
 	const [{ data: roomData, loading }, fetchData, _, methods] = useMemoFetch({
 		auto: false,
@@ -140,7 +139,7 @@ function BedAllot() {
 				request={{
 					url: "/orgmgt/bed/list",
 					method: "post",
-					params,
+					params: { buildingId, pageNo: 1, pageSize: 10 },
 					transform: bsConvertTableList,
 				}}
 				onCreate={() => {
@@ -158,6 +157,7 @@ function BedAllot() {
 				ref={editRef}
 				onFinish={async (values) => {
 					await BedAllotApi.edit(values)
+					setEditId(undefined)
 					tableRef.current?.reload()
 					return true
 				}}

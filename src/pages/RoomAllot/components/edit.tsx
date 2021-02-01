@@ -23,10 +23,10 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 				<BSTreeSelect
 					name='orgBuildingId'
 					width='l'
-					label='所属楼层'
+					label='选择'
 					request={{
 						method: "post",
-						url: "/orgmgt/building/treeList",
+						url: "/orgmgt/building/tree",
 						transform: (response, cache) => {
 							console.log("cache", cache)
 							if (cache) return response

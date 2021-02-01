@@ -11,8 +11,8 @@ import { IBaseProps } from "@/@types/fc"
 import { useHistory } from "react-router-dom"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import TreeTitleWrapper from "@/components/PepLife/TreeTitleWrapper"
-import { convertTreeNode } from "../../pages/BedAllot/utils"
-import BedAllotContext from "../../pages/BedAllot/BedAllotContext"
+import { convertRoomTree } from "@/pages/BedAllot/utils"
+import BedAllotContext from "@/pages/BedAllot/BedAllotContext"
 import { TreeProps } from "antd/lib/tree"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
@@ -30,12 +30,12 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	const editRef = useRef<DrawerFormRef>(null)
 
 	const [{ data: treeData, loading }, _, updateMemo] = useMemoFetch({
-		url: "/orgmgt/building/treeList",
+		url: "/orgmgt/building/tree",
 		method: "post",
 		cache: true,
 		transform: (response, cache) => {
 			if (cache) return response
-			if (response) return convertTreeNode(response?.result, "orgBuildings")
+			if (response) return convertRoomTree(response?.result, "childList")
 			return []
 		},
 	})
@@ -55,6 +55,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 		addRef.current?.toggle()
 		setAddId(id)
 	}, [])
+	
 	const [editId, setEditId] = useState<string | undefined>()
 	const handleEdit = useMemoCallback((id: string) => {
 		editRef.current?.toggle()
@@ -115,7 +116,6 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 										onEdit={handleEdit}
 										onDelete={handleDelete}
 										title={node.title}
-										isLeaf={node.isLeaf}
 									/>
 								)
 							}}

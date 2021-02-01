@@ -36,13 +36,17 @@ export default function useProTableService<T extends object>(
 
 	useEffect(() => {
 		fetchData()
+		console.log("state.params change", state.params)
 	}, [fetchData, state.params])
+
 	// 外部传入的 dataSource
 	useEffect(() => {
 		if (!dataSource) return
 		methods.setParentData(dataSource)
 	}, [dataSource, methods])
+
 	const params = request?.params ?? {}
+
 	const action = {
 		setParams: methods.setParams, // 外部如何能够该变table内部的params呢?
 		reload: fetchData,
@@ -90,9 +94,12 @@ export default function useProTableService<T extends object>(
 		)
 	} // 删除比较重要, 规定二次弹窗
 	const handleDelete = () => {
-		Modal.warning({
+		Modal.confirm({
+			type: "error",
 			title: "确定要删除该数据吗?",
 			content: "操作后该数据将会移除 请注意!!",
+			okText: "确定",
+			cancelText: "取消",
 			async onOk() {
 				try {
 					await onDelete?.(state.rows)

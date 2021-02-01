@@ -71,12 +71,11 @@ function RoomAllot() {
 
 	const buildingId = useContext(BedAllotContext)
 
-	const params = { buildingId, pageNo: 1, pageSize: 10 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
 		if (!tableMethods) return
-		tableMethods.setParams(params)
-	}, [buildingId, params])
+		tableMethods.setParams({ buildingId, pageNo: 1, pageSize: 10 })
+	}, [buildingId])
 
 	const tableColumns = useMemo(() => {
 		return columns.concat({

@@ -17,3 +17,16 @@ export function convertTreeNode(data: any[], childKey: string) {
 		return pre.concat(ele)
 	}, [])
 }
+
+export function convertRoomTree(data: any[], childKey: string) {
+	return data.reduce((pre, cur) => {
+		const ele: TreeNode = { title: cur.text, key: cur.id, value: cur.id }
+		if (isArray(cur[childKey])) {
+			ele.children = convertRoomTree(cur[childKey], childKey)
+			ele.disabled = true
+		} else {
+			ele.isLeaf = true
+		}
+		return pre.concat(ele)
+	},[])
+}

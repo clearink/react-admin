@@ -52,16 +52,16 @@ function ResidentDetail() {
 		},
 	})
 
-	const residentDetailService = useResidentDetailService()
+	const service = useResidentDetailService()
 	return (
-		<ResidentDetailService.Provider value={residentDetailService}>
+		<ResidentDetailService.Provider value={service}>
 			<div className='h-full flex flex-col'>
 				<DetailHeader />
 				<div className='mt-6 px-4 bg-white flex-auto'>
 					<Tabs>
 						<Tabs.TabPane tab='基本信息' key='1' className='mt-12'>
 							{/* 基本信息 */}
-							<UserDetail data={data} />
+							<UserDetail updateMemo={service.updateMemo} data={data} />
 						</Tabs.TabPane>
 						<Tabs.TabPane tab='护理设置' key='2'>
 							<NurseDetail />
