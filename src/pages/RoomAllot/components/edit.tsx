@@ -19,23 +19,24 @@ function RoomEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			name='update room form'
 			ref={ref}
 		>
-			<ProFormGroup>
-				<BSTreeSelect
+			{/* <ProFormGroup> */}
+			{/* <BSTreeSelect
+					required
 					name='orgBuildingId'
 					width='l'
-					label='所属楼层'
+					label='选择楼层'
 					request={{
 						method: "post",
-						url: "/orgmgt/building/treeList",
+						url: "/orgmgt/building/tree",
 						transform: (response, cache) => {
 							console.log("cache", cache)
 							if (cache) return response
 							return convertTreeNode(response.result, "orgBuildings") ?? []
 						},
 					}}
-				/>
-				<ProFormInput name='num' label='房间编号' required />
-			</ProFormGroup>
+				/> */}
+			<ProFormInput name='num' label='房间编号' required />
+			{/* </ProFormGroup> */}
 		</EditForm>
 	)
 }

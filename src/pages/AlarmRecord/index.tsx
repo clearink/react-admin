@@ -11,8 +11,7 @@ import {
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import FieldDate from "@/components/Pro/ProField/components/FieldDate"
 import AddAlarmForm from "./components/add"
-import EditAlarmForm from "./components/edit"
-import { convertFloorTreeNode } from "./utils"
+import { convertFloorRoomTree } from "./utils"
 import { ProFormInput, ProFormSelect } from "@/components/Pro/ProForm"
 import {
 	FieldAvatar,
@@ -97,17 +96,11 @@ const columns: ProTableColumns<any>[] = [
 		search: <BSTreeSelect name='roomId' placeholder='选择房间/楼层' />,
 		fieldProps: {
 			request: {
-				url: "/orgmgt/room/treeList",
+				url: "/orgmgt/room/tree",
 				method: "post",
 				transform: (response, cache) => {
 					if (cache) return response
-					// 数据不规范 需要处理
-					if (response)
-						return convertFloorTreeNode(response.result, [
-							"orgBuildings",
-							"orgRooms",
-						])
-					return []
+					return convertFloorRoomTree(response.result, "childList") ?? []
 				},
 			},
 		},

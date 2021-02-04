@@ -3,7 +3,6 @@ import http from "@/http"
 export interface AllotRoomData {
 	memberId: string
 	orgBedId: string
-	orgRoomId: string
 }
 export interface ResidentAddData {
 	id: string

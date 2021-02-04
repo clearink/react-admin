@@ -1,4 +1,12 @@
-import React, { forwardRef, memo, Ref } from "react"
+import React, {
+	forwardRef,
+	memo,
+	Ref,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react"
+import moment, { Moment } from "moment"
 import {
 	ProFormDate,
 	ProFormInput,
@@ -12,8 +20,11 @@ import AddForm, {
 import { phonePattern } from "@/utils/form/pattern"
 
 function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
+	const [birthDay, setBirthDay] = useState<Moment>(() => moment())
+	const formRef = useRef<AddFormRef>(null)
+	useImperativeHandle(ref, () => formRef.current!, [])
 	return (
-		<AddForm {...props} ref={ref}>
+		<AddForm {...props} ref={formRef}>
 			<ProFormInput name='name' label='姓名' required />
 
 			<ProFormRadio
@@ -30,10 +41,40 @@ function ResidentAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 				rules={[{ pattern: phonePattern, message: "手机号格式不正确" }]}
 			/>
 			<ProFormInput name='cardNum' label='身份证号' />
-			<ProFormDate name='birthday' label='出生日期' required />
+			<ProFormDate
+				name='birthday'
+				label='出生日期'
+				onChange={(value: any) => {
+					// 重置 入住时间选择框
 
-			<ProFormDate name='time' label='入住时间' required />
-			<ProFormTextArea rows={4} name='address' label='家庭住址' />
+					// 如果出生日期晚于入住时间 清空 入住时间
+					const liveDay = formRef.current?.form.getFieldValue([
+						"memberProfile",
+						"checkInTime",
+					])
+					if (value > liveDay)
+						formRef.current?.form.setFields([
+							{ name: ["memberProfile", "checkInTime"], value: undefined },
+						])
+					setBirthDay(value)
+				}}
+				disabledDate={(current) => current >= moment().endOf("D")}
+				required
+			/>
+
+			<ProFormDate
+				name={["memberProfile", "checkInTime"]}
+				disabledDate={(current) =>
+					current >= moment().endOf("D") || current <= birthDay
+				}
+				label='入住时间'
+				required
+			/>
+			<ProFormTextArea
+				rows={4}
+				name={["memberProfile", "address"]}
+				label='家庭住址'
+			/>
 			<ProFormTextArea rows={4} name='info' label='备注' />
 		</AddForm>
 	)

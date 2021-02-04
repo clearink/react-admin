@@ -55,13 +55,6 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: "careWorkerName",
 		read: <FieldText copyable />,
 	},
-	{
-		title: "开放状态",
-		dataIndex: "enabled",
-		render(dom, value) {
-			return <Switch defaultChecked={value} />
-		},
-	},
 ]
 function RoomAllot() {
 	const editRef = useRef<EditFormRef>(null)
@@ -69,40 +62,59 @@ function RoomAllot() {
 	const tableRef = useRef<ProTableRef>(null)
 	const [editId, setEditId] = useState<string | undefined>(undefined)
 
-	const buildingId = useContext(BedAllotContext)
+	const { buildingId, updateRoomTree } = useContext(BedAllotContext)
 
-	const params = { buildingId, pageNo: 1, pageSize: 10 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
 		if (!tableMethods) return
-		tableMethods.setParams(params)
-	}, [buildingId, params])
+		tableMethods.setParams({ buildingId, pageNo: 1, pageSize: 10 })
+	}, [buildingId])
 
 	const tableColumns = useMemo(() => {
-		return columns.concat({
-			title: "操作",
-			dataIndex: "id",
-			render: (dom, id) => {
-				return (
-					<div>
-						<Button icon={<ProfileOutlined />} type='link' size='small'>
-							查看入住人员
-						</Button>
-						<Button
-							onClick={() => {
-								setEditId(id)
-								editRef.current?.toggle()
+		return columns.concat(
+			{
+				title: "开放状态",
+				dataIndex: "enabled",
+				render(dom, value, record) {
+					return (
+						<Switch
+							checked={value}
+							onClick={async () => {
+								await RoomAllotApi.changeStatus({
+									enabled: !value,
+									id: record.id,
+								})
+								tableRef.current?.reload()
 							}}
-							icon={<EditOutlined />}
-							type='link'
-							size='small'
-						>
-							编辑
-						</Button>
-					</div>
-				)
+						/>
+					)
+				},
 			},
-		})
+			{
+				title: "操作",
+				dataIndex: "id",
+				render: (dom, id) => {
+					return (
+						<div>
+							<Button icon={<ProfileOutlined />} type='link' size='small'>
+								查看入住人员
+							</Button>
+							<Button
+								onClick={() => {
+									setEditId(id)
+									editRef.current?.toggle()
+								}}
+								icon={<EditOutlined />}
+								type='link'
+								size='small'
+							>
+								编辑
+							</Button>
+						</div>
+					)
+				},
+			}
+		)
 	}, [])
 
 	return (
@@ -134,6 +146,8 @@ function RoomAllot() {
 				onFinish={async (values) => {
 					await RoomAllotApi.add(values)
 					tableRef.current?.reload()
+					// 更新房间树
+					updateRoomTree!()
 					return true
 				}}
 			/>
@@ -146,6 +160,8 @@ function RoomAllot() {
 					await RoomAllotApi.edit(values)
 					setEditId(undefined)
 					tableRef.current?.reload()
+					// 更新房间树
+					updateRoomTree!()
 					return true
 				}}
 			/>

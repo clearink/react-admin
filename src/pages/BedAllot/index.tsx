@@ -2,7 +2,6 @@ import React, {
 	memo,
 	useContext,
 	useEffect,
-	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -18,8 +17,6 @@ import {
 	formatTableSearchParams,
 } from "@/utils/formatValues"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
-import { sleep } from "@/utils/test"
-
 import AddForm from "./components/add"
 import EditForm from "./components/edit"
 import { ProFormSelect } from "@/components/Pro/ProForm"
@@ -49,13 +46,6 @@ const columns: ProTableColumns<any>[] = [
 		dataIndex: "deviceNum",
 		read: <FieldText copyable />,
 	},
-	{
-		title: "开放状态",
-		dataIndex: "status",
-		render(dom, value) {
-			return <Switch defaultChecked={value} />
-		},
-	},
 ]
 
 function BedAllot() {
@@ -64,15 +54,14 @@ function BedAllot() {
 	const tableRef = useRef<ProTableRef>(null)
 	const [editId, setEditId] = useState<string | undefined>(undefined)
 
-	const buildingId = useContext(BedAllotContext) // Layout传递过来的楼层ID
+	const { buildingId } = useContext(BedAllotContext) // Layout传递过来的楼层ID
 
 	// 外部设置table 的 params 控制数据请求
-	const params = { buildingId, pageNo: 1, pageSize: 10 }
 	useEffect(() => {
 		const tableMethods = tableRef.current
 		if (!tableMethods) return
-		tableMethods.setParams(params)
-	}, [buildingId, params])
+		tableMethods.setParams({ buildingId, pageNo: 1, pageSize: 10 })
+	}, [buildingId])
 
 	const [{ data: roomData, loading }, fetchData, _, methods] = useMemoFetch({
 		auto: false,
@@ -92,40 +81,61 @@ function BedAllot() {
 	}, [buildingId, fetchData, methods])
 	const proTableColumns = useMemo(
 		() =>
-			columns.concat({
-				title: "操作",
-				dataIndex: "id",
-				width: 250,
-				search: (
-					<ProFormSelect
-						label={undefined}
-						name='roomId'
-						placeholder='房间编号'
-						options={roomData}
-						loading={loading}
-					/>
-				),
-				render: (dom, id) => {
-					return (
-						<div>
-							<Button icon={<ProfileOutlined />} type='link' size='small'>
-								住户信息
-							</Button>
-							<Button
-								onClick={() => {
-									setEditId(id)
-									editRef.current?.toggle()
+			columns.concat(
+				{
+					title: "开放状态",
+					dataIndex: "enabled",
+					render(dom, value, record) {
+						return (
+							<Switch
+								checked={value}
+								onClick={async () => {
+									await BedAllotApi.changeBedStatus({
+										enabled: !value,
+										id: record.id,
+									})
+									// 刷新list
+									tableRef.current?.reload()
 								}}
-								icon={<EditOutlined />}
-								type='link'
-								size='small'
-							>
-								编辑
-							</Button>
-						</div>
-					)
+							/>
+						)
+					},
 				},
-			}),
+				{
+					title: "操作",
+					dataIndex: "id",
+					width: 250,
+					search: (
+						<ProFormSelect
+							label={undefined}
+							name='roomId'
+							placeholder='房间编号'
+							options={roomData}
+							loading={loading}
+						/>
+					),
+					render: (dom, id) => {
+						return (
+							<div>
+								<Button icon={<ProfileOutlined />} type='link' size='small'>
+									住户信息
+								</Button>
+								<Button
+									onClick={() => {
+										setEditId(id)
+										editRef.current?.toggle()
+									}}
+									icon={<EditOutlined />}
+									type='link'
+									size='small'
+								>
+									编辑
+								</Button>
+							</div>
+						)
+					},
+				}
+			),
 		[loading, roomData]
 	)
 	return (
@@ -140,7 +150,7 @@ function BedAllot() {
 				request={{
 					url: "/orgmgt/bed/list",
 					method: "post",
-					params,
+					params: { buildingId, pageNo: 1, pageSize: 10 },
 					transform: bsConvertTableList,
 				}}
 				onCreate={() => {
@@ -158,6 +168,7 @@ function BedAllot() {
 				ref={editRef}
 				onFinish={async (values) => {
 					await BedAllotApi.edit(values)
+					setEditId(undefined)
 					tableRef.current?.reload()
 					return true
 				}}

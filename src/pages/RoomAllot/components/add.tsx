@@ -7,22 +7,23 @@ import AddForm, {
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
 import BSTreeSelect from "@/components/BigSight/Form/BSTreeSelect"
-import { convertTreeNode } from "@/pages/BedAllot/utils"
+import { convertRoomTree } from "@/pages/BedAllot/utils"
 
 function RoomAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 	return (
 		<AddForm {...props} ref={ref} name='add room form'>
 			<ProFormGroup>
 				<BSTreeSelect
+					required
 					name='orgBuildingId'
 					width='l'
-					label='所属楼层'
+					label='选择楼层'
 					request={{
-						url: "/orgmgt/building/treeList",
+						url: "/orgmgt/building/tree",
 						method: "post",
 						transform: (response, cache) => {
 							if (cache) return response
-							return convertTreeNode(response.result, "orgBuildings") ?? []
+							return convertRoomTree(response.result, "childList") ?? []
 						},
 					}}
 				/>

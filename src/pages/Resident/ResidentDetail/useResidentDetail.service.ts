@@ -5,11 +5,6 @@ import { useRouteMatch } from "react-router-dom"
 export const ResidentDetailService = GetServiceContext(useResidentDetailService)
 
 export default function useResidentDetailService() {
-	// 需要共享的数据
-	/**
-	 * 1. 住户详情
-	 * 2.
-	 */
 	const { params } = useRouteMatch<{ id: string }>()
 	// 住户详情
 	const [{ data: residentDetail, loading }, _, updateMemo] = useMemoFetch({

@@ -55,7 +55,7 @@ function TableTitle(props: TableTitleProps) {
 				</div>
 				<div className={styles.extra}>{extra}</div>
 			</div>
-			<Alert banner message={BT} showIcon type='info' />
+			<Alert banner message={BT} showIcon={false} type='info' />
 		</>
 	)
 }

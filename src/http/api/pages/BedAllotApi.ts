@@ -21,6 +21,11 @@ export interface AddFloorData {
 export interface EditFloorData extends AddFloorData {
 	id: string
 }
+
+export interface ChangeStatusData {
+	enabled: boolean
+	id: string
+}
 // 楼层管理 API
 export default {
 	add: (data: AddData) => http.post("/orgmgt/bed/save", data),
@@ -35,4 +40,8 @@ export default {
 	// 楼层删除
 	removeFloor: (data: { id: string }) =>
 		http.get("/orgmgt/building/delete", data),
+
+	// 床位状态变换
+	changeBedStatus: (data: ChangeStatusData) =>
+		http.get("/orgmgt/bed/change", data),
 }

@@ -1,3 +1,4 @@
+import { CommonServerData } from "@/hooks/useMemoFetch/interface"
 import { DataNode } from "antd/lib/tree"
 
 // 转换 floor data
@@ -17,4 +18,15 @@ export function convertFloorTreeNode(data: any[], keyList: string[]) {
 		}
 		return pre.concat(ele)
 	}, [])
+}
+
+export function convertServerListData(
+	response: CommonServerData,
+	cache?: boolean
+) {
+	if (cache) return response
+	return response.result?.map((item: any) => ({
+		label: item.num,
+		value: item.id,
+	}))
 }

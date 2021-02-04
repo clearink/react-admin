@@ -25,6 +25,8 @@ function ProFormAvatar(props: ProFormAvatarProps) {
 	 */
 	const uploadAvatarService = useUploadAvatarService(props)
 
+	const isCircle = shape === "circle"
+
 	// 根据条件渲染不同的uploadButton
 	const uploadButton = (() => {
 		// 如果loading = true
@@ -60,7 +62,9 @@ function ProFormAvatar(props: ProFormAvatarProps) {
 
 		return (
 			<img
-				className={styles.img}
+				className={classNames(styles.img, {
+					[styles.circle]: isCircle,
+				})}
 				src={value}
 				alt={value}
 				onError={() => uploadAvatarService.methods.setError(true)} // 加载失败
@@ -69,7 +73,6 @@ function ProFormAvatar(props: ProFormAvatarProps) {
 		)
 	})()
 
-	const isCircle = shape === "circle"
 	const DOM = (
 		<Upload
 			accept='image/*'

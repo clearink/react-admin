@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import classNames from "classnames"
 import styles from "./style.module.scss"
 import { notification } from "antd"
@@ -9,29 +9,34 @@ import {
 	ProFormSelect,
 	ProFormTextArea,
 } from "@/components/Pro/ProForm"
+import moment, { Moment } from "moment"
 import ProFormDate from "@/components/Pro/ProForm/components/ProFormDate"
 import { getRequiredRule } from "@/utils/form/FormRule"
 import { CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons"
 import { FormInstance } from "antd/lib/form"
 import http from "@/http"
-import { isString } from "@/utils/data/validate"
-import formatValue from "@/utils/form/formatValue"
 import { BSAvatar, ProFormGroup } from "@/components/BigSight"
+import { current } from "@reduxjs/toolkit"
 
 const updateUserDetail = (data: any) => http.post("/orgmgt/member/save", data)
 
 // 用户详情
 interface UserDetailProps {
 	data?: any
+	updateMemo?: (values: any) => void
 }
 function UserDetail(props: UserDetailProps) {
-	const { data } = props
+	const { data, updateMemo } = props
+
+	// 出生日期
+	const [birthDay, setBirthDay] = useState<Moment>(() => moment().endOf("D"))
+	// 入住时间
+	const [liveDay, setLiveDay] = useState<Moment>(() => moment().endOf("D"))
+
 	const ref = useRef<FormInstance>(null)
 	const handleFinish = async (values: any) => {
-		await updateUserDetail({
-			id: data.id,
-			...formatValue(values),
-		})
+		await updateUserDetail(values)
+		await updateMemo?.(values)
 		notification.success({
 			message: "用户信息保存成功",
 			placement: "bottomRight",
@@ -46,7 +51,7 @@ function UserDetail(props: UserDetailProps) {
 	return (
 		<BaseForm
 			ref={ref}
-			className='w-full px-4'
+			className='w-full px-4 pb-10'
 			onFinish={handleFinish}
 			submitConfig={{
 				submitProps: {
@@ -62,6 +67,7 @@ function UserDetail(props: UserDetailProps) {
 				<div className='w-3/4 md:w-11/24'>
 					<header className={styles.info_header}>住户信息</header>
 					<BSAvatar name='avatar' />
+					<ProFormInput formItemClassName='hidden' name='id' />
 					<ProFormGroup>
 						<ProFormRadio
 							name='gender'
@@ -73,6 +79,19 @@ function UserDetail(props: UserDetailProps) {
 						<ProFormDate
 							name='birthday'
 							label='出生年月'
+							disabledDate={(current) => current >= moment().endOf("D")}
+							onChange={(value: any) => {
+								if (value > liveDay) {
+									// 出生日期 大于 入住时间 清除 入住时间
+									ref.current?.setFields([
+										{
+											name: ["memberProfile", "checkInTime"],
+											value: undefined,
+										},
+									])
+								}
+								setBirthDay(value)
+							}}
 							rules={[{ required: true, message: "请选择日期" }]}
 						/>
 					</ProFormGroup>
@@ -122,8 +141,20 @@ function UserDetail(props: UserDetailProps) {
 							title: <header className={styles.info_header}>入住信息</header>,
 						}}
 					>
-						<ProFormDate required label='入住时间' />
-						<ProFormDate label='退房时间' />
+						<ProFormDate
+							required
+							label='入住时间'
+							disabledDate={(current) =>
+								current >= moment().endOf("D") || current <= birthDay
+							}
+							onChange={(value: any) => setLiveDay(value)}
+							name={["memberProfile", "checkInTime"]}
+						/>
+						<ProFormDate
+							label='退房时间'
+							disabledDate={(current) => current.endOf("D") <= moment()}
+							name={["memberProfile", "checkOutTime"]}
+						/>
 					</ProFormGroup>
 					<header className={styles.info_header}>紧急联系人信息</header>
 					<ProFormInput

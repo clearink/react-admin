@@ -30,7 +30,6 @@ const columns: ProTableColumns[] = [
 	{
 		title: "操作",
 		key: "action",
-		fixed: "right" as "right",
 		width: 140,
 		render: () => (
 			<Space>

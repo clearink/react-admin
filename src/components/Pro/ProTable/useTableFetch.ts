@@ -1,5 +1,4 @@
 import { ButtonProps } from "antd/lib/button"
-import { useEffect, useRef } from "react"
 import useMemoCallback from "../hooks/memo-callback"
 import useMethods from "../hooks/methods/useMethods"
 
@@ -34,9 +33,11 @@ export const reducers = {
 	setPageSize: (state: any, pageSize: number) => ({ ...state, pageSize }),
 	setTotal: (state: any, total: number) => ({ ...state, total }),
 	setParams: (state: any, params: object) => ({ ...state, params }),
-	setServerData: (state: any, serverData: ServerData) => {
-		return { ...state, ...serverData, loading: false }
-	},
+	setServerData: (state: any, serverData: ServerData) => ({
+		...state,
+		...serverData,
+		loading: false,
+	}),
 	setParentData: (state: any, parentData: any[]) => ({
 		...state,
 		data: parentData,

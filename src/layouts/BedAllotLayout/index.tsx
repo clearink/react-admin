@@ -11,8 +11,8 @@ import { IBaseProps } from "@/@types/fc"
 import { useHistory } from "react-router-dom"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import TreeTitleWrapper from "@/components/PepLife/TreeTitleWrapper"
-import { convertTreeNode } from "../../pages/BedAllot/utils"
-import BedAllotContext from "../../pages/BedAllot/BedAllotContext"
+import { convertRoomTree } from "@/pages/BedAllot/utils"
+import BedAllotContext from "@/pages/BedAllot/BedAllotContext"
 import { TreeProps } from "antd/lib/tree"
 import { DrawerFormRef } from "@/components/Pro/ProForm/components/DrawerForm"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
@@ -30,12 +30,23 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	const editRef = useRef<DrawerFormRef>(null)
 
 	const [{ data: treeData, loading }, _, updateMemo] = useMemoFetch({
-		url: "/orgmgt/building/treeList",
+		url: "/orgmgt/building/tree", // 楼层树
 		method: "post",
 		cache: true,
 		transform: (response, cache) => {
 			if (cache) return response
-			if (response) return convertTreeNode(response?.result, "orgBuildings")
+			if (response) return convertRoomTree(response?.result, "childList")
+			return []
+		},
+	})
+	// 房间树 房间管理修改时会影响床位管理的房间树
+	const [a, b, updateRoomTree] = useMemoFetch({
+		url: "/orgmgt/room/tree",
+		method: "post",
+		cache: true,
+		transform: (response, cache) => {
+			if (cache) return response
+			if (response) return convertRoomTree(response?.result, "childList")
 			return []
 		},
 	})
@@ -55,6 +66,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 		addRef.current?.toggle()
 		setAddId(id)
 	}, [])
+
 	const [editId, setEditId] = useState<string | undefined>()
 	const handleEdit = useMemoCallback((id: string) => {
 		editRef.current?.toggle()
@@ -66,6 +78,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 		// 请求接口
 		await BedAllotApi.removeFloor({ id })
 		updateMemo()
+		updateRoomTree()
 	}, [])
 	// 编辑
 	return (
@@ -115,7 +128,6 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 										onEdit={handleEdit}
 										onDelete={handleDelete}
 										title={node.title}
-										isLeaf={node.isLeaf}
 									/>
 								)
 							}}
@@ -136,6 +148,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 					onFinish={async (values) => {
 						await BedAllotApi.editFloor(values)
 						updateMemo() // reload tree
+						updateRoomTree()
 						message.success("修改成功")
 						return true
 					}}
@@ -153,13 +166,14 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 						await BedAllotApi.addFloor({ parentId: addId, ...value })
 						// reload
 						updateMemo()
+						updateRoomTree()
 						return true
 					}}
 				>
 					<ProFormInput label='楼层名称' name='name' />
 				</AddForm>
 
-				<BedAllotContext.Provider value={buildingId}>
+				<BedAllotContext.Provider value={{ buildingId, updateRoomTree }}>
 					<div className='flex-auto'>{children}</div>
 				</BedAllotContext.Provider>
 			</main>

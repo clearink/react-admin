@@ -1,12 +1,19 @@
+<<<<<<< HEAD
 import React, { memo, useRef, useState } from "react"
+=======
+import React, { memo } from "react"
+>>>>>>> e84698d2f9e24f1721d6592f370a7efab36987ef
 import styles from "./style.module.scss"
 import { DatePicker, Form, Tabs } from "antd"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"
 import NurseDetail from "../NurseDetail"
+<<<<<<< HEAD
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { useRouteMatch } from "react-router-dom"
 import { ModalFormRef } from "@/components/Pro/ProForm/components/ModalForm"
+=======
+>>>>>>> e84698d2f9e24f1721d6592f370a7efab36987ef
 import useResidentDetailService, {
 	ResidentDetailService,
 } from "./useResidentDetail.service"
@@ -14,6 +21,7 @@ import DetailHeader from "./DetailHeader"
 
 // 住户详情
 function ResidentDetail() {
+<<<<<<< HEAD
 	// 住户详情
 
 	// 请求 护管人员
@@ -29,6 +37,8 @@ function ResidentDetail() {
 		},
 	})
 
+=======
+>>>>>>> e84698d2f9e24f1721d6592f370a7efab36987ef
 	const service = useResidentDetailService()
 	return (
 		<ResidentDetailService.Provider value={service}>
@@ -38,7 +48,14 @@ function ResidentDetail() {
 					<Tabs>
 						<Tabs.TabPane tab='基本信息' key='1' className='mt-12'>
 							{/* 基本信息 */}
+<<<<<<< HEAD
 							<UserDetail data={service.residentDetail} />
+=======
+							<UserDetail
+								updateMemo={service.updateMemo}
+								data={service.residentDetail}
+							/>
+>>>>>>> e84698d2f9e24f1721d6592f370a7efab36987ef
 						</Tabs.TabPane>
 						<Tabs.TabPane tab='护理设置' key='2'>
 							<NurseDetail />
