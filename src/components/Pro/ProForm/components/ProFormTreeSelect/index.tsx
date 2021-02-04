@@ -36,7 +36,16 @@ function ProFormTreeSelect(props: ProFormTreeSelectProps) {
 	}, [propsValue, rest.multiple, transform])
 
 	const DOM = (
-		<TreeSelect treeData={treeData} loading={loading} value={value} {...rest} />
+		<TreeSelect
+			getPopupContainer={(node) => {
+				if (node) return node.parentNode
+				return document.body
+			}}
+			treeData={treeData}
+			loading={loading}
+			value={value}
+			{...rest}
+		/>
 	)
 	if (render) return render(rest, DOM)
 	return DOM
@@ -44,6 +53,6 @@ function ProFormTreeSelect(props: ProFormTreeSelectProps) {
 
 export default withFormItem<ProFormTreeSelectProps>(ProFormTreeSelect, {
 	allowClear: true,
-	placeholder: "请输入",
+	placeholder: "请选择",
 	dropdownStyle: { maxHeight: 400, overflow: "auto" },
 })

@@ -1,0 +1,10 @@
+.deviceNum {
+  display: flex;
+	.label {
+    margin-right: 10px;
+	}
+	.num {
+    flex: 1;
+    font-weight: bold;
+	}
+}

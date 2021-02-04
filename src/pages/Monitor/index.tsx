@@ -1,10 +1,4 @@
-import React, {
-	createContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react"
+import React, { createContext, useMemo, useRef, useState } from "react"
 import { Spin } from "antd"
 import styles from "./style.module.scss"
 import BedCard from "./components/BedCard"

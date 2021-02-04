@@ -28,10 +28,21 @@ function ProFormSelect(props: ProFormSelectProps) {
 		return []
 	}, [data, PO])
 
-	const DOM = <Select loading={loading} {...rest} options={options} />
+	const DOM = (
+		<Select
+			getPopupContainer={(node) => {
+				if (node) return node.parentNode
+				return document.body
+			}}
+			loading={loading}
+			{...rest}
+			options={options}
+		/>
+	)
 	if (render) return render({ ...rest, options }, DOM)
 	return DOM
 }
 export default withFormItem<ProFormSelectProps>(ProFormSelect, {
 	allowClear: true,
+	placeholder:"请选择"
 })

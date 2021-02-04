@@ -1,5 +1,4 @@
 import React, { memo, useMemo } from "react"
-import { IBaseProps } from "@/@types/fc"
 import classNames from "classnames"
 import moment from "moment"
 import IconFont from "@/components/IconFont"
