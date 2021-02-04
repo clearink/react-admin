@@ -1,25 +1,12 @@
-import React, { memo, useEffect, useRef, useState } from "react"
-import classNames from "classnames"
+import React, { memo, useRef, useState } from "react"
 import styles from "./style.module.scss"
-import { Button, DatePicker, Form, Radio, Spin, Tabs } from "antd"
-import { EditFilled, EditOutlined, UserOutlined } from "@ant-design/icons"
+import { DatePicker, Form, Tabs } from "antd"
 import UserDetail from "../../Monitor/components/Sleep/UserDetail"
 import WarnSetting from "../components/WarnSetting"
 import NurseDetail from "../NurseDetail"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { useRouteMatch } from "react-router-dom"
-import { FieldAvatar } from "@/components/Pro/ProField"
-import ModalForm, {
-	ModalFormRef,
-} from "@/components/Pro/ProForm/components/ModalForm"
-import {
-	ProFormGroup,
-	ProFormInput,
-	ProFormSelect,
-	ProFormTreeSelect,
-} from "@/components/BigSight"
-import { convertFloorTreeNode } from "@/pages/AlarmRecord/utils"
-import ResidentApi from "@/http/api/pages/ResidentApi"
+import { ModalFormRef } from "@/components/Pro/ProForm/components/ModalForm"
 import useResidentDetailService, {
 	ResidentDetailService,
 } from "./useResidentDetail.service"
@@ -27,41 +14,31 @@ import DetailHeader from "./DetailHeader"
 
 // 住户详情
 function ResidentDetail() {
-	const { params } = useRouteMatch<{ id: string }>()
-	const formRef = useRef<ModalFormRef>(null)
 	// 住户详情
-	const [{ data, loading }] = useMemoFetch({
-		url: "/orgmgt/member/queryById",
-		params: { id: params.id },
-		cache: true,
-		transform: (data) => data.result,
-	})
 
-	const [roomId, setRoomId] = useState<string | null>(null)
-	const [current, setCurrent] = useState(1)
 	// 请求 护管人员
 	const [{ data: nurseList }] = useMemoFetch({
 		url: "/orgmgt/careWorker/list",
 		method: "post",
 		params: {
-			pageNo: current,
-			pageSize: 10,
+			pageNo: 1,
+			pageSize: 100,
 		},
 		transform: (response) => {
 			return response.result.records
 		},
 	})
 
-	const residentDetailService = useResidentDetailService()
+	const service = useResidentDetailService()
 	return (
-		<ResidentDetailService.Provider value={residentDetailService}>
+		<ResidentDetailService.Provider value={service}>
 			<div className='h-full flex flex-col'>
 				<DetailHeader />
 				<div className='mt-6 px-4 bg-white flex-auto'>
 					<Tabs>
 						<Tabs.TabPane tab='基本信息' key='1' className='mt-12'>
 							{/* 基本信息 */}
-							<UserDetail data={data} />
+							<UserDetail data={service.residentDetail} />
 						</Tabs.TabPane>
 						<Tabs.TabPane tab='护理设置' key='2'>
 							<NurseDetail />
