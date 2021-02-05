@@ -6,8 +6,8 @@ import React, {
 	useRef,
 	useState,
 } from "react"
-import { Button, Space } from "antd"
-import { EditOutlined, UserOutlined } from "@ant-design/icons"
+import { Button, message, Space } from "antd"
+import { EditOutlined, PieChartOutlined, UserOutlined } from "@ant-design/icons"
 import { ProTableColumns, ProTableRef } from "@/components/Pro/ProTable/type"
 import ProTable from "@/components/Pro/ProTable"
 import {
@@ -68,7 +68,7 @@ const columns: ProTableColumns<any>[] = [
 
 // 设备管理
 function Device() {
-	const { deviceId } = useContext(DeviceContext)
+	const { deviceType } = useContext(DeviceContext)
 	const tableRef = useRef<ProTableRef>(null)
 	const addRef = useRef<AddFormRef>(null)
 	const editRef = useRef<EditFormRef>(null)
@@ -77,17 +77,18 @@ function Device() {
 	// 床位关联 ref
 	const bedRef = useRef<AddFormRef>(null)
 	const [deviceNum, setDeviceNum] = useState<any>(null)
+	// 设备ID
+	const [deviceId, setDeviceId] = useState<any>(null)
 
 	const userRef = useRef<AddFormRef>(null)
 
 	useEffect(() => {
-		console.log(deviceId)
 		tableRef.current?.setParams({
-			deviceType: deviceId,
+			deviceType,
 			pageNo: 1,
 			pageSize: 10,
 		})
-	}, [deviceId])
+	}, [deviceType])
 
 	const handleCreate = () => {
 		addRef.current?.toggle()
@@ -102,28 +103,33 @@ function Device() {
 			key: "action",
 			render: (_, record) => (
 				<Space>
-					<Button
-						type='link'
-						size='small'
-						icon={<UserOutlined />}
-						onClick={() => {
-							userRef.current?.toggle()
-							setDeviceNum(record.id)
-						}}
-					>
-						人员关联
-					</Button>
-					<Button
-						type='link'
-						size='small'
-						icon={<UserOutlined />}
-						onClick={() => {
-							bedRef.current?.toggle()
-							setDeviceNum(record.num)
-						}}
-					>
-						床位关联
-					</Button>
+					{record.deviceType === "BED" ? (
+						<Button
+							type='link'
+							size='small'
+							icon={<PieChartOutlined />}
+							onClick={() => {
+								bedRef.current?.toggle()
+								setDeviceNum(record.num)
+								setDeviceId(record.id)
+							}}
+						>
+							床位关联
+						</Button>
+					) : (
+						<Button
+							type='link'
+							size='small'
+							icon={<UserOutlined />}
+							onClick={() => {
+								userRef.current?.toggle()
+								setDeviceNum(record.num)
+								setDeviceId(record.id)
+							}}
+						>
+							人员关联
+						</Button>
+					)}
 					<Button
 						type='link'
 						size='small'
@@ -181,7 +187,12 @@ function Device() {
 				deviceNum={deviceNum}
 				ref={bedRef}
 				onFinish={async (values) => {
-					console.log(values)
+					const { data } = await DeviceApi.BedConnect({
+						deviceId,
+						...values,
+					})
+					message.success(data?.message)
+					tableRef.current?.reload()
 					return true
 				}}
 			/>

@@ -11,7 +11,7 @@ import AddForm, {
 	AddFormProps,
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
-import { ProFormSelect, ProFormTreeSelect } from "@/components/BigSight"
+import { ProFormInput, ProFormSelect, ProFormTreeSelect } from "@/components/BigSight"
 import styles from "./style.module.scss"
 import { convertRoomTree } from "@/pages/BedAllot/utils"
 // 床位关联 form
@@ -44,7 +44,6 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 				required
 				onChange={setRoomId}
 				label='选择房间'
-				name='orgRoomId'
 				request={{
 					url: "/orgmgt/room/tree",
 					method: "post",
@@ -60,14 +59,14 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 				label='选择床位'
 				name='orgBedId'
 				request={{
-					cache:false,
-					url: roomId ? "/orgmgt/bed/emptyBedList/queryByRoomId" : undefined,
+					cache: false,
+					url: roomId ? "/orgmgt/bed/unbound/queryByRoomId" : undefined,
 					params: { id: roomId },
 					transform: (response, cache) => {
 						if (cache) return response
 						return response.result?.map((item: any) => ({
-							label: item.text,
-							value: item.value,
+							label: item.num,
+							value: item.id,
 						}))
 					},
 				}}

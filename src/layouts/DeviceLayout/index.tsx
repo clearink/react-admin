@@ -21,7 +21,7 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 	const { children, location } = props
 	const { push } = useHistory()
 	// 获取 设备树
-	const [deviceId, setDeviceId] = useState<React.ReactText | null>(null)
+	const [deviceType, setDeviceType] = useState<React.ReactText | null>(null)
 	const [{ data, loading }, fetchData, updateMemo] = useMemoFetch({
 		url: "/orgmgt/device/deviceList",
 		cache: true,
@@ -32,13 +32,14 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 		},
 	})
 	const selectKeys = useMemo(() => {
-		if (deviceId === null) return []
-		return [deviceId]
-	}, [deviceId])
+		if (deviceType === null) return []
+		return [deviceType]
+	}, [deviceType])
 
 	const handleSelectTree: TreeProps["onSelect"] = (keys) => {
-		if (keys[0] === deviceId) setDeviceId(null)
-		else setDeviceId(keys[0])
+		console.log(keys[0])
+		if (keys[0] === deviceType) setDeviceType(null)
+		else setDeviceType((keys[0] as string).split("/")[1])
 	}
 	const handleCreate = () => {}
 	const handleDelete = () => {}
@@ -94,7 +95,7 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 						/>
 					</Skeleton>
 				</Card>
-				<DeviceContext.Provider value={{ deviceId }}>
+				<DeviceContext.Provider value={{ deviceType }}>
 					<div className='flex-auto overflow-x-hidden'>{children}</div>
 				</DeviceContext.Provider>
 			</main>

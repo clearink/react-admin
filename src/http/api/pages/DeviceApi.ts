@@ -11,10 +11,17 @@ export interface EditData extends AddData {
 export interface DeleteData {
 	ids: string[]
 }
+export interface BedConnectData {
+	deviceId: string
+	orgBedId: string
+}
 
 export default {
 	DeviceAdd: (data: AddData) => http.post("/orgmgt/device/save", data), // 告警处理
 	DeviceDelete: (params: DeleteData) =>
 		http.get("/orgmgt/device/delete", params),
 	DeviceEdit: (params: EditData) => http.post("/orgmgt/device/save", params),
+	// 床位关联
+	BedConnect: (data: BedConnectData) =>
+		http.post("/orgmgt/device/bed/Allocation", data),
 }

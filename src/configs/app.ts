@@ -3,8 +3,8 @@ export default {
 	// BASE_URL: isDev
 	// ? "http://app.peplife.net/backend"
 	// : "http://console.peplife.co:10086",
-	// BASE_URL: "http://console.peplife.co:10086",
-	BASE_URL: "http://app.peplife.net/backend",
+	BASE_URL: "http://console.peplife.co:10086",
+	// BASE_URL: "http://app.peplife.net/backend",
 	TIMEOUT: 20000,
 	RETRY_DELAY: 3000,
 	RETRY_COUNT: 4,
