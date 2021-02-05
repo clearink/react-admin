@@ -31,13 +31,14 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 	return (
 		<AddForm
 			type='modal'
+			layout='horizontal'
 			title='床位关联'
 			{...rest}
 			name='bed-connect'
 			ref={formRef}
 		>
 			<div className={styles.deviceNum}>
-				<span className={styles.label}>设备编号:</span>
+				<span className={styles.label}>设备编号 :</span>
 				<span className={styles.num}>{deviceNum}</span>
 			</div>
 			<ProFormTreeSelect

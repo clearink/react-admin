@@ -86,7 +86,7 @@ class Http {
 			(error: AxiosError) => {
 				// 为了更好的提示动画
 				if (error.code !== this.SAME_REQUEST) {
-					this.showError(error)
+					this.errorHandle(error.response)
 					console.group("响应拦截器error callback")
 					console.log(error)
 					console.groupEnd()
@@ -98,11 +98,11 @@ class Http {
 
 	// error handle
 
-	private errorHandle(response: AxiosResponse<any>) {
+	private errorHandle(response?: AxiosResponse<any>) {
 		const {
 			data: { code },
 			data,
-		} = response
+		} = response ?? {}
 		if (code === 1001) {
 			console.log("token 过期了 清除用户登录信息")
 			LoginUtil.clearToken()
