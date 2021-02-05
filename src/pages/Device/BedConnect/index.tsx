@@ -11,7 +11,7 @@ import AddForm, {
 	AddFormProps,
 	AddFormRef,
 } from "@/components/BigSight/Form/AddForm"
-import { ProFormInput, ProFormSelect, ProFormTreeSelect } from "@/components/BigSight"
+import { ProFormSelect, ProFormTreeSelect } from "@/components/BigSight"
 import styles from "./style.module.scss"
 import { convertRoomTree } from "@/pages/BedAllot/utils"
 // 床位关联 form
