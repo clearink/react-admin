@@ -60,6 +60,22 @@ const columns: ProTableColumns<any>[] = [
 	{
 		title: "职务",
 		dataIndex: "position",
+		read: (
+			<FieldStatus
+				statusList={["#1abc9c", "#e67e22"]}
+				request={{
+					url: "/sys/dict/getDictItems/careworkerPosition",
+					cache: true,
+					transform: (response, cache) => {
+						if (cache) return response
+						return response.result.map((item: any) => ({
+							label: item.text,
+							value: item.value,
+						}))
+					},
+				}}
+			/>
+		),
 	},
 	{
 		title: "账号状态",

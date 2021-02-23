@@ -199,6 +199,7 @@ function Device() {
 			{/* 人员关联 */}
 			<UserConnectForm
 				deviceNum={deviceNum}
+				deviceId={deviceId}
 				ref={userRef}
 				onFinish={async (values) => {
 					console.log(values)

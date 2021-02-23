@@ -102,18 +102,18 @@ function ProTable<T extends object>(
 					{tableService.searchList}
 				</QueryFilter>
 				<div className='bg-white'>
-					<div className={styles.table_toolbar_wrap}>
-						{renderTitle?.(
-							tableService.state,
-							tableService.methods,
-							tableTitleExtra
-						) ?? (
+					{renderTitle?.(
+						tableService.state,
+						tableService.methods,
+						tableTitleExtra
+					) ?? (
+						<div className={styles.table_toolbar_wrap}>
 							<TableTitle
 								title={title}
 								extra={<Space>{tableTitleExtra}</Space>}
 							/>
-						)}
-					</div>
+						</div>
+					)}
 
 					<Table
 						showSorterTooltip={false}

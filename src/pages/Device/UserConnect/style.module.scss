@@ -1,0 +1,12 @@
+.deviceNum {
+	display: flex;
+	margin-bottom: 20px;
+	.label {
+		margin: 0 10px;
+	}
+	.num {
+		flex: 1;
+		color: rgba(black, 0.5);
+		font-weight: bold;
+	}
+}

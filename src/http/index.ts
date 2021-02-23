@@ -10,7 +10,7 @@ import configs from "@/configs/app"
 import LoginUtil from "@/utils/store/LoginUtil"
 
 // type Method = "get" | "post" | "delete" | "head" | "put" | "options" | "patch"
-const requestMap = new Map<string, { url: string; time: number }>()
+const requestMap = new Map<string, { time: number }>()
 // 多次请求相隔时间不能小于200ms
 class Http {
 	private axios: AxiosStatic = Axios
@@ -46,13 +46,13 @@ class Http {
 			async (config: AxiosRequestConfig) => {
 				const token = LoginUtil.getToken()
 				if (token) config.headers[configs.TOKEN] = token
-				const { url } = config
-				const cache = requestMap.get(url!)
+				const { url, params } = config
+				const cache = requestMap.get(`${url}${params}`)
 
 				if (cache && Date.now() - cache.time < this.SAME_REQUEST_MIN_INTERVAL) {
 					return Promise.reject({ code: this.SAME_REQUEST, config })
 				} else {
-					requestMap.set(url!, { url: url!, time: Date.now() })
+					requestMap.set(`${url}${params}`, { time: Date.now() })
 				}
 				return config
 			},
@@ -123,7 +123,7 @@ class Http {
 
 	// get请求会被缓存,添加一个随机字符串确保得到最新的结果
 	public get<R = any>(url: string, params?: Object) {
-		return this.axios.get<R>(url, { params: { ...params, _t: Date.now() } })
+		return this.axios.get<R>(url, { params })
 	}
 
 	// post

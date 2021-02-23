@@ -24,4 +24,7 @@ export default {
 	// 床位关联
 	BedConnect: (data: BedConnectData) =>
 		http.post("/orgmgt/device/bed/Allocation", data),
+	// 查询关联的用户
+	GetConnectedUser: (params: { id: string }) =>
+		http.get("/orgmgt/device/member/queryByDeviceID"),
 }

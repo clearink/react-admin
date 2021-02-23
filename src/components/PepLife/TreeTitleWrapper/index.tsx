@@ -13,7 +13,7 @@ export interface TreeTitleWrapperProps extends DataNode {
 	isLeaf?: boolean
 }
 function TreeTitleWrapper(props: TreeTitleWrapperProps) {
-	const { title, onCreate, onEdit, onDelete, id } = props
+	const { title, onCreate, onEdit, onDelete, id, isLeaf } = props
 	return (
 		<div className={styles.tree_title_wrap}>
 			<span className={styles.tree_title}>{title}</span>
@@ -23,11 +23,15 @@ function TreeTitleWrapper(props: TreeTitleWrapperProps) {
 					e.stopPropagation()
 				}}
 			>
-				<PlusOutlined onClick={() => onCreate(id)} />
-				<EditOutlined onClick={() => onEdit(id)} />
-				<Popconfirm title='确定删除?' onConfirm={() => onDelete(id)}>
-					<DeleteOutlined />
-				</Popconfirm>
+				{!isLeaf && (
+					<>
+						<PlusOutlined onClick={() => onCreate(id)} />
+						<EditOutlined onClick={() => onEdit(id)} />
+						<Popconfirm title='确定删除?' onConfirm={() => onDelete(id)}>
+							<DeleteOutlined />
+						</Popconfirm>
+					</>
+				)}
 			</div>
 		</div>
 	)
