@@ -29,10 +29,15 @@ const reducers = {
 	},
 }
 // 需求: 不是自动倒计时 或者 给一个变量自行控制是否自动倒计时
-export default function useCountDown(count: number, interval: number = 1000) {
+export default function useCountDown(
+	count: number,
+	onTarget: () => void = () => {},
+	interval: number = 1000
+) {
 	const [state, methods] = useMethods(reducers, { ...initialState, count })
 
 	const getCount = useMemoCallback(() => state.count, [])
+	const handleTarget = useMemoCallback(onTarget, [])
 	useEffect(() => {
 		if (!state.active) return
 		const timer = setInterval(() => {
@@ -40,10 +45,11 @@ export default function useCountDown(count: number, interval: number = 1000) {
 			else {
 				methods.stop()
 				clearInterval(timer)
+				handleTarget()
 			}
 		}, interval)
 		return () => clearInterval(timer)
-	}, [getCount, interval, methods, state.active])
+	}, [getCount, handleTarget, interval, methods, state.active])
 	const start = useMemoCallback(() => methods.start(count), [])
 	const reset = useMemoCallback(() => methods.reset(count), [])
 	return [state, start, reset] as const

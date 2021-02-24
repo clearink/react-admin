@@ -1,4 +1,4 @@
-import { EditForm } from "@/components/BigSight"
+import { EditForm, ProFormInput, ProFormSelect } from "@/components/BigSight"
 import { EditFormProps, EditFormRef } from "@/components/BigSight/Form/EditForm"
 import React, {
 	forwardRef,
@@ -13,8 +13,8 @@ function DeviceEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 	useImperativeHandle(ref, () => formRef.current!, [])
 	return (
 		<EditForm
-      type='modal'
-      title="编辑设备"
+			type='modal'
+			title='编辑设备'
 			{...props}
 			name='add-device'
 			request={{
@@ -23,7 +23,38 @@ function DeviceEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 				method: "get",
 			}}
 			ref={formRef}
-		></EditForm>
+		>
+			<ProFormSelect
+				label='设备类型'
+				name='deviceType'
+				request={{
+					url: "/sys/dict/getDictItems/device_type",
+					transform: (response, cache) => {
+						if (cache) return response
+						return response.result?.map((item: any) => ({
+							label: item.text,
+							value: item.value,
+						}))
+					},
+				}}
+			/>
+
+			<ProFormSelect
+				label='设备型号'
+				name='modelNum'
+				request={{
+					url: "/sys/dict/getDictItems/device_module",
+					transform: (response, cache) => {
+						if (cache) return response
+						return response.result?.map((item: any) => ({
+							label: item.text,
+							value: item.value,
+						}))
+					},
+				}}
+			/>
+			<ProFormInput label='设备编号' name='num' required />
+		</EditForm>
 	)
 }
 

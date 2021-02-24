@@ -85,7 +85,7 @@ class Http {
 			// 多半是服务器问题
 			(error: AxiosError) => {
 				// 为了更好的提示动画
-				if (error.code !== this.SAME_REQUEST) {
+				if (error?.code !== this.SAME_REQUEST) {
 					this.errorHandle(error.response)
 					console.group("响应拦截器error callback")
 					console.log(error)
@@ -102,7 +102,7 @@ class Http {
 		const {
 			data: { code },
 			data,
-		} = response ?? {}
+		} = response || { data: { code: null } }
 		if (code === 1001) {
 			console.log("token 过期了 清除用户登录信息")
 			LoginUtil.clearToken()

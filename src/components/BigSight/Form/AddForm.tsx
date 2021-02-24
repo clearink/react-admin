@@ -2,14 +2,16 @@ import DrawerForm, {
 	DrawerFormProps,
 	DrawerFormRef,
 } from "@/components/Pro/ProForm/components/DrawerForm"
-import ModalForm from "@/components/Pro/ProForm/components/ModalForm"
+import ModalForm, {
+	ModalFormProps,
+} from "@/components/Pro/ProForm/components/ModalForm"
 import withDefaultProps from "@/hocs/withDefaultProps"
 import React, { forwardRef, memo, Ref } from "react"
 
 /**
  * Add Form children 传入
  */
-export interface AddFormProps extends DrawerFormProps {
+export interface AddFormProps extends DrawerFormProps, ModalFormProps {
 	/** form 渲染方式 */
 	type?: "drawer" | "modal"
 }

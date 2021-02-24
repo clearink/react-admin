@@ -1,5 +1,7 @@
+@import "@/styles/index";
 .deviceNum {
 	display: flex;
+	font-size: 14px;
 	margin-bottom: 20px;
 	.label {
 		margin: 0 10px;
@@ -8,5 +10,46 @@
 		flex: 1;
 		color: rgba(black, 0.5);
 		font-weight: bold;
+	}
+}
+.connect_user_header {
+	position: relative;
+	&::before {
+		content: "";
+		position: absolute;
+		left: -10px;
+		width: 4px;
+		height: 100%;
+		background-color: $color_primary;
+	}
+}
+.user_list {
+	height: 250px;
+	overflow: auto;
+	@include scrollbar($color_primary);
+	width: 100%;
+	.item {
+		cursor: pointer;
+		@include flex-center();
+		margin: 0;
+		padding: 5px 10px;
+	}
+	.name {
+		padding-left: 20px;
+		flex: 1;
+	}
+	.icon {
+		color: $color_text;
+		font-size: 20px;
+	}
+}
+.action_btn {
+	button {
+		width: 200px;
+	}
+}
+:global {
+	.ant-radio-group {
+		font-size: 14px;
 	}
 }

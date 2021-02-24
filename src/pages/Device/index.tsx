@@ -33,6 +33,10 @@ const columns: ProTableColumns<any>[] = [
 		read: <FieldText ellipsis copyable />,
 	},
 	{
+		title: "设备名称",
+		dataIndex: "name",
+	},
+	{
 		title: "SIM卡号(ICCID)",
 		dataIndex: "modelNum",
 	},
@@ -201,10 +205,7 @@ function Device() {
 				deviceNum={deviceNum}
 				deviceId={deviceId}
 				ref={userRef}
-				onFinish={async (values) => {
-					console.log(values)
-					return true
-				}}
+				onFinish={async () => true}
 			/>
 		</div>
 	)

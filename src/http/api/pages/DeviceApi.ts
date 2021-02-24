@@ -16,6 +16,18 @@ export interface BedConnectData {
 	orgBedId: string
 }
 
+export interface ConnectUserData {
+	deviceId: string
+	memberId: string
+}
+
+export interface InputFingerData {
+	memberId: string
+	deviceId: string
+}
+export interface FingerDataInfo {
+	memberId: string
+}
 export default {
 	DeviceAdd: (data: AddData) => http.post("/orgmgt/device/save", data), // 告警处理
 	DeviceDelete: (params: DeleteData) =>
@@ -25,6 +37,17 @@ export default {
 	BedConnect: (data: BedConnectData) =>
 		http.post("/orgmgt/device/bed/Allocation", data),
 	// 查询关联的用户
-	GetConnectedUser: (params: { id: string }) =>
-		http.get("/orgmgt/device/member/queryByDeviceID"),
+	GetUserList: (params: { id: string }) =>
+		http.get("/orgmgt/device/member/queryByDeviceID", params),
+	ConnectUser: (data: ConnectUserData) =>
+		http.post("/orgmgt/device/member/Allocation", data),
+	// 开始录入指纹
+	InputFinger: (data: InputFingerData) =>
+		http.post("/orgmgt/device/member/fingerprint", data),
+	// 查询录入指纹信息
+	GetFingerInfo: (params: FingerDataInfo) =>
+		http.get("/orgmgt/device/member/fingerprint", params),
+	// 用户解绑
+	UnConnectUser: (data: InputFingerData) =>
+		http.post("/orgmgt/device/member/unAllocation", data),
 }
