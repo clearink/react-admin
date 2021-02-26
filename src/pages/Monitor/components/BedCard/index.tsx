@@ -6,12 +6,16 @@ import { CardProps } from "antd/lib/card"
 import IconFont from "@/components/IconFont"
 import { BCGContext } from "../.."
 import { Link } from "react-router-dom"
-import { Random } from "mockjs"
 
-interface BedCardProps extends CardProps {}
+interface BedCardProps extends CardProps {
+	memberName: string
+	sleepScore: number
+	deviceStatus: string
+	num: string
+}
 // 用户 Card
 function BedCard(props: BedCardProps) {
-	const { title } = props
+	const { memberName, sleepScore, deviceStatus, num } = props
 
 	const { toggle, setBcgId } = useContext(BCGContext)
 	const handleBcgDetail = () => {
@@ -19,12 +23,11 @@ function BedCard(props: BedCardProps) {
 		setBcgId?.(1)
 	}
 
-	const bedStatus = Random.integer(0, 2)
 	return (
 		<Card
 			size='small'
 			className={styles.bed_card}
-			title={title}
+			title={num}
 			actions={[
 				<Space size={2} key='bcg' className='action_wrap'>
 					<IconFont type='icon-user' />
@@ -40,15 +43,15 @@ function BedCard(props: BedCardProps) {
 			<div className={styles.bed_info}>
 				<span
 					className={classNames(styles.bed_status, {
-						[styles.in_bed]: bedStatus === 0,
-						[styles.leave_bed]: bedStatus === 1,
+						[styles.in_bed]: deviceStatus === "在床",
+						[styles.leave_bed]: deviceStatus === "离床",
 					})}
 				>
 					<IconFont type='icon-user' style={{ fontSize: "20px" }} />
-					<span>{["在床", "离床", "离线"][bedStatus]}</span>
+					<span>{deviceStatus}</span>
 				</span>
 				<div className={styles.percent_name}>
-					<span className={styles.name}>{Random.cname()}</span>
+					<span className={styles.name}>{memberName || "空床位"}</span>
 					<Progress
 						showInfo
 						strokeColor={{
@@ -56,7 +59,7 @@ function BedCard(props: BedCardProps) {
 							"100%": "#87d068",
 						}}
 						status='active'
-						percent={Random.integer(0, 100)}
+						percent={sleepScore ?? 0}
 						width={70}
 						strokeWidth={12}
 						type='circle'
@@ -65,7 +68,7 @@ function BedCard(props: BedCardProps) {
 				</div>
 				<span
 					className={classNames(styles.bed_status, {
-						[styles.leave_bed]: Random.boolean(),
+						[styles.leave_bed]: Math.random() > 0.5,
 					})}
 				>
 					<IconFont type='icon-user' style={{ fontSize: "20px" }} />

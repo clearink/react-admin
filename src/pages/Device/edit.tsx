@@ -16,7 +16,7 @@ function DeviceEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			type='modal'
 			title='编辑设备'
 			{...props}
-			name='add-device'
+			name='edit-device'
 			request={{
 				url: "/orgmgt/device/queryById",
 				params: { id: props.id },
@@ -27,6 +27,7 @@ function DeviceEditForm(props: EditFormProps, ref: Ref<EditFormRef>) {
 			<ProFormSelect
 				label='设备类型'
 				name='deviceType'
+				disabled
 				request={{
 					url: "/sys/dict/getDictItems/device_type",
 					transform: (response, cache) => {

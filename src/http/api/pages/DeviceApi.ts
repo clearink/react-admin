@@ -31,7 +31,7 @@ export interface FingerDataInfo {
 export default {
 	DeviceAdd: (data: AddData) => http.post("/orgmgt/device/save", data), // 告警处理
 	DeviceDelete: (params: DeleteData) =>
-		http.get("/orgmgt/device/delete", params),
+		http.post("/orgmgt/device/delete", params),
 	DeviceEdit: (params: EditData) => http.post("/orgmgt/device/save", params),
 	// 床位关联
 	BedConnect: (data: BedConnectData) =>
@@ -50,4 +50,16 @@ export default {
 	// 用户解绑
 	UnConnectUser: (data: InputFingerData) =>
 		http.post("/orgmgt/device/member/unAllocation", data),
+	// 更新指纹信息
+	UpdateFingerInfo: (data: InputFingerData) =>
+		http.post("/orgmgt/device/member/saveFingerprint", data),
+	// 监控分析接口
+
+	// 请求床位信息
+	GetMonitorList: (data: {
+		roomId: string
+		status?: string
+		pageSize: number
+		pageNo: number
+	}) => http.post("/orgmgt/bed/monitor", data),
 }

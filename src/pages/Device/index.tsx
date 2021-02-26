@@ -24,6 +24,12 @@ import DeviceEditForm from "./edit"
 import BedConnectForm from "./BedConnect"
 import UserConnectForm from "./UserConnect"
 
+export interface DeviceItem {
+	id: string
+	num: string
+	deviceType: string
+}
+
 const columns: ProTableColumns<any>[] = [
 	{
 		title: "设备编号",
@@ -61,7 +67,7 @@ const columns: ProTableColumns<any>[] = [
 		),
 	},
 	{
-		title: "使用人/房间",
+		title: "使用人/床位",
 		dataIndex: "useText",
 	},
 	{
@@ -80,9 +86,9 @@ function Device() {
 
 	// 床位关联 ref
 	const bedRef = useRef<AddFormRef>(null)
-	const [deviceNum, setDeviceNum] = useState<any>(null)
-	// 设备ID
-	const [deviceId, setDeviceId] = useState<any>(null)
+
+	// 选择的设备
+	const [checkedDevice, setCheckedDevice] = useState<null | DeviceItem>(null)
 
 	const userRef = useRef<AddFormRef>(null)
 
@@ -114,8 +120,7 @@ function Device() {
 							icon={<PieChartOutlined />}
 							onClick={() => {
 								bedRef.current?.toggle()
-								setDeviceNum(record.num)
-								setDeviceId(record.id)
+								setCheckedDevice(record)
 							}}
 						>
 							床位关联
@@ -127,8 +132,7 @@ function Device() {
 							icon={<UserOutlined />}
 							onClick={() => {
 								userRef.current?.toggle()
-								setDeviceNum(record.num)
-								setDeviceId(record.id)
+								setCheckedDevice(record)
 							}}
 						>
 							人员关联
@@ -188,11 +192,11 @@ function Device() {
 			/>
 			{/* 床位关联 */}
 			<BedConnectForm
-				deviceNum={deviceNum}
+				deviceItem={checkedDevice}
 				ref={bedRef}
 				onFinish={async (values) => {
 					const { data } = await DeviceApi.BedConnect({
-						deviceId,
+						deviceId: checkedDevice!.id,
 						...values,
 					})
 					message.success(data?.message)
@@ -202,8 +206,7 @@ function Device() {
 			/>
 			{/* 人员关联 */}
 			<UserConnectForm
-				deviceNum={deviceNum}
-				deviceId={deviceId}
+				deviceItem={checkedDevice}
 				ref={userRef}
 				onFinish={async () => true}
 			/>

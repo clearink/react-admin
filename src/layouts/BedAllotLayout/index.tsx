@@ -65,6 +65,12 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 	const handleCreate = useMemoCallback((id: string | undefined) => {
 		addRef.current?.toggle()
 		setAddId(id)
+		addRef.current?.form.setFields([
+			{
+				name: "name",
+				errors: [],
+			},
+		])
 	}, [])
 
 	const [editId, setEditId] = useState<string | undefined>()
@@ -160,7 +166,7 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 				{/* 楼层新增表单 */}
 				<AddForm
 					type='modal'
-					title='新增楼层'
+					title={`新增楼${addId ? "层" : "栋"}`}
 					ref={addRef}
 					name='add-floor'
 					onFinish={async (value) => {
@@ -171,7 +177,11 @@ function MonitorLayout(props: PropsWithChildren<IBaseProps>) {
 						return true
 					}}
 				>
-					<ProFormInput label='楼层名称' name='name' />
+					<ProFormInput
+						label={`楼${addId ? "层" : "栋"}名称`}
+						name='name'
+						required
+					/>
 				</AddForm>
 
 				<BedAllotContext.Provider value={{ buildingId, updateRoomTree }}>

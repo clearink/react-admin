@@ -1,5 +1,11 @@
-import React, { createContext, useMemo, useRef, useState } from "react"
-import { Spin } from "antd"
+import React, {
+	createContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react"
+import { Empty, Spin } from "antd"
 import styles from "./style.module.scss"
 import BedCard from "./components/BedCard"
 import BCGDetail from "./components/BCGDetail"
@@ -8,8 +14,7 @@ import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { ProFormRadio } from "@/components/Pro/ProForm"
 import { FormInstance } from "antd/lib/form"
 import useMemoFetch from "@/hooks/useMemoFetch"
-import { convertTreeNode } from "../BedAllot/utils"
-
+import { convertRoomTree } from "../BedAllot/utils"
 interface BCGContextProps {
 	visible: boolean
 	toggle: () => void
@@ -27,117 +32,131 @@ function Monitor() {
 	const [visible, toggle] = useBoolean()
 	const formRef = useRef<FormInstance>()
 
-	const [{ data: buildingList, loading }, _, updateMemo] = useMemoFetch({
-		url: "/orgmgt/building/treeList",
+	// 获取房间树列表
+	const [{ data: buildingList }] = useMemoFetch({
+		url: "/orgmgt/room/tree",
 		method: "post",
 		cache: true,
 		transform: (response, cache) => {
 			if (cache) return response
-			if (response) return convertTreeNode(response?.result, "orgBuildings")
-			return []
+			return convertRoomTree(response.result, "childList") ?? []
 		},
 	})
 
 	const [buildingId, setBuildingId] = useState<string | undefined>() // 楼栋ID
 	const [floorId, setFloorId] = useState<string | undefined>() // 楼层ID
 	const [roomId, setRoomId] = useState<string | undefined>() // 房间ID
-
-	// 楼栋数据
-	const buildingData = useMemo(() => {
-		if (buildingList)
-			return buildingList.map((item: any) => ({
-				label: item.title,
-				value: item.key,
-			}))
-	}, [buildingList])
-
-	// 楼层数据
-	const floorData = useMemo(() => {
-		if (buildingList) {
-			const data = buildingList.find((item: any) => item.key === buildingId)
-			console.log(data)
-			if (data) {
-				return data.children?.map((item: any) => ({
-					label: item.title,
-					value: item.key,
-				}))
-			}
-		}
-	}, [buildingId, buildingList])
-
-	// 房间数据
-	const [{ data: roomData }] = useMemoFetch({
-		url: floorId ? "/orgmgt/room/list/queryByBuildingId" : undefined,
-		params: { id: floorId },
-		transform: (response) => {
-			return response.result.map((item: any) => ({
-				label: item.num,
-				value: item.id,
-			}))
+	const [{ data: list, loading }] = useMemoFetch({
+		url: roomId ? "/orgmgt/bed/monitor" : undefined,
+		method: "post",
+		params: { roomId: roomId!, status: undefined, pageNo: 1, pageSize: 100 },
+		transform: (data) => {
+			return data.result.records
 		},
 	})
+
+	// 楼层数据
+	const buildingData = useMemo(() => {
+		if (!buildingList) return undefined
+		return buildingList.map((item: any) => ({
+			label: item.title,
+			value: item.value,
+			children: item.children,
+		}))
+	}, [buildingList])
+	// 楼层数据
+	const floorData = useMemo(() => {
+		if (!buildingId || !buildingList) return undefined
+		const data = buildingList.find((item: any) => item.value === buildingId)
+		if (!data) return undefined
+		return data.children?.map((item: any) => ({
+			label: item.title,
+			value: item.value,
+			children: item.children,
+		}))
+	}, [buildingId, buildingList])
+	// 房间
+	const roomData = useMemo(() => {
+		if (!floorId || !floorData) return undefined
+		const data = floorData.find((item: any) => item.value === floorId)
+		if (!data) return undefined
+		return data.children?.map((item: any) => ({
+			label: item.title,
+			value: item.value,
+		}))
+	}, [floorId, floorData])
+
+	// 楼栋改变 重置楼层
+	useEffect(() => {
+		setFloorId(undefined)
+	}, [buildingId])
+	// 楼层改变 重置房间
+	useEffect(() => {
+		setRoomId(undefined)
+	}, [buildingId])
+
+	const renderLoading = (() => {
+		if (loading) return <Spin size='large' />
+		if (!list || list.length === 0) return <Empty />
+		return null
+	})()
 	return (
 		<main>
 			{/* 楼层 */}
 			<div className={styles.filter_bar}>
-				<Spin spinning={loading}>
-					<BaseForm ref={formRef} submitConfig={false} className='px-4'>
-						<ProFormRadio
-							label='楼栋'
-							name='buildingId'
-							optionType='button'
-							buttonStyle='solid'
-							options={buildingData}
-							formItemClassName={styles.filter_item}
-							onChange={(e) => {
-								setBuildingId(e.target.value)
-							}}
-						/>
-						<ProFormRadio
-							label='楼层'
-							name='floor'
-							initialValue={1}
-							optionType='button'
-							buttonStyle='solid'
-							options={floorData}
-							onChange={(e) => {
-								setFloorId(e.target.value)
-							}}
-							formItemClassName={styles.filter_item}
-						/>
-						<ProFormRadio
-							label='房间'
-							name='room'
-							optionType='button'
-							buttonStyle='solid'
-							options={roomData}
-							formItemClassName={styles.filter_item}
-							onChange={(e) => {
-								console.log("将发起请求")
-							}}
-						/>
-						<ProFormRadio
-							name='status'
-							label='状态'
-							optionType='button'
-							buttonStyle='solid'
-							options={statusData}
-							formItemClassName={styles.filter_item}
-						/>
-					</BaseForm>
-				</Spin>
+				<BaseForm ref={formRef} submitConfig={false} className='px-4'>
+					<ProFormRadio
+						label='楼栋'
+						name='buildingId'
+						optionType='button'
+						buttonStyle='solid'
+						options={buildingData}
+						formItemClassName={styles.filter_item}
+						onChange={(e) => {
+							setBuildingId(e.target.value)
+						}}
+					/>
+					<ProFormRadio
+						label='楼层'
+						name='floor'
+						initialValue={1}
+						optionType='button'
+						buttonStyle='solid'
+						options={floorData}
+						onChange={(e) => {
+							setFloorId(e.target.value)
+						}}
+						formItemClassName={styles.filter_item}
+					/>
+					<ProFormRadio
+						label='房间'
+						name='room'
+						optionType='button'
+						buttonStyle='solid'
+						options={roomData}
+						formItemClassName={styles.filter_item}
+						onChange={(e) => {
+							setRoomId(e.target.value)
+						}}
+					/>
+					<ProFormRadio
+						name='status'
+						label='状态'
+						optionType='button'
+						buttonStyle='solid'
+						options={statusData}
+						formItemClassName={styles.filter_item}
+					/>
+				</BaseForm>
 			</div>
 			{/* 病床 */}
 			<BCGContext.Provider value={{ visible, toggle, setBcgId }}>
 				<div className={styles.bed_card_list}>
-					{Array.from({ length: 20 }, (_, i) => (
-						<BedCard
-							title={`507房 - ${i.toString().padStart(2, "0")}床`}
-							key={i}
-						/>
-					))}
-					{Array.from({ length: 6 }, (_, i) => (
-						<div className={styles.bed_card_placeholder} key={i} />
+					<div className='flex items-center justify-center w-full'>
+						{renderLoading}
+					</div>
+					{list?.map((item: any) => (
+						<BedCard {...item} key={item.id} />
 					))}
 				</div>
 				<BCGDetail id={bcgId} />

@@ -28,25 +28,22 @@ import CountDown, {
 	CountDownRef,
 } from "@/components/Pro/ProForm/components/ProFormCaptcha/CountDown"
 import Polling from "@/http/polling"
+import { DeviceItem } from ".."
 
 // 床位关联 form
 export interface BedConnectFormProps extends AddFormProps {
 	/** 设备编号 */
-	deviceNum: string | null
-	deviceId: string
+	deviceItem: DeviceItem | null
 }
-interface StartFingerData {
-	start: () => void
-	reset: () => void
-}
+
 function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
-	const { deviceNum, deviceId, ...rest } = props
+	const { deviceItem, ...rest } = props
 	const formRef = useRef<AddFormRef>(null)
 	const countDownRef = useRef<CountDownRef>(null)
 	useImperativeHandle(ref, () => formRef.current!, [])
 
 	const [roomId, setRoomId] = useState()
-	const [canClick, setCanClick] = useState(false)
+	const [memberId, setMemberId] = useState<null | string>(null)
 	const [userList, setUserList] = useState<any[]>([])
 
 	// 轮询
@@ -58,30 +55,30 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 	}, [roomId])
 	// 获取关联用户列表
 	const GetUserList = useMemoCallback(() => {
-		DeviceApi.GetUserList({ id: deviceId }).then(({ data }) => {
+		DeviceApi.GetUserList({ id: deviceItem!.id }).then(({ data }) => {
 			setUserList(data.result)
 		})
 	}, [])
 
 	// 重置
 	const handleReset = useCallback(() => {
-		Poll.abort() // 结束计时
-		setCanClick(false) // 不可点击
-		countDownRef.current?.reset()
+		Poll.abort() // 结束轮询
+		countDownRef.current?.reset() // 结束计时
 	}, [Poll])
 
 	useEffect(() => {
-		if (!deviceId) return
+		if (!deviceItem?.id) return
 		GetUserList()
 		formRef.current?.form.setFieldsValue({
 			connect_user: undefined,
 		})
 		handleReset()
-	}, [deviceId, handleReset, Poll, GetUserList])
+		setMemberId(null)
+	}, [deviceItem, handleReset, Poll, GetUserList])
 
 	const handleConnectUser = async () => {
 		const form = formRef.current!.form
-		const memberId = form.getFieldValue("memberId")
+		const memberId = form.getFieldValue("memberId") // 住户ID
 		if (!memberId) {
 			form.setFields([
 				{
@@ -89,8 +86,8 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 					errors: ["请选择用户"],
 				},
 			])
-		} else if (deviceId) {
-			await DeviceApi.ConnectUser({ deviceId, memberId })
+		} else if (deviceItem?.id) {
+			await DeviceApi.ConnectUser({ deviceId: deviceItem.id, memberId })
 			GetUserList()
 		}
 	}
@@ -101,18 +98,34 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 		const memberId = formRef.current?.form.getFieldValue("connect_user")
 		await DeviceApi.InputFinger({
 			memberId,
-			deviceId,
+			deviceId: deviceItem!.id,
 		})
 		countDownRef.current?.start()
-		Poll.poll(() => {
-			DeviceApi.GetFingerInfo({ memberId }).then(({ data }) => {
+		// 轮询
+		Poll.poll(async () => {
+			try {
+				const { data } = await DeviceApi.GetFingerInfo({ memberId })
 				if (data?.result) {
 					countDownRef.current?.reset()
 					handleReset()
+					await DeviceApi.UpdateFingerInfo({
+						memberId,
+						deviceId: deviceItem!.id,
+					})
+					message.success({
+						content: "指纹录入成功",
+						key: "finger-input-success",
+					})
 					GetUserList()
-					message.success(data?.message ?? "指纹录入成功")
 				}
-			})
+			} catch (error) {
+				if (Poll.retry === 0) {
+					message.error({
+						content: "指纹录入失败, 请重试!",
+						key: "input-finger-error",
+					})
+				}
+			}
 		}, 1000)
 	}
 	// 计时结束
@@ -125,9 +138,12 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 	}
 	// 解除关联
 	const handleUnConnectUser = async () => {
-		const memberId = formRef.current?.form.getFieldValue("connect_user")
-		await DeviceApi.UnConnectUser({ memberId, deviceId })
+		await DeviceApi.UnConnectUser({
+			memberId: memberId!,
+			deviceId: deviceItem!.id,
+		})
 		handleReset()
+		setMemberId(null)
 		GetUserList()
 	}
 	return (
@@ -142,7 +158,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 			>
 				<div className={styles.deviceNum}>
 					<span className={styles.label}>设备编号:</span>
-					<span className={styles.num}>{deviceNum}</span>
+					<span className={styles.num}>{deviceItem?.num}</span>
 				</div>
 				<ProFormTreeSelect
 					required
@@ -191,7 +207,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 									key={item.id}
 									className={styles.item}
 									onClick={() => {
-										setCanClick(true)
+										setMemberId(item.id)
 										formRef.current?.form.setFieldsValue({
 											connect_user: item.id,
 										})
@@ -199,7 +215,9 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 								>
 									<Radio value={item.id}></Radio>
 									<div className={styles.name}>{item.name}</div>
-									<IconFont type='icon-zhiwen' className={styles.icon} />
+									{item.fingerprint && (
+										<IconFont type='icon-zhiwen' className={styles.icon} />
+									)}
 								</div>
 							))
 						) : (
@@ -208,18 +226,21 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 					</Radio.Group>
 				</Form.Item>
 				<Space className={styles.action_btn}>
-					<CountDown ref={countDownRef} onTarget={() => handleTarget} num={120}>
-						{({ active, count, start, reset }) => (
-							<Button
-								disabled={!canClick || active}
-								type='primary'
-								onClick={handleStart}
-							>
-								{active ? `等待录入指纹(${count}s)` : "录入用户指纹"}
-							</Button>
-						)}
-					</CountDown>
-					<Button disabled={!canClick} danger onClick={handleUnConnectUser}>
+					{/* 没有选择已关联用户时无法点击 */}
+					{deviceItem?.deviceType !== "WATCH" && (
+						<CountDown ref={countDownRef} onTarget={handleTarget} num={120}>
+							{({ active, count }) => (
+								<Button
+									disabled={!memberId || active}
+									type='primary'
+									onClick={handleStart}
+								>
+									{active ? `等待录入指纹(${count}s)` : "录入用户指纹"}
+								</Button>
+							)}
+						</CountDown>
+					)}
+					<Button disabled={!memberId} danger onClick={handleUnConnectUser}>
 						解除用户关联
 					</Button>
 				</Space>

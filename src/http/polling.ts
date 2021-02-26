@@ -12,7 +12,7 @@ class Polling {
 
 	private delay: number | undefined = undefined
 
-	private retry = 4
+	public retry = 4
 
 	private sleep(delay: number) {
 		return new Promise((resolve) => {

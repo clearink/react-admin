@@ -14,12 +14,13 @@ import AddForm, {
 import { ProFormSelect, ProFormTreeSelect } from "@/components/BigSight"
 import styles from "./style.module.scss"
 import { convertRoomTree } from "@/pages/BedAllot/utils"
+import { DeviceItem } from ".."
 // 床位关联 form
 export interface BedConnectFormProps extends AddFormProps {
-	deviceNum: string | null
+	deviceItem: DeviceItem | null
 }
 function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
-	const { deviceNum, ...rest } = props
+	const { deviceItem, ...rest } = props
 	const formRef = useRef<AddFormRef>(null)
 	useImperativeHandle(ref, () => formRef.current!, [])
 	const [roomId, setRoomId] = useState()
@@ -39,7 +40,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 		>
 			<div className={styles.deviceNum}>
 				<span className={styles.label}>设备编号 :</span>
-				<span className={styles.num}>{deviceNum}</span>
+				<span className={styles.num}>{deviceItem?.num}</span>
 			</div>
 			<ProFormTreeSelect
 				required

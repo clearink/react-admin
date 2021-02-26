@@ -61,17 +61,7 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 				<Card
 					style={{ width: 280 }}
 					className='mr-6 flex-shrink-0'
-					title={
-						<div className='flex items-center justify-between'>
-							<span>
-								<UserOutlined className='mr-2' />
-								设备分类
-							</span>
-							<ModalTrigger trigger={<PlusCircleOutlined />}>
-								新增设备分类
-							</ModalTrigger>
-						</div>
-					}
+					title={"设备分类"}
 				>
 					<Skeleton loading={!data || loading} paragraph={{ rows: 10 }}>
 						<Tree.DirectoryTree

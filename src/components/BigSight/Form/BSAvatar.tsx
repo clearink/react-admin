@@ -1,5 +1,5 @@
 // big sight avatar 组件
-import React, { memo, useCallback, useMemo } from "react"
+import React, { useCallback, useMemo } from "react"
 import { ProFormAvatar } from "../../Pro/ProForm"
 import { AvatarServerData, BSFormItemProps } from "../interface"
 import { headers, actions } from "@/http/api/utils/file"
