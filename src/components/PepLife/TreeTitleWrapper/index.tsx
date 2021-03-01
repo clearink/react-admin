@@ -23,15 +23,11 @@ function TreeTitleWrapper(props: TreeTitleWrapperProps) {
 					e.stopPropagation()
 				}}
 			>
-				{!isLeaf && (
-					<>
-						<PlusOutlined onClick={() => onCreate(id)} />
-						<EditOutlined onClick={() => onEdit(id)} />
-						<Popconfirm title='确定删除?' onConfirm={() => onDelete(id)}>
-							<DeleteOutlined />
-						</Popconfirm>
-					</>
-				)}
+				{!isLeaf && <PlusOutlined onClick={() => onCreate(id)} />}
+				<EditOutlined onClick={() => onEdit(id)} />
+				<Popconfirm title='确定删除?' onConfirm={() => onDelete(id)}>
+					<DeleteOutlined />
+				</Popconfirm>
 			</div>
 		</div>
 	)

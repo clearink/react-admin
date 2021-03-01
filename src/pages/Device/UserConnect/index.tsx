@@ -150,7 +150,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 		<>
 			<AddForm
 				type='modal'
-				title='床位关联'
+				title='人员关联'
 				layout='horizontal'
 				{...rest}
 				name='user-connect'
