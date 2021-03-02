@@ -23,7 +23,7 @@ function Login(props: IBaseProps) {
 	const unwrap = useUnwrapAsyncThunk()
 
 	const handleSubmit = async (values: Store) => {
-		await unwrap(actions.login(values))
+		await unwrap(actions.login(values))[0]
 		push("/")
 	}
 

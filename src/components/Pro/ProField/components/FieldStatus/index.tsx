@@ -40,7 +40,9 @@ function FieldStatus(props: FieldStatusProps) {
 		if (isArray(data)) return data as any
 		return []
 	}, [data, PO])
-	const DOM = <span>{renderStatus(text, options, statusList, renderType)}</span>
+	const DOM = (
+		<span {...rest}>{renderStatus(text, options, statusList, renderType)}</span>
+	)
 	if (render)
 		return render({ text, ...rest, renderType, statusList, options }, DOM)
 	return DOM

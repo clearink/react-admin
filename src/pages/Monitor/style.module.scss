@@ -10,7 +10,7 @@
 			border-bottom: 1px solid rgba($color_text, 0.2);
 		}
 		:global {
-			label{
+			label {
 				margin-bottom: 10px;
 			}
 			.ant-radio-button-wrapper {
@@ -43,7 +43,7 @@
 }
 
 .bed_card_list {
-	@apply bg-white px-16 py-8;
+	@apply bg-white px-16 py-8 w-full;
 	margin-top: 2rem;
 	@apply flex justify-between items-center flex-wrap;
 }

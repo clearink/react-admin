@@ -23,6 +23,7 @@ import DeviceAddForm from "./add"
 import DeviceEditForm from "./edit"
 import BedConnectForm from "./BedConnect"
 import UserConnectForm from "./UserConnect"
+import { ProFormInput } from "@/components/BigSight"
 
 export interface DeviceItem {
 	id: string
@@ -35,7 +36,13 @@ const columns: ProTableColumns<any>[] = [
 		title: "设备编号",
 		dataIndex: "num",
 		width: 90,
-		// search: <ProFormInput placeholder='名称/编号' label={undefined} />,
+		search: (
+			<ProFormInput
+				placeholder='名称/编号'
+				name='numOrName'
+				label={undefined}
+			/>
+		),
 		read: <FieldText ellipsis copyable />,
 	},
 	{

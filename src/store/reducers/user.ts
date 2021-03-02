@@ -1,3 +1,4 @@
+import { AppState } from "./../index"
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import LoginUtil from "@/utils/store/LoginUtil"
 import user from "@/http/api/user"
@@ -27,16 +28,32 @@ const getCurrentUser = createAsyncThunk("user/GetUserInfo", async () => {
 	return res.data as user
 })
 
+// 获取设备token
+const getDeviceToken = createAsyncThunk(
+	"user/GetDeviceToken",
+	async () => {
+		const { data } = await user.GetDeviceToken()
+		return data.result as string
+	},
+	{
+		condition: (_, { getState }) => {
+			const { user } = getState() as AppState
+			return !user.deviceToken
+		},
+	}
+)
 const slice = createSlice({
 	name: "user",
 	initialState: {
 		loginLoading: false,
 		fetchLoading: false,
 		user: null as user | null,
+		deviceToken: null as null | string,
 	},
 	reducers: {
 		logout(state) {
 			state.user = null
+			state.deviceToken = null
 		},
 	},
 	extraReducers: (builder) => {
@@ -70,7 +87,26 @@ const slice = createSlice({
 			.addCase(getCurrentUser.rejected, (state) => {
 				state.fetchLoading = false
 			})
+
+		// 设备token
+		builder
+			.addCase(getDeviceToken.pending, (state) => {
+				state.fetchLoading = true
+			})
+			.addCase(getDeviceToken.fulfilled, (state, action) => {
+				state.fetchLoading = false
+				state.deviceToken = action.payload
+			})
+			.addCase(getDeviceToken.rejected, (state) => {
+				state.fetchLoading = false
+				state.deviceToken = null
+			})
 	},
 })
-export const actions = { ...slice.actions, login, getCurrentUser }
+export const actions = {
+	...slice.actions,
+	login,
+	getCurrentUser,
+	getDeviceToken,
+}
 export default slice.reducer

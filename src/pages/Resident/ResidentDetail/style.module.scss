@@ -53,9 +53,15 @@
 			margin-right: 10px;
 		}
 	}
-	.name,
+
 	.position {
 		color: $color_text;
 		font-size: 16px;
+	}
+	.name {
+		@extend .position;
+		min-width: 100px;
+		margin-right: 10px;
+		margin-left: 10px;
 	}
 }

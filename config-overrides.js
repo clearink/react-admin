@@ -4,6 +4,7 @@ const {
 	addWebpackAlias,
 	addPostcssPlugins,
 	setWebpackOptimizationSplitChunks,
+	addWebpackExternals,
 } = require("customize-cra")
 const WebpackBar = require("webpackbar")
 const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin")
@@ -17,12 +18,6 @@ module.exports = override(
 		libraryDirectory: "es",
 		style: "css",
 	}),
-	(config) => {
-		config.plugins.push(new WebpackBar())
-		// if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin()) // 生产环境启用
-		if (isAnalyze) config.plugins.push(new BundleAnalyzerPlugin()) // 打包分析
-		return config
-	},
 	setWebpackOptimizationSplitChunks({
 		cacheGroups: {
 			commons: {
@@ -36,5 +31,15 @@ module.exports = override(
 	addWebpackAlias({
 		"@": path.resolve(__dirname, "src"),
 	}),
-	addPostcssPlugins([require("tailwindcss"), require("autoprefixer")])
+	addWebpackExternals({
+		echarts: "window.echarts",
+		charts: "window.charts",
+	}),
+	addPostcssPlugins([require("tailwindcss"), require("autoprefixer")]),
+	(config) => {
+		config.plugins.push(new WebpackBar())
+		// if (isProd) config.plugins.push(new AntdDayjsWebpackPlugin()) // 生产环境启用
+		if (isAnalyze) config.plugins.push(new BundleAnalyzerPlugin()) // 打包分析
+		return config
+	}
 )

@@ -228,7 +228,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 				<Space className={styles.action_btn}>
 					{/* 没有选择已关联用户时无法点击 */}
 					{deviceItem?.deviceType !== "WATCH" && (
-						<CountDown ref={countDownRef} onTarget={handleTarget} num={120}>
+						<CountDown ref={countDownRef} onTarget={handleTarget} num={60}>
 							{({ active, count }) => (
 								<Button
 									disabled={!memberId || active}

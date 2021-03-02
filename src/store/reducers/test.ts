@@ -1,15 +1,35 @@
+import { AppState } from "./../index"
+import { sleep } from "./../../utils/test"
 import {
 	createSlice,
 	createEntityAdapter,
 	createSelector,
+	createAsyncThunk,
+	PayloadAction,
 } from "@reduxjs/toolkit"
-import { AppState } from ".."
 
 interface ITest {
 	id: number
 	val: number
 }
 const testAdapter = createEntityAdapter<ITest>()
+
+const testApi = createAsyncThunk(
+	"test/test",
+	async (id: string, { rejectWithValue }) => {
+		await sleep(200)
+		const isSuccess = Math.random() > 0.5
+		if (isSuccess) return Promise.resolve(`isSuccess: ${isSuccess}`)
+		// rejectWithValue 返回 Promise.reject(value) 但是精简了一些数据
+		return rejectWithValue(`isSuccess: ${isSuccess}`)
+	}
+	// {
+	// 	condition: (id, { getState }) => {
+	// 		const { user } = getState() as AppState
+	// 		return !user.deviceToken
+	// 	},
+	// }
+)
 
 const slice = createSlice({
 	name: "test",
@@ -25,8 +45,11 @@ const slice = createSlice({
 			)
 		},
 	},
+	extraReducers: (builder) => {
+		builder.addCase(testApi.pending, (state, action: PayloadAction) => {})
+	},
 })
-export const actions = { ...slice.actions }
+export const actions = { ...slice.actions, testApi }
 export default slice.reducer
 
 // 创建 selector

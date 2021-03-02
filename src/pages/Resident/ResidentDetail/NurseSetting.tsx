@@ -7,14 +7,25 @@ import { EditOutlined, UserOutlined } from "@ant-design/icons"
 import { ResidentDetailService } from "./useResidentDetail.service"
 import {
 	FieldAvatar,
-	ProForm,
+	FieldStatus,
 	ProFormGroup,
 	ProFormInput,
+	ProFormRadio,
 	ProFormSelect,
 } from "@/components/BigSight"
-import { Button, Empty, Form, Radio } from "antd"
+import { Button, Radio } from "antd"
 import NurseApi from "@/http/api/pages/NurseApi"
 import removeEmpty from "@/utils/data/removeEmpty"
+import { CommonServerData } from "@/components/BigSight/interface"
+import useMemoFetch from "@/hooks/useMemoFetch"
+
+const transformRadioOption = (response: CommonServerData, cache?: boolean) => {
+	if (cache) return response
+	return response.result.map((item: any) => ({
+		label: item.text,
+		value: item.value,
+	}))
+}
 
 // 护管设置
 function NurseSetting() {
@@ -26,10 +37,19 @@ function NurseSetting() {
 		const { data } = await NurseApi.find({ ...params, pageSize: 100 })
 		setNurseList(data.result.records ?? [])
 	}, [])
+
 	const handleSearch = () => {
 		const values = formRef.current?.form.getFieldsValue(["name", "position"])
 		fetchData(removeEmpty(values))
 	}
+
+	// 获取职务类型
+	const [{ data: nurseCategoryList }] = useMemoFetch({
+		cache: true,
+		url: "/sys/dict/getDictItems/careworkerPosition",
+		transform: transformRadioOption,
+	})
+
 	// 分配护管
 	const handleFinish = async (values: any) => {
 		console.log(values)
@@ -58,54 +78,47 @@ function NurseSetting() {
 				<ProFormSelect
 					placeholder='职务类型'
 					name='position'
-					request={{
-						url: "/sys/dict/getDictItems/careworkerPosition",
-						cache: true,
-						transform: (response, cache) => {
-							if (cache) return response
-							return response.result.map((item: any) => ({
-								label: item.text,
-								value: item.value,
-							}))
-						},
-					}}
+					options={nurseCategoryList}
 				/>
 				<Button type='primary' onClick={handleSearch}>
 					查找护管
 				</Button>
 			</ProFormGroup>
-			<Form.Item
+			<ProFormRadio
 				name='orgCareWorkerId'
 				rules={[{ required: true, message: "请选择护管" }]}
-			>
-				<Radio.Group className={styles.group}>
-					{nurseList?.map((item: any) => {
-						return (
-							<div
-								key={item.id}
-								className={styles.nurse_list_item}
-								onClick={() => {
-									formRef.current?.form.setFieldsValue({
-										orgCareWorkerId: item.id,
-									})
-								}}
-							>
-								<span className={styles.nurse_info}>
-									<FieldAvatar
-										size={40}
-										icon={<UserOutlined />}
-										text={item.avatar}
-									/>
-									<div className={styles.name}>{item.name}</div>
-									<div className={styles.position}>{item.position}</div>
-								</span>
-								<Radio value={item.id} />
-							</div>
-						)
-					})}
-					{nurseList.length === 0 && <Empty />}
-				</Radio.Group>
-			</Form.Item>
+				options={nurseList}
+				render={(props) => {
+					const { options, onChange } = props
+					if (!options || options.length === 0) return <></>
+					return (
+						<>
+							{(options as any[]).map((item: any) => (
+								<div
+									key={item.id}
+									className={styles.nurse_list_item}
+									onClick={() => onChange!(item.id)}
+								>
+									<span className={styles.nurse_info}>
+										<FieldAvatar
+											size={40}
+											icon={<UserOutlined />}
+											text={item.avatar}
+										/>
+										<div className={styles.name}>{item.name}</div>
+										<FieldStatus
+											statusList={["#1abc9c", "#e67e22"]}
+											options={nurseCategoryList}
+											text={item.position}
+										/>
+									</span>
+									<Radio value={item.id} checked={item.id === props.value} />
+								</div>
+							))}
+						</>
+					)
+				}}
+			/>
 		</ModalForm>
 	)
 }

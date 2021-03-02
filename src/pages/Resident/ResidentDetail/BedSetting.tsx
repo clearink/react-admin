@@ -33,7 +33,6 @@ function BedSetting() {
 		params: { id: buildingId },
 		transform: convertServerListData,
 	})
-	console.log("roomTree", roomTree)
 
 	// 床位树
 	const [{ data: bedTree, loading: bedLoading }, fetchBedData] = useMemoFetch({

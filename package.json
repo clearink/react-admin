@@ -55,6 +55,7 @@
 		"@testing-library/user-event": "^7.1.2",
 		"@types/antd": "^1.0.0",
 		"@types/classnames": "^2.2.10",
+		"@types/echarts": "^4.9.4",
 		"@types/ejs": "^3.0.5",
 		"@types/jest": "^24.0.0",
 		"@types/mockjs": "^1.0.3",

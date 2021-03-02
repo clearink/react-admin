@@ -1,4 +1,4 @@
-import http from "..";
+import http from ".."
 export interface LoginData {
 	mobile: string
 	captcha: string
@@ -13,5 +13,7 @@ export default {
 	// 验证码
 	GetCaptcha: (params: CaptchaData) =>
 		http.get("/orgmgt/sendCaptchaOrg", params),
-}
 
+	// 设备token
+	GetDeviceToken: () => http.get("/orgmgt/device/bedToken"),
+}

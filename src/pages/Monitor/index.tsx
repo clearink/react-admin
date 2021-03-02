@@ -15,20 +15,32 @@ import { ProFormRadio } from "@/components/Pro/ProForm"
 import { FormInstance } from "antd/lib/form"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { convertRoomTree } from "../BedAllot/utils"
+import { ReloadOutlined } from "@ant-design/icons"
 interface BCGContextProps {
 	visible: boolean
 	toggle: () => void
-	setBcgId?: React.Dispatch<React.SetStateAction<any>>
+	setBedItem?: React.Dispatch<React.SetStateAction<BedItem>>
 }
 export const BCGContext = createContext<BCGContextProps>({
 	visible: false,
 	toggle: () => {},
 })
 
+export type BedItem = null | {
+	id: string
+	memberName: string
+	sleepScore: number
+	deviceStatus: string
+	num: string
+	alarmStatus: boolean
+	deviceNum: string
+}
+
 const statusData = ["全部(30)", "在床(27)", "离床(2)", "离线(1)"]
+
 // 监控分析
 function Monitor() {
-	const [bcgId, setBcgId] = useState(undefined)
+	const [bedItem, setBedItem] = useState<BedItem>(null)
 	const [visible, toggle] = useBoolean()
 	const formRef = useRef<FormInstance>()
 
@@ -46,7 +58,7 @@ function Monitor() {
 	const [buildingId, setBuildingId] = useState<string | undefined>() // 楼栋ID
 	const [floorId, setFloorId] = useState<string | undefined>() // 楼层ID
 	const [roomId, setRoomId] = useState<string | undefined>() // 房间ID
-	const [{ data: list, loading }] = useMemoFetch({
+	const [{ data: list, loading }, fetchData] = useMemoFetch({
 		url: roomId ? "/orgmgt/bed/monitor" : undefined,
 		method: "post",
 		params: { roomId: roomId!, status: undefined, pageNo: 1, pageSize: 100 },
@@ -95,10 +107,28 @@ function Monitor() {
 		setRoomId(undefined)
 	}, [buildingId])
 
-	const renderLoading = (() => {
-		if (loading) return <Spin size='large' />
-		if (!list || list.length === 0) return <Empty />
-		return null
+	const renderData = (() => {
+		if (loading)
+			return (
+				<div className='flex h-64 items-center justify-center w-full'>
+					<Spin size='large' />
+				</div>
+			)
+		if (!list || list.length === 0)
+			return (
+				<div className='flex h-64 items-center justify-center w-full'>
+					<Empty />
+				</div>
+			)
+		return list.map((item: BedItem) => (
+			<BedCard bedItem={item} key={item!.id} />
+		))
+	})()
+
+	const renderPlaceholder = (() => {
+		return Array.from({ length: (list ? list.length : 0) % 7 }, (_, i) => (
+			<div key={i} className={styles.bed_card_placeholder}></div>
+		))
 	})()
 	return (
 		<main>
@@ -139,27 +169,29 @@ function Monitor() {
 							setRoomId(e.target.value)
 						}}
 					/>
-					<ProFormRadio
-						name='status'
-						label='状态'
-						optionType='button'
-						buttonStyle='solid'
-						options={statusData}
-						formItemClassName={styles.filter_item}
-					/>
+					<div className='flex items-center'>
+						<ProFormRadio
+							name='status'
+							label='状态'
+							optionType='button'
+							buttonStyle='solid'
+							options={statusData}
+							formItemClassName={styles.filter_item}
+						/>
+						<ReloadOutlined
+							onClick={() => fetchData()}
+							className='flex-1 text-right cursor-pointer pr-4'
+						/>
+					</div>
 				</BaseForm>
 			</div>
 			{/* 病床 */}
-			<BCGContext.Provider value={{ visible, toggle, setBcgId }}>
+			<BCGContext.Provider value={{ visible, toggle, setBedItem }}>
 				<div className={styles.bed_card_list}>
-					<div className='flex items-center justify-center w-full'>
-						{renderLoading}
-					</div>
-					{list?.map((item: any) => (
-						<BedCard {...item} key={item.id} />
-					))}
+					{renderData}
+					{renderPlaceholder}
 				</div>
-				<BCGDetail id={bcgId} />
+				<BCGDetail bedItem={bedItem} />
 			</BCGContext.Provider>
 		</main>
 	)

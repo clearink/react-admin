@@ -1819,6 +1819,13 @@
   resolved "https://registry.npm.taobao.org/@types/color-name/download/@types/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha1-HBJhu+qhCoBVu8XYq4S3sq/IRqA=
 
+"@types/echarts@^4.9.4":
+  version "4.9.4"
+  resolved "https://registry.npm.taobao.org/@types/echarts/download/@types/echarts-4.9.4.tgz?cache=0&sync_timestamp=1614232320903&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fecharts%2Fdownload%2F%40types%2Fecharts-4.9.4.tgz#5076ba17b0635b420fc7fd4df7daf5bb42e8240f"
+  integrity sha1-UHa6F7BjW0IPx/1N99r1u0LoJA8=
+  dependencies:
+    "@types/zrender" "*"
+
 "@types/ejs@^3.0.5":
   version "3.0.5"
   resolved "https://registry.npm.taobao.org/@types/ejs/download/@types/ejs-3.0.5.tgz?cache=0&sync_timestamp=1605053360501&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fejs%2Fdownload%2F%40types%2Fejs-3.0.5.tgz#95a3a1c3d9603eba80fe67ff56da1ba275ef2eda"
@@ -2046,6 +2053,11 @@
   integrity sha1-lH6aZWFIO97prf/Jg+kaaQKvi3k=
   dependencies:
     "@types/yargs-parser" "*"
+
+"@types/zrender@*":
+  version "4.0.0"
+  resolved "https://registry.npm.taobao.org/@types/zrender/download/@types/zrender-4.0.0.tgz?cache=0&sync_timestamp=1613385097167&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fzrender%2Fdownload%2F%40types%2Fzrender-4.0.0.tgz#a6806f12ec4eccaaebd9b0d816f049aca6188fbd"
+  integrity sha1-poBvEuxOzKrr2bDYFvBJrKYYj70=
 
 "@typescript-eslint/eslint-plugin@^2.10.0":
   version "2.34.0"

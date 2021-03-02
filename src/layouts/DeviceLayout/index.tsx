@@ -79,6 +79,7 @@ function Layout(props: PropsWithChildren<IBaseProps>) {
 										onEdit={handleEdit}
 										onDelete={handleDelete}
 										title={node.title}
+										isLeaf={!node.children}
 									/>
 								)
 							}}
