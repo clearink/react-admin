@@ -1,0 +1,29 @@
+@import "@/styles/index.scss";
+.chart_wrap {
+	display: flex;
+
+	.type {
+		flex-shrink: 0;
+		flex: auto;
+		color: $color_text_black;
+		font-weight: bold;
+    font-size: 18px;
+		.icon {
+			font-size: 35px;
+			margin-right: 4px;
+		}
+		.name {
+			font-size: 20px;
+		}
+		.value {
+			font-size: 28px;
+			margin-right: 4px;
+			color: #f94e77;
+		}
+	}
+}
+.breath_chart {
+	.value {
+		color: #1ad59d !important;
+	}
+}

@@ -12,4 +12,5 @@ export default {
 	ISDEV: isDev,
 	/** 文件上传 url */
 	UPLOAD_URL: "/upload/file/cos",
+	MEDIA_URL: "",
 }

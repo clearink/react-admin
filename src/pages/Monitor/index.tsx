@@ -34,6 +34,7 @@ export type BedItem = null | {
 	num: string
 	alarmStatus: boolean
 	deviceNum: string
+	memberId?: string
 }
 
 const statusData = ["全部(30)", "在床(27)", "离床(2)", "离线(1)"]

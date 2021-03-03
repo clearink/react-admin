@@ -16,7 +16,6 @@ import { CheckCircleOutlined, UserAddOutlined } from "@ant-design/icons"
 import { FormInstance } from "antd/lib/form"
 import http from "@/http"
 import { BSAvatar, ProFormGroup } from "@/components/BigSight"
-import { current } from "@reduxjs/toolkit"
 
 const updateUserDetail = (data: any) => http.post("/orgmgt/member/save", data)
 

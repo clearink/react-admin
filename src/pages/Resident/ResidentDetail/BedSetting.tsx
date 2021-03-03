@@ -70,8 +70,7 @@ function BedSetting() {
 			title='床位设置'
 			trigger={
 				<span className={styles.user_room}>
-					{service.residentDetail?.floor}-{service.residentDetail?.roomName}房-
-					{service.residentDetail?.bedName}床
+					{service.residentDetail?.floor} / {service.residentDetail?.roomName}房 / {service.residentDetail?.bedName}床
 					<EditOutlined className={styles.icon} />
 				</span>
 			}

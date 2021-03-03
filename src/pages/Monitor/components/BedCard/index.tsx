@@ -1,11 +1,11 @@
 import React, { memo, useContext } from "react"
 import classNames from "classnames"
-import { Card, Progress, Space } from "antd"
+import { Button, Card, message, Progress, Space } from "antd"
 import styles from "./style.module.scss"
 import { CardProps } from "antd/lib/card"
 import IconFont from "@/components/IconFont"
 import { BCGContext, BedItem } from "../.."
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 
 interface BedCardProps extends CardProps {
 	bedItem: BedItem
@@ -13,27 +13,39 @@ interface BedCardProps extends CardProps {
 // 用户 Card
 function BedCard(props: BedCardProps) {
 	const { bedItem } = props
-
+	const { push } = useHistory()
 	const { toggle, setBedItem } = useContext(BCGContext)
 	const handleBcgDetail = () => {
 		toggle()
 		setBedItem!(bedItem)
 	}
-
+	const handleDetail = () => {
+		if (bedItem?.deviceNum) {
+			push({
+				pathname: `/monitor/sleep/${bedItem!.memberId}`,
+				search: `?device=${bedItem!.deviceNum}`,
+			})
+		} else {
+			message.warning({
+				key: "no-people",
+				content: "当前床位暂无数据",
+			})
+		}
+	}
 	return (
 		<Card
 			size='small'
 			className={styles.bed_card}
 			title={bedItem?.num}
 			actions={[
-				<Space size={2} key='bcg' className='action_wrap'>
+				<div key='bcg' className='action_wrap' onClick={handleBcgDetail}>
 					<IconFont type='icon-user' />
-					<span onClick={handleBcgDetail}>心率/呼吸</span>
-				</Space>,
-				<Space size={2} key='sleep' className='action_wrap'>
+					<span>心率/呼吸</span>
+				</div>,
+				<div onClick={handleDetail} className='action_wrap' key='sleep'>
 					<IconFont type='icon-user' />
-					<Link to={`/monitor/sleep/${1}`}>睡眠报告</Link>
-				</Space>,
+					<span>睡眠报告</span>
+				</div>,
 			]}
 		>
 			<div className={styles.bed_info}>
