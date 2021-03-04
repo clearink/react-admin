@@ -1,0 +1,70 @@
+@import "@/styles/index.scss";
+.filter_bar {
+	position: relative;
+	.filter_item {
+		@apply mb-0  px-4;
+		display: flex;
+		padding-top: 1rem;
+		&:not(:last-child) {
+			border-bottom: 1px solid rgba($color_text, 0.2);
+		}
+		:global {
+			label {
+				margin-bottom: 10px;
+			}
+			.ant-radio-button-wrapper {
+				margin-right: 10px;
+				margin-bottom: 10px;
+			}
+		}
+		.filter_title {
+			padding: 0 1rem;
+			white-space: nowrap;
+			&::after {
+				content: ":";
+				display: inline-block;
+				margin-left: 3px;
+				vertical-align: baseline;
+			}
+		}
+
+		.list_item {
+			min-width: 100px;
+			text-align: center;
+			border-radius: 5px !important;
+			margin-bottom: 1rem;
+		}
+	}
+	.checked_floor_list {
+		.label {
+			color: $color_primary;
+			cursor: pointer;
+		}
+	}
+	.filter_form {
+		@apply bg-white;
+	}
+	.select_form {
+		z-index: 1;
+		@apply shadow-md bg-white  px-4 absolute w-full;
+		margin-top: 4px;
+		.submit {
+			@include flex-center;
+			@apply py-4;
+		}
+
+		transition: all 0.3s ease-in-out;
+		opacity: 0;
+		transform: translateY(-30%);
+		pointer-events: none;
+		&.open {
+			pointer-events: all;
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+}
+.value_list {
+	display: flex;
+	flex-wrap: wrap;
+}

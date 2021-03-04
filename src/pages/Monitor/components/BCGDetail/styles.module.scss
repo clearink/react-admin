@@ -1,13 +1,15 @@
 @import "@/styles/index.scss";
 .chart_wrap {
 	display: flex;
-
+	position: relative;
 	.type {
-		flex-shrink: 0;
-		flex: auto;
+		@include flex-center;
+		left: 10px;
+		top: 10px;
+		position: absolute;
 		color: $color_text_black;
 		font-weight: bold;
-    font-size: 18px;
+		font-size: 18px;
 		.icon {
 			font-size: 35px;
 			margin-right: 4px;
@@ -17,7 +19,7 @@
 		}
 		.value {
 			font-size: 28px;
-			margin-right: 4px;
+			margin: 0 4px;
 			color: #f94e77;
 		}
 	}

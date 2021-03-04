@@ -1,16 +1,9 @@
-import React, {
-	PropsWithChildren,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { actions } from "@/store/reducers/user"
 import classNames from "classnames"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { CloseCircleOutlined } from "@ant-design/icons"
 import { Modal } from "antd"
-import { BCGContext, BedItem } from "../.."
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import styles from "./styles.module.scss"
 import charts from "charts"
@@ -23,11 +16,10 @@ import {
 	GetWsToken,
 } from "./utils"
 import IconFont from "@/components/IconFont"
+import { MonitorServiceContext } from "../../useMonitor.service"
 // 用户BCG 数据
 // 用一个ModalTrigger承载 主要是要请求数据
-interface BCGDetailProps {
-	bedItem: BedItem
-}
+
 interface SocketResponse {
 	msgType: "login" | "heartBreathBcg" | "healthBreathData"
 	data: {
@@ -39,15 +31,14 @@ interface SocketResponse {
 	}
 }
 
-function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
-	const { bedItem } = props
-	const { visible, toggle } = useContext(BCGContext)
-	const { deviceToken } = useTypedSelector((state) => state.user)
+function BCGDetail() {
 	const unwrap = useUnwrapAsyncThunk()
+	const { bedItem, visible, toggle } = useContext(MonitorServiceContext)
+	const { deviceToken } = useTypedSelector((state) => state.user)
+
 	useEffect(() => {
 		if (deviceToken) return
-		const [_, abort] = unwrap(actions.getDeviceToken())
-		return abort
+		return unwrap(actions.getDeviceToken())[1]
 	}, [deviceToken, unwrap])
 
 	// 心率
@@ -105,9 +96,17 @@ function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
 			// [呼吸率, 心率, 呼吸率, 心率, 呼吸率, 心率]
 			if (msgType === "heartBreathBcg") {
 				if (timer !== null) clearInterval(timer)
-				const [newBreathList, newHeartList] = FormatWsData(data.orgDataInt)
-				setHeartList((p) => p.concat(newHeartList).slice(-HEART_LIST_MAX))
-				setBreathList((p) => p.concat(newBreathList).slice(-BREATH_LIST_MAX))
+				const [newHeartList, newBreathList] = FormatWsData(data.orgDataInt)
+				timer = window.setInterval(() => {
+					if (newHeartList.length)
+						setHeartList((p) =>
+							p.concat(newHeartList.splice(0, 5)).slice(-HEART_LIST_MAX)
+						)
+					if (newBreathList.length)
+						setBreathList((p) =>
+							p.concat(newBreathList.splice(0, 5)).slice(-BREATH_LIST_MAX)
+						)
+				}, 40)
 			}
 
 			if (msgType === "healthBreathData") {
@@ -129,7 +128,8 @@ function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
 	return (
 		<Modal
 			forceRender
-			width={800}
+			width={1000}
+			bodyStyle={{ padding: 0 }}
 			visible={visible}
 			title={
 				<h3 className='flex'>
@@ -149,24 +149,20 @@ function BCGDetail(props: PropsWithChildren<BCGDetailProps>) {
 				<div className={styles.type}>
 					<IconFont type='icon-heart' className={styles.icon} />
 					<span className={styles.name}>心率:</span>
-					<div className='text-right'>
-						<span className={styles.value}>{bpm}</span>
-						<span>bpm</span>
-					</div>
+					<span className={styles.value}>{bpm}</span>
+					<span>bpm</span>
 				</div>
-				<div style={{ height: 200, width: 630 }} ref={heartRef}></div>
+				<div style={{ height: 300, width: 1000 }} ref={heartRef}></div>
 			</div>
 			{/*呼吸率  */}
 			<div className={classNames(styles.chart_wrap, styles.breath_chart)}>
 				<div className={styles.type}>
 					<IconFont type='icon-lung' className={styles.icon} />
 					<span className={styles.name}>呼吸率:</span>
-					<div className='text-right'>
-						<span className={styles.value}>{rpm}</span>
-						<span>rpm</span>
-					</div>
+					<span className={styles.value}>{rpm}</span>
+					<span>rpm</span>
 				</div>
-				<div style={{ height: 200, width: 630 }} ref={breathRef}></div>
+				<div style={{ height: 300, width: 1000 }} ref={breathRef}></div>
 			</div>
 		</Modal>
 	)

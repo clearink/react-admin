@@ -96,28 +96,48 @@ function SleepDetail() {
 						</Space>
 					</div>
 				</Card>
-				<div className={classNames("w-full mb-4 md:w-5/12 lg:w-5/24", styles.leave_bed)}>
+				<div
+					className={classNames(
+						"w-full mb-4 md:w-5/12 lg:w-5/24",
+						styles.leave_bed
+					)}
+				>
 					<UserAddOutlined className={styles.icon} />
 					<div className='flex flex-col'>
 						<span className={styles.number}>{data?.sleepOutBedCount ?? 0}</span>
 						<span>夜间离床</span>
 					</div>
 				</div>
-				<div className={classNames("w-full mb-4 md:w-5/12 lg:w-5/24", styles.avg_alarm)}>
+				<div
+					className={classNames(
+						"w-full mb-4 md:w-5/12 lg:w-5/24",
+						styles.avg_alarm
+					)}
+				>
 					<ExclamationCircleOutlined className={styles.icon} />
 					<div className='flex flex-col'>
-						<span className={styles.number}>{0}</span>
+						<span className={styles.number}>{data?.warnCount ?? 0}</span>
 						<span>告警次数</span>
 					</div>
 				</div>
-				<div className={classNames("w-full mb-4 md:w-5/12 lg:w-5/24", styles.avg_bmp)}>
+				<div
+					className={classNames(
+						"w-full mb-4 md:w-5/12 lg:w-5/24",
+						styles.avg_bmp
+					)}
+				>
 					<UserAddOutlined className={styles.icon} />
 					<div className='flex flex-col'>
 						<span className={styles.number}>{data?.avgHeart ?? 0}</span>
 						<span>平均心率(bmp)</span>
 					</div>
 				</div>
-				<div className={classNames("w-full mb-4 md:w-5/12 lg:w-5/24", styles.avg_rpm)}>
+				<div
+					className={classNames(
+						"w-full mb-4 md:w-5/12 lg:w-5/24",
+						styles.avg_rpm
+					)}
+				>
 					<UserAddOutlined className={styles.icon} />
 					<div className='flex flex-col'>
 						<span className={styles.number}>{data?.avgBreath ?? 0}</span>

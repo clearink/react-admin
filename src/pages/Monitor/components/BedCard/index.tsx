@@ -1,23 +1,27 @@
 import React, { memo, useContext } from "react"
 import classNames from "classnames"
-import { Button, Card, message, Progress, Space } from "antd"
+import { Card, message, Progress } from "antd"
 import styles from "./style.module.scss"
-import { CardProps } from "antd/lib/card"
 import IconFont from "@/components/IconFont"
-import { BCGContext, BedItem } from "../.."
-import { Link, useHistory } from "react-router-dom"
+import { BCGContext } from "../.."
+import { useHistory } from "react-router-dom"
+import { MonitorServiceContext } from "../../useMonitor.service"
 
-interface BedCardProps extends CardProps {
-	bedItem: BedItem
-}
 // 用户 Card
-function BedCard(props: BedCardProps) {
-	const { bedItem } = props
+function BedCard() {
+	const { bedItem } = useContext(MonitorServiceContext)
 	const { push } = useHistory()
 	const { toggle, setBedItem } = useContext(BCGContext)
 	const handleBcgDetail = () => {
-		toggle()
-		setBedItem!(bedItem)
+		if (bedItem?.deviceNum) {
+			toggle()
+			setBedItem!(bedItem)
+		} else {
+			message.warning({
+				key: "no-device",
+				content: "当前床位尚未绑定设备",
+			})
+		}
 	}
 	const handleDetail = () => {
 		if (bedItem?.deviceNum) {
@@ -38,12 +42,12 @@ function BedCard(props: BedCardProps) {
 			className={styles.bed_card}
 			title={bedItem?.num}
 			actions={[
-				<div key='bcg' className='action_wrap' onClick={handleBcgDetail}>
-					<IconFont type='icon-user' />
+				<div key='bcg' className={styles.action_wrap} onClick={handleBcgDetail}>
+					<IconFont className={styles.icon} type='icon-user' />
 					<span>心率/呼吸</span>
 				</div>,
-				<div onClick={handleDetail} className='action_wrap' key='sleep'>
-					<IconFont type='icon-user' />
+				<div onClick={handleDetail} className={styles.action_wrap} key='sleep'>
+					<IconFont className={styles.icon} type='icon-user' />
 					<span>睡眠报告</span>
 				</div>,
 			]}

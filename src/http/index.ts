@@ -16,7 +16,7 @@ class Http {
 	private axios: AxiosStatic = Axios
 	private timer: undefined | number = undefined
 	private SAME_REQUEST = "SAME_REQUEST_SHOULD_CANCEL"
-	private SAME_REQUEST_MIN_INTERVAL = 500 // 相同请求间隔最小时间
+	private SAME_REQUEST_MIN_INTERVAL = 200 // 相同请求间隔最小时间
 
 	// 暂时没有需求
 	private retryDelay: number = configs.RETRY_DELAY

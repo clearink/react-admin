@@ -1,6 +1,5 @@
-export const BREATH_LIST_MAX = 2000
-
 export const HEART_LIST_MAX = 2000
+export const BREATH_LIST_MAX = 3000
 
 export const HeartChartOption = (data: number[]) => {
 	const timeList = Array.from(
@@ -16,12 +15,28 @@ export const HeartChartOption = (data: number[]) => {
 				animation: false,
 			},
 		},
+		grid: { left: "2%", right: "2%", bottom: "0" },
 		xAxis: { show: false, data: timeList, boundaryGap: false },
-		yAxis: { type: "value", show: false, boundaryGap: [0, "30%"] },
+		yAxis: {
+			type: "value",
+			show: false,
+			boundaryGap: [0, "30%"],
+		},
+		dataZoom: [
+			{
+				show: true,
+				type: "inside",
+				filterMode: "none",
+				yAxisIndex: [0],
+				startValue: 25000,
+				endValue: 40000,
+			},
+		],
 		series: [
 			{
 				name: "心率",
 				type: "line",
+				width: 1,
 				smooth: true,
 				showSymbol: false,
 				hoverAnimation: false,
@@ -32,6 +47,7 @@ export const HeartChartOption = (data: number[]) => {
 	}
 }
 
+// 呼吸
 export const BreathChartOption = (data: number[]) => {
 	const timeList = Array.from(
 		{ length: Math.min(BREATH_LIST_MAX, data.length) },
@@ -46,12 +62,14 @@ export const BreathChartOption = (data: number[]) => {
 				animation: false,
 			},
 		},
+		grid: { left: "2%", right: "2%", bottom: "4%" },
 		xAxis: { show: false, data: timeList, boundaryGap: false },
-		yAxis: { type: "value", show: false, boundaryGap: [0, "30%"] },
+		yAxis: { type: "value", show: false, boundaryGap: false },
 		series: [
 			{
 				name: "呼吸率",
 				type: "line",
+				width: 1,
 				smooth: true,
 				showSymbol: false,
 				hoverAnimation: false,
@@ -71,7 +89,7 @@ export const GetWsToken = (token: string, deviceNum: string) => {
 		},
 	})
 }
-
+// [心率, 呼吸率,心率, 呼吸率,心率, 呼吸率]
 export const FormatWsData = (data: number[]) =>
 	data.reduce(
 		(pre, cur, i) => {

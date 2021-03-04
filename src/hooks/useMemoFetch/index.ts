@@ -44,6 +44,7 @@ export default function useMemoFetch(props: UseMemoFetchProps) {
 
 	// 可以传入一个布尔值 决定是否抛弃缓存
 	const fetchData = useMemoCallback(async (update?: boolean) => {
+		methods.setData(null)
 		if (!url) return
 		if (memoData && !update) {
 			const result = transform?.(memoData, true) ?? memoData

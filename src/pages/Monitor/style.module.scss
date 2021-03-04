@@ -1,46 +1,5 @@
 @import "@/styles/index.scss";
 @import "./components/BedCard/style.module";
-.filter_bar {
-	@apply bg-white;
-	.filter_item {
-		@apply mb-2;
-		display: flex;
-		padding-top: 1rem;
-		&:not(:last-child) {
-			border-bottom: 1px solid rgba($color_text, 0.2);
-		}
-		:global {
-			label {
-				margin-bottom: 10px;
-			}
-			.ant-radio-button-wrapper {
-				margin-right: 10px;
-				margin-bottom: 10px;
-			}
-		}
-		.filter_title {
-			padding: 0 1rem;
-			white-space: nowrap;
-			&::after {
-				content: ":";
-				display: inline-block;
-				margin-left: 3px;
-				vertical-align: baseline;
-			}
-		}
-
-		.list_item {
-			min-width: 100px;
-			text-align: center;
-			border-radius: 5px !important;
-			margin-bottom: 1rem;
-		}
-	}
-}
-.value_list {
-	display: flex;
-	flex-wrap: wrap;
-}
 
 .bed_card_list {
 	@apply bg-white px-16 py-8 w-full;
