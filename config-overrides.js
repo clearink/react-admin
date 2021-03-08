@@ -33,7 +33,6 @@ module.exports = override(
 	}),
 	addWebpackExternals({
 		echarts: "window.echarts",
-		charts: "window.charts",
 	}),
 	addPostcssPlugins([require("tailwindcss"), require("autoprefixer")]),
 	(config) => {

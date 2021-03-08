@@ -1,0 +1,27 @@
+@import "@/styles/index.scss";
+.wrap {
+	padding: 10px;
+	padding-bottom: 0;
+	display: flex;
+	align-items: center;
+}
+
+.label {
+	color: $color_primary;
+	margin-bottom: 10px;
+	flex-shrink: 0;
+	&::after {
+		color: black;
+		content: ":";
+		margin-left: 4px;
+		margin-right: 6px;
+	}
+}
+
+.action{
+	margin-bottom: 10px;
+}
+.list_item {
+	margin-bottom: 10px;
+	margin-right: 10px;
+}

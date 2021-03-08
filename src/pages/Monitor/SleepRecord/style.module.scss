@@ -16,14 +16,27 @@
 }
 
 .custom_tab_btn {
-  @apply flex flex-col justify-center;
-  width: 9rem;
-  height: 7rem;
-  text-align: center;
-  font-size: 18px;
-  .icon{
-    margin-right: 0;
-    font-size: 30px;
-    margin-bottom: 1.4rem;
-  }
+	@apply flex flex-col justify-center;
+	width: 9rem;
+	height: 7rem;
+	text-align: center;
+	font-size: 18px;
+	.icon {
+		margin-right: 0;
+		font-size: 30px;
+		margin-bottom: 1.4rem;
+	}
+}
+.card_tabs {
+	:global {
+		.ant-tabs-nav {
+			margin-bottom: 0 !important;
+		}
+		.ant-tabs-content-holder {
+			border: 1px solid $color_grey-1;
+			border-top: none;
+			padding-top: 20px;
+			margin-bottom: 20px;
+		}
+	}
 }

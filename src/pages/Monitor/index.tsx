@@ -1,4 +1,4 @@
-import React, { createContext } from "react"
+import React from "react"
 import { Empty, Spin } from "antd"
 import styles from "./style.module.scss"
 import BedCard from "./components/BedCard"
@@ -8,15 +8,6 @@ import useMonitorService, {
 	MonitorServiceContext,
 } from "./useMonitor.service"
 import BCGFilter from "./components/BCGFilter"
-interface BCGContextProps {
-	visible: boolean
-	toggle: () => void
-	setBedItem?: React.Dispatch<React.SetStateAction<BedItem>>
-}
-export const BCGContext = createContext<BCGContextProps>({
-	visible: false,
-	toggle: () => {},
-})
 
 // 监控分析
 function Monitor() {
@@ -34,14 +25,15 @@ function Monitor() {
 					<Empty />
 				</div>
 			)
-		return services.bedList?.map((item: BedItem) => <BedCard key={item!.id} />)
+		return services.bedList?.map((item: BedItem) => (
+			<BedCard item={item} key={item!.id} />
+		))
 	})()
 
 	const renderPlaceholder = (() => {
-		return Array.from(
-			{ length: (services.bedList?.length ?? 0) % 7 },
-			(_, i) => <div key={i} className={styles.bed_card_placeholder}></div>
-		)
+		return Array.from({ length: 7 }, (_, i) => (
+			<div key={i} className={styles.bed_card_placeholder}></div>
+		))
 	})()
 	return (
 		<MonitorServiceContext.Provider value={services}>

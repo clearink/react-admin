@@ -1,4 +1,25 @@
 @import "@/styles/index.scss";
+
+.page_wrap {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+.header {
+	font-weight: 650;
+	font-size: 18px;
+	color: $color_text;
+}
+.history_list,
+.test_time,
+.test_info {
+	flex-basis: 30%;
+	@apply w-full mb-8 lg:w-10/24;
+}
+
+.wrap {
+	@apply flex justify-around flex-wrap;
+}
 .sleep_time,
 .sleep_percent {
 	min-height: 210px;

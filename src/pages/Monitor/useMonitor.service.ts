@@ -19,7 +19,7 @@ export interface BedItem {
 }
 
 export default function useMonitorService() {
-	const checkedList = useTypedSelector((state) => state.monitor)
+	const { list: checkedList } = useTypedSelector((state) => state.monitor)
 	const [{ data: treeList }] = useMemoFetch({
 		url: "/orgmgt/room/tree",
 		method: "post",
@@ -35,7 +35,7 @@ export default function useMonitorService() {
 	const [{ data: bedList, loading: fetchBedLoading }, fetchBed] = useMemoFetch({
 		url: "/orgmgt/health/bed/monitor",
 		method: "post",
-		params: { ids: checkedList.map((item: any) => item.value) },
+		params: { ids: checkedList.map((item) => item.value) },
 		transform: (data) => {
 			return data.result
 		},
@@ -43,7 +43,6 @@ export default function useMonitorService() {
 
 	const [bedItem, setBedItem] = useState<BedItem | null>(null) // 选择的床位
 	const [visible, { toggle }] = useBoolean() // 控制 chart list
-
 	return {
 		treeList,
 		roomId,

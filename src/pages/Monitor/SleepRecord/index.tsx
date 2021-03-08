@@ -104,7 +104,7 @@ function SleepRecord() {
 			<div className='px-8 bg-white flex-auto mt-8'>
 				<Tabs size='large'>
 					<Tabs.TabPane key='1' tab='健康记录'>
-						<Tabs type='card'>
+						<Tabs type='card' className={styles.card_tabs}>
 							{recordList.map((item) => (
 								<Tabs.TabPane
 									key={item.title}

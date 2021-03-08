@@ -12,8 +12,8 @@ function SleepDetail() {
 	const query = useQuery()
 	const [{ data, loading }] = useMemoFetch({
 		url: "/orgmgt/health/bed/queryByNum",
-		params: { num: query.get("device") },
 		cache: true,
+		params: { num: query.get("device") },
 		transform: (response, cache) => {
 			if (cache) return response
 			return response.result
@@ -21,8 +21,24 @@ function SleepDetail() {
 	})
 	return (
 		<Spin spinning={loading}>
-			<div className='flex justify-around flex-wrap'>
-				<Card className='w-full mb-8 lg:w-10/24' title='整体情况' size='small'>
+			<div className={styles.page_wrap}>
+				<Card
+					className={styles.history_list}
+					title={<div className={styles.header}>历史记录</div>}
+				>
+					{Array.from({ length: 10 }, (_, i) => (
+						<div className='py-2'>{i}</div>
+					))}
+				</Card>
+				<Card
+					className={styles.test_time}
+					title={<div className={styles.header}>检测时间XXXXXXXX</div>}
+				></Card>
+				<Card
+					className={styles.test_info}
+					title={<div className={styles.header}>整体情况</div>}
+				></Card>
+				{/* <Card className='w-full mb-8 lg:w-10/24' title='整体情况' size='small'>
 					<div className={styles.bed_wrap}>
 						<div className={styles.bed_detail}>
 							<p className='font-bold'>您昨晚睡得很好</p>
@@ -96,6 +112,8 @@ function SleepDetail() {
 						</Space>
 					</div>
 				</Card>
+			
+			
 				<div
 					className={classNames(
 						"w-full mb-4 md:w-5/12 lg:w-5/24",
@@ -144,6 +162,7 @@ function SleepDetail() {
 						<span>平均呼吸(rpm)</span>
 					</div>
 				</div>
+				*/}
 			</div>
 		</Spin>
 	)

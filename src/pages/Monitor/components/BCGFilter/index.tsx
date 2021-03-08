@@ -2,30 +2,30 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Button, Space, Spin, Tag } from "antd"
 import { actions } from "@/store/reducers/monitor"
 import classNames from "classnames"
-import BaseForm from "@/components/Pro/ProForm/components/BaseForm"
 import { ProForm, ProFormRadio } from "@/components/Pro/ProForm"
 import styles from "./style.module.scss"
 import { MonitorServiceContext } from "../../useMonitor.service"
 import { useDispatch } from "react-redux"
 import useTypedSelector from "@/hooks/useTypedSelector"
-import { ReloadOutlined } from "@ant-design/icons"
 import { useBoolean } from "@/components/Pro/hooks/boolean"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { FormInstance } from "antd/lib/form"
+import CheckedBedList from "./CheckedBedList"
+import SelectedBedList from "./SelectedBedList"
 
 const statusData = ["全部(30)", "在床(27)", "离床(2)", "离线(1)"]
 function BCGFilter() {
 	const dispatch = useDispatch()
 	const formRef = useRef<FormInstance>()
-	const checkedList = useTypedSelector((state) => state.monitor)
-	const [list, setList] = useState<Array<{ label: string; value: string }>>(
-		() => checkedList
-	)
+	const { list: checkedList } = useTypedSelector((state) => state.monitor)
+	const [list, setList] = useState<typeof checkedList>([]) // 本地的状态
+	useEffect(() => {
+		setList(checkedList) // 同步状态
+	}, [checkedList])
+
 	const [visible, { toggle }] = useBoolean(false)
 
-	const { treeList, roomId, setRoomId, fetchBed } = useContext(
-		MonitorServiceContext
-	)
+	const { treeList, roomId, setRoomId } = useContext(MonitorServiceContext)
 
 	const [buildingId, setBuildingId] = useState<string | undefined>() // 楼栋ID
 	const [floorId, setFloorId] = useState<string | undefined>() // 楼层ID
@@ -97,32 +97,15 @@ function BCGFilter() {
 	return (
 		<div className={styles.filter_bar}>
 			<ProForm className={styles.filter_form} submitConfig={false}>
-				<div className='flex justify-between items-center'>
-					<ProFormRadio
-						name='status'
-						label='楼层状态'
-						optionType='button'
-						buttonStyle='solid'
-						options={statusData}
-						formItemClassName={classNames(styles.filter_item, "flex-auto")}
-					/>
-					<ReloadOutlined onClick={() => fetchBed()} className='pr-4' />
-				</div>
 				<ProFormRadio
 					name='status'
-					label={
-						<div className={styles.label} onClick={toggle}>
-							已选床位
-						</div>
-					}
+					label='楼层状态'
 					optionType='button'
 					buttonStyle='solid'
-					options={checkedList}
-					formItemClassName={classNames(
-						styles.filter_item,
-						styles.checked_floor_list
-					)}
+					options={statusData}
+					formItemClassName={classNames(styles.filter_item, "flex-auto")}
 				/>
+				<CheckedBedList toggle={toggle} />
 			</ProForm>
 			<ProForm
 				ref={formRef}
@@ -182,29 +165,16 @@ function BCGFilter() {
 					}}
 				/>
 				<Spin spinning={loading}>
-					<div className={styles.filter_item}>
-						<div className={styles.label}>床位</div>
-						<div className={styles.list_wrap}>
-							{bedList?.map((item: any) => {
-								const isChecked = list.find(({ value }) => value === item.value)
-								return (
-									<Tag.CheckableTag
-										key={item.value}
-										checked={!!isChecked}
-										onChange={(checked) => {
-											if (checked) setList((p) => p.concat(item))
-											else
-												setList((p) =>
-													p.filter(({ value }) => value !== item.value)
-												)
-										}}
-									>
-										{item.label}
-									</Tag.CheckableTag>
-								)
-							})}
-						</div>
-					</div>
+					{/* 渲染床位列表 */}
+					<SelectedBedList
+						list={bedList ?? []}
+						checkedList={list}
+						onChange={(checked, item) => {
+							console.log(checked, item)
+							if (checked) setList((p) => p.concat(item))
+							else setList((p) => p.filter(({ value }) => value !== item.value))
+						}}
+					/>
 				</Spin>
 			</ProForm>
 		</div>

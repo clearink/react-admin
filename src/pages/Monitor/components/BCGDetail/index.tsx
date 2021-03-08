@@ -6,7 +6,7 @@ import { CloseCircleOutlined } from "@ant-design/icons"
 import { Modal } from "antd"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import styles from "./styles.module.scss"
-import charts from "charts"
+import * as echarts from "echarts"
 import {
 	HeartChartOption,
 	BREATH_LIST_MAX,
@@ -17,6 +17,7 @@ import {
 } from "./utils"
 import IconFont from "@/components/IconFont"
 import { MonitorServiceContext } from "../../useMonitor.service"
+console.log('echarts',echarts);
 // 用户BCG 数据
 // 用一个ModalTrigger承载 主要是要请求数据
 
@@ -55,7 +56,8 @@ function BCGDetail() {
 	useEffect(() => {
 		const element = heartRef.current
 		if (!element || !bedItem || heartChartRef.current) return
-		heartChartRef.current = charts().init(element)
+		heartChartRef.current = echarts.init(element)
+		console.log(	heartChartRef.current);
 		heartChartRef.current.setOption(HeartChartOption([]))
 	}, [bedItem])
 
@@ -69,7 +71,7 @@ function BCGDetail() {
 	useEffect(() => {
 		const element = breathRef.current
 		if (!element || !bedItem || breathChartRef.current) return
-		breathChartRef.current = charts().init(element)
+		breathChartRef.current = echarts.init(element)
 		breathChartRef.current.setOption(BreathChartOption([]))
 	}, [bedItem])
 

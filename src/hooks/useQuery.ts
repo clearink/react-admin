@@ -1,6 +1,7 @@
 import { useMemo } from "react"
+import { useLocation } from "react-router-dom"
 export default function useQuery(): Map<string, any> {
-	const { search } = window.location
+	const { search } = useLocation()
 	return useMemo(() => {
 		if (window.URLSearchParams) return new URLSearchParams(search) as any
 		return search

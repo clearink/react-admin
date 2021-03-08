@@ -3,19 +3,21 @@ import classNames from "classnames"
 import { Card, message, Progress } from "antd"
 import styles from "./style.module.scss"
 import IconFont from "@/components/IconFont"
-import { BCGContext } from "../.."
 import { useHistory } from "react-router-dom"
-import { MonitorServiceContext } from "../../useMonitor.service"
+import { BedItem, MonitorServiceContext } from "../../useMonitor.service"
 
 // 用户 Card
-function BedCard() {
-	const { bedItem } = useContext(MonitorServiceContext)
+export interface BedCardProps {
+	item: BedItem
+}
+function BedCard(props: BedCardProps) {
+	const { item } = props
 	const { push } = useHistory()
-	const { toggle, setBedItem } = useContext(BCGContext)
+	const { toggle, setBedItem } = useContext(MonitorServiceContext)
 	const handleBcgDetail = () => {
-		if (bedItem?.deviceNum) {
+		if (item?.deviceNum) {
 			toggle()
-			setBedItem!(bedItem)
+			setBedItem!(item)
 		} else {
 			message.warning({
 				key: "no-device",
@@ -24,10 +26,10 @@ function BedCard() {
 		}
 	}
 	const handleDetail = () => {
-		if (bedItem?.deviceNum) {
+		if (item?.deviceNum) {
 			push({
-				pathname: `/monitor/sleep/${bedItem!.memberId}`,
-				search: `?device=${bedItem!.deviceNum}`,
+				pathname: `/monitor/sleep/${item!.memberId}`,
+				search: `?device=${item!.deviceNum}`,
 			})
 		} else {
 			message.warning({
@@ -40,7 +42,7 @@ function BedCard() {
 		<Card
 			size='small'
 			className={styles.bed_card}
-			title={bedItem?.num}
+			title={item?.num}
 			actions={[
 				<div key='bcg' className={styles.action_wrap} onClick={handleBcgDetail}>
 					<IconFont className={styles.icon} type='icon-user' />
@@ -55,15 +57,15 @@ function BedCard() {
 			<div className={styles.bed_info}>
 				<span
 					className={classNames(styles.bed_status, {
-						[styles.in_bed]: bedItem?.deviceStatus === "在床",
-						[styles.leave_bed]: bedItem?.deviceStatus === "离床",
+						[styles.in_bed]: item?.deviceStatus === "在床",
+						[styles.leave_bed]: item?.deviceStatus === "离床",
 					})}
 				>
 					<IconFont type='icon-user' style={{ fontSize: "20px" }} />
-					<span>{bedItem?.deviceStatus}</span>
+					<span>{item?.deviceStatus}</span>
 				</span>
 				<div className={styles.percent_name}>
-					<span className={styles.name}>{bedItem?.memberName || "空床位"}</span>
+					<span className={styles.name}>{item?.memberName || "空床位"}</span>
 					<Progress
 						showInfo
 						strokeColor={{
@@ -71,7 +73,7 @@ function BedCard() {
 							"100%": "#87d068",
 						}}
 						status='active'
-						percent={bedItem?.sleepScore ?? 0}
+						percent={item?.sleepScore ?? 0}
 						width={70}
 						strokeWidth={12}
 						type='circle'
@@ -80,7 +82,7 @@ function BedCard() {
 				</div>
 				<span
 					className={classNames(styles.bed_status, {
-						[styles.leave_bed]: bedItem?.alarmStatus,
+						[styles.leave_bed]: item?.alarmStatus,
 					})}
 				>
 					<IconFont type='icon-user' style={{ fontSize: "20px" }} />
