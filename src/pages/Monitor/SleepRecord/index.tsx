@@ -6,6 +6,7 @@ import styles from "./style.module.scss"
 import SleepDetail from "../components/Sleep/SleepDetail"
 import SleepAlarm from "../components/Sleep/SleepAlarm"
 import UserDetail from "../components/Sleep/UserDetail"
+import BloodSugar from "../components/Sleep/BloodSugar"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { useParams } from "react-router-dom"
 import { FieldAvatar } from "@/components/BigSight"
@@ -29,6 +30,7 @@ const recordList = [
 	{
 		title: "血糖",
 		icon: UserOutlined,
+		component: BloodSugar,
 	},
 	{
 		title: "血氧",

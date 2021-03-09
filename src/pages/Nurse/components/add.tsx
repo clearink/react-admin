@@ -28,7 +28,6 @@ function NurseAddForm(props: AddFormProps, ref: Ref<AddFormRef>) {
 				label='职务'
 				request={{
 					url: "/sys/dict/getDictItems/careworkerPosition",
-					cache: true,
 					transform: (response, cache) => {
 						if (cache) return response
 						return response.result.map((item: any) => ({
