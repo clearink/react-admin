@@ -18,6 +18,7 @@
 	.percent_name,
 	.bed_status {
 		@include flex-center(column);
+		color: $color_grey-4 !important;
 	}
 	.bed_status {
 		position: relative;

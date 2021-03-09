@@ -1,0 +1,27 @@
+@import "@/styles/index.scss";
+.blood_oxy_page_wrap {
+	padding: 0 20px;
+	@apply flex flex-wrap justify-between;
+}
+
+.header {
+	font-weight: 650;
+	font-size: 18px;
+	color: $color_text;
+	text-align: center;
+}
+.history {
+	@apply w-full mb-8 lg:w-9/24;
+  height: 400px;
+}
+.test_time {
+	@apply w-full mb-8 lg:w-9/24;
+}
+.about_blood_pressure {
+	@apply w-full mb-8 lg:w-4/24;
+	font-size: 12px;
+	.icon {
+		color: #f7ca2a;
+		margin-right: 4px;
+	}
+}

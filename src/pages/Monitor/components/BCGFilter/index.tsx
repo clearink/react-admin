@@ -170,7 +170,6 @@ function BCGFilter() {
 						list={bedList ?? []}
 						checkedList={list}
 						onChange={(checked, item) => {
-							console.log(checked, item)
 							if (checked) setList((p) => p.concat(item))
 							else setList((p) => p.filter(({ value }) => value !== item.value))
 						}}

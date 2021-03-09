@@ -39,7 +39,7 @@ const columns: ProTableColumns<any>[] = [
 		search: (
 			<ProFormInput
 				placeholder='名称/编号'
-				name='numOrName'
+				name='nameOrNum'
 				label={undefined}
 			/>
 		),
@@ -215,7 +215,10 @@ function Device() {
 			<UserConnectForm
 				deviceItem={checkedDevice}
 				ref={userRef}
-				onFinish={async () => true}
+				onFinish={async () => {
+					tableRef.current?.reload()
+					return true
+				}}
 			/>
 		</div>
 	)

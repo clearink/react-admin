@@ -12,6 +12,13 @@ const slice = createSlice({
 			BedListUtil.setBedList(action.payload)
 			state.list = action.payload
 		},
+		filter(state, action: PayloadAction<string>) {
+			const newBedList = state.list.filter(
+				(item) => item.value !== action.payload
+			)
+			BedListUtil.setBedList(newBedList)
+			state.list = newBedList
+		},
 	},
 })
 export const actions = { ...slice.actions }

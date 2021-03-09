@@ -3,7 +3,7 @@ import { actions } from "@/store/reducers/user"
 import classNames from "classnames"
 import useTypedSelector from "@/hooks/useTypedSelector"
 import { CloseCircleOutlined } from "@ant-design/icons"
-import { Modal } from "antd"
+import { message, Modal, notification } from "antd"
 import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
 import styles from "./styles.module.scss"
 import * as echarts from "echarts"
@@ -17,7 +17,6 @@ import {
 } from "./utils"
 import IconFont from "@/components/IconFont"
 import { MonitorServiceContext } from "../../useMonitor.service"
-console.log('echarts',echarts);
 // 用户BCG 数据
 // 用一个ModalTrigger承载 主要是要请求数据
 
@@ -57,7 +56,7 @@ function BCGDetail() {
 		const element = heartRef.current
 		if (!element || !bedItem || heartChartRef.current) return
 		heartChartRef.current = echarts.init(element)
-		console.log(	heartChartRef.current);
+		console.log(heartChartRef.current)
 		heartChartRef.current.setOption(HeartChartOption([]))
 	}, [bedItem])
 
@@ -109,11 +108,15 @@ function BCGDetail() {
 							p.concat(newBreathList.splice(0, 5)).slice(-BREATH_LIST_MAX)
 						)
 				}, 40)
-			}
-
-			if (msgType === "healthBreathData") {
+			} else if (msgType === "healthBreathData") {
 				if (data.heart !== 65436) setBpm(data.heart)
 				if (data.breath !== -100) setRpm(data.breath)
+			} else {
+				notification.warning({
+					message: "设备错误",
+					description: e.data,
+					placement:'bottomRight'
+				})
 			}
 		}
 		return () => {

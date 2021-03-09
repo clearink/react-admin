@@ -3,83 +3,88 @@
 .page_wrap {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-around;
+	justify-content: space-between;
+	padding: 0 20px;
 }
 .header {
 	font-weight: 650;
 	font-size: 18px;
 	color: $color_text;
+	text-align: center;
 }
-.history_list,
-.test_time,
+.history_list {
+	@apply w-full mb-8 lg:w-4/24;
+	:global {
+		.ant-card-body {
+			height: 330px;
+			overflow: hidden auto;
+			@include scrollbar($color_primary);
+		}
+	}
+}
+.test_time {
+	@apply w-full mb-8 lg:w-12/24;
+	:global {
+		.ant-card-body {
+			height: 330px;
+			// overflow: hidden auto;
+			@apply flex flex-wrap;
+		}
+	}
+}
 .test_info {
-	flex-basis: 30%;
-	@apply w-full mb-8 lg:w-10/24;
-}
-
-.wrap {
-	@apply flex justify-around flex-wrap;
-}
-.sleep_time,
-.sleep_percent {
-	min-height: 210px;
-}
-
-.bed_wrap {
-	display: flex;
+	@apply w-full mb-8 lg:w-6/24;
+	:global {
+		.ant-card-body {
+			height: 330px;
+			overflow: hidden auto;
+			@include scrollbar($color_primary);
+			display: flex;
+			flex-wrap: wrap;
+		}
+	}
 	.bed_detail {
 		flex: auto;
 	}
 	.sleep_percent {
-		margin-left: 20px;
 		flex-shrink: 0;
 		height: 100%;
 		@apply flex items-center justify-end;
 	}
+	.progress_tip {
+		display: flex;
+		
+		flex-direction: column;
+		font-weight: bold;
+		.label {
+			font-size: 18px;
+			margin-bottom: 10px;
+			color: $color_text;
+		}
+		.value {
+			font-size: 14px;
+			color: $color_text_black;
+		}
+	}
 }
-.leave_bed,
-.avg_alarm,
-.avg_bmp,
-.avg_rpm {
-	height: 88px;
+.statistics_icon {
+	flex: 1;
+	font-size: 40px;
+	text-align: left;
+}
+/* ---------------------------------------- */
+// watch card
+.watch_card {
+	@apply w-full mb-4 lg:w-5/24 flex items-center;
+	min-width: 300px;
+	padding: 10px 40px;
 	color: white;
-	padding: 10px;
-	border-radius: 6px;
-	display: flex;
-	align-items: center;
-	.number {
+	border-radius: 4px;
+	.count {
 		font-size: 20px;
+		font-weight: bold;
 		text-align: center;
 	}
-	.icon {
-		@apply w-1/2;
-		font-size: 40px;
-	}
 }
-.leave_bed {
-	background-color: $color_light-1;
-}
-.avg_bmp {
-	background-color: $color_light-2;
-}
-.avg_rpm {
-	background-color: $color_light-3;
-}
-.avg_alarm {
-	background-color: $color_light-4;
-}
-.progress_tip {
-	display: flex;
-	flex-direction: column;
-	font-weight: bold;
-	.label {
-		font-size: 18px;
-		margin-bottom: 10px;
-		color: $color_text;
-	}
-	.value {
-		font-size: 14px;
-
-		color: $color_text_black;
-	}
-}
+/* ---------------------------------------- */
+//////////////////////////////////////////// old

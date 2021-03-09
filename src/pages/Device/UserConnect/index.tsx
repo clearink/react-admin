@@ -37,7 +37,7 @@ export interface BedConnectFormProps extends AddFormProps {
 }
 
 function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
-	const { deviceItem, ...rest } = props
+	const { deviceItem, onFinish, ...rest } = props
 	const formRef = useRef<AddFormRef>(null)
 	const countDownRef = useRef<CountDownRef>(null)
 	useImperativeHandle(ref, () => formRef.current!, [])
@@ -89,6 +89,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 		} else if (deviceItem?.id) {
 			await DeviceApi.ConnectUser({ deviceId: deviceItem.id, memberId })
 			GetUserList()
+			onFinish?.(true)
 		}
 	}
 
@@ -112,6 +113,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 						memberId,
 						deviceId: deviceItem!.id,
 					})
+					onFinish?.(true)
 					message.success({
 						content: "指纹录入成功",
 						key: "finger-input-success",
@@ -145,6 +147,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 		handleReset()
 		setMemberId(null)
 		GetUserList()
+		onFinish?.(true)
 	}
 	return (
 		<>
@@ -152,6 +155,7 @@ function BedConnectForm(props: BedConnectFormProps, ref: Ref<AddFormRef>) {
 				type='modal'
 				title='人员关联'
 				layout='horizontal'
+				onFinish={async () => true}
 				{...rest}
 				name='user-connect'
 				ref={formRef}
