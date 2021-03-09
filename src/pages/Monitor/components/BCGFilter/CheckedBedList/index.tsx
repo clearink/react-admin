@@ -1,9 +1,11 @@
-import useTypedSelector from "@/hooks/useTypedSelector"
-import { MonitorServiceContext } from "@/pages/Monitor/useMonitor.service"
-import { PlusOutlined } from "@ant-design/icons"
-import { Button } from "antd"
 import React, { useContext } from "react"
+import { Button } from "antd"
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
+import useTypedSelector from "@/hooks/useTypedSelector"
+import { actions } from "@/store/reducers/monitor"
+import { MonitorServiceContext } from "@/pages/Monitor/useMonitor.service"
 import styles from "./style.module.scss"
+import useAppDispatch from "@/hooks/useAppDispatch"
 
 export interface CheckedBedListProps {
 	toggle: () => void
@@ -11,6 +13,10 @@ export interface CheckedBedListProps {
 export default function CheckedBedList(props: CheckedBedListProps) {
 	const { list } = useTypedSelector((state) => state.monitor)
 	const { fetchBed } = useContext(MonitorServiceContext)
+	const dispatch = useAppDispatch()
+	const handleDelete = (value: string) => {
+		dispatch(actions.filter(value))
+	}
 	return (
 		<div className={styles.wrap}>
 			<label className={styles.label} onClick={() => fetchBed()}>
@@ -20,7 +26,10 @@ export default function CheckedBedList(props: CheckedBedListProps) {
 				{list.map((item) => (
 					<Button className={styles.list_item} key={item.value}>
 						<span>{item.label}</span>
-						<span>x</span>
+						<DeleteOutlined
+							className={styles.delete}
+							onClick={() => handleDelete(item.value)}
+						/>
 					</Button>
 				))}
 				<Button
