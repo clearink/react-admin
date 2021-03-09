@@ -1,7 +1,7 @@
 import React from "react"
 import styles from './style.module.scss'
 
-// 血糖
-export default function BloodSugar(){
-
+// 血氧页面
+export default function BloodOxy(){
+  return <div>血氧</div>
 }

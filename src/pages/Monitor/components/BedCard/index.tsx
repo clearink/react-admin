@@ -3,7 +3,7 @@ import classNames from "classnames"
 import { Card, message, Progress } from "antd"
 import styles from "./style.module.scss"
 import IconFont from "@/components/IconFont"
-import { useHistory } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { BedItem, MonitorServiceContext } from "../../useMonitor.service"
 
 // 用户 Card
@@ -15,26 +15,26 @@ function BedCard(props: BedCardProps) {
 	const { push } = useHistory()
 	const { toggle, setBedItem } = useContext(MonitorServiceContext)
 	const handleBcgDetail = () => {
-		if (item?.deviceNum) {
+		if (item?.memberId) {
 			toggle()
 			setBedItem!(item)
 		} else {
 			message.warning({
-				key: "no-device",
-				content: "当前床位尚未绑定设备",
+				key: "no-people",
+				content: "空床位",
 			})
 		}
 	}
 	const handleDetail = () => {
-		if (item?.deviceNum) {
+		if (item?.memberId) {
 			push({
 				pathname: `/monitor/sleep/${item!.memberId}`,
-				search: `?device=${item!.deviceNum}`,
+				search: `?device=${item?.deviceNum}`,
 			})
 		} else {
 			message.warning({
 				key: "no-people",
-				content: "当前床位暂无数据",
+				content: "空床位",
 			})
 		}
 	}
@@ -80,14 +80,15 @@ function BedCard(props: BedCardProps) {
 						format={(v) => v}
 					/>
 				</div>
-				<span
+				<Link
+					to='/monitor/alarm'
 					className={classNames(styles.bed_status, {
 						[styles.leave_bed]: item?.alarmStatus,
 					})}
 				>
 					<IconFont type='icon-user' style={{ fontSize: "20px" }} />
 					<span>告警</span>
-				</span>
+				</Link>
 			</div>
 		</Card>
 	)

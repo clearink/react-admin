@@ -10,6 +10,9 @@ import useMemoFetch from "@/hooks/useMemoFetch"
 import { useParams } from "react-router-dom"
 import { FieldAvatar } from "@/components/BigSight"
 import GetFullUrl from "@/utils/data/GetFullUrl"
+import BloodPressure from "../components/Sleep/BloodPressure"
+import BloodSugar from "../components/Sleep/BloodOxy"
+import BloodOxy from "../components/Sleep/BloodSugar"
 // 监控分析 睡眠报告
 
 const recordList = [
@@ -25,14 +28,17 @@ const recordList = [
 	{
 		title: "血压",
 		icon: UserOutlined,
+		component: BloodPressure,
 	},
 	{
 		title: "血糖",
 		icon: UserOutlined,
+		component: BloodSugar,
 	},
 	{
 		title: "血氧",
 		icon: UserOutlined,
+		component: BloodOxy,
 	},
 	{
 		title: "心率",
@@ -72,7 +78,9 @@ function SleepRecord() {
 							icon={<UserOutlined />}
 						/>
 						<div>
-							<Typography.Title level={4}>{detail?.name}</Typography.Title>
+							<Typography.Title className='text-center' level={4}>
+								{detail?.name}
+							</Typography.Title>
 							<Space>
 								<span className={styles.text}>{detail?.gender}</span>
 								<span className={styles.text}>{detail?.age}岁</span>
