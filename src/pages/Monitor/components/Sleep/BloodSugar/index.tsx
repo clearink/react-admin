@@ -1,12 +1,12 @@
 import React, { memo, useState, useEffect, useRef } from "react";
 import { RightOutlined } from "@ant-design/icons";
-import { Card, Spin } from "antd";
+import { Card, Spin, Table } from "antd";
 import styles from "./style.module.scss";
 import BloodSugarApi from "@/http/ly/pages/BloodSugarApi";
 import { useParams } from "react-router-dom";
 import useMemoCallback from "@/components/Pro/hooks/memo-callback";
 import * as echarts from "echarts";
-import "echarts/lib/chart/bar";
+import LineChartOptions from "./lineCharts";
 
 function BloodSugar() {
     const { id } = useParams<{ id: string }>()
@@ -15,6 +15,7 @@ function BloodSugar() {
     const [indexList, setIndexList] = useState([]);
     const [historyList, setHistoryList] = useState([]);
     const [today, setToday] = useState([]);
+    const chartsRef = useRef(null);
 
     const getBloodSugarIndexList = useMemoCallback(() => {
         // 首页数据
@@ -27,34 +28,16 @@ function BloodSugar() {
         })
         // 今日检测数据
         BloodSugarApi.getToday({ memberId: id, today: new Date() }).then(({ data }) => {
+            if(data.code !== 200) return false;
             setToday(data.result);
         })
 
     }, [])
-
+    
 
     useEffect(() => {
-        let element = document.getElementById('main');
-        let myChart = echarts.init(element as HTMLDivElement);
-        let option = {
-            title: {
-            },
-            tooltip: {
-            },
-            legend: {
-                data: ['销量', '利润', '比率']
-            },
-            xAxis: {
-                data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-            },
-            yAxis: {
-            },
-            series: [{
-                data: [150, 230, 224, 218, 135, 147, 260],
-                type: 'line'
-            }]
-        };
-        myChart.setOption(option);
+        let myChart = echarts.init(chartsRef.current!);
+        myChart.setOption(LineChartOptions);
     }, [])
 
     console.log(indexList, "--", historyList, "--", today);
@@ -62,6 +45,184 @@ function BloodSugar() {
         getBloodSugarIndexList();
         // getEcharts();
     }, [getBloodSugarIndexList])
+
+    const columns: any = [
+        {
+            title: '时段',
+            align: "center",
+            dataIndex: 'time',
+        },
+        {
+            title: <div>凌晨</div>,
+            align: "center",
+            rowSpan:2,
+            children: [
+                {
+                    title: <div>
+                        <span>00:00</span><br />
+                        <span>-</span><br />
+                        <span>03:00</span>
+                    </div>,
+                    align: "center",
+                    dataIndex: "midnight",
+                },
+            ],
+        },
+        {
+            title: "早餐",
+            align: "center",
+            children: [
+                {
+                    title: "前",
+                    align: "center",
+                    children: [
+                        {
+                            title: <div>
+                                <span>06:30</span><br />
+                                <span>-</span><br />
+                                <span>09:00</span>
+                            </div>,
+                            align: "center",
+                            dataIndex: "beforeBreakfast",
+                        }
+                    ]
+                },
+                {
+                    title: "后",
+                    align: "center",
+                    children: [
+                        {
+                            title: <div>
+                                <span>09:30</span><br />
+                                <span>-</span><br />
+                                <span>11:30</span>
+                            </div>,
+                            align: "center",
+                            dataIndex: "afterBreakfast",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            title: "中餐",
+            align: "center",
+            children: [
+                {
+                    title: "前",
+                    align: "center",
+                    children: [
+                        {
+                            title: <div>
+                                <span>11:30</span><br />
+                                <span>-</span><br />
+                                <span>14:00</span>
+                            </div>,
+                            align: "center",
+                            dataIndex: "beforeLunch",
+                        }
+                    ]
+                },
+                {
+                    title: "后",
+                    align: "center",
+                    children: [
+                        {
+                            title: <div>
+                                <span>14:00</span><br />
+                                <span>-</span><br />
+                                <span>17:30</span>
+                            </div>,
+                            align: "center",
+                            dataIndex: "afterLunch",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            title: "晚餐",
+            align: "center",
+            children: [
+                {
+                    title: "前",
+                    align: "center",
+                    children: [
+                        {
+                            title: <div>
+                                <span>17:30</span><br />
+                                <span>-</span><br />
+                                <span>20:00</span>
+                            </div>,
+                            align: "center",
+                            dataIndex: "afterDinner",
+                        }
+                    ]
+                },
+                {
+                    title: "后",
+                    align: "center",
+                    children: [
+                        {
+                            title: <div>
+                                <span>20:00</span><br />
+                                <span>-</span><br />
+                                <span>22:00</span>
+                            </div>,
+                            align: "center",
+                            dataIndex: "beforeDinner",
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            title: "睡前",
+            align: "center",
+            children: [
+                {
+                    title: <div>
+                        <span>22:30</span><br />
+                        <span>-</span><br />
+                        <span>00:00</span>
+                    </div>,
+                    align: "center",
+                    dataIndex: "beforeSleep",
+                }
+            ]
+        }
+    ];
+    console.log(today);
+    const data: any = [
+        {
+            key: 1,
+            time: "血糖",
+            midnight: 10,
+            beforeBreakfast: 10,
+            afterBreakfast: 10,
+            beforeLunch: 10,
+            afterLunch: 10,
+            afterDinner: 10,
+            beforeDinner: 10,
+            beforeSleep: 10,
+        },
+        {
+            key: 2,
+            time: "水平",
+            beforeBreakfast: "一般"
+        }
+    ];
+
+//     afterBreakfast: { text: "", value: 0 }
+// afterDinner: { text: "", value: 0 }
+// afterLunch: { text: "", value: 0 }
+// beforeBreakfast: { text: "", value: 0 }
+// beforeDinner: { text: "", value: 0 }
+// beforeLunch: { text: "", value: 0 }
+// beforeSleep: { text: "", value: 0 }
+// midnight: { text: "", value: 0 }
+    
+
     return (
         <main className={styles.main}>
             <Spin spinning={false}>
@@ -85,6 +246,15 @@ function BloodSugar() {
                         className={styles.test_time}
                         size={"small"}
                         title={<div className={styles.card_header}>检测时间：2021年03月03日 星期三</div>}>
+                        <div className={styles.test_time_content}>
+                            <Table
+                                dataSource={data}
+                                columns={columns}
+                                bordered
+                                size="large"
+                                pagination={false}
+                            />
+                        </div>
                     </Card>
                     <Card
                         className={styles.test_about}
@@ -99,7 +269,7 @@ function BloodSugar() {
                         size={"small"}
                         title={<div className={styles.card_header}>血糖趋势</div>}
                     >
-                        <div className={styles.test_time_content} id="main">
+                        <div className={styles.test_time_content} id="main" ref={chartsRef}>
                             折线图
                         </div>
                     </Card>
