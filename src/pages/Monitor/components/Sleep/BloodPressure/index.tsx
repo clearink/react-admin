@@ -4,6 +4,7 @@ import styles from "./style.module.scss"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { BulbOutlined } from "@ant-design/icons"
 import TimeSelect from "../components/TimeSelect"
+import PressureBar from "../components/PressureBar"
 
 // 血压
 function BloodPressure() {
@@ -17,19 +18,20 @@ function BloodPressure() {
 				className={styles.history}
 				title={<div className={styles.header}>历史记录</div>}
 			>
-				<TimeSelect
-					render={(data) => {
-						return (
-							<div
-								onClick={() => {
-									console.log(data)
-								}}
-							>
-								1
-							</div>
-						)
-					}}
-				/>
+				<div className='flex flex-wrap'>
+					<TimeSelect
+						className='w-1/2'
+						options={Array.from({ length: 10 }, (_, i) => {
+							return { label: i, value: i }
+						})}
+					/>
+					<TimeSelect
+						className='w-1/2'
+						options={Array.from({ length: 10 }, (_, i) => {
+							return { label: i, value: i }
+						})}
+					/>
+				</div>
 			</Card>
 			<Card
 				size='small'
@@ -39,7 +41,30 @@ function BloodPressure() {
 						检测时间：2021年03月03日 星期三 上午10:35
 					</div>
 				}
-			></Card>
+			>
+				<PressureBar
+					title='收缩压(高压 mmHg)'
+					value={134}
+					separator={[
+						{
+							value: 0,
+							color: "#60baef",
+							description: "偏低",
+						},
+						{
+							value: 90,
+							color: "#9adb61",
+							grow: 2,
+							description: "高压正常范围",
+						},
+						{
+							value: 134,
+							color: "#ef7663",
+							description: "偏高",
+						},
+					]}
+				/>
+			</Card>
 			<Card
 				size='small'
 				className={styles.about_blood_pressure}

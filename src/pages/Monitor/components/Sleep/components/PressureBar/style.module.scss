@@ -1,0 +1,62 @@
+@import "@/styles/index.scss";
+.bar_wrap {
+	height: 100%;
+	.title {
+		text-align: center;
+	}
+	$bar_margin: 0 10px;
+	$height: 26px;
+	.location {
+		margin: $bar_margin;
+		color: #009dd9;
+		position: relative;
+		height: $height;
+		margin-bottom: 4px;
+		transition: transform 0.3s ease-in-out;
+		.icon {
+			position: absolute;
+			text-align: left;
+			font-size: $height;
+			transform: translateX(-50%);
+		}
+	}
+	.bar {
+		margin: $bar_margin;
+		border-radius: 15px;
+		display: flex;
+	}
+	.item_wrap {
+		flex: 1;
+		&:first-child {
+			.item {
+				border-radius: 15px 0 0 15px;
+			}
+			.description {
+				text-align: left !important;
+			}
+		}
+		&:last-child {
+			.item {
+				border-radius: 0 15px 15px 0;
+			}
+			.description {
+				text-align: right !important;
+			}
+		}
+		.item {
+			height: $height;
+			flex: 1;
+			height: 100%;
+			background-color: $color_primary;
+			color: white;
+			text-align: center;
+			@include flex-center();
+		}
+		.description {
+			text-align: center;
+			color: #666666;
+			font-size: 12px;
+			padding: 6px 10px;
+		}
+	}
+}

@@ -6,7 +6,6 @@ import BloodSugarApi from "@/http/ly/pages/BloodSugarApi";
 import { useParams } from "react-router-dom";
 import useMemoCallback from "@/components/Pro/hooks/memo-callback";
 import * as echarts from "echarts";
-import "echarts/lib/chart/bar";
 
 function BloodSugar() {
     const { id } = useParams<{ id: string }>()

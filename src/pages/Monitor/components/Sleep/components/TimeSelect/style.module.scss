@@ -1,0 +1,39 @@
+@import "@/styles/index";
+$active_color: #1890ff;
+.select_wrap {
+	overflow: hidden auto;
+	@include scrollbar($active_color);
+	.item_wrap {
+		border-bottom: 1px solid rgba($color: black, $alpha: 0.04);
+		transition-property: color, background-color;
+		transition-timing-function: ease-in-out;
+		transition-duration: 0.3s;
+
+		display: flex;
+		align-items: center;
+		padding: 6px 0;
+		cursor: pointer;
+
+		&:hover {
+			background-color: rgba($color: $active_color, $alpha: 0.1);
+		}
+		&.active {
+			color: $active_color;
+			.icon {
+				color: $active_color;
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+		.text {
+			flex: auto;
+			text-align: center;
+		}
+		.icon {
+			transition: all 0.3s ease-in-out;
+			opacity: 0;
+			transform: translateX(10px);
+			flex-basis: 20px;
+		}
+	}
+}
