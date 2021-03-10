@@ -14,17 +14,20 @@ function BedCard(props: BedCardProps) {
 	const { item } = props
 	const { push } = useHistory()
 	const { toggle, setBedItem } = useContext(MonitorServiceContext)
+
+	// echarts
 	const handleBcgDetail = () => {
-		if (item?.memberId) {
+		if (item?.deviceNum) {
 			toggle()
 			setBedItem!(item)
 		} else {
 			message.warning({
 				key: "no-people",
-				content: "空床位",
+				content: "该用户尚未绑定设备",
 			})
 		}
 	}
+	// 睡眠详情
 	const handleDetail = () => {
 		if (item?.memberId) {
 			push({
