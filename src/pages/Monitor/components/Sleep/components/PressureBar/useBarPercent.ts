@@ -55,7 +55,7 @@ export default function useBarPercent(
 			return [matchItem.color, valueRange(percent * 100, 0, 100).toFixed(2)]
 		} else {
 			const [current, total] = FindGrow(separator, separator.length - 1)
-			const relative = (number - matchItem.value) / (3000 - matchItem.value)
+			const relative = (number - matchItem.value) / (1000 - matchItem.value)
 			const percent = (relative * grow + current) / total
 			return [
 				separator[separator.length - 1].color,

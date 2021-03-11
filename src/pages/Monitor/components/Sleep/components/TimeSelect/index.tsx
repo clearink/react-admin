@@ -16,6 +16,7 @@ export interface OptionItem {
 	label: string | number | undefined
 	value: string | number | undefined
 	children?: OptionItem[]
+	[key: string]: any
 }
 export interface TimeSelectProps {
 	options: Array<OptionItem>
@@ -45,6 +46,7 @@ function TimeSelect(props: TimeSelectProps) {
 
 	const handleClick = (item: OptionItem) => {
 		// 没有onChange 或者 value 是 undefined
+		if (item.value === innerValue) return
 		if (!onChange || isUndefined(value)) {
 			setInnerValue(item.value)
 		}

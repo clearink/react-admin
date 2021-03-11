@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Card } from "antd"
+import moment from "moment"
 import styles from "./style.module.scss"
-import useMemoFetch from "@/hooks/useMemoFetch"
 import { BulbOutlined } from "@ant-design/icons"
 import TimeSelect from "../components/TimeSelect"
 import PressureBar from "../components/PressureBar"
@@ -61,45 +61,55 @@ function BloodPressure() {
 	useEffect(() => {
 		BloodPressureApi.HomeData({ memberId: id }).then(({ data }) => {
 			console.log(data)
+			const { latestData, chartData } = data.result
 			setPressure({
-				shrink:data.result.latestData.sp,
-				relax:data.result.latestData.dp,
+				shrink: latestData.sp,
+				relax: latestData.dp,
 			})
+			const newChartList = chartData.reduce(
+				(pre: any, item: any) => {
+					pre[0].push(item.dp)
+					pre[1].push(item.sp)
+					pre[2].push(item.startTime)
+					return pre
+				},
+				[[], [], []] as const
+			)
+			setChartList(newChartList)
 		})
 	}, [id])
 
 	const [pagination, setPagination] = useState({
 		current: 1,
 		hasMore: true,
-		loading: false,
 	}) // 页码
 	const [timeList, setTimeList] = useState<any[]>([])
+	const [chartList, setChartList] = useState<[number[], number[], number[]]>([
+		[],
+		[],
+		[],
+	])
 
 	// 历史记录数据
 	useEffect(() => {
 		console.log("render")
-		setPagination((p) => ({ ...p, loading: true }))
+
 		BloodPressureApi.HistoryList({
 			memberId: id,
 			pageNo: 1,
 			pageSize: 10,
+		}).then(({ data }) => {
+			setTimeList(
+				data.result.records.map((item: any) => ({
+					label: item.startTime,
+					value: item.startTime,
+				}))
+			)
+			setPagination({
+				current: data.result.current,
+				hasMore: data.result.current < data.result.pages,
+			})
 		})
-			.then(({ data }) => {
-				setTimeList(
-					data.result.records.map((item: any) => ({
-						label: item.startTime,
-						value: item.startTime,
-					}))
-				)
-				setPagination({
-					current: data.result.current,
-					hasMore: data.result.current < data.result.pages,
-					loading: false,
-				})
-			})
-			.finally(() => {
-				setPagination((p) => ({ ...p, loading: false }))
-			})
 	}, [id])
 
 	// 检测数据
@@ -108,11 +118,16 @@ function BloodPressure() {
 	// 血压数据
 	const [pressure, setPressure] = useState({ shrink: 0, relax: 0 })
 	// 有数据时初始化
-	// useEffect(() => {
-	// 	const element = document.getElementById("blood-pressure-chart")
-	// 	if (!element) return
-	// 	chartRef.current = echarts.init(element as HTMLDivElement)
-	// }, [])
+	useEffect(() => {
+		const element = chartRef.current
+		if (!element || chartList[0].length === 0 || chartList[1].length === 0)
+			return
+		const charts = echarts.init(element as HTMLDivElement)
+		charts.setOption(chartOption(...chartList) as any)
+		return () => {
+			charts.dispose()
+		}
+	}, [chartList])
 
 	return (
 		<div className={styles.blood_oxy_page_wrap}>
@@ -123,8 +138,39 @@ function BloodPressure() {
 					title={<div className={styles.header}>历史记录</div>}
 				>
 					<div className='flex flex-wrap'>
-						<TimeSelect className='w-1/2' options={timeList} />
-						<TimeSelect className='w-1/2' options={recordList} />
+						<TimeSelect
+							className='w-1/2'
+							options={timeList}
+							onChange={(value, item) => {
+								BloodPressureApi.TodayData({ memberId: id, today: value }).then(
+									({ data }) => {
+										setRecordList(
+											data.result?.map((item: any) => {
+												return {
+													label: `${moment(item.startTime).format("HH:mm")} ${
+														item.sp
+													}/${item.dp} mmHg`,
+													value: item.id,
+													dp: item.dp,
+													sp: item.sp,
+												}
+											})
+										)
+									}
+								)
+							}}
+							extra={<div className='cursor-pointer'>加载更多</div>}
+						/>
+						<TimeSelect
+							className='w-1/2'
+							options={recordList}
+							onChange={(value, item) => {
+								setPressure({
+									shrink: item.sp,
+									relax: item.dp,
+								})
+							}}
+						/>
 					</div>
 				</Card>
 				<Card
@@ -158,7 +204,7 @@ function BloodPressure() {
 			</div>
 			<div className={styles.chart}>
 				<div className={styles.title}>血压趋势</div>
-				<div ref={chartRef} style={{ width: "100%", height: 300 }}></div>
+				<div ref={chartRef} style={{ width: "100%", height: 600 }}></div>
 			</div>
 		</div>
 	)
