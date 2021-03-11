@@ -7,6 +7,47 @@ import TimeSelect from "../components/TimeSelect"
 import PressureBar from "../components/PressureBar"
 
 // 血压
+
+// 收缩压
+const shrinkPressure = [
+	{
+		value: 0,
+		color: "#60baef",
+		description: "偏低",
+	},
+	{
+		value: 90,
+		color: "#9adb61",
+		grow: 2,
+		description: "高压正常范围",
+	},
+	{
+		value: 134,
+		color: "#ef7663",
+		description: "偏高",
+	},
+]
+
+// 舒张压
+const relaxPressure = [
+	{
+		value: 0,
+		color: "#60baef",
+		description: "偏低",
+	},
+	{
+		value: 60,
+		color: "#9adb61",
+		grow: 2,
+		description: "低压正常范围",
+	},
+	{
+		value: 84,
+		color: "#ef7663",
+		description: "偏高",
+	},
+]
+
 function BloodPressure() {
 	// const {} = useMemoFetch({
 	// 	url: "",
@@ -44,25 +85,14 @@ function BloodPressure() {
 			>
 				<PressureBar
 					title='收缩压(高压 mmHg)'
-					value={134}
-					separator={[
-						{
-							value: 0,
-							color: "#60baef",
-							description: "偏低",
-						},
-						{
-							value: 90,
-							color: "#9adb61",
-							grow: 2,
-							description: "高压正常范围",
-						},
-						{
-							value: 134,
-							color: "#ef7663",
-							description: "偏高",
-						},
-					]}
+					value={1234}
+					separator={shrinkPressure}
+				/>
+				<PressureBar
+					className='mt-8'
+					title='舒张压(低压 mmHg)'
+					value={74}
+					separator={relaxPressure}
 				/>
 			</Card>
 			<Card

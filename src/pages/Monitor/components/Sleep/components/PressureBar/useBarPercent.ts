@@ -45,23 +45,25 @@ export default function useBarPercent(
 	const number = useMemo(() => Math.max(0, value), [value])
 	return useMemo(() => {
 		const [matchIndex, matchItem] = FindValueIndex(number, separator)
-		const [current, total] = FindGrow(separator, matchIndex)
 		const grow = matchItem.grow ?? 1
 		if (matchIndex !== -1) {
 			console.log("能够匹配到数据")
+			const [current, total] = FindGrow(separator, matchIndex)
 			const next = separator[matchIndex + 1]
 			const relative =
 				(number - matchItem.value) / (next.value - matchItem.value)
-			const percent = relative + (relative * grow + current) / total
-      console.log('relative + (relative * grow + current) / total', relative, grow, current, total)
-			return valueRange(percent * 100, 0, 100).toFixed(2)
+			const percent = (relative * grow + current) / total
+			return [matchItem.color, valueRange(percent * 100, 0, 100).toFixed(2)]
 		} else {
-			console.log("在最后一段区域")
-			const next = { value: 1000 }
-			const relative =
-				(number - matchItem.value) / (next.value - matchItem.value)
-			const percent = relative + (relative * grow + current) / total
-			return valueRange(percent * 100, 0, 100).toFixed(2)
+			console.log("在最后一段区域 使用 tan(x) 函数图像")
+			const [current, total] = FindGrow(separator, separator.length - 1)
+			const relative = (number - matchItem.value) / (3000 - matchItem.value)
+			const percent = (relative * grow + current) / total
+			console.log(number, matchItem, relative)
+			return [
+				separator[separator.length - 1].color,
+				valueRange(percent * 100, 0, 100).toFixed(2),
+			]
 		}
 	}, [number, separator])
 }

@@ -1,25 +1,35 @@
-import React, { useCallback, useEffect } from "react"
+import React, {
+	PropsWithChildren,
+	useCallback,
+	useEffect,
+	useState,
+} from "react"
 import PageHeaderWrap from "@/components/PageHeaderWrap"
-import { Button } from "antd"
-import { actions } from "@/store/reducers/test"
-import useAppDispatch from "@/hooks/useAppDispatch"
-import useUnwrapAsyncThunk from "@/hooks/useUnwrapAsyncThunk"
+import { useCount } from "./count-context"
+
+function Logger(props: any) {
+	console.log(`${props.label} rendered`)
+	return null // what is returned here is irrelevant...
+}
+function Counter(props: any) {
+	const [count, setCount] = React.useState(0)
+	const increment = () => setCount((c) => c + 1)
+	return (
+		<div>
+			<button onClick={increment}>The count is {count}</button>
+			{props.children}
+		</div>
+	)
+}
 
 function WorkPlace() {
-	const unwrap = useUnwrapAsyncThunk()
-
 	return (
 		<div className='dashboard_page__wrap h-full flex flex-col '>
 			<PageHeaderWrap ghost={false} title='工作台' subTitle='hhhh' />
 			<main className='p-10 pb-0 flex-auto m-10 '>
-				<Button
-					onClick={async () => {
-						const result = await unwrap(actions.testApi("123"))[0]
-						console.log("success fetch, result", result)
-					}}
-				>
-					test async thunk
-				</Button>
+				<Counter>
+					<Logger label='counter' />
+				</Counter>
 			</main>
 		</div>
 	)

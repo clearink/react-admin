@@ -33,7 +33,7 @@ function renderText(item: SeparatorItem, index: number, arr: SeparatorItem[]) {
 
 function PressureBar(props: PressureBarProps) {
 	const { title, separator, value, className, style, size } = props
-	const percent = useBarPercent(value, separator)
+	const [color, percent] = useBarPercent(value, separator)
 	return (
 		<div className={classNames(styles.bar_wrap, className)} style={style}>
 			{title && <h3 className={styles.title}>{title}</h3>}
@@ -41,7 +41,11 @@ function PressureBar(props: PressureBarProps) {
 				className={styles.location}
 				style={{ transform: `translateX(${percent}%)` }}
 			>
-				<IconFont type='icon-location' className={styles.icon} />
+				<IconFont
+					type='icon-location'
+					className={styles.icon}
+					style={{ color }}
+				/>
 			</div>
 			<div className={styles.bar}>
 				{separator.map((item, index, arr) => {

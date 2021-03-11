@@ -17,19 +17,22 @@ function BedCard(props: BedCardProps) {
 
 	// echarts
 	const handleBcgDetail = () => {
-		if (item?.deviceNum) {
+		const hasDevice = !!item?.deviceNum
+		if (hasDevice) {
 			toggle()
-			setBedItem!(item)
+			setBedItem(item)
 		} else {
 			message.warning({
-				key: "no-people",
-				content: "该用户尚未绑定设备",
+				key: "no-device",
+				content: "该用户尚未绑定床垫设备",
 			})
 		}
 	}
 	// 睡眠详情
 	const handleDetail = () => {
-		if (item?.memberId) {
+		const hasMember = !!item?.memberId
+
+		if (hasMember) {
 			push({
 				pathname: `/monitor/sleep/${item!.memberId}`,
 				search: `?device=${item?.deviceNum}`,
@@ -37,7 +40,7 @@ function BedCard(props: BedCardProps) {
 		} else {
 			message.warning({
 				key: "no-people",
-				content: "空床位",
+				content: "该床位尚未关联住户",
 			})
 		}
 	}
@@ -67,7 +70,10 @@ function BedCard(props: BedCardProps) {
 					<IconFont type='icon-user' style={{ fontSize: "20px" }} />
 					<span>{item?.deviceStatus}</span>
 				</span>
-				<div className={styles.percent_name}>
+				<div
+					className={classNames(styles.percent_name, "cursor-pointer")}
+					onClick={handleDetail}
+				>
 					<span className={styles.name}>{item?.memberName || "空床位"}</span>
 					<Progress
 						showInfo
