@@ -22,7 +22,7 @@
         height: 400px;
 
         .history_list {
-            @apply w-full mb-8 lg:w-6/24;
+            @apply w-full mb-8 lg:w-4/24;
             flex: auto;
 
             .card_history_containar {
@@ -31,7 +31,7 @@
             }
         }
         .test_time {
-            @apply w-full mb-8 lg:w-13/24;
+            @apply w-full mb-8 lg:w-5/24;
             flex: auto;
 			height: 400px;
 
@@ -59,7 +59,7 @@
         }
 
         .test_about {
-            @apply w-full mb-8 lg:w-4/24;
+            @apply w-full mb-8 lg:w-6/24;
             height: 400px;
             .icon {
                 color: #f7ca2a;
