@@ -1,8 +1,27 @@
-function chartOption(data: any[]) {
+function chartOption(max: any[], min: any[], time: any[]) {
 	return {
-		title: {
-			text: "血压趋势",
+		tooltip: {
+			trigger: "axis",
 		},
+		xAxis: {
+			type: "category",
+			data: time,
+		},
+		yAxis: {
+			type: "value",
+		},
+		series: [
+			{
+				name: "收缩压",
+				type: "line",
+				data: max,
+			},
+			{
+				name: "舒张压",
+				type: "line",
+				data: min,
+			},
+		],
 	}
 }
 

@@ -6,7 +6,7 @@ export interface FetchData {
 
 export interface ToDayData {
 	memberId: string
-	today: string
+	today: string | number | undefined
 }
 export interface HistoryData {
 	memberId: string

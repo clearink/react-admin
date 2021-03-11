@@ -8,7 +8,7 @@ $active_color: #1890ff;
 		transition-property: color, background-color;
 		transition-timing-function: ease-in-out;
 		transition-duration: 0.3s;
-
+		user-select: none;
 		display: flex;
 		align-items: center;
 		padding: 6px 0;
@@ -26,8 +26,8 @@ $active_color: #1890ff;
 			}
 		}
 		.text {
+			padding-left: 40px;
 			flex: auto;
-			text-align: center;
 		}
 		.icon {
 			transition: all 0.3s ease-in-out;
@@ -39,7 +39,7 @@ $active_color: #1890ff;
 }
 .extra {
 	padding: 6px;
-	text-align: center;
+	padding-left: 40px;
 	background-color: $color_grey-5;
 	transition: background-color 0.3s ease-in-out;
 	&:hover {
