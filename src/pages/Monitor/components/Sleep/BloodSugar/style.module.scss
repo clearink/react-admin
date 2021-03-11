@@ -40,33 +40,34 @@
 			margin: 0 20px;
 		}
 
-		.test_about {
-			@apply w-full mb-8 lg:w-4/24;
-			height: 400px;
-			.test_about_header {
-				font-size: 14px;
-				margin-bottom: 10px;
-			}
-			.test_about_content {
-				font-size: 12px;
-			}
-		}
-	}
+        .history_list {
+            width: 250px;
+        }
 
-	.blood_sugar_trends {
-		.test_time_content {
-			@include flex-center;
-			min-height: 260px;
-		}
-	}
-	.about_header {
-		.icon {
-			color: #f7ca2a;
-			margin-right: 4px;
-		}
-		@extend .card_header;
-		text-align-last: left;
-		font-size: 14px;
-		margin-bottom: 10px;
-	}
+        .test_time {
+            flex: auto;
+            margin: 0 20px;
+        }
+
+        .test_about {
+            width: 222px;
+
+            .test_about_header {
+                margin-bottom: 10px;
+                font-size: 14px;
+                .icon{
+                    color: #f7ca2a;
+                }
+            }
+
+            .test_about_content {
+                font-size: 12px;
+            }
+        }
+    }
+
+    .blood_sugar_trends_content {
+        min-height: 260px;
+    }
+
 }

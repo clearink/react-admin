@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useRef } from "react"
-import { RightOutlined } from "@ant-design/icons"
+import { BulbOutlined, RightOutlined } from "@ant-design/icons"
 import { Card, Spin, Table } from "antd"
 import styles from "./style.module.scss"
 import BloodSugarApi from "@/http/ly/pages/BloodSugarApi"
@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 import * as echarts from "echarts"
 import LineChartOptions from "./lineCharts"
+import TimeSelect from "../components/TimeSelect"
 
 function BloodSugar() {
 	const { id } = useParams<{ id: string }>()
@@ -33,11 +34,6 @@ function BloodSugar() {
 				setToday(data.result)
 			}
 		)
-	}, [])
-
-	useEffect(() => {
-		let myChart = echarts.init(chartsRef.current!)
-		myChart.setOption(LineChartOptions)
 	}, [])
 
 	console.log(indexList, "--", historyList, "--", today)
@@ -263,20 +259,12 @@ function BloodSugar() {
 						size={"small"}
 						title={<div className={styles.card_header}>历史记录</div>}
 					>
-						<div className={styles.card_content}>
-							{new Array(20).fill("2019-01-01").map((item, index) => (
-								<div
-									className={styles.card_content_text}
-									key={index}
-									onClick={() => {
-										setHistoryListSelected(index + 1)
-									}}
-								>
-									<span>{item}</span>
-									{index + 1 === historyListSelected && <RightOutlined />}
-								</div>
-							))}
-						</div>
+						<TimeSelect
+							className='w-2/2'
+							options={Array.from({ length: 10 }, (_, i) => {
+								return { label: i, value: i }
+							})}
+						/>
 					</Card>
 					<Card
 						className={styles.test_time}
@@ -287,34 +275,37 @@ function BloodSugar() {
 							</div>
 						}
 					>
-						<div className={styles.test_time_content}>
-							<Table
-								dataSource={data}
-								columns={columns}
-								bordered
-								size='large'
-								pagination={false}
-							/>
-						</div>
+						<Table
+							dataSource={data}
+							columns={columns}
+							bordered
+							size='large'
+							pagination={false}
+						/>
 					</Card>
 					<Card className={styles.test_about} size={"small"}>
-						<div className={styles.test_about_header}>关于血糖</div>
+						<div className={styles.test_about_header}>
+							<BulbOutlined className={styles.icon} />
+							关于血压
+						</div>
 						<span className={styles.test_about_content}>
 							血糖也叫做葡萄糖，是血液中最主要的糖类，也是身体能量的主要来源。
 						</span>
 					</Card>
 				</div>
-				<div className={styles.blood_sugar_trends}>
-					<Card
-						className={styles.test_time}
-						size={"small"}
-						title={<div className={styles.card_header}>血糖趋势</div>}
+				<Card
+					className={styles.blood_sugar_trends}
+					size={"small"}
+					title={<div className={styles.card_header}>血糖趋势</div>}
+				>
+					<div
+						className={styles.blood_sugar_trends_content}
+						id='main'
+						ref={chartsRef}
 					>
-						<div className={styles.test_time_content} id='main' ref={chartsRef}>
-							折线图
-						</div>
-					</Card>
-				</div>
+						折线图
+					</div>
+				</Card>
 			</Spin>
 		</main>
 	)
