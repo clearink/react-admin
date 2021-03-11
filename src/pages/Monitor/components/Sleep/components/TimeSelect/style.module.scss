@@ -37,3 +37,12 @@ $active_color: #1890ff;
 		}
 	}
 }
+.extra {
+	padding: 6px;
+	text-align: center;
+	background-color: $color_grey-5;
+	transition: background-color 0.3s ease-in-out;
+	&:hover {
+		background-color: rgba($color: $color_black-2, $alpha: 0.1);
+	}
+}

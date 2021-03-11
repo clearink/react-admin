@@ -1,69 +1,72 @@
 @import "@/styles/index.scss";
 
 .main {
-    padding: 0 20px 20px;
+	padding: 0 20px 20px;
 
-    // :global(.ant-card-head-title) {
-    //     padding: 10px 0;
-    // }
+	.card_header {
+		font-weight: 650;
+		font-size: 16px;
+		color: $color_text_black;
+		text-align: center;
+	}
 
-    .card_header {
-        font-weight: 650;
-        font-size: 16px;
-        color: $color_text_black;
-        text-align: center;
-    }
+	.page_wrap {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin-bottom: 20px;
 
-    .page_wrap {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-bottom: 20px;
+		.history_list {
+			@apply w-full mb-8 lg:w-4/24;
+			height: 400px;
+			.card_content {
+				height: 300px;
+				overflow: auto;
+				.card_content_text {
+					@include flex-center;
+					justify-content: space-between;
+					padding: 0 10px;
+					border-bottom: 1px solid $color_grey-3;
+					line-height: 30px;
+					cursor: pointer;
+				}
+			}
+		}
 
-        .history_list,
-        .test_time,
-        .test_about{
-            max-height: 400px;
-        }
+		.test_time {
+			flex: auto;
+			@apply w-full mb-8 lg:w-15/24;
+			height: 400px;
+			margin: 0 20px;
+		}
 
-        .history_list {
-            width: 250px;
-            .card_content{ 
-                height: 300px;
-                overflow: auto;
-                .card_content_text{
-                    @include flex-center;
-                    justify-content: space-between;
-                    padding: 0 10px;
-                    border-bottom: 1px solid $color_grey-3;
-                    line-height: 30px;
-                    cursor: pointer;
-                }
-            }
-        }
+		.test_about {
+			@apply w-full mb-8 lg:w-4/24;
+			height: 400px;
+			.test_about_header {
+				font-size: 14px;
+				margin-bottom: 10px;
+			}
+			.test_about_content {
+				font-size: 12px;
+			}
+		}
+	}
 
-        .test_time {
-            flex: auto;
-            margin: 0 20px;
-        }
-
-        .test_about {
-            flex-basis: 222px;
-            .test_about_header{
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-            .test_about_content{
-                font-size: 12px;
-            }
-        }
-    }
-
-    .blood_sugar_trends {
-        .test_time_content{
-            @include flex-center; 
-            min-height: 260px;
-        }
-    }
-
+	.blood_sugar_trends {
+		.test_time_content {
+			@include flex-center;
+			min-height: 260px;
+		}
+	}
+	.about_header {
+		.icon {
+			color: #f7ca2a;
+			margin-right: 4px;
+		}
+		@extend .card_header;
+		text-align-last: left;
+		font-size: 14px;
+		margin-bottom: 10px;
+	}
 }

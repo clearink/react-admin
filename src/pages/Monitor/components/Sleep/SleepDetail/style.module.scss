@@ -23,7 +23,7 @@
 	}
 }
 .test_time {
-	@apply w-full mb-8 lg:w-12/24;
+	@apply w-full mb-8 lg:w-13/24;
 	:global {
 		.ant-card-body {
 			height: 330px;
@@ -75,7 +75,7 @@
 /* ---------------------------------------- */
 // watch card
 .watch_card {
-	@apply w-full mb-4 lg:w-5/24 flex items-center;
+	@apply w-full my-4 lg:w-5/24 flex items-center;
 	min-width: 300px;
 	padding: 10px 40px;
 	color: white;

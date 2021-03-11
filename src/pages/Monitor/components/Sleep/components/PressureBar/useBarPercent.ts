@@ -47,7 +47,6 @@ export default function useBarPercent(
 		const [matchIndex, matchItem] = FindValueIndex(number, separator)
 		const grow = matchItem.grow ?? 1
 		if (matchIndex !== -1) {
-			console.log("能够匹配到数据")
 			const [current, total] = FindGrow(separator, matchIndex)
 			const next = separator[matchIndex + 1]
 			const relative =
@@ -55,11 +54,9 @@ export default function useBarPercent(
 			const percent = (relative * grow + current) / total
 			return [matchItem.color, valueRange(percent * 100, 0, 100).toFixed(2)]
 		} else {
-			console.log("在最后一段区域 使用 tan(x) 函数图像")
 			const [current, total] = FindGrow(separator, separator.length - 1)
 			const relative = (number - matchItem.value) / (3000 - matchItem.value)
 			const percent = (relative * grow + current) / total
-			console.log(number, matchItem, relative)
 			return [
 				separator[separator.length - 1].color,
 				valueRange(percent * 100, 0, 100).toFixed(2),

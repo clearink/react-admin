@@ -13,6 +13,8 @@ import { FieldAvatar } from "@/components/BigSight"
 import GetFullUrl from "@/utils/data/GetFullUrl"
 import BloodPressure from "../components/Sleep/BloodPressure"
 import BloodOxy from "../components/Sleep/BloodOxy"
+import SportRecord from "../components/Sleep/SportRecord"
+import EcgRecord from "../components/Sleep/EcgRecord"
 // 监控分析 睡眠报告
 
 const recordList = [
@@ -24,6 +26,7 @@ const recordList = [
 	{
 		title: "运动",
 		icon: UserOutlined,
+		component: SportRecord,
 	},
 	{
 		title: "血压",
@@ -43,6 +46,7 @@ const recordList = [
 	{
 		title: "心率",
 		icon: UserOutlined,
+		component: EcgRecord,
 	},
 	{
 		title: "体重/体脂",

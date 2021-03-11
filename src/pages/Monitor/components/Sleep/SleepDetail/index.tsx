@@ -1,9 +1,9 @@
-import React, { memo, useEffect, useRef } from "react"
-import { Badge, Card, Progress, Space, Spin } from "antd"
+import React, { memo, useEffect, useRef, useState } from "react"
+import { Badge, Button, Card, Progress, Space, Spin } from "antd"
 import classNames from "classnames"
 import moment from "moment"
 import styles from "./style.module.scss"
-import { ExclamationCircleOutlined, UserAddOutlined } from "@ant-design/icons"
+import { UserAddOutlined } from "@ant-design/icons"
 import useQuery from "@/hooks/useQuery"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import * as echarts from "echarts"
@@ -11,6 +11,16 @@ import PieChartOptions from "./pieChart"
 import WatchCard from "./WatchCard"
 import SleepStatus from "./SleepStatus"
 import IconFont from "@/components/IconFont"
+import TimeSelect from "../components/TimeSelect"
+
+function generatorTime(base: number = 0, len: number = 10) {
+	return Array.from({ length: len }, (_, i) => {
+		const value = moment()
+			.add(-base - i, "days")
+			.format("YYYY-MM-DD")
+		return { label: value, value }
+	})
+}
 
 // 睡眠详情
 function SleepDetail() {
@@ -29,6 +39,11 @@ function SleepDetail() {
 		const element = echarts.init(chartRef.current!)
 		element.setOption(PieChartOptions as any)
 	}, [])
+
+	const [timeList, setTimeList] = useState(() => generatorTime(0))
+	const handleLoadMoreTime = () => {
+		setTimeList((p) => p.concat(generatorTime(p.length)))
+	}
 	return (
 		<Spin spinning={loading}>
 			<div className={styles.page_wrap}>
@@ -37,11 +52,17 @@ function SleepDetail() {
 					className={styles.history_list}
 					title={<div className={styles.header}>历史记录</div>}
 				>
-					{Array.from({ length: 10 }, (_, i) => (
-						<div className='py-2' key={i}>
-							{i}
-						</div>
-					))}
+					<TimeSelect
+						options={timeList}
+						onChange={(value,item)=>{
+							console.log(value,item)
+						}}
+						extra={
+							<div onClick={handleLoadMoreTime} className='cursor-pointer'>
+								加载更多
+							</div>
+						}
+					/>
 				</Card>
 				<Card
 					size='small'
@@ -146,13 +167,20 @@ function SleepDetail() {
 							title='平均心率(bmp)'
 							color='#53c31b'
 							count={data?.avgHeart}
-							icon={<IconFont type='icon-heart' className={styles.statistics_icon} />}
+							icon={
+								<IconFont
+									type='icon-heart'
+									className={styles.statistics_icon}
+								/>
+							}
 						/>
 						<WatchCard
 							title='平均呼吸(rpm)'
 							color='#1991ff'
 							count={data?.avgBreath}
-							icon={<IconFont type='icon-lung' className={styles.statistics_icon} />}
+							icon={
+								<IconFont type='icon-lung' className={styles.statistics_icon} />
+							}
 						/>
 					</div>
 				</Card>

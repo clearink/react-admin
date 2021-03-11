@@ -8,6 +8,7 @@
 
 .label {
 	color: $color_primary;
+	cursor: pointer;
 	margin-bottom: 10px;
 	flex-shrink: 0;
 	&::after {

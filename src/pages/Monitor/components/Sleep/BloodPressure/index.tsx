@@ -1,10 +1,14 @@
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Card } from "antd"
 import styles from "./style.module.scss"
 import useMemoFetch from "@/hooks/useMemoFetch"
 import { BulbOutlined } from "@ant-design/icons"
 import TimeSelect from "../components/TimeSelect"
 import PressureBar from "../components/PressureBar"
+import * as echarts from "echarts"
+import chartOption from "./chart"
+import BloodPressureApi from "@/http/api/pages/BloodPressureApi"
+import { useParams } from "react-router-dom"
 
 // 血压
 
@@ -49,64 +53,113 @@ const relaxPressure = [
 ]
 
 function BloodPressure() {
+	const { id } = useParams<{ id: string }>()
 	// const {} = useMemoFetch({
 	// 	url: "",
 	// })
+	const chartRef = useRef<any>(null)
+	useEffect(() => {
+		BloodPressureApi.HomeData({ memberId: id }).then(({ data }) => {
+			console.log(data)
+			setPressure({
+				shrink:data.result.latestData.sp,
+				relax:data.result.latestData.dp,
+			})
+		})
+	}, [id])
+
+	const [pagination, setPagination] = useState({
+		current: 1,
+		hasMore: true,
+		loading: false,
+	}) // 页码
+	const [timeList, setTimeList] = useState<any[]>([])
+
+	// 历史记录数据
+	useEffect(() => {
+		console.log("render")
+		setPagination((p) => ({ ...p, loading: true }))
+		BloodPressureApi.HistoryList({
+			memberId: id,
+			pageNo: 1,
+			pageSize: 10,
+		})
+			.then(({ data }) => {
+				setTimeList(
+					data.result.records.map((item: any) => ({
+						label: item.startTime,
+						value: item.startTime,
+					}))
+				)
+				setPagination({
+					current: data.result.current,
+					hasMore: data.result.current < data.result.pages,
+					loading: false,
+				})
+			})
+			.finally(() => {
+				setPagination((p) => ({ ...p, loading: false }))
+			})
+	}, [id])
+
+	// 检测数据
+	const [recordList, setRecordList] = useState<any[]>([])
+
+	// 血压数据
+	const [pressure, setPressure] = useState({ shrink: 0, relax: 0 })
+	// 有数据时初始化
+	// useEffect(() => {
+	// 	const element = document.getElementById("blood-pressure-chart")
+	// 	if (!element) return
+	// 	chartRef.current = echarts.init(element as HTMLDivElement)
+	// }, [])
+
 	return (
 		<div className={styles.blood_oxy_page_wrap}>
-			<Card
-				size='small'
-				className={styles.history}
-				title={<div className={styles.header}>历史记录</div>}
-			>
-				<div className='flex flex-wrap'>
-					<TimeSelect
-						className='w-1/2'
-						options={Array.from({ length: 10 }, (_, i) => {
-							return { label: i, value: i }
-						})}
-					/>
-					<TimeSelect
-						className='w-1/2'
-						options={Array.from({ length: 10 }, (_, i) => {
-							return { label: i, value: i }
-						})}
-					/>
-				</div>
-			</Card>
-			<Card
-				size='small'
-				className={styles.test_time}
-				title={
-					<div className={styles.header}>
-						检测时间：2021年03月03日 星期三 上午10:35
+			<div className={styles.card_wrap}>
+				<Card
+					size='small'
+					className={styles.history}
+					title={<div className={styles.header}>历史记录</div>}
+				>
+					<div className='flex flex-wrap'>
+						<TimeSelect className='w-1/2' options={timeList} />
+						<TimeSelect className='w-1/2' options={recordList} />
 					</div>
-				}
-			>
-				<PressureBar
-					title='收缩压(高压 mmHg)'
-					value={1234}
-					separator={shrinkPressure}
-				/>
-				<PressureBar
-					className='mt-8'
-					title='舒张压(低压 mmHg)'
-					value={74}
-					separator={relaxPressure}
-				/>
-			</Card>
-			<Card
-				size='small'
-				className={styles.about_blood_pressure}
-				title={
-					<div className={styles.header}>
+				</Card>
+				<Card
+					size='small'
+					className={styles.test_time}
+					title={
+						<div className={styles.header}>
+							检测时间：2021年03月03日 星期三 上午10:35
+						</div>
+					}
+				>
+					<PressureBar
+						title='收缩压(高压 mmHg)'
+						value={pressure.shrink}
+						separator={shrinkPressure}
+					/>
+					<PressureBar
+						className='mt-8'
+						title='舒张压(低压 mmHg)'
+						value={pressure.relax}
+						separator={relaxPressure}
+					/>
+				</Card>
+				<Card size='small' className={styles.about_blood_pressure}>
+					<h5 className={styles.about_header}>
 						<BulbOutlined className={styles.icon} />
 						关于血压
-					</div>
-				}
-			>
-				血压是指心脏输送血液时血流对动脉壁产生的压力。有两种测量方式。“收缩压”是指心脏跳动时输送血液所产生的血压。“舒张压”是指心脏跳动间隔心脏舒张处于静止时所产生的血压。血压值通常会将收缩压数值写在舒张压数字的上面或前面（例如：120/80）。
-			</Card>
+					</h5>
+					血压是指心脏输送血液时血流对动脉壁产生的压力。有两种测量方式。“收缩压”是指心脏跳动时输送血液所产生的血压。“舒张压”是指心脏跳动间隔心脏舒张处于静止时所产生的血压。血压值通常会将收缩压数值写在舒张压数字的上面或前面（例如：120/80）。
+				</Card>
+			</div>
+			<div className={styles.chart}>
+				<div className={styles.title}>血压趋势</div>
+				<div ref={chartRef} style={{ width: "100%", height: 300 }}></div>
+			</div>
 		</div>
 	)
 }
