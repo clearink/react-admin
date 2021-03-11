@@ -19,14 +19,10 @@
         flex-wrap: wrap;
         justify-content: space-between;
         margin-bottom: 20px;
-
-        .history_list,
-        .test_time,
-        .test_about {
-            max-height: 400px;
-        }
+        height: 400px;
 
         .history_list {
+            @apply w-full mb-8 lg:w-6/24;
             flex: auto;
 
             .card_history_containar {
@@ -35,9 +31,10 @@
             }
         }
         .test_time {
+            @apply w-full mb-8 lg:w-13/24;
             flex: auto;
-            margin: 0 20px;
-            flex-wrap: wrap;
+			height: 400px;
+
             .test_time_content{
                 display: flex;
                 flex-wrap: wrap;
@@ -62,8 +59,8 @@
         }
 
         .test_about {
-            width: 222px;
-
+            @apply w-full mb-8 lg:w-4/24;
+            height: 400px;
             .icon {
                 color: #f7ca2a;
             }
@@ -71,6 +68,7 @@
     }
 
     .blood_sugar_trends_content {
+        // @apply w-full mb-8 lg:w-24/24;
         min-height: 260px;
     }
 

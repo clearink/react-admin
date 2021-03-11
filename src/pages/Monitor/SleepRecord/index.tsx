@@ -16,6 +16,7 @@ import BloodOxy from "../components/Sleep/BloodOxy"
 import Urine from "../components/Sleep/Urine"
 import EcgRecord from "../components/Sleep/EcgRecord"
 import SportRecord from "../components/Sleep/SportRecord"
+import BodyFat from "../components/Sleep/BodyFat"
 // 监控分析 睡眠报告
 
 const recordList = [
@@ -52,6 +53,7 @@ const recordList = [
 	{
 		title: "体重/体脂",
 		icon: UserOutlined,
+		component: BodyFat
 	},
 	{
 		title: "尿液",

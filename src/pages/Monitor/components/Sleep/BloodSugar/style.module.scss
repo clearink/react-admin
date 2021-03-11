@@ -33,24 +33,14 @@
 			}
 		}
 
-		.test_time {
-			flex: auto;
-			@apply w-full mb-8 lg:w-15/24;
-			height: 400px;
-			margin: 0 20px;
-		}
-
-        .history_list {
-            width: 250px;
-        }
-
         .test_time {
+            @apply w-full mb-8 lg:w-15/24;
             flex: auto;
-            margin: 0 20px;
+			height: 400px;
         }
 
         .test_about {
-            width: 222px;
+            @apply w-full mb-8 lg:w-4/24;
 
             .test_about_header {
                 margin-bottom: 10px;

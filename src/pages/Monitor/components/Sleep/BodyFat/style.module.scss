@@ -1,0 +1,99 @@
+@import "@/styles/index.scss";
+
+.main {
+    padding: 0 20px 20px;
+
+    // :global(.ant-card-head-title) {
+    //     padding: 10px 0;
+    // }
+
+    .card_header {
+        font-weight: 650;
+        font-size: 16px;
+        color: $color_text_black;
+        text-align: center;
+    }
+
+    .page_wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        height: 400px;
+
+        .history_list {
+            @apply w-full mb-8 lg:w-6/24;
+            flex: auto;
+
+            .card_history_containar {
+                @include flex-center;
+                justify-content: space-between;
+            }
+        }
+        .test_time {
+            @apply w-full mb-8 lg:w-5/24;
+            flex: auto;
+			height: 400px;
+            padding: 20px;
+
+            .test_time_content{
+                display: flex;
+                flex-wrap: wrap;
+                margin: 20px auto;
+                .test_time_content_info{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    text-align: center;
+                    span{
+                        width: 80px;
+                        height: 80px;
+                        padding: 10px;
+                        font-size: 18px;
+                        font-weight: 650;
+                        background-color: red;
+                        color: #03B7AC;
+                        border-radius: 50%;
+                        border: 3px solid #f7ca2a;
+                    }
+                }
+                .test_time_content_detail{
+                    width: 100%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    margin-top: 10px;
+                    .test_time_content_detail_item {
+                        width: 80px;
+                        margin: 5px;
+                        padding: 5px;
+                        text-align: center;
+                        border-radius: 5px;
+                        border: 1px solid $color_primary-1;
+        
+                        .test_time_content_detail_item_icon {
+                            width: 20px;
+                            height: 20px;
+                            background-color: #f00;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+            }
+        }
+
+        .test_about {
+            @apply w-full mb-8 lg:w-4/24;
+            height: 400px;
+            .icon {
+                color: #f7ca2a;
+            }
+        }
+    }
+
+    .blood_sugar_trends_content {
+        min-height: 260px;
+    }
+
+}

@@ -293,7 +293,7 @@ function BloodSugar() {
 						</span>
 					</Card>
 				</div>
-				<Card
+				{/* <Card
 					className={styles.blood_sugar_trends}
 					size={"small"}
 					title={<div className={styles.card_header}>血糖趋势</div>}
@@ -305,7 +305,7 @@ function BloodSugar() {
 					>
 						折线图
 					</div>
-				</Card>
+				</Card> */}
 			</Spin>
 		</main>
 	)
