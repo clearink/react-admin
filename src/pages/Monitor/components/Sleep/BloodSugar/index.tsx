@@ -1,15 +1,13 @@
 import React, { memo, useState, useEffect, useRef } from "react";
-import { RightOutlined } from "@ant-design/icons";
+import { BulbOutlined, RightOutlined } from "@ant-design/icons";
 import { Card, Spin, Table } from "antd";
 import styles from "./style.module.scss";
 import BloodSugarApi from "@/http/ly/pages/BloodSugarApi";
 import { useParams } from "react-router-dom";
 import useMemoCallback from "@/components/Pro/hooks/memo-callback";
 import * as echarts from "echarts";
-<<<<<<< HEAD
 import LineChartOptions from "./lineCharts";
-=======
->>>>>>> b0628e1947f6fb879241fb9f729ade526be1ee33
+import TimeSelect from "../components/TimeSelect";
 
 function BloodSugar() {
     const { id } = useParams<{ id: string }>()
@@ -31,12 +29,12 @@ function BloodSugar() {
         })
         // 今日检测数据
         BloodSugarApi.getToday({ memberId: id, today: new Date() }).then(({ data }) => {
-            if(data.code !== 200) return false;
+            if (data.code !== 200) return false;
             setToday(data.result);
         })
 
     }, [])
-    
+
 
     useEffect(() => {
         let myChart = echarts.init(chartsRef.current!);
@@ -58,7 +56,7 @@ function BloodSugar() {
         {
             title: <div>凌晨</div>,
             align: "center",
-            rowSpan:2,
+            rowSpan: 2,
             children: [
                 {
                     title: <div>
@@ -216,15 +214,15 @@ function BloodSugar() {
         }
     ];
 
-//     afterBreakfast: { text: "", value: 0 }
-// afterDinner: { text: "", value: 0 }
-// afterLunch: { text: "", value: 0 }
-// beforeBreakfast: { text: "", value: 0 }
-// beforeDinner: { text: "", value: 0 }
-// beforeLunch: { text: "", value: 0 }
-// beforeSleep: { text: "", value: 0 }
-// midnight: { text: "", value: 0 }
-    
+    //     afterBreakfast: { text: "", value: 0 }
+    // afterDinner: { text: "", value: 0 }
+    // afterLunch: { text: "", value: 0 }
+    // beforeBreakfast: { text: "", value: 0 }
+    // beforeDinner: { text: "", value: 0 }
+    // beforeLunch: { text: "", value: 0 }
+    // beforeSleep: { text: "", value: 0 }
+    // midnight: { text: "", value: 0 }
+
 
     return (
         <main className={styles.main}>
@@ -234,49 +232,45 @@ function BloodSugar() {
                         className={styles.history_list}
                         size={"small"}
                         title={<div className={styles.card_header}>历史记录</div>}>
-                        <div className={styles.card_content}>
-                            {new Array(20).fill("2019-01-01").map((item, index) => (
-                                <div className={styles.card_content_text} key={index} onClick={() => {
-                                    setHistoryListSelected(index + 1);
-                                }}>
-                                    <span>{item}</span>
-                                    {index + 1 === historyListSelected && <RightOutlined />}
-                                </div>
-                            ))}
-                        </div>
+                        <TimeSelect
+                            className='w-2/2'
+                            options={Array.from({ length: 10 }, (_, i) => {
+                                return { label: i, value: i }
+                            })}
+                        />
                     </Card>
                     <Card
                         className={styles.test_time}
                         size={"small"}
                         title={<div className={styles.card_header}>检测时间：2021年03月03日 星期三</div>}>
-                        <div className={styles.test_time_content}>
-                            <Table
-                                dataSource={data}
-                                columns={columns}
-                                bordered
-                                size="large"
-                                pagination={false}
-                            />
-                        </div>
+                        <Table
+                            dataSource={data}
+                            columns={columns}
+                            bordered
+                            size="large"
+                            pagination={false}
+                        />
                     </Card>
                     <Card
                         className={styles.test_about}
-                        size={"small"}>
-                        <div className={styles.test_about_header}>关于血糖</div>
+                        size={"small"}
+                    >
+                        <div className={styles.test_about_header}>
+                            <BulbOutlined className={styles.icon}/>
+                            关于血压    
+                        </div>
                         <span className={styles.test_about_content}>血糖也叫做葡萄糖，是血液中最主要的糖类，也是身体能量的主要来源。</span>
                     </Card>
                 </div>
-                <div className={styles.blood_sugar_trends}>
-                    <Card
-                        className={styles.test_time}
-                        size={"small"}
-                        title={<div className={styles.card_header}>血糖趋势</div>}
-                    >
-                        <div className={styles.test_time_content} id="main" ref={chartsRef}>
-                            折线图
-                        </div>
-                    </Card>
-                </div>
+                <Card
+                    className={styles.blood_sugar_trends}
+                    size={"small"}
+                    title={<div className={styles.card_header}>血糖趋势</div>}
+                >
+                    <div className={styles.blood_sugar_trends_content} id="main" ref={chartsRef}>
+                        折线图
+                    </div>
+                </Card>
             </Spin>
         </main>
     )

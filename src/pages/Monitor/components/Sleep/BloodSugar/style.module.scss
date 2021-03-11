@@ -28,36 +28,22 @@
 
         .history_list {
             width: 250px;
-
-            .card_content {
-                height: 300px;
-                overflow: auto;
-
-                .card_content_text {
-                    @include flex-center;
-                    justify-content: space-between;
-                    padding: 0 10px;
-                    border-bottom: 1px solid $color_grey-3;
-                    line-height: 30px;
-                    cursor: pointer;
-                }
-            }
         }
 
         .test_time {
             flex: auto;
             margin: 0 20px;
-            .test_time_content{
-                // padding: 20px;
-            }
         }
 
         .test_about {
-            flex-basis: 222px;
+            width: 222px;
 
             .test_about_header {
-                font-size: 14px;
                 margin-bottom: 10px;
+                font-size: 14px;
+                .icon{
+                    color: #f7ca2a;
+                }
             }
 
             .test_about_content {
@@ -66,8 +52,7 @@
         }
     }
 
-    .test_time_content {
-        @include flex-center;
+    .blood_sugar_trends_content {
         min-height: 260px;
     }
 

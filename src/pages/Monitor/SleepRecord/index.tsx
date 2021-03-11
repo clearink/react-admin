@@ -13,6 +13,7 @@ import { FieldAvatar } from "@/components/BigSight"
 import GetFullUrl from "@/utils/data/GetFullUrl"
 import BloodPressure from "../components/Sleep/BloodPressure"
 import BloodOxy from "../components/Sleep/BloodOxy"
+import Urine from "../components/Sleep/Urine"
 // 监控分析 睡眠报告
 
 const recordList = [
@@ -51,6 +52,7 @@ const recordList = [
 	{
 		title: "尿液",
 		icon: UserOutlined,
+		component: Urine
 	},
 ]
 function SleepRecord() {
