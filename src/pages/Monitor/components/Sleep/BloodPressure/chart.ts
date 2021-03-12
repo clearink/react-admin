@@ -26,3 +26,15 @@ function chartOption(max: any[], min: any[], time: any[]) {
 }
 
 export default chartOption
+
+export const calcChartData = (chartData: any[]) => {
+	return chartData.reduce(
+		(pre: any, item: any) => {
+			pre[0].push(item.dp)
+			pre[1].push(item.sp)
+			pre[2].push(item.startTime)
+			return pre
+		},
+		[[], [], []] as const
+	)
+}

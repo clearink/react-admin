@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from "react"
-import { Card } from "antd"
+import { Button, Card } from "antd"
 import moment from "moment"
 import styles from "./style.module.scss"
 import { BulbOutlined } from "@ant-design/icons"
 import TimeSelect from "../components/TimeSelect"
 import PressureBar from "../components/PressureBar"
 import * as echarts from "echarts"
-import chartOption from "./chart"
+import chartOption, { calcChartData } from "./chart"
 import BloodPressureApi from "@/http/api/pages/BloodPressureApi"
 import { useParams } from "react-router-dom"
 import useMemoCallback from "@/components/Pro/hooks/memo-callback"
+import throttle from "@/utils/event/throttle"
 
 // 血压
 
@@ -58,81 +59,88 @@ function BloodPressure() {
 	// const {} = useMemoFetch({
 	// 	url: "",
 	// })
-	const fetchData = useMemoCallback((update:boolean = false)=>{
+	const [pagination, setPagination] = useState({ current: 0, hasMore: true })
+	const fetchData = useMemoCallback(async (update: boolean = false) => {
 		// 是否更新值
-
+		const {
+			data: { result },
+		} = await BloodPressureApi.HistoryList({
+			memberId: id,
+			pageNo: pagination.current + 1,
+			pageSize: 10,
+		})
+		setTimeList((p) =>
+			p.concat(
+				result.records?.map((item: any) => ({
+					label: item.startTime,
+					value: item.startTime,
+				})) ?? []
+			)
+		)
+		setPagination({
+			current: result.current,
+			hasMore: result.current < result.pages,
+		})
 	})
+
 	const chartRef = useRef<any>(null)
 	useEffect(() => {
-		BloodPressureApi.HomeData({ memberId: id }).then(({ data }) => {
-			console.log(data)
-			const { latestData, chartData } = data.result
-			setPressure({
-				shrink: latestData.sp,
-				relax: latestData.dp,
-			})
-			const newChartList = chartData.reduce(
-				(pre: any, item: any) => {
-					pre[0].push(item.dp)
-					pre[1].push(item.sp)
-					pre[2].push(item.startTime)
-					return pre
-				},
-				[[], [], []] as const
-			)
-			setChartList(newChartList)
-		})
+		let charts: any = null
+		const change = throttle(() => charts?.resize(), 40)
+		;(async () => {
+			const {
+				data: { result },
+			} = await BloodPressureApi.HomeData({ memberId: id })
+			const { latestData, chartData } = result
+			setPressure({ shrink: latestData.sp, relax: latestData.dp })
+			const element = chartRef.current
+			charts = echarts.init(element as HTMLDivElement)
+			const chartList = calcChartData(chartData) as [
+				number[],
+				number[],
+				number[]
+			]
+			charts.setOption(chartOption(...chartList) as any)
+			change()
+			window.addEventListener("resize", change)
+		})()
+		return () => {
+			charts?.dispose()
+			window.removeEventListener("resize", change)
+		}
 	}, [id])
 
-	const [pagination, setPagination] = useState({
-		current: 1,
-		hasMore: true,
-	}) // 页码
 	const [timeList, setTimeList] = useState<any[]>([])
-	const [chartList, setChartList] = useState<[number[], number[], number[]]>([
-		[],
-		[],
-		[],
-	])
 
 	// 历史记录数据
 	useEffect(() => {
-		console.log("render")
-
-		BloodPressureApi.HistoryList({
-			memberId: id,
-			pageNo: 1,
-			pageSize: 10,
-		}).then(({ data }) => {
-			setTimeList(
-				data.result.records.map((item: any) => ({
-					label: item.startTime,
-					value: item.startTime,
-				}))
-			)
-			setPagination({
-				current: data.result.current,
-				hasMore: data.result.current < data.result.pages,
-			})
-		})
-	}, [id])
+		fetchData()
+	}, [id, fetchData])
 
 	// 检测数据
 	const [recordList, setRecordList] = useState<any[]>([])
 
 	// 血压数据
 	const [pressure, setPressure] = useState({ shrink: 0, relax: 0 })
-	// 有数据时初始化
-	useEffect(() => {
-		const element = chartRef.current
-		if (!element || chartList[0].length === 0 || chartList[1].length === 0)
-			return
-		const charts = echarts.init(element as HTMLDivElement)
-		charts.setOption(chartOption(...chartList) as any)
-		return () => {
-			charts.dispose()
-		}
-	}, [chartList])
+
+	const handleLoadMore = () => {
+		fetchData()
+	}
+	// 加载详细数据
+	const handleLoadDetail = async (value: any) => {
+		const {
+			data: { result },
+		} = await BloodPressureApi.TodayData({ memberId: id, today: value })
+		const newList = result?.map((item: any) => ({
+			label: `${moment(item.startTime).format("HH:mm")} ${item.sp} / ${
+				item.dp
+			} mmHg`,
+			value: item.id,
+			dp: item.dp,
+			sp: item.sp,
+		}))
+		setRecordList(newList)
+	}
 
 	return (
 		<div className={styles.blood_oxy_page_wrap}>
@@ -146,25 +154,17 @@ function BloodPressure() {
 						<TimeSelect
 							className='w-1/2'
 							options={timeList}
-							onChange={(value, item) => {
-								BloodPressureApi.TodayData({ memberId: id, today: value }).then(
-									({ data }) => {
-										setRecordList(
-											data.result?.map((item: any) => {
-												return {
-													label: `${moment(item.startTime).format("HH:mm")} ${
-														item.sp
-													}/${item.dp} mmHg`,
-													value: item.id,
-													dp: item.dp,
-													sp: item.sp,
-												}
-											})
-										)
-									}
-								)
-							}}
-							extra={<div className='cursor-pointer'>加载更多</div>}
+							onChange={handleLoadDetail}
+							extra={
+								<Button
+									className='w-full text-left pl-0'
+									type='link'
+									onClick={handleLoadMore}
+									disabled={!pagination.hasMore}
+								>
+									加载更多
+								</Button>
+							}
 						/>
 						<TimeSelect
 							className='w-1/2'
