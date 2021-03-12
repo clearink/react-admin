@@ -1,5 +1,4 @@
 @import "@/styles/index.scss";
-
 .main {
 	padding: 0 20px 20px;
 
@@ -18,24 +17,10 @@
 
 		.history_list {
 			@apply w-full mb-8 lg:w-4/24;
-			height: 400px;
-			.card_content {
-				height: 300px;
-				overflow: auto;
-				.card_content_text {
-					@include flex-center;
-					justify-content: space-between;
-					padding: 0 10px;
-					border-bottom: 1px solid $color_grey-3;
-					line-height: 30px;
-					cursor: pointer;
-				}
-			}
 		}
 
         .test_time {
             @apply w-full mb-8 lg:w-15/24;
-			height: 400px;
         }
 
         .test_about {
