@@ -9,6 +9,7 @@ import * as echarts from "echarts"
 import chartOption from "./chart"
 import BloodPressureApi from "@/http/api/pages/BloodPressureApi"
 import { useParams } from "react-router-dom"
+import useMemoCallback from "@/components/Pro/hooks/memo-callback"
 
 // 血压
 
@@ -57,6 +58,10 @@ function BloodPressure() {
 	// const {} = useMemoFetch({
 	// 	url: "",
 	// })
+	const fetchData = useMemoCallback((update:boolean = false)=>{
+		// 是否更新值
+
+	})
 	const chartRef = useRef<any>(null)
 	useEffect(() => {
 		BloodPressureApi.HomeData({ memberId: id }).then(({ data }) => {
