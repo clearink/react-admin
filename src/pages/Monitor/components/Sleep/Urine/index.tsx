@@ -42,8 +42,8 @@ function Urine() {
                         size={"small"}
                         title={<div className={styles.card_header}>检测时间：2021年03月03日 星期三</div>}>
                         <div className={styles.test_time_content}>
-                            {new Array(11).fill(null).map(_ => (
-                                <div className={styles.test_time_content_item}>
+                            {new Array(11).fill(null).map((_,index) => (
+                                <div className={styles.test_time_content_item} key={index}>
                                     <Space direction="vertical">
                                         <div className={styles.test_time_content_item_icon}></div>
                                         <div>111</div>

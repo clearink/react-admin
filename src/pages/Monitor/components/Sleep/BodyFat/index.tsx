@@ -48,8 +48,8 @@ function BodyFat() {
                                 <span>体重76kg</span>
                             </div>
                             <div className={styles.test_time_content_detail}>
-                                {new Array(11).fill(null).map(_ => (
-                                    <div className={styles.test_time_content_detail_item}>
+                                {new Array(11).fill(null).map((_,index) => (
+                                    <div className={styles.test_time_content_detail_item} key={index}>
                                         <Space direction="vertical">
                                             <div className={styles.test_time_content_detail_item_icon}></div>
                                             <div>111</div>
