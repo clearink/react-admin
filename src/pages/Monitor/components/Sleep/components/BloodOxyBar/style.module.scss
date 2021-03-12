@@ -1,0 +1,27 @@
+@import "@/styles/index.scss";
+.main{
+    text-align: center;
+    margin: 0 40px;
+    .title{
+        padding: 0 5px;
+    }
+    .chartData{
+        @include flex-center;
+        align-items: flex-end;
+        margin: 10px 0;
+        &_item{
+            list-style: none;
+            &_img{
+                @include flex-center;
+                width: 36px;
+                height: 60px;
+                color: #fff;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+        }
+    }
+    .describe{
+        // text-align: center;
+    }
+}

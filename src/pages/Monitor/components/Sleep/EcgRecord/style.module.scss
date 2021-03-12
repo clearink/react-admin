@@ -1,4 +1,5 @@
 @import "@/styles/index.scss";
+$active_color: #1890ff;
 
 .main {
     padding: 0 20px 20px;
@@ -13,20 +14,34 @@
         color: $color_text_black;
         text-align: center;
     }
+    .blood_sugar_trends_card_header{
+        @include flex-center;
+        justify-content: space-between;
+        :global(.ant-btn-primary){
+            background-color: $color_success;
+        }
+    }
 
     .page_wrap {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         margin-bottom: 20px;
+
         .history_list {
-            @apply w-full mb-8 lg:w-4/24;
+            @apply w-full mb-8 lg:w-8/24;
+
+            .card_history_containar {
+                @include flex-center;
+                justify-content: space-between;
+            }
         }
         .test_time {
-            @apply w-full mb-8 lg:w-15/24;
+            @apply w-full mb-8 lg:w-11/24;
             :global(.ant-card-body){
-                @include flex-center;
-                height: 100%;
+                @include scrollbar($active_color);
+                height: 350px;
+                overflow: auto;
             }
         }
 
@@ -35,12 +50,16 @@
             .icon {
                 color: #f7ca2a;
             }
+            :global(.ant-card-body){
+                @include scrollbar($active_color);
+                height: 400px;
+                overflow: auto;
+            }
         }
     }
 
     .blood_sugar_trends_content {
-        // @apply w-full mb-8 lg:w-24/24;
         min-height: 260px;
     }
-
+    
 }

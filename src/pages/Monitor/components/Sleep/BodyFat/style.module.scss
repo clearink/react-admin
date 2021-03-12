@@ -30,7 +30,6 @@
         }
         .test_time {
             @apply w-full mb-8 lg:w-11/24;
-            padding: 20px;
 
             .test_time_content{
                 display: flex;
@@ -42,6 +41,7 @@
                     justify-content: space-between;
                     align-items: center;
                     text-align: center;
+                    padding: 0 20px;
                     span{
                         width: 80px;
                         height: 80px;
