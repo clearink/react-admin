@@ -80,7 +80,7 @@ function BodyFat() {
                     size={"small"}
                     title={<div className={styles.card_header}>体重趋势</div>}
                 >
-                    <div className={styles.blood_sugar_trends_content} id="main" ref={chartsRef}></div>
+                    <div className={styles.blood_sugar_trends_content} ref={chartsRef}></div>
                 </Card>
             </Spin>
         </main>

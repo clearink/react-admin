@@ -19,11 +19,9 @@
         flex-wrap: wrap;
         justify-content: space-between;
         margin-bottom: 20px;
-        height: 400px;
 
         .history_list {
-            @apply w-full mb-8 lg:w-6/24;
-            flex: auto;
+            @apply w-full mb-8 lg:w-8/24;
 
             .card_history_containar {
                 @include flex-center;
@@ -31,9 +29,7 @@
             }
         }
         .test_time {
-            @apply w-full mb-8 lg:w-5/24;
-            flex: auto;
-			height: 400px;
+            @apply w-full mb-8 lg:w-11/24;
             padding: 20px;
 
             .test_time_content{
@@ -85,7 +81,6 @@
 
         .test_about {
             @apply w-full mb-8 lg:w-4/24;
-            height: 400px;
             .icon {
                 color: #f7ca2a;
             }

@@ -38,6 +38,11 @@ function BloodSugar() {
 
 	console.log(indexList, "--", historyList, "--", today)
 	useEffect(() => {
+        let myChart = echarts.init(chartsRef.current!);
+        myChart.setOption(LineChartOptions);
+    }, [])
+	
+	useEffect(() => {
 		getBloodSugarIndexList()
 		// getEcharts();
 	}, [getBloodSugarIndexList])
@@ -220,7 +225,7 @@ function BloodSugar() {
 			],
 		},
 	]
-	console.log(today)
+
 	const data: any = [
 		{
 			key: 1,
@@ -293,19 +298,13 @@ function BloodSugar() {
 						</span>
 					</Card>
 				</div>
-				{/* <Card
+				<Card
 					className={styles.blood_sugar_trends}
 					size={"small"}
 					title={<div className={styles.card_header}>血糖趋势</div>}
 				>
-					<div
-						className={styles.blood_sugar_trends_content}
-						id='main'
-						ref={chartsRef}
-					>
-						折线图
-					</div>
-				</Card> */}
+					<div className={styles.blood_sugar_trends_content} ref={chartsRef}></div>
+				</Card>
 			</Spin>
 		</main>
 	)
