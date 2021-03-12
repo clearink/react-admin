@@ -27,7 +27,7 @@ function FindGrow(separator: SeparatorItem[], index: number) {
 }
 
 // 限制在某个范围
-function valueRange(value: number, min: number, max: number) {
+export function valueRange(value: number, min: number, max: number) {
 	return Math.min(Math.max(value, min), max)
 }
 

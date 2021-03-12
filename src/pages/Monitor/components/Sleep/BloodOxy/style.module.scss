@@ -1,46 +1,48 @@
 @import "@/styles/index.scss";
 
 .main {
-    padding: 0 20px 20px;
+	padding: 0 20px 20px;
 
-    // :global(.ant-card-head-title) {
-    //     padding: 10px 0;
-    // }
+	// :global(.ant-card-head-title) {
+	//     padding: 10px 0;
+	// }
 
-    .card_header {
-        font-weight: 650;
-        font-size: 16px;
-        color: $color_text_black;
-        text-align: center;
-    }
+	.card_header {
+		font-weight: 650;
+		font-size: 16px;
+		color: $color_text_black;
+		text-align: center;
+	}
 
-    .page_wrap {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        .history_list {
-            @apply w-full mb-8 lg:w-4/24;
-        }
-        .test_time {
-            @apply w-full mb-8 lg:w-15/24;
-            :global(.ant-card-body){
-                @include flex-center;
-                height: 100%;
-            }
-        }
+	.page_wrap {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin-bottom: 20px;
+		.history_list {
+			@apply w-full mb-8 lg:w-4/24;
+			height: 400px;
+		}
+		.test_time {
+			@apply w-full mb-8 lg:w-15/24;
+			height: 400px;
+			:global(.ant-card-body) {
+				display: flex;
+                justify-content: center;
+			}
+		}
 
-        .test_about {
-            @apply w-full mb-8 lg:w-4/24;
-            .icon {
-                color: #f7ca2a;
-            }
-        }
-    }
+		.test_about {
+			@apply w-full mb-8 lg:w-4/24;
+			height: 400px;
+			.icon {
+				color: #f7ca2a;
+			}
+		}
+	}
 
-    .blood_sugar_trends_content {
-        // @apply w-full mb-8 lg:w-24/24;
-        min-height: 260px;
-    }
-
+	.blood_sugar_trends_content {
+		// @apply w-full mb-8 lg:w-24/24;
+		min-height: 260px;
+	}
 }

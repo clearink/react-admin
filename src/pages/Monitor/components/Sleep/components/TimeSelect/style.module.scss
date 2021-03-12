@@ -13,6 +13,7 @@ $active_color: #1890ff;
 		align-items: center;
 		padding: 6px 0;
 		cursor: pointer;
+		position: relative;;
 
 		&:hover {
 			background-color: rgba($color: $active_color, $alpha: 0.1);
@@ -26,10 +27,12 @@ $active_color: #1890ff;
 			}
 		}
 		.text {
-			padding-left: 40px;
+			text-align: center;
 			flex: auto;
 		}
 		.icon {
+			position: absolute;
+			right: 6px;
 			transition: all 0.3s ease-in-out;
 			opacity: 0;
 			transform: translateX(10px);
@@ -38,8 +41,8 @@ $active_color: #1890ff;
 	}
 }
 .extra {
+	text-align: center;
 	padding: 6px;
-	padding-left: 40px;
 	background-color: $color_grey-5;
 	transition: background-color 0.3s ease-in-out;
 	&:hover {

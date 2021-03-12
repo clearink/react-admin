@@ -1,27 +1,40 @@
 @import "@/styles/index.scss";
-.main{
-    text-align: center;
-    margin: 0 40px;
-    .title{
-        padding: 0 5px;
-    }
-    .chartData{
-        @include flex-center;
-        align-items: flex-end;
-        margin: 10px 0;
-        &_item{
-            list-style: none;
-            &_img{
-                @include flex-center;
-                width: 36px;
-                height: 60px;
-                color: #fff;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-            }
-        }
-    }
-    .describe{
-        // text-align: center;
-    }
+
+.main {
+	display: flex;
+	flex-direction: column;
+	height: 300px;
+
+	.title {
+		text-align: center;
+		margin-bottom: 20px;
+	}
+	.bar_list_wrap {
+		list-style: none;
+		flex: 1;
+		display: flex;
+		align-items: flex-end;
+		.bar_item {
+			width: 50px;
+			height: 100%;
+			display: flex;
+			flex-direction: column-reverse;
+			text-align: center;
+			.text {
+				margin-bottom: 4px;
+			}
+			.bar {
+        transition: height 0.3s ease-in-out;
+				color: white;
+				font-size: 16px;
+				border-radius: 12px 12px 0 0;
+				@include flex-center();
+			}
+		}
+	}
+	.description {
+		color: rgba(#000, 0.8);
+		font-size: 18px;
+		text-align: center;
+	}
 }

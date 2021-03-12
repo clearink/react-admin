@@ -1,0 +1,28 @@
+import http from "@/http"
+
+export interface FetchData {
+	memberId: string | undefined
+}
+
+export interface ToDayData {
+	memberId: string
+	today: string | number | undefined
+}
+export interface HistoryData {
+	memberId: string
+	pageNo: number
+	pageSize: number
+}
+export interface PressureData {
+	ecgId: string
+}
+export default {
+	HomeData: (params: FetchData) =>
+		http.get("/orgmgt/health/ecg/index", params), // 首页数据
+	HistoryList: (params: HistoryData) =>
+		http.get("/orgmgt/health/ecg/recordList", params),
+	PressureData: (params: PressureData) =>
+		http.get("/orgmgt/health/ecg/queryById", params),
+	TodayData: (params: ToDayData) =>
+		http.get("/orgmgt/health/ecg/today", params),
+}

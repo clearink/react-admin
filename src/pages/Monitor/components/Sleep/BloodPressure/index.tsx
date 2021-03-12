@@ -157,7 +157,7 @@ function BloodPressure() {
 							onChange={handleLoadDetail}
 							extra={
 								<Button
-									className='w-full text-left pl-0'
+									className='w-full'
 									type='link'
 									onClick={handleLoadMore}
 									disabled={!pagination.hasMore}
